@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Card } from "@/components/ui/card";
 import { useWallet } from '@/contexts/WalletContext';
 import { Bitcoin } from 'lucide-react';
 
@@ -25,40 +24,80 @@ const WalletBalance: React.FC = () => {
 
   return (
     <div className="animate-fade-in w-full">
-      <Card className="wallet-card overflow-hidden text-white p-6 relative">
-        <div className="flex flex-col h-full">
-          <div className="flex items-center mb-1">
-            <Bitcoin className="h-6 w-6 mr-2" />
-            <h3 className="font-medium">Bitcoin</h3>
+      <div className="mb-1 px-1">
+        <h2 className="text-3xl font-bold">{formatUSD(usdBalance)}</h2>
+      </div>
+      
+      <div className="flex justify-between mt-6">
+        <CryptoAction icon="send" label="Send" />
+        <CryptoAction icon="receive" label="Receive" />
+        <CryptoAction icon="buy" label="Buy" />
+        <CryptoAction icon="earn" label="Earn" />
+      </div>
+      
+      {/* Promotion Card */}
+      <div className="mt-4 bg-[#232733] rounded-xl p-4 border border-gray-800">
+        <div className="flex items-center gap-3">
+          <div className="flex-shrink-0">
+            <img 
+              src="/lovable-uploads/b5f7d5f1-4b8c-465c-ab6e-151090ca29ec.png" 
+              alt="Promotion" 
+              className="w-10 h-10 object-cover rounded-lg"
+            />
           </div>
-          
-          <div className="my-4">
-            <div className="text-3xl font-bold">{btcBalance} BTC</div>
-            <div className="text-blue-100 font-medium mt-1">{formatUSD(usdBalance)}</div>
+          <div className="flex-1">
+            <div className="flex justify-between items-start">
+              <p className="text-sm font-medium">Add funds from exchange</p>
+              <button className="text-xs text-gray-400">×</button>
+            </div>
+            <p className="text-xs text-wallet-green mt-1">Deposit now →</p>
           </div>
-          
-          <div className="mt-auto pt-2">
-            <div className="text-xs text-blue-100 mb-1">Wallet Address</div>
-            <div className="text-sm font-medium truncate">{formatAddress(walletAddress)}</div>
-          </div>
-        </div>
-
-        {/* Abstract background pattern */}
-        <div className="absolute top-0 right-0 w-32 h-32 opacity-10">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="75" cy="25" r="20" fill="white"/>
-            <circle cx="40" cy="70" r="35" fill="white"/>
-          </svg>
-        </div>
-      </Card>
-
-      <div className="mt-4 bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
-        <div className="flex justify-between items-center">
-          <div className="text-sm text-wallet-gray">Bitcoin Price</div>
-          <div className="font-medium">{formatUSD(btcPrice)}</div>
         </div>
       </div>
     </div>
+  );
+};
+
+const CryptoAction = ({ icon, label }: { icon: string, label: string }) => {
+  const getIcon = () => {
+    switch(icon) {
+      case 'send':
+        return (
+          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4V20M12 4L6 10M12 4L18 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        );
+      case 'receive':
+        return (
+          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 20V4M12 20L6 14M12 20L18 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        );
+      case 'buy':
+        return (
+          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="6" width="20" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+            <path d="M12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14Z" stroke="currentColor" strokeWidth="2"/>
+          </svg>
+        );
+      case 'earn':
+        return (
+          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        );
+      default:
+        return <Bitcoin className="h-5 w-5" />;
+    }
+  };
+
+  return (
+    <button className="flex flex-col items-center">
+      <div className="w-10 h-10 rounded-full bg-wallet-card flex items-center justify-center mb-1">
+        {getIcon()}
+      </div>
+      <span className="text-xs">{label}</span>
+    </button>
   );
 };
 

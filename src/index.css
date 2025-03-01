@@ -5,33 +5,33 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 220 13% 10%;
+    --foreground: 0 0% 100%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 224 17% 17%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 224 17% 17%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 210 100% 47%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 140 100% 50%;
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217 11% 18%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 215 14% 24%;
+    --muted-foreground: 215 14% 65%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 140 100% 50%;
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 217 11% 28%;
+    --input: 215 14% 22%;
+    --ring: 140 100% 50%;
 
     --radius: 0.75rem;
   }
@@ -43,14 +43,14 @@
   }
 
   body {
-    @apply bg-wallet-bg text-foreground font-sans antialiased;
+    @apply bg-wallet-darkBg text-white font-sans antialiased;
     -webkit-tap-highlight-color: transparent;
   }
 }
 
 .wallet-card {
-  background: linear-gradient(135deg, #3375BB, #1A56AB);
-  box-shadow: 0 8px 20px rgba(51, 117, 187, 0.15);
+  background: #232733;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .clipboard-animation {
@@ -69,8 +69,8 @@
 }
 
 .glass-morph {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(35, 39, 51, 0.8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(55, 59, 71, 0.2);
 }

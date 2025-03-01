@@ -57,9 +57,14 @@ export default {
 					blue: '#3375BB',
 					lightBlue: '#5099F4',
 					darkBlue: '#1A56AB',
-					bg: '#F6F8FA',
+					bg: '#111111',
+					darkBg: '#1A1F2C',
+					card: '#232733',
 					gray: '#8A8D97',
-					darkGray: '#403E43'
+					darkGray: '#403E43',
+					green: '#00FF5F',
+					accent: '#00FF5F',
+					text: '#FFFFFF'
 				}
 			},
 			borderRadius: {
