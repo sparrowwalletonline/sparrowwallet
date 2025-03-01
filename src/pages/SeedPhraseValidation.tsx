@@ -26,7 +26,7 @@ const SeedPhraseValidation: React.FC = () => {
         description: "Du wirst zurück zur Passphrase-Seite geleitet",
         variant: "destructive",
       });
-      navigate('/passphrase');
+      navigate('/seed-phrase');
     }
   }, [seedPhrase, navigate, toast]);
   

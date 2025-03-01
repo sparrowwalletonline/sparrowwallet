@@ -15,6 +15,7 @@ const SeedPhrasePage: React.FC = () => {
   const [savedPhrase, setSavedPhrase] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [autoSaved, setAutoSaved] = useState(false);
+  const [isConfirming, setIsConfirming] = useState(false);
   
   // Pre-fill checkboxes if coming back from validation page
   useEffect(() => {
@@ -49,7 +50,14 @@ const SeedPhrasePage: React.FC = () => {
   
   const handleConfirm = () => {
     if (savedPhrase && agreedToTerms) {
-      navigate('/seed-phrase-validation');
+      setIsConfirming(true);
+      
+      // Add a delay to improve the UX
+      setTimeout(() => {
+        console.log("Navigating to validation page with seedPhrase:", seedPhrase);
+        navigate('/seed-phrase-validation');
+        setIsConfirming(false);
+      }, 1000);
     }
   };
   
@@ -134,9 +142,14 @@ const SeedPhrasePage: React.FC = () => {
           <Button 
             onClick={handleConfirm}
             className="w-full py-6 bg-wallet-blue hover:bg-wallet-darkBlue text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={!savedPhrase || !agreedToTerms}
+            disabled={!savedPhrase || !agreedToTerms || isConfirming}
           >
-            {savedPhrase && agreedToTerms ? (
+            {isConfirming ? (
+              <>
+                <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                Bestätigen...
+              </>
+            ) : savedPhrase && agreedToTerms ? (
               <>
                 <Check size={16} className="mr-2" />
                 Bestätigen
