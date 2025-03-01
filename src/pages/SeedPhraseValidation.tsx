@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Check } from 'lucide-react';
+import { ArrowLeft, Check, AlertCircle } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import { useToast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
@@ -14,15 +14,16 @@ const SeedPhraseValidation: React.FC = () => {
   const navigate = useNavigate();
   
   const [wordIndices, setWordIndices] = useState<number[]>([]);
-  const [inputValues, setInputValues] = useState<string[]>(['', '']);
+  const [inputValues, setInputValues] = useState<string[]>(['', '', '']);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [attemptsLeft, setAttemptsLeft] = useState(3);
   
-  // Select two random word indices for validation
+  // Select three random word indices for validation
   useEffect(() => {
     if (seedPhrase && seedPhrase.length >= 12) {
-      // Generate two random indices between 0-11
+      // Generate three random indices between 0-11
       const indices = [];
-      while (indices.length < 2) {
+      while (indices.length < 3) {
         const randomIndex = Math.floor(Math.random() * 12);
         if (!indices.includes(randomIndex)) {
           indices.push(randomIndex);
@@ -62,12 +63,26 @@ const SeedPhraseValidation: React.FC = () => {
         navigate('/');
       }, 1500);
     } else {
-      toast({
-        title: "Validierung fehlgeschlagen",
-        description: "Die eingegebenen Wörter stimmen nicht mit deiner Passphrase überein.",
-        variant: "destructive",
-        duration: 2000,
-      });
+      setAttemptsLeft(prev => prev - 1);
+      
+      if (attemptsLeft <= 1) {
+        toast({
+          title: "Zu viele fehlgeschlagene Versuche",
+          description: "Bitte überprüfe deine Seed Phrase noch einmal.",
+          variant: "destructive",
+          duration: 3000,
+        });
+        setTimeout(() => {
+          navigate('/seed-phrase');
+        }, 2000);
+      } else {
+        toast({
+          title: "Validierung fehlgeschlagen",
+          description: `Die eingegebenen Wörter stimmen nicht mit deiner Passphrase überein. Noch ${attemptsLeft-1} Versuch(e) übrig.`,
+          variant: "destructive",
+          duration: 3000,
+        });
+      }
     }
   };
   
@@ -107,6 +122,15 @@ const SeedPhraseValidation: React.FC = () => {
             </p>
           </div>
           
+          {/* Seed phrase security info */}
+          <div className="bg-yellow-600/20 border border-yellow-600/50 p-4 rounded-lg flex gap-3">
+            <AlertCircle className="text-yellow-500 flex-shrink-0 mt-1" size={20} />
+            <div className="text-sm">
+              <p className="font-medium text-yellow-500">Wichtiger Sicherheitshinweis</p>
+              <p className="text-wallet-gray mt-1">Deine Seed Phrase ist der einzige Weg, um auf deine Wallet zuzugreifen. Stelle sicher, dass du sie sicher aufbewahrt hast.</p>
+            </div>
+          </div>
+          
           {/* Word input fields */}
           <div className="space-y-4">
             {wordIndices.map((wordIndex, index) => (
@@ -120,6 +144,11 @@ const SeedPhraseValidation: React.FC = () => {
                 />
               </div>
             ))}
+          </div>
+          
+          {/* Attempts counter */}
+          <div className="text-center text-wallet-gray text-sm">
+            Verbleibende Versuche: {attemptsLeft}
           </div>
           
           <div className="flex flex-col space-y-3 pt-4">
