@@ -62,15 +62,16 @@ const WalletChoice: React.FC = () => {
   
   return (
     <div className="min-h-screen flex flex-col items-center justify-between bg-wallet-darkBg text-white p-6 relative">
-      <Header title="Wallet auswählen" />
-      
-      <button 
-        onClick={handleBackClick}
-        className="absolute top-4 left-4 text-white hover:text-gray-300 transition-colors h-9 w-9 flex items-center justify-center"
-        aria-label="Back to landing page"
-      >
-        <ArrowLeft size={24} />
-      </button>
+      <div className="w-full">
+        <Header title="Wallet auswählen" />
+        <button 
+          onClick={handleBackClick}
+          className="absolute top-4 left-4 text-white hover:text-gray-300 transition-colors h-9 w-9 flex items-center justify-center"
+          aria-label="Back to landing page"
+        >
+          <ArrowLeft size={24} />
+        </button>
+      </div>
       
       <div className="flex-1"></div>
       

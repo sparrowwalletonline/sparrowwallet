@@ -94,8 +94,8 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
   };
 
   return (
-    <header className="flex justify-between items-center py-4 px-4 w-full">
-      <div className="w-9 h-9 flex items-center justify-center">
+    <header className="flex justify-between items-center py-4 px-4 w-full h-16">
+      <div className="flex items-center justify-center w-9 h-9">
         {/* Empty div maintained for layout balance */}
       </div>
       
