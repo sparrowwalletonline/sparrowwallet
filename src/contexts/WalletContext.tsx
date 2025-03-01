@@ -13,6 +13,7 @@ type WalletContextType = {
   isGenerating: boolean;
   generateWallet: () => void;
   createWallet: () => void;
+  cancelWalletCreation: () => void;  // Add the cancel functionality
   copyToClipboard: (text: string) => void;
 };
 
@@ -27,6 +28,7 @@ const WalletContext = createContext<WalletContextType>({
   isGenerating: false,
   generateWallet: () => {},
   createWallet: () => {},
+  cancelWalletCreation: () => {},  // Add default function
   copyToClipboard: () => {},
 });
 
@@ -120,6 +122,15 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     });
   };
 
+  // Cancel wallet creation and return to landing page
+  const cancelWalletCreation = () => {
+    setSeedPhrase([]);
+    toast({
+      title: "Wallet Creation Cancelled",
+      description: "You've returned to the landing page",
+    });
+  };
+
   // Copy text to clipboard
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
@@ -153,6 +164,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         isGenerating,
         generateWallet,
         createWallet,
+        cancelWalletCreation,  // Add the new function to the context
         copyToClipboard,
       }}
     >

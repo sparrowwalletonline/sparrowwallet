@@ -4,13 +4,17 @@ import { Button } from '@/components/ui/button';
 import SeedPhraseGenerator from '@/components/SeedPhraseGenerator';
 import WalletLogo from '@/components/WalletLogo';
 import { useWallet } from '@/contexts/WalletContext';
-import { Shield } from 'lucide-react';
+import { Shield, X } from 'lucide-react';
 
 const GenerateWallet: React.FC = () => {
-  const { seedPhrase, createWallet } = useWallet();
+  const { seedPhrase, createWallet, cancelWalletCreation } = useWallet();
   
   const handleCreateWallet = () => {
     createWallet();
+  };
+
+  const handleCancel = () => {
+    cancelWalletCreation();
   };
 
   return (
@@ -35,13 +39,23 @@ const GenerateWallet: React.FC = () => {
           </div>
         </div>
         
-        <Button 
-          onClick={handleCreateWallet}
-          className="w-full max-w-md h-12 bg-wallet-blue hover:bg-wallet-darkBlue shadow-sm"
-          disabled={seedPhrase.length === 0}
-        >
-          Create Wallet
-        </Button>
+        <div className="flex w-full max-w-md gap-4">
+          <Button 
+            onClick={handleCancel}
+            className="flex-1 h-12 bg-gray-200 hover:bg-gray-300 text-gray-800 shadow-sm"
+            variant="outline"
+          >
+            <X size={18} className="mr-2" /> Cancel
+          </Button>
+          
+          <Button 
+            onClick={handleCreateWallet}
+            className="flex-1 h-12 bg-wallet-blue hover:bg-wallet-darkBlue shadow-sm"
+            disabled={seedPhrase.length === 0}
+          >
+            Create Wallet
+          </Button>
+        </div>
       </div>
     </div>
   );
