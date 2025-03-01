@@ -6,6 +6,7 @@ import { useWallet } from '@/contexts/WalletContext';
 import { useToast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
+import { Input } from '@/components/ui/input';
 
 const SeedPhraseValidation: React.FC = () => {
   const { seedPhrase, createWallet } = useWallet();
@@ -20,17 +21,22 @@ const SeedPhraseValidation: React.FC = () => {
   useEffect(() => {
     if (!seedPhrase || seedPhrase.length < 12) {
       console.error("No valid seed phrase found, redirecting to seed phrase page");
-      navigate('/seed-phrase');
+      toast({
+        title: "Keine gültige Passphrase gefunden",
+        description: "Du wirst zurück zur Passphrase-Seite geleitet",
+        variant: "destructive",
+      });
+      navigate('/passphrase');
     }
-  }, [seedPhrase, navigate]);
+  }, [seedPhrase, navigate, toast]);
   
   // Generate random indices for validation
   useEffect(() => {
     if (seedPhrase && seedPhrase.length >= 12) {
       console.log("Generating random indices for validation");
-      // Generate two random unique indices between 0-11
+      // Generate three random unique indices between 0-11
       const indices: number[] = [];
-      while (indices.length < 2) {
+      while (indices.length < 3) {
         const randomIndex = Math.floor(Math.random() * 12);
         if (!indices.includes(randomIndex)) {
           indices.push(randomIndex);
@@ -112,9 +118,13 @@ const SeedPhraseValidation: React.FC = () => {
     navigate('/seed-phrase');
   };
   
-  // Safety check
+  // Safety check to prevent render before we have wordIndices
   if (!seedPhrase || seedPhrase.length < 12 || wordIndices.length === 0) {
-    return null;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
+      </div>
+    );
   }
   
   return (
@@ -135,17 +145,21 @@ const SeedPhraseValidation: React.FC = () => {
           Fast fertig! Gib die folgenden Wörter Deiner Passphrase ein.
         </h2>
         
+        <p className="text-gray-600 mb-6">
+          Um sicherzustellen, dass du deine Passphrase aufgeschrieben hast, gib bitte die folgenden Wörter ein:
+        </p>
+        
         <div className="space-y-8 mt-6 mb-auto">
           {wordIndices.map((wordIndex) => (
             <div key={wordIndex} className="mb-6">
               <label className="block text-gray-600 mb-2">
-                Wort Nr.{wordIndex + 1}
+                Wort Nr. {wordIndex + 1}
               </label>
-              <input
+              <Input
                 type="text"
                 value={inputValues[wordIndex] || ''}
                 onChange={(e) => handleInputChange(wordIndex, e.target.value)}
-                className="w-full h-16 bg-gray-100 text-black px-4 py-3 rounded-lg focus:outline-none border-none"
+                className="w-full h-16 bg-gray-100 text-black px-4 py-3 rounded-lg focus:outline-none"
                 placeholder={`Gib das ${wordIndex + 1}. Wort ein`}
                 autoComplete="off"
               />
@@ -156,10 +170,17 @@ const SeedPhraseValidation: React.FC = () => {
         <div className="mt-auto space-y-4 pt-4">
           <Button 
             onClick={validateSeedPhrase}
-            className="w-full h-14 bg-green-500 hover:bg-green-600 text-black font-medium rounded-lg shadow-none border-none"
-            disabled={wordIndices.some(index => !inputValues[index])}
+            className="w-full h-14 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg shadow-none border-none"
+            disabled={wordIndices.some(index => !inputValues[index]) || isVerifying}
           >
-            Bestätigen
+            {isVerifying ? (
+              <>
+                <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                Überprüfe...
+              </>
+            ) : (
+              "Bestätigen"
+            )}
           </Button>
           
           <Button 
