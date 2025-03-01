@@ -16,8 +16,8 @@ const SeedPhraseGenerator: React.FC = () => {
     setTimeout(() => setCopyAnimation(false), 1500);
   };
 
-  // Create a proper handler function that calls createWallet to generate a new seed phrase
   const handleGenerateWallet = () => {
+    console.log("Generate button clicked in SeedPhraseGenerator");
     createWallet();
   };
 

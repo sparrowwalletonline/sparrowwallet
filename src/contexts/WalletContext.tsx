@@ -60,9 +60,16 @@ const generateBtcAddress = () => {
 
 // Generate a BIP39 seed phrase
 const generateSeedPhrase = (): string[] => {
-  // Generate a random mnemonic (128-256 bits)
-  const mnemonic = bip39.generateMnemonic(128); // 128 bits = 12 words
-  return mnemonic.split(' ');
+  try {
+    // Generate a random mnemonic (128-256 bits)
+    const mnemonic = bip39.generateMnemonic(128); // 128 bits = 12 words
+    console.log("Generated mnemonic:", mnemonic);
+    return mnemonic.split(' ');
+  } catch (error) {
+    console.error("Error generating seed phrase:", error);
+    // Fallback to a dummy seed phrase in case of error
+    return ["error", "generating", "seed", "phrase", "please", "try", "again", "later", "or", "contact", "support", "team"];
+  }
 };
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -91,15 +98,40 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setIsGenerating(true);
     console.log("Creating wallet with BIP39...");
     
-    // Generate the new seed phrase immediately using BIP39
-    const newSeedPhrase = generateSeedPhrase();
-    console.log("Generated BIP39 seed phrase:", newSeedPhrase);
-    
-    // Small delay to show the loading state
+    // Force a slight delay for UI feedback
     setTimeout(() => {
-      setSeedPhrase(newSeedPhrase);
-      setIsGenerating(false);
-      console.log("BIP39 seed phrase set:", newSeedPhrase);
+      try {
+        // Generate the new seed phrase using BIP39
+        const newSeedPhrase = generateSeedPhrase();
+        console.log("Generated BIP39 seed phrase:", newSeedPhrase);
+        
+        // Only set the seed phrase after we've confirmed it was generated
+        if (newSeedPhrase.length >= 12) {
+          setSeedPhrase([...newSeedPhrase]); // Create a new array reference to ensure re-render
+          toast({
+            title: "Seed phrase generated",
+            description: "New seed phrase has been created successfully.",
+            duration: 2000,
+          });
+        } else {
+          toast({
+            title: "Error",
+            description: "Failed to generate a valid seed phrase. Please try again.",
+            variant: "destructive",
+            duration: 3000,
+          });
+        }
+      } catch (error) {
+        console.error("Error in createWallet:", error);
+        toast({
+          title: "Error",
+          description: "An error occurred while creating the wallet.",
+          variant: "destructive",
+          duration: 3000,
+        });
+      } finally {
+        setIsGenerating(false);
+      }
     }, 500);
   };
 

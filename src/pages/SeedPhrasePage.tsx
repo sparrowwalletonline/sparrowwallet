@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -24,13 +23,11 @@ const SeedPhrasePage: React.FC = () => {
   }, []);
   
   const handleRegeneratePhrase = () => {
-    console.log("Regenerating BIP39 seed phrase...");
-    // Call createWallet directly to generate a new seed phrase
-    createWallet();
-    
-    // Reset checkboxes when regenerating
+    console.log("Regenerating BIP39 seed phrase - button clicked");
     setSavedPhrase(false);
     setAgreedToTerms(false);
+    // Call createWallet directly to generate a new seed phrase
+    createWallet();
   };
   
   const handleCopy = () => {
