@@ -26,7 +26,7 @@ const LandingPage: React.FC = () => {
       <div className="flex-1 flex flex-col p-6">
         <div className="space-y-4 mb-8">
           <h1 className="text-3xl font-heading font-bold tracking-tight text-gray-900 leading-none">
-            True crypto ownership.
+            True crypto ownership
             <br />
             Powerful Web3
             <br />
