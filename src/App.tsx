@@ -9,6 +9,7 @@ import MobileSidebar from "@/components/MobileSidebar";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import SeedPhrasePage from "./pages/SeedPhrasePage";
+import SeedPhraseValidation from "./pages/SeedPhraseValidation";
 import Terms from "./pages/Terms";
 import PassPhrase from "./pages/PassPhrase";
 import WalletChoice from "./pages/WalletChoice";
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="/wallet-choice" element={<WalletChoice />} />
             <Route path="/passphrase" element={<PassPhrase />} />
             <Route path="/seed-phrase" element={<SeedPhrasePage />} />
+            <Route path="/seed-phrase-validation" element={<SeedPhraseValidation />} />
             <Route path="/terms" element={<Terms />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

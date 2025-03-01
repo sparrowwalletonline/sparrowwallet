@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { WalletProvider, useWallet } from '@/contexts/WalletContext';
 import LandingPage from './LandingPage';
@@ -14,6 +15,15 @@ const WalletApp: React.FC = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left'>('right');
 
+  // Log current state for debugging
+  useEffect(() => {
+    console.log("Current state in Index:", { 
+      hasWallet, 
+      seedPhraseLength: seedPhrase.length, 
+      currentView 
+    });
+  }, [hasWallet, seedPhrase, currentView]);
+
   // Determine which view to show
   const showLandingPage = seedPhrase.length === 0;
   const showWalletChoice = seedPhrase.length === 1; // Special case for our flow
@@ -28,6 +38,8 @@ const WalletApp: React.FC = () => {
     else if (showPassPhrase) newView = 'passphrase';
     else if (showCreateWallet) newView = 'create';
     else if (hasWallet) newView = 'wallet';
+
+    console.log("Determined view:", newView);
 
     // Only change direction if view actually changes
     if (newView !== currentView && currentView !== '') {

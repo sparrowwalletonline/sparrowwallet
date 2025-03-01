@@ -15,6 +15,9 @@ const PassPhrase: React.FC = () => {
   };
   
   const handleCreatePassphrase = () => {
+    // Call createWallet to generate a seed phrase, but navigate directly
+    // without relying on state change to trigger navigation
+    createWallet();
     navigate('/seed-phrase');
   };
   

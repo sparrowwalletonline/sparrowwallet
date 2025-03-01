@@ -16,16 +16,7 @@ const SeedPhrasePage: React.FC = () => {
   
   const handleConfirm = () => {
     if (savedPhrase && agreedToTerms) {
-      // In a real app, you would proceed to the next step here
-      toast({
-        title: "Seed phrase confirmed!",
-        description: "Your wallet is being created...",
-        duration: 2000,
-      });
-      // Navigate to the home page for now since wallet-view doesn't exist
-      setTimeout(() => {
-        navigate('/');
-      }, 1500);
+      navigate('/seed-phrase-validation');
     }
   };
   
