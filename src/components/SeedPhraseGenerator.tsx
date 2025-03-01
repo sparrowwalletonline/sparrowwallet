@@ -16,6 +16,11 @@ const SeedPhraseGenerator: React.FC = () => {
     setTimeout(() => setCopyAnimation(false), 1500);
   };
 
+  // Create a proper handler function that doesn't pass the event to generateWallet
+  const handleGenerateWallet = () => {
+    generateWallet();
+  };
+
   return (
     <div className="flex flex-col gap-6 w-full animate-fade-in max-w-md mx-auto">
       <div className="space-y-2">
@@ -44,7 +49,7 @@ const SeedPhraseGenerator: React.FC = () => {
       
       <div className="flex gap-3">
         <Button 
-          onClick={generateWallet} 
+          onClick={handleGenerateWallet} 
           variant="outline" 
           className="flex-1 bg-white border-slate-200 shadow-sm hover:shadow-md transition-all duration-300"
           disabled={isGenerating}
