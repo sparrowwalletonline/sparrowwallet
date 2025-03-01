@@ -1,35 +1,24 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 
 // Define the type for our context
-type WalletContextType = {
-  seedPhrase: string[];
-  walletAddress: string;
-  btcBalance: number;
-  btcPrice: number;
-  usdBalance: number;
+interface WalletContextType {
   hasWallet: boolean;
-  isGenerating: boolean;
+  seedPhrase: string[];
+  balance: number;
   generateWallet: () => void;
-  createWallet: () => void;
-  cancelWalletCreation: () => void;  // Add the cancel functionality
-  copyToClipboard: (text: string) => void;
-};
+  importWallet: (phrase: string) => void;
+  resetWallet: () => void;
+}
 
 // Create the context with default values
 const WalletContext = createContext<WalletContextType>({
-  seedPhrase: [],
-  walletAddress: '',
-  btcBalance: 0,
-  btcPrice: 0,
-  usdBalance: 0,
   hasWallet: false,
-  isGenerating: false,
+  seedPhrase: [],
+  balance: 0,
   generateWallet: () => {},
-  createWallet: () => {},
-  cancelWalletCreation: () => {},  // Add default function
-  copyToClipboard: () => {},
+  importWallet: () => {},
+  resetWallet: () => {},
 });
 
 // BIP39 word list (simplified for demo)
@@ -79,95 +68,53 @@ const generateSeedPhrase = () => {
 };
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [hasWallet, setHasWallet] = useState(false);
   const [seedPhrase, setSeedPhrase] = useState<string[]>([]);
-  const [walletAddress, setWalletAddress] = useState<string>('');
-  const [btcBalance, setBtcBalance] = useState<number>(0);
-  const [btcPrice, setBtcPrice] = useState<number>(85000);
-  const [usdBalance, setUsdBalance] = useState<number>(0);
-  const [hasWallet, setHasWallet] = useState<boolean>(false);
-  const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [balance, setBalance] = useState(0);
 
-  // Generate new wallet with seed phrase
+  // Generate a new wallet with a random seed phrase
   const generateWallet = () => {
-    setIsGenerating(true);
-    
-    // Simulate processing delay for realism
-    setTimeout(() => {
-      const phrase = generateSeedPhrase();
-      setSeedPhrase(phrase);
-      setIsGenerating(false);
-    }, 1000);
+    // Just setting the seed phrase will trigger the appropriate UI
+    // via the seedPhrase length check in Index.tsx
+    setSeedPhrase(['word']);
   };
 
-  // Create wallet and set up account
-  const createWallet = () => {
-    if (seedPhrase.length !== 12) {
-      toast({
-        title: "Error",
-        description: "Please generate a valid seed phrase first",
-        variant: "destructive"
-      });
-      return;
+  // Import an existing wallet using a provided seed phrase
+  const importWallet = (phrase: string) => {
+    if (phrase) {
+      // Split the phrase into words if it's a string
+      const words = typeof phrase === 'string' ? phrase.split(' ') : phrase;
+      setSeedPhrase(words);
     }
-
-    // Set up wallet with default values for demo
-    setWalletAddress(generateBtcAddress());
-    setBtcBalance(0);
-    setUsdBalance(0);
-    setHasWallet(true);
-
-    toast({
-      title: "Wallet Created",
-      description: "Welcome to your new wallet!",
-    });
   };
 
-  // Cancel wallet creation and return to landing page
-  const cancelWalletCreation = () => {
+  // Reset wallet state
+  const resetWallet = () => {
+    setHasWallet(false);
     setSeedPhrase([]);
-    toast({
-      title: "Wallet Creation Cancelled",
-      description: "You've returned to the landing page",
-    });
+    setBalance(0);
   };
 
-  // Copy text to clipboard
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      toast({
-        title: "Copied",
-        description: "Copied to clipboard",
-      });
-    }).catch(() => {
-      toast({
-        title: "Error",
-        description: "Failed to copy to clipboard",
-        variant: "destructive"
-      });
-    });
-  };
-
-  // Update USD balance when BTC price changes
+  // Effect to update hasWallet when seedPhrase changes
   useEffect(() => {
-    setUsdBalance(btcBalance * btcPrice);
-  }, [btcBalance, btcPrice]);
+    // In a real app, we would validate the seed phrase here
+    // For this demo, we'll just set hasWallet if there's a seed phrase with 12+ words
+    if (seedPhrase.length >= 12) {
+      setHasWallet(true);
+      // Simulate a balance
+      setBalance(Math.random() * 10);
+    }
+  }, [seedPhrase]);
 
   return (
-    <WalletContext.Provider
-      value={{
-        seedPhrase,
-        walletAddress,
-        btcBalance,
-        btcPrice,
-        usdBalance,
-        hasWallet,
-        isGenerating,
-        generateWallet,
-        createWallet,
-        cancelWalletCreation,  // Add the new function to the context
-        copyToClipboard,
-      }}
-    >
+    <WalletContext.Provider value={{ 
+      hasWallet, 
+      seedPhrase, 
+      balance,
+      generateWallet,
+      importWallet,
+      resetWallet
+    }}>
       {children}
     </WalletContext.Provider>
   );
