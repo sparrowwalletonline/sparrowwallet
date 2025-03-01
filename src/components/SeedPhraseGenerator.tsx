@@ -1,19 +1,28 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Copy, RefreshCw } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
+import { toast } from '@/components/ui/use-toast';
 
 const SeedPhraseGenerator: React.FC = () => {
   const { seedPhrase, isGenerating, createWallet, copyToClipboard } = useWallet();
   const [copyAnimation, setCopyAnimation] = useState(false);
   
   const handleCopy = () => {
-    const phraseText = seedPhrase.join(' ');
-    copyToClipboard(phraseText);
-    setCopyAnimation(true);
-    setTimeout(() => setCopyAnimation(false), 1500);
+    if (seedPhrase.length >= 12) {
+      const phraseText = seedPhrase.join(' ');
+      copyToClipboard(phraseText);
+      setCopyAnimation(true);
+      setTimeout(() => setCopyAnimation(false), 1500);
+      
+      toast({
+        title: "Copied!",
+        description: "Seed phrase copied to clipboard",
+        duration: 2000,
+      });
+    }
   };
 
   const handleGenerateWallet = () => {
@@ -21,28 +30,26 @@ const SeedPhraseGenerator: React.FC = () => {
     createWallet();
   };
 
+  // Log seed phrase for debugging
+  useEffect(() => {
+    console.log("SeedPhraseGenerator rendered with seedPhrase:", seedPhrase);
+  }, [seedPhrase]);
+
   return (
-    <div className="flex flex-col gap-6 w-full animate-fade-in max-w-md mx-auto">
-      <div className="space-y-2">
-        <h2 className="text-2xl font-semibold tracking-tight text-center">Seed Phrase</h2>
-        <p className="text-sm text-wallet-gray text-center">
-          Write these words down in order. Keep them somewhere safe and never share them with anyone.
-        </p>
-      </div>
-      
-      <Card className="p-4 border border-slate-200 shadow-sm">
+    <div className="flex flex-col gap-6 w-full animate-fade-in">
+      <Card className="p-4 border border-gray-700 bg-wallet-card shadow-md rounded-xl">
         {seedPhrase.length >= 12 ? (
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-2 text-left">
             {seedPhrase.map((word, i) => (
               <div key={i} className="flex items-center">
                 <span className="text-wallet-gray w-5 text-xs">{i+1}.</span>
-                <span className="font-medium">{word}</span>
+                <span className="font-medium text-white">{word}</span>
               </div>
             ))}
           </div>
         ) : (
           <div className="flex items-center justify-center py-12 text-wallet-gray italic text-sm">
-            {isGenerating ? 'Generating seed phrase...' : 'No seed phrase generated yet'}
+            {isGenerating ? 'Generiere Seed Phrase...' : 'Keine Seed Phrase generiert'}
           </div>
         )}
       </Card>
@@ -51,23 +58,23 @@ const SeedPhraseGenerator: React.FC = () => {
         <Button 
           onClick={handleGenerateWallet} 
           variant="outline" 
-          className="flex-1 bg-white border-slate-200 shadow-sm hover:shadow-md transition-all duration-300"
+          className="flex-1 h-12 bg-wallet-card border-gray-700 text-white hover:bg-wallet-darkGray shadow-sm"
           disabled={isGenerating}
         >
           <RefreshCw 
             className={`h-4 w-4 mr-2 ${isGenerating ? 'animate-spin' : ''}`} 
           />
-          Generate New
+          Neu generieren
         </Button>
         
         <Button 
           onClick={handleCopy}
           variant="outline" 
-          className="flex-1 bg-white border-slate-200 shadow-sm hover:shadow-md transition-all duration-300"
-          disabled={seedPhrase.length === 0 || isGenerating}
+          className="flex-1 h-12 bg-wallet-card border-gray-700 text-white hover:bg-wallet-darkGray shadow-sm"
+          disabled={seedPhrase.length < 12 || isGenerating}
         >
-          <Copy className={`h-4 w-4 mr-2 ${copyAnimation ? 'clipboard-animation' : ''}`} />
-          Copy
+          <Copy className={`h-4 w-4 mr-2 ${copyAnimation ? 'text-wallet-green' : ''}`} />
+          Kopieren
         </Button>
       </div>
     </div>

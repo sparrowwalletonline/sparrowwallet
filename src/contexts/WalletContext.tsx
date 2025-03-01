@@ -183,6 +183,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   // Effect to update hasWallet when seedPhrase changes
   useEffect(() => {
+    console.log("Seed phrase updated in context:", seedPhrase);
+    
     // In a real app, we would validate the seed phrase here
     // For this demo, we'll just set hasWallet if there's a seed phrase with 12+ words
     if (seedPhrase.length >= 12) {

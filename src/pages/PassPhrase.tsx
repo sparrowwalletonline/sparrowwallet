@@ -15,7 +15,6 @@ const PassPhrase: React.FC = () => {
   };
   
   const handleCreatePassphrase = () => {
-    createWallet();
     navigate('/seed-phrase');
   };
   
