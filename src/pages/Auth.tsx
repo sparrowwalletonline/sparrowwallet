@@ -16,7 +16,7 @@ const Auth: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { session } = useWallet();
+  const { session, hasWallet, generateWallet } = useWallet();
 
   // Redirect to home if already logged in
   useEffect(() => {
@@ -54,7 +54,12 @@ const Auth: React.FC = () => {
         description: "Du wirst weitergeleitet...",
       });
       
-      // Redirect will happen automatically via the useEffect
+      // Redirect to wallet flow or home based on wallet status
+      if (hasWallet) {
+        navigate('/');
+      } else {
+        navigate('/wallet-choice');
+      }
     } catch (error: any) {
       console.error('Error signing in:', error);
       toast({
@@ -102,10 +107,11 @@ const Auth: React.FC = () => {
       
       toast({
         title: "Registrierung erfolgreich",
-        description: "Dein Konto wurde erstellt. Du wirst jetzt angemeldet.",
+        description: "Dein Konto wurde erstellt. Du wirst zum Wallet-Setup weitergeleitet.",
       });
       
-      // Redirect will happen automatically via the useEffect
+      // After successful registration, redirect to wallet setup
+      navigate('/wallet-choice');
     } catch (error: any) {
       console.error('Error signing up:', error);
       toast({
