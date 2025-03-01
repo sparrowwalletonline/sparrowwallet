@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Shield, Check, ArrowLeft } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import { useToast } from '@/components/ui/use-toast';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import SeedPhraseGenerator from '@/components/SeedPhraseGenerator';
 import Header from '@/components/Header';
 
