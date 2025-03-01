@@ -3,14 +3,12 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import WalletLogo from '@/components/WalletLogo';
-import { useWallet } from '@/contexts/WalletContext';
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
-  const { hasWallet } = useWallet(); // Only use what we need from useWallet
   
   const handleGetStarted = () => {
-    // Navigate to Auth page instead of setting seed phrase directly
+    // Navigate to Auth page
     navigate('/auth');
   };
 
