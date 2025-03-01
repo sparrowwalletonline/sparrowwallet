@@ -11,6 +11,9 @@ export const saveWalletToSupabase = async (
 ): Promise<boolean> => {
   if (!session?.user || seedPhrase.length < 12) {
     console.log("Cannot save to Supabase: No user session or invalid seed phrase");
+    console.log("Session:", !!session);
+    console.log("Seed phrase length:", seedPhrase.length);
+    
     toast({
       title: "Fehler",
       description: session ? "Ungültige Seed Phrase" : "Du musst angemeldet sein, um zu speichern",
@@ -20,6 +23,7 @@ export const saveWalletToSupabase = async (
   }
 
   try {
+    console.log("Encrypting and saving seed phrase to Supabase");
     const encryptedPhrase = encryptSeedPhrase(seedPhrase);
     
     const { data, error } = await supabase

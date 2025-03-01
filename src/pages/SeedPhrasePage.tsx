@@ -49,8 +49,27 @@ const SeedPhrasePage: React.FC = () => {
   }, [session, seedPhrase, saveToSupabase, autoSaved, toast]);
   
   const handleConfirm = async () => {
-    if (!seedPhrase || seedPhrase.length < 12) {
-      console.error("No valid seed phrase available:", seedPhrase);
+    // CRITICAL FIX: First check localStorage if context doesn't have the seed phrase
+    let phraseToUse = seedPhrase;
+    
+    if (!phraseToUse || phraseToUse.length < 12) {
+      console.log("Checking localStorage for seed phrase");
+      const savedSeedPhrase = localStorage.getItem('walletSeedPhrase');
+      if (savedSeedPhrase) {
+        try {
+          const parsedPhrase = JSON.parse(savedSeedPhrase);
+          if (Array.isArray(parsedPhrase) && parsedPhrase.length >= 12) {
+            console.log("Found valid seed phrase in localStorage, length:", parsedPhrase.length);
+            phraseToUse = parsedPhrase;
+          }
+        } catch (error) {
+          console.error("Error parsing seed phrase from localStorage:", error);
+        }
+      }
+    }
+    
+    if (!phraseToUse || phraseToUse.length < 12) {
+      console.error("No valid seed phrase available anywhere:", phraseToUse);
       toast({
         title: "Keine Seed Phrase",
         description: "Bitte generiere zuerst eine Seed Phrase",
@@ -59,7 +78,7 @@ const SeedPhrasePage: React.FC = () => {
       return;
     }
     
-    console.log("Confirming with seed phrase:", seedPhrase);
+    console.log("Confirming with seed phrase length:", phraseToUse.length);
     
     if (savedPhrase && agreedToTerms) {
       setIsConfirming(true);
@@ -75,11 +94,11 @@ const SeedPhrasePage: React.FC = () => {
         }
         
         // Store the seedPhrase in localStorage as a fallback
-        localStorage.setItem('walletSeedPhrase', JSON.stringify(seedPhrase));
+        localStorage.setItem('walletSeedPhrase', JSON.stringify(phraseToUse));
         
         // Add a delay to improve the UX
         setTimeout(() => {
-          console.log("Navigating to validation page with seedPhrase length:", seedPhrase.length);
+          console.log("Navigating to validation page with seedPhrase length:", phraseToUse.length);
           navigate('/seed-phrase-validation');
           setIsConfirming(false);
         }, 500);

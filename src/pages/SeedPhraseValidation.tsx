@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import Header from '@/components/Header';
 
 const SeedPhraseValidation: React.FC = () => {
-  const { seedPhrase } = useWallet();
+  const { seedPhrase, importWallet } = useWallet();
   const navigate = useNavigate();
   const { toast } = useToast();
   
@@ -17,27 +17,38 @@ const SeedPhraseValidation: React.FC = () => {
   const [userInputs, setUserInputs] = useState<string[]>(['', '', '']);
   const [isValidating, setIsValidating] = useState(false);
   const [isValid, setIsValid] = useState(false);
+  const [activeSeedPhrase, setActiveSeedPhrase] = useState<string[]>([]);
   
-  // Generate 3 random words from the seed phrase to validate
+  // Find and setup the seed phrase for validation
   useEffect(() => {
     console.log("SeedPhraseValidation component mounted");
     console.log("Current seedPhrase in context:", seedPhrase);
     
-    if (!seedPhrase || seedPhrase.length < 12) {
-      console.error("No valid seed phrase found in context, checking localStorage");
-      
-      // Try to get from localStorage as fallback
+    let phraseToUse = seedPhrase;
+    
+    // If no valid seed phrase in context, try localStorage
+    if (!phraseToUse || phraseToUse.length < 12) {
+      console.log("No valid seed phrase in context, checking localStorage");
       const savedSeedPhrase = localStorage.getItem('walletSeedPhrase');
+      
       if (savedSeedPhrase) {
-        const parsedPhrase = JSON.parse(savedSeedPhrase);
-        if (parsedPhrase && parsedPhrase.length >= 12) {
-          console.log("Found seed phrase in localStorage, length:", parsedPhrase.length);
-          // Use the localStorage seed phrase for validation
-          selectRandomWords(parsedPhrase);
-          return;
+        try {
+          const parsedPhrase = JSON.parse(savedSeedPhrase);
+          if (Array.isArray(parsedPhrase) && parsedPhrase.length >= 12) {
+            console.log("Found valid seed phrase in localStorage, length:", parsedPhrase.length);
+            phraseToUse = parsedPhrase;
+            
+            // Update the context with the seed phrase from localStorage
+            importWallet(parsedPhrase);
+          }
+        } catch (error) {
+          console.error("Error parsing seed phrase from localStorage:", error);
         }
       }
-      
+    }
+    
+    // If we still don't have a valid phrase, redirect
+    if (!phraseToUse || phraseToUse.length < 12) {
       console.error("No valid seed phrase found anywhere, redirecting");
       toast({
         title: "Keine gültige Seed Phrase",
@@ -48,9 +59,12 @@ const SeedPhraseValidation: React.FC = () => {
       return;
     }
     
+    // Store the active seed phrase in component state
+    setActiveSeedPhrase(phraseToUse);
+    
     // Select random words for validation
-    selectRandomWords(seedPhrase);
-  }, [seedPhrase, navigate, toast]);
+    selectRandomWords(phraseToUse);
+  }, [seedPhrase, navigate, toast, importWallet]);
   
   // Helper function to select random words
   const selectRandomWords = (phrase: string[]) => {

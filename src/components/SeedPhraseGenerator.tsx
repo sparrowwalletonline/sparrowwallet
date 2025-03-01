@@ -69,8 +69,14 @@ const SeedPhraseGenerator: React.FC = () => {
       // Add a small delay to show loading state
       setTimeout(() => {
         setLocalSeedPhrase(words);
-        // Save the generated phrase to the wallet context
+        
+        // CRITICAL FIX: Update the wallet context with the new seed phrase
         importWallet(words);
+        console.log("Updated wallet context with new seed phrase");
+        
+        // Save to localStorage as a fallback
+        localStorage.setItem('walletSeedPhrase', JSON.stringify(words));
+        
         setIsGenerating(false);
         
         toast({
@@ -106,9 +112,25 @@ const SeedPhraseGenerator: React.FC = () => {
     if (seedPhrase && seedPhrase.length >= 12) {
       console.log("Using existing seed phrase from context:", seedPhrase);
       setLocalSeedPhrase(seedPhrase);
+    } else {
+      // Check localStorage as fallback
+      const savedPhrase = localStorage.getItem('walletSeedPhrase');
+      if (savedPhrase) {
+        try {
+          const parsedPhrase = JSON.parse(savedPhrase);
+          if (Array.isArray(parsedPhrase) && parsedPhrase.length >= 12) {
+            console.log("Using seed phrase from localStorage");
+            setLocalSeedPhrase(parsedPhrase);
+            // Update the wallet context
+            importWallet(parsedPhrase);
+          }
+        } catch (error) {
+          console.error("Error parsing seed phrase from localStorage:", error);
+        }
+      }
     }
-    // Don't auto-generate a new seed phrase anymore
-  }, []); // Only run once on mount
+    // Don't auto-generate a new seed phrase
+  }, [seedPhrase, importWallet]); 
   
   const handleCopy = () => {
     if (localSeedPhrase && localSeedPhrase.length >= 12) {
@@ -178,7 +200,26 @@ const SeedPhraseGenerator: React.FC = () => {
 
     setIsSaving(true);
     try {
+      // CRITICAL FIX: Ensure we're using the correct seed phrase for saving
+      // First update the wallet context if needed
+      if (JSON.stringify(seedPhrase) !== JSON.stringify(localSeedPhrase)) {
+        importWallet(localSeedPhrase);
+      }
+      
       await saveToSupabase();
+      toast({
+        title: "Gespeichert",
+        description: "Seed Phrase wurde erfolgreich gespeichert",
+        duration: 3000,
+      });
+    } catch (error) {
+      console.error("Error saving to Supabase:", error);
+      toast({
+        title: "Fehler",
+        description: "Seed Phrase konnte nicht gespeichert werden",
+        variant: "destructive",
+        duration: 3000,
+      });
     } finally {
       setIsSaving(false);
     }
