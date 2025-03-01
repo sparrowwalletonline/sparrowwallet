@@ -52,7 +52,7 @@ const PassPhrase: React.FC = () => {
         
         <Button 
           onClick={handleCreatePassphrase}
-          className="w-full py-6 bg-wallet-green hover:bg-wallet-green/90 text-black font-medium"
+          className="w-full py-6 bg-wallet-blue hover:bg-wallet-darkBlue text-white font-medium"
         >
           Passphrase erstellen
         </Button>
