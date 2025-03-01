@@ -36,7 +36,7 @@ const PassPhrase: React.FC = () => {
         <WalletLogo className="w-32 h-32 mb-8" color="green" />
       </div>
       
-      <div className="w-full max-w-xs text-center mb-6">
+      <div className="w-full max-w-xs text-left mb-6">
         <h2 className="text-2xl font-bold mb-4">
           Wir werden Deine eigene Passphrase erstellen
         </h2>
