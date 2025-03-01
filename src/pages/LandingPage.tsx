@@ -23,7 +23,7 @@ const LandingPage: React.FC = () => {
       
       <div className="flex-1 flex flex-col p-6">
         <div className="space-y-6 mb-10">
-          <h1 className="font-heading tracking-tight text-gray-900 leading-[1.3] font-bold text-4xl md:text-5xl">
+          <h1 className="font-heading tracking-tight text-gray-900 leading-[1.1] font-bold text-4xl md:text-5xl">
             The most<br />
             trusted & secure<br />
             crypto wallet
