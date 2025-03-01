@@ -1,23 +1,23 @@
 
 import React, { useEffect } from 'react';
 import { WalletProvider, useWallet } from '@/contexts/WalletContext';
+import LandingPage from './LandingPage';
 import GenerateWallet from './GenerateWallet';
 import WalletView from './WalletView';
 
 // Wrapper component to handle view switching
 const WalletApp: React.FC = () => {
-  const { hasWallet, generateWallet } = useWallet();
+  const { hasWallet, seedPhrase } = useWallet();
 
-  // Generate seed phrase on first load
-  useEffect(() => {
-    if (!hasWallet) {
-      generateWallet();
-    }
-  }, [generateWallet, hasWallet]);
-
+  // Determine which view to show
+  const showLandingPage = seedPhrase.length === 0;
+  const showGenerateWallet = !hasWallet && seedPhrase.length > 0;
+  
   return (
-    <div className="slide-transition max-w-md mx-auto bg-white min-h-screen shadow-lg">
-      {hasWallet ? <WalletView /> : <GenerateWallet />}
+    <div className="slide-transition max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg">
+      {showLandingPage && <LandingPage />}
+      {showGenerateWallet && <GenerateWallet />}
+      {hasWallet && <WalletView />}
     </div>
   );
 };
@@ -25,7 +25,7 @@ const WalletApp: React.FC = () => {
 // Main component with provider
 const Index: React.FC = () => {
   return (
-    <div className="min-h-screen bg-slate-100 flex justify-center">
+    <div className="min-h-screen bg-wallet-darkBg flex justify-center">
       <WalletProvider>
         <WalletApp />
       </WalletProvider>
