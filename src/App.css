@@ -9,19 +9,19 @@
 
 /* Trust Wallet specific styling */
 .trust-button {
-  background: linear-gradient(90deg, #3375BB 0%, #0EA5E9 100%);
+  background: linear-gradient(90deg, #0500ff 0%, #0500ff 100%);
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(51, 117, 187, 0.2);
+  box-shadow: 0 4px 12px rgba(5, 0, 255, 0.2);
 }
 
 .trust-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(51, 117, 187, 0.3);
+  box-shadow: 0 6px 16px rgba(5, 0, 255, 0.3);
 }
 
 /* Blockchain platform section with improved gradient */
 .platform-section {
-  background: linear-gradient(to bottom, #3375BB 0%, #1E40AF 50%, #1E3A8A 100%);
+  background: linear-gradient(to bottom, #0500ff 0%, #0400cf 50%, #0300a0 100%);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
 
@@ -115,7 +115,7 @@
 }
 
 .blue-gradient-text {
-  background-image: linear-gradient(90deg, #3375BB 0%, #0EA5E9 100%);
+  background-image: linear-gradient(90deg, #0500ff 0%, #0500ff 100%);
 }
 
 .purple-gradient-text {

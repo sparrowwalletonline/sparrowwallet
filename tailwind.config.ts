@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -57,9 +58,9 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				wallet: {
-					blue: '#3375BB',
-					lightBlue: '#5099F4',
-					darkBlue: '#1A56AB',
+					blue: '#0500ff',
+					lightBlue: '#0500ff',
+					darkBlue: '#0400cf',
 					bg: '#111111',
 					darkBg: '#1A1F2C',
 					card: '#232733',
