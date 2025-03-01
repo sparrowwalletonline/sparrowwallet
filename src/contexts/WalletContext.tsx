@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import * as bip39 from 'bip39';
@@ -15,7 +14,7 @@ interface WalletContextType {
   generateWallet: (stage?: string) => void;
   createWallet: () => void;
   cancelWalletCreation: () => void;
-  importWallet: (phrase: string) => void;
+  importWallet: (phrase: string | string[]) => void;
   resetWallet: () => void;
   copyToClipboard: (text: string) => void;
 }
