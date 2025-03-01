@@ -18,7 +18,7 @@ const SeedPhrasePage: React.FC = () => {
   // Generate a seed phrase on component mount if one doesn't exist
   useEffect(() => {
     if (seedPhrase.length <= 2) { // If we don't have a real seed phrase yet
-      handleRegeneratePhrase();
+      createWallet(); // Generate the seed phrase immediately when component mounts
     }
   }, []);
   
@@ -36,16 +36,18 @@ const SeedPhrasePage: React.FC = () => {
   };
   
   const handleCopy = () => {
-    const phraseText = seedPhrase.join(' ');
-    copyToClipboard(phraseText);
-    setCopyAnimation(true);
-    setTimeout(() => setCopyAnimation(false), 1500);
-    
-    toast({
-      title: "Copied!",
-      description: "Seed phrase copied to clipboard",
-      duration: 2000,
-    });
+    if (seedPhrase.length >= 12) {
+      const phraseText = seedPhrase.join(' ');
+      copyToClipboard(phraseText);
+      setCopyAnimation(true);
+      setTimeout(() => setCopyAnimation(false), 1500);
+      
+      toast({
+        title: "Copied!",
+        description: "Seed phrase copied to clipboard",
+        duration: 2000,
+      });
+    }
   };
   
   const handleConfirm = () => {
@@ -62,6 +64,9 @@ const SeedPhrasePage: React.FC = () => {
   const handleBackClick = () => {
     cancelWalletCreation();
   };
+  
+  // Now we add a console log to debug the seed phrase
+  console.log("Current seed phrase:", seedPhrase);
   
   return (
     <div className="min-h-screen flex flex-col bg-wallet-darkBg text-white p-6 animate-fade-in">
@@ -95,7 +100,7 @@ const SeedPhrasePage: React.FC = () => {
           </div>
           
           <Card className="p-4 border border-gray-700 bg-wallet-card shadow-md rounded-xl">
-            {seedPhrase.length > 2 ? (
+            {seedPhrase.length >= 12 ? (
               <div className="grid grid-cols-3 gap-2 text-left">
                 {seedPhrase.map((word, i) => (
                   <div key={i} className="flex items-center">
@@ -106,7 +111,7 @@ const SeedPhrasePage: React.FC = () => {
               </div>
             ) : (
               <div className="flex items-center justify-center py-12 text-wallet-gray italic text-sm">
-                Generiere eine Seed Phrase
+                {isGenerating ? 'Generiere Seed Phrase...' : 'Keine Seed Phrase generiert'}
               </div>
             )}
           </Card>
@@ -128,7 +133,7 @@ const SeedPhrasePage: React.FC = () => {
               onClick={handleCopy}
               variant="outline" 
               className="flex-1 h-12 bg-wallet-card border-gray-700 text-white hover:bg-wallet-darkGray shadow-sm"
-              disabled={seedPhrase.length <= 2 || isGenerating}
+              disabled={seedPhrase.length < 12 || isGenerating}
             >
               <Copy className={`h-4 w-4 mr-2 ${copyAnimation ? 'text-wallet-green' : ''}`} />
               Kopieren
