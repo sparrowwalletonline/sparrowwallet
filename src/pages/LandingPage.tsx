@@ -1,4 +1,4 @@
-<lov-code>
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -343,7 +343,8 @@ const LandingPage: React.FC = () => {
       </div>;
   };
 
-  return <div className="min-h-screen flex flex-col bg-white text-gray-800">
+  return (
+    <div className="min-h-screen flex flex-col bg-white text-gray-800">
       <header className="w-full p-6 flex justify-between items-center">
         <div className="flex items-center gap-2">
           <WalletLogo className="w-8 h-8" />
@@ -574,5 +575,22 @@ const LandingPage: React.FC = () => {
             <FeatureCard icon={<Gift className="h-6 w-6 text-blue-500" />} title="Buy crypto easily" description="Buy cryptocurrency with credit card, bank transfer, or Apple Pay directly in the app." />
           </div>
         </div>
+      </div>
+      
+      {/* Render modals */}
+      <RegistrationModal
+        isOpen={showRegistrationModal}
+        onClose={() => setShowRegistrationModal(false)}
+        onRegister={handleRegister}
+        isLoading={isLoading}
+      />
+      
+      <SuccessModal
+        isOpen={showSuccessModal}
+        onClose={handleSuccessModalClose}
+      />
+    </div>
+  );
+};
 
-        <div className="py-16 my-12 -mx-6 px-6
+export default LandingPage;
