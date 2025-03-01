@@ -48,16 +48,44 @@ const SeedPhrasePage: React.FC = () => {
     autoSaveToCloud();
   }, [session, seedPhrase, saveToSupabase, autoSaved, toast]);
   
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
+    if (!seedPhrase || seedPhrase.length < 12) {
+      toast({
+        title: "Keine Seed Phrase",
+        description: "Bitte generiere zuerst eine Seed Phrase",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     if (savedPhrase && agreedToTerms) {
       setIsConfirming(true);
       
-      // Add a delay to improve the UX
-      setTimeout(() => {
-        console.log("Navigating to validation page with seedPhrase:", seedPhrase);
-        navigate('/seed-phrase-validation');
+      try {
+        // Ensure the seed phrase is saved to Supabase before proceeding
+        if (session) {
+          console.log("Saving seed phrase to user account before validation");
+          const saved = await saveToSupabase();
+          if (!saved) {
+            throw new Error("Fehler beim Speichern der Seed Phrase");
+          }
+        }
+        
+        // Add a delay to improve the UX
+        setTimeout(() => {
+          console.log("Navigating to validation page with seedPhrase:", seedPhrase);
+          navigate('/seed-phrase-validation');
+          setIsConfirming(false);
+        }, 1000);
+      } catch (error) {
+        console.error("Error during confirmation:", error);
+        toast({
+          title: "Fehler",
+          description: error instanceof Error ? error.message : "Ein Fehler ist aufgetreten",
+          variant: "destructive",
+        });
         setIsConfirming(false);
-      }, 1000);
+      }
     }
   };
   

@@ -1,194 +1,179 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Shield, CheckCircle } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import { useToast } from '@/components/ui/use-toast';
-import { useNavigate } from 'react-router-dom';
-import Header from '@/components/Header';
 import { Input } from '@/components/ui/input';
+import Header from '@/components/Header';
 
 const SeedPhraseValidation: React.FC = () => {
-  const { seedPhrase, createWallet } = useWallet();
-  const { toast } = useToast();
+  const { seedPhrase } = useWallet();
   const navigate = useNavigate();
+  const { toast } = useToast();
   
-  const [wordIndices, setWordIndices] = useState<number[]>([]);
-  const [inputValues, setInputValues] = useState<{[key: number]: string}>({});
-  const [isVerifying, setIsVerifying] = useState(false);
+  const [selectedWords, setSelectedWords] = useState<{index: number, word: string}[]>([]);
+  const [userInputs, setUserInputs] = useState<string[]>(['', '', '']);
+  const [isValidating, setIsValidating] = useState(false);
+  const [isValid, setIsValid] = useState(false);
   
-  // Redirect if no seed phrase is available
+  // Generate 3 random words from the seed phrase to validate
   useEffect(() => {
     if (!seedPhrase || seedPhrase.length < 12) {
-      console.error("No valid seed phrase found, redirecting to seed phrase page");
+      console.error("No valid seed phrase found, redirecting");
       toast({
-        title: "Keine gültige Passphrase gefunden",
-        description: "Du wirst zurück zur Passphrase-Seite geleitet",
+        title: "Keine gültige Seed Phrase",
+        description: "Du wirst zurück zur Seed Phrase-Seite geleitet",
         variant: "destructive",
       });
       navigate('/seed-phrase');
+      return;
     }
-  }, [seedPhrase, navigate, toast]);
-  
-  // Generate random indices for validation
-  useEffect(() => {
-    if (seedPhrase && seedPhrase.length >= 12) {
-      console.log("Generating random indices for validation");
-      // Generate three random unique indices between 0-11
+    
+    // Select 3 random words from the seed phrase
+    const getRandomWordIndices = () => {
       const indices: number[] = [];
       while (indices.length < 3) {
-        const randomIndex = Math.floor(Math.random() * 12);
+        const randomIndex = Math.floor(Math.random() * seedPhrase.length);
         if (!indices.includes(randomIndex)) {
           indices.push(randomIndex);
         }
       }
-      // Sort indices to display in ascending order
-      indices.sort((a, b) => a - b);
-      setWordIndices(indices);
-      console.log("Selected word indices:", indices);
-    }
-  }, [seedPhrase]);
-  
-  // Handle input change
-  const handleInputChange = useCallback((index: number, value: string) => {
-    setInputValues(prev => ({
-      ...prev,
-      [index]: value.trim().toLowerCase()
+      return indices.sort((a, b) => a - b); // Sort to maintain original order
+    };
+    
+    const indices = getRandomWordIndices();
+    const selectedWordsArray = indices.map(index => ({
+      index,
+      word: seedPhrase[index]
     }));
-  }, []);
+    
+    console.log("Selected words for validation:", selectedWordsArray);
+    setSelectedWords(selectedWordsArray);
+  }, [seedPhrase, navigate, toast]);
   
-  // Validate seed phrase
-  const validateSeedPhrase = useCallback(() => {
-    console.log("Validating seed phrase");
-    setIsVerifying(true);
+  const handleInputChange = (index: number, value: string) => {
+    const newInputs = [...userInputs];
+    newInputs[index] = value;
+    setUserInputs(newInputs);
+  };
+  
+  const validateInputs = () => {
+    if (isValidating) return;
     
-    let isValid = true;
+    setIsValidating(true);
     
-    // Check each requested word
-    for (const index of wordIndices) {
-      const expectedWord = seedPhrase[index];
-      const enteredWord = inputValues[index] || '';
-      
-      console.log(`Validating word at index ${index}:`);
-      console.log(`- Expected: "${expectedWord}"`);
-      console.log(`- Entered: "${enteredWord}"`);
-      
-      if (enteredWord !== expectedWord) {
-        isValid = false;
-        console.log(`- Validation failed for word ${index + 1}`);
-        break;
-      }
-    }
+    // Check if the user's inputs match the selected words
+    const areAllValid = selectedWords.every((item, index) => 
+      userInputs[index].toLowerCase().trim() === item.word.toLowerCase().trim()
+    );
     
-    if (isValid) {
-      console.log("Validation successful, creating wallet");
+    console.log("Validation result:", areAllValid);
+    
+    if (areAllValid) {
+      setIsValid(true);
       toast({
-        title: "Validierung erfolgreich!",
-        description: "Deine Wallet wird erstellt...",
-        duration: 2000,
+        title: "Validierung erfolgreich",
+        description: "Deine Wallet wurde erfolgreich erstellt",
       });
       
+      // Delay before navigating to wallet view
       setTimeout(() => {
-        createWallet();
         navigate('/');
       }, 1500);
     } else {
-      console.log("Validation failed");
       toast({
         title: "Validierung fehlgeschlagen",
-        description: "Die eingegebenen Wörter stimmen nicht mit deiner Passphrase überein.",
+        description: "Die eingegebenen Wörter stimmen nicht mit deiner Seed Phrase überein",
         variant: "destructive",
-        duration: 3000,
       });
-      
-      // Reset input values on failure
-      setInputValues({});
+      setIsValidating(false);
     }
-    
-    setIsVerifying(false);
-  }, [wordIndices, inputValues, seedPhrase, createWallet, navigate, toast]);
-  
-  // Handle back button
-  const handleBack = () => {
-    navigate('/seed-phrase');
   };
   
-  // View seed phrase again
-  const viewSeedPhrase = () => {
+  const handleBackClick = () => {
     navigate('/seed-phrase');
   };
-  
-  // Safety check to prevent render before we have wordIndices
-  if (!seedPhrase || seedPhrase.length < 12 || wordIndices.length === 0) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
-      </div>
-    );
-  }
   
   return (
-    <div className="min-h-screen flex flex-col bg-white text-black p-6 animate-fade-in">
-      <div className="w-full relative mb-10">
-        <Header title="Passphrase bestätigen" />
+    <div className="min-h-screen flex flex-col bg-wallet-darkBg text-white p-6 animate-fade-in">
+      <div className="w-full relative">
+        <Header title="Wallet erstellen" />
         <button 
-          onClick={handleBack}
-          className="absolute left-0 top-0 bottom-0 my-auto text-black hover:text-gray-600 transition-colors h-9 w-9 flex items-center justify-center"
-          aria-label="Zurück"
+          onClick={handleBackClick}
+          className="absolute left-4 top-0 bottom-0 my-auto text-white hover:text-gray-300 transition-colors h-9 w-9 flex items-center justify-center"
+          aria-label="Back"
         >
           <ArrowLeft size={24} />
         </button>
       </div>
       
-      <div className="flex-1 flex flex-col">
-        <h2 className="text-xl font-medium mb-4">
-          Fast fertig! Gib die folgenden Wörter Deiner Passphrase ein.
-        </h2>
+      <div className="flex-1 flex flex-col items-center justify-center py-6">
+        <img 
+          src="/lovable-uploads/592e4215-1f4a-4c0d-a1e9-504a24191442.png" 
+          alt="Wallet Logo" 
+          className="w-24 h-24 mb-6"
+        />
         
-        <p className="text-gray-600 mb-6">
-          Um sicherzustellen, dass du deine Passphrase aufgeschrieben hast, gib bitte die folgenden Wörter ein:
-        </p>
-        
-        <div className="space-y-8 mt-6 mb-auto">
-          {wordIndices.map((wordIndex) => (
-            <div key={wordIndex} className="mb-6">
-              <label className="block text-gray-600 mb-2">
-                Wort Nr. {wordIndex + 1}
-              </label>
-              <Input
-                type="text"
-                value={inputValues[wordIndex] || ''}
-                onChange={(e) => handleInputChange(wordIndex, e.target.value)}
-                className="w-full h-16 bg-gray-100 text-black px-4 py-3 rounded-lg focus:outline-none"
-                placeholder={`Gib das ${wordIndex + 1}. Wort ein`}
-                autoComplete="off"
-              />
+        <div className="w-full max-w-sm space-y-6">
+          <div className="text-left">
+            <h2 className="text-xl font-bold mb-2">Bestätige deine Seed Phrase</h2>
+            <p className="text-wallet-gray text-sm mb-4">
+              Um sicherzustellen, dass du deine Seed Phrase korrekt aufgeschrieben hast, 
+              gib bitte die folgenden Wörter ein:
+            </p>
+          </div>
+          
+          <div className="space-y-4">
+            {selectedWords.map((item, index) => (
+              <div key={index} className="space-y-2">
+                <label className="block text-sm text-wallet-gray font-medium">
+                  Wort #{item.index + 1}:
+                </label>
+                <Input
+                  type="text"
+                  value={userInputs[index]}
+                  onChange={(e) => handleInputChange(index, e.target.value)}
+                  placeholder={`Gib das ${item.index + 1}. Wort ein`}
+                  disabled={isValidating || isValid}
+                  className="bg-wallet-card border-gray-700 text-white"
+                />
+              </div>
+            ))}
+          </div>
+          
+          <div className="bg-wallet-card rounded-lg p-4 border border-gray-700 shadow-sm">
+            <div className="flex items-start gap-3">
+              <Shield className="h-5 w-5 text-wallet-green mt-0.5 flex-shrink-0" />
+              <div>
+                <h3 className="font-medium text-sm mb-1">Wichtiger Hinweis</h3>
+                <p className="text-xs text-wallet-gray">
+                  Dies ist der letzte Schritt zur Erstellung deiner Wallet. 
+                  Nach erfolgreicher Validierung wird deine Wallet aktiviert.
+                </p>
+              </div>
             </div>
-          ))}
-        </div>
-        
-        <div className="mt-auto space-y-4 pt-4">
-          <Button 
-            onClick={validateSeedPhrase}
-            className="w-full h-14 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg shadow-none border-none"
-            disabled={wordIndices.some(index => !inputValues[index]) || isVerifying}
-          >
-            {isVerifying ? (
-              <>
-                <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                Überprüfe...
-              </>
-            ) : (
-              "Bestätigen"
-            )}
-          </Button>
+          </div>
           
           <Button 
-            onClick={viewSeedPhrase}
-            variant="outline"
-            className="w-full h-12 bg-transparent hover:bg-transparent text-green-600 hover:text-green-700 border-none shadow-none font-medium"
+            onClick={validateInputs}
+            className="w-full py-6 bg-wallet-blue hover:bg-wallet-darkBlue text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={userInputs.some(input => !input.trim()) || isValidating || isValid}
           >
-            Passphrase erneut anschauen
+            {isValid ? (
+              <>
+                <CheckCircle size={16} className="mr-2" />
+                Validiert
+              </>
+            ) : isValidating ? (
+              <>
+                <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                Validiere...
+              </>
+            ) : (
+              "Validieren"
+            )}
           </Button>
         </div>
       </div>

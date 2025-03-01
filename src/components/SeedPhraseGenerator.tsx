@@ -102,14 +102,12 @@ const SeedPhraseGenerator: React.FC = () => {
   useEffect(() => {
     console.log("SeedPhraseGenerator mounted, checking for existing seed phrase");
     
-    // CRITICAL FIX: Only generate if we don't have a valid seed phrase already
+    // CRITICAL FIX: Only set localSeedPhrase from context if it exists, but don't auto-generate
     if (seedPhrase && seedPhrase.length >= 12) {
       console.log("Using existing seed phrase from context:", seedPhrase);
       setLocalSeedPhrase(seedPhrase);
-    } else {
-      console.log("No existing seed phrase found or invalid one, generating a new one");
-      generateSeedPhrase();
     }
+    // Don't auto-generate a new seed phrase anymore
   }, []); // Only run once on mount
   
   const handleCopy = () => {
@@ -227,7 +225,7 @@ const SeedPhraseGenerator: React.FC = () => {
           </div>
         ) : (
           <div className="flex items-center justify-center py-12 text-wallet-gray italic text-sm">
-            {isGenerating ? 'Generiere Seed Phrase...' : 'Keine Seed Phrase generiert'}
+            {isGenerating ? 'Generiere Seed Phrase...' : 'Keine Seed Phrase generiert. Klicke auf "Neu generieren".'}
           </div>
         )}
       </Card>
