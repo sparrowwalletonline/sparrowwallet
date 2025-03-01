@@ -8,7 +8,7 @@ interface WalletLogoProps {
 const WalletLogo: React.FC<WalletLogoProps> = ({ className }) => {
   return (
     <div className={`flex items-center ${className}`}>
-      <div className="bg-gradient-to-br from-blue-700 to-blue-400 rounded-md flex items-center justify-center shadow-lg relative overflow-hidden">
+      <div className="bg-gradient-to-br from-blue-600 to-blue-400 rounded-md flex items-center justify-center shadow-lg relative overflow-hidden">
         <svg 
           viewBox="0 0 100 100" 
           className="w-full h-full"

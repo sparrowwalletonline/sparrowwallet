@@ -13,26 +13,26 @@ const LandingPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white text-gray-800">
       <header className="w-full p-6 flex justify-between items-center">
         <WalletLogo className="w-12 h-12" />
         <div className="w-8 h-8 flex flex-col gap-1.5 justify-center items-end cursor-pointer">
-          <span className="block w-8 h-0.5 bg-white"></span>
-          <span className="block w-8 h-0.5 bg-white"></span>
-          <span className="block w-8 h-0.5 bg-white"></span>
+          <span className="block w-8 h-0.5 bg-gray-800"></span>
+          <span className="block w-8 h-0.5 bg-gray-800"></span>
+          <span className="block w-8 h-0.5 bg-gray-800"></span>
         </div>
       </header>
       
       <div className="flex-1 flex flex-col p-6">
         <div className="space-y-4 mb-8">
-          <h1 className="text-4xl font-bold tracking-tight text-white leading-tight">
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900 leading-tight">
             True crypto ownership.
             <br />
             Powerful Web3
             <br />
             experiences
           </h1>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-gray-600">
             Unlock the power of your cryptocurrency assets and explore the world of Web3 with Trusty Wallet.
           </p>
         </div>
@@ -55,16 +55,16 @@ const LandingPage: React.FC = () => {
         <div className="mt-12 flex justify-between">
           <div className="text-center">
             <div className="text-blue-500 font-bold text-2xl">140M</div>
-            <div className="text-muted-foreground">people</div>
+            <div className="text-gray-600">people</div>
           </div>
           <div className="text-center">
             <div className="text-blue-500 font-bold text-2xl">2017</div>
-            <div className="text-muted-foreground">Founded in</div>
+            <div className="text-gray-600">Founded in</div>
           </div>
         </div>
         
-        <div className="text-center text-xs text-muted-foreground mt-auto pt-6">
-          By continuing, you agree to our <a href="#" className="underline hover:text-wallet-accent">Terms of Service</a> and <a href="#" className="underline hover:text-wallet-accent">Privacy Policy</a>.
+        <div className="text-center text-xs text-gray-500 mt-auto pt-6">
+          By continuing, you agree to our <a href="#" className="underline hover:text-blue-500">Terms of Service</a> and <a href="#" className="underline hover:text-blue-500">Privacy Policy</a>.
         </div>
       </div>
     </div>
