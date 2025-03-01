@@ -95,9 +95,11 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
 
   return (
     <header className="flex justify-between items-center py-4 px-4 w-full">
-      <div className="w-9 h-9 flex items-center justify-center"></div> {/* Empty div with height and centered content */}
+      <div className="w-9 h-9 flex items-center justify-center">
+        {/* Empty div maintained for layout balance */}
+      </div>
       
-      <h1 className="text-lg font-semibold text-white">{title}</h1>
+      <h1 className="text-lg font-semibold text-white flex-1 text-center">{title}</h1>
       
       {session ? (
         <DropdownMenu>
