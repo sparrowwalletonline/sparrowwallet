@@ -33,7 +33,7 @@ const WalletApp: React.FC = () => {
       const timer = setTimeout(() => {
         setCurrentView(newView);
         setIsTransitioning(false);
-      }, 300);
+      }, 500); // Increased from 300ms to 500ms for more noticeable transition
       
       return () => clearTimeout(timer);
     } else {
@@ -42,13 +42,13 @@ const WalletApp: React.FC = () => {
   }, [showLandingPage, showWalletChoice, showCreateWallet, hasWallet, currentView]);
   
   const getTransitionClasses = () => {
-    let baseClasses = "w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg overflow-hidden slide-transition";
+    let baseClasses = "w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg overflow-hidden";
     
     if (isTransitioning) {
-      return `${baseClasses} slide-transition-exit`;
+      return `${baseClasses} slide-transition slide-transition-exit`;
     }
     
-    return baseClasses;
+    return `${baseClasses} slide-transition slide-transition-enter`;
   };
 
   return (

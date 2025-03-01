@@ -225,17 +225,43 @@ button:hover {
 
 /* Improved slide transition */
 .slide-transition {
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 1;
   transform: translateY(0);
+  position: relative;
 }
 
 .slide-transition-enter {
   opacity: 0;
-  transform: translateY(15px);
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s forwards;
 }
 
 .slide-transition-exit {
   opacity: 0;
-  transform: translateY(-15px);
+  transform: translateY(-30px);
+  animation: fadeOutUp 0.8s forwards;
+}
+
+/* Added keyframe animations for more noticeable effects */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOutUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
 }
