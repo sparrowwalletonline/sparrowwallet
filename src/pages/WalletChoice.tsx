@@ -1,9 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
 import { useWallet } from '@/contexts/WalletContext';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
@@ -13,13 +12,12 @@ const WalletChoice: React.FC = () => {
   const { generateWallet, importWallet, cancelWalletCreation } = useWallet();
   const navigate = useNavigate();
   const [session, setSession] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   
   useEffect(() => {
-    // Check for an active session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       
-      // If no session, redirect to landing page
       if (!session) {
         navigate('/');
         toast({
@@ -30,7 +28,6 @@ const WalletChoice: React.FC = () => {
       }
     });
 
-    // Listen for authentication changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       if (!session) {
@@ -42,13 +39,15 @@ const WalletChoice: React.FC = () => {
   }, [navigate]);
   
   const handleCreateWallet = () => {
-    // Navigate to PassPhrase page
-    navigate('/passphrase');
+    setIsLoading(true);
+    
+    setTimeout(() => {
+      navigate('/passphrase');
+      setIsLoading(false);
+    }, 3000);
   };
   
   const handleImportWallet = () => {
-    // For now, we'll just show import UI by setting a dummy phrase
-    // The actual import functionality would be implemented later
     importWallet("dummy phrase to trigger import UI");
   };
 
@@ -57,7 +56,7 @@ const WalletChoice: React.FC = () => {
   };
   
   if (!session) {
-    return null; // Don't render anything while checking authentication
+    return null;
   }
   
   return (
@@ -86,14 +85,23 @@ const WalletChoice: React.FC = () => {
         <Button 
           onClick={handleCreateWallet}
           className="w-full py-6 text-base bg-wallet-blue hover:bg-wallet-darkBlue text-white font-medium"
+          disabled={isLoading}
         >
-          Neue Wallet erstellen
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 
+              Wallet wird vorbereitet...
+            </>
+          ) : (
+            "Neue Wallet erstellen"
+          )}
         </Button>
         
         <Button 
           onClick={handleImportWallet}
           variant="ghost" 
           className="w-full py-2 text-base text-white hover:bg-gray-800/30"
+          disabled={isLoading}
         >
           Bestehende Wallet öffnen
         </Button>
