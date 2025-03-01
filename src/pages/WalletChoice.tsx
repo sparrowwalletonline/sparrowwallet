@@ -4,14 +4,15 @@ import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
 import { useWallet } from '@/contexts/WalletContext';
 import { ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const WalletChoice: React.FC = () => {
   const { generateWallet, importWallet, cancelWalletCreation } = useWallet();
+  const navigate = useNavigate();
   
   const handleCreateWallet = () => {
-    // Update to use a new state to show PassPhrase page
-    generateWallet('passphrase');
+    // Navigate to PassPhrase page
+    navigate('/passphrase');
   };
   
   const handleImportWallet = () => {

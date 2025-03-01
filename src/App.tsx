@@ -10,6 +10,8 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import SeedPhrasePage from "./pages/SeedPhrasePage";
 import Terms from "./pages/Terms";
+import PassPhrase from "./pages/PassPhrase";
+import WalletChoice from "./pages/WalletChoice";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +25,8 @@ const App = () => (
           <MobileSidebar />
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/wallet-choice" element={<WalletChoice />} />
+            <Route path="/passphrase" element={<PassPhrase />} />
             <Route path="/seed-phrase" element={<SeedPhrasePage />} />
             <Route path="/terms" element={<Terms />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

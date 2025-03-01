@@ -3,16 +3,20 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
+import { useNavigate } from 'react-router-dom';
 
 const PassPhrase: React.FC = () => {
   const { createWallet, cancelWalletCreation } = useWallet();
+  const navigate = useNavigate();
   
   const handleBackClick = () => {
     cancelWalletCreation();
+    navigate('/wallet-choice');
   };
   
   const handleCreatePassphrase = () => {
     createWallet();
+    navigate('/seed-phrase');
   };
   
   return (
