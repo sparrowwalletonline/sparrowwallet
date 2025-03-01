@@ -29,7 +29,7 @@ const PassPhrase: React.FC = () => {
       </div>
       
       <div className="w-full text-center mt-6">
-        <h1 className="font-heading text-xl font-medium">Neue Brieftasche</h1>
+        <h1 className="font-heading text-xl font-medium">Neue Wallet</h1>
       </div>
       
       <div className="flex-1 flex flex-col items-center justify-center gap-8">
@@ -40,7 +40,7 @@ const PassPhrase: React.FC = () => {
             Wir werden Deine eigene Passphrase erstellen
           </h2>
           <p className="text-wallet-gray mb-4">
-            So können Sie Ihre Brieftasche auf mehreren Geräten öffnen und es bleibt sicher.
+            So können Sie Ihre Wallet auf mehreren Geräten öffnen und es bleibt sicher.
           </p>
           <p className="text-wallet-gray">
             Es ist sehr wichtig, die Passphrase zu notieren.

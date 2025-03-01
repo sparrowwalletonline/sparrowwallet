@@ -55,7 +55,7 @@ const WalletChoice: React.FC = () => {
           variant="ghost" 
           className="w-full py-2 text-base text-white hover:bg-gray-800/30"
         >
-          Bestehende Brieftasche öffnen
+          Bestehende Wallet öffnen
         </Button>
       </div>
       
