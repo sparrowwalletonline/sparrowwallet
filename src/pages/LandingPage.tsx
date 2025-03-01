@@ -1,15 +1,19 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
 import { ArrowRight } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
+
 const LandingPage: React.FC = () => {
   const {
     generateWallet
   } = useWallet();
+  
   const handleCreateWallet = () => {
     generateWallet();
   };
+  
   return <div className="min-h-screen flex flex-col bg-white text-gray-800">
       <header className="w-full p-6 flex justify-between items-center">
         <WalletLogo className="w-12 h-12" />
@@ -22,7 +26,7 @@ const LandingPage: React.FC = () => {
       
       <div className="flex-1 flex flex-col p-6">
         <div className="space-y-4 mb-8">
-          <h1 className="font-heading tracking-tight text-gray-900 leading-none mx-0 text-2xl font-bold">
+          <h1 className="font-heading tracking-tight text-gray-900 leading-tight mx-0 text-2xl font-bold">
             True crypto ownership
             <br />
             Powerful Web3
@@ -59,4 +63,5 @@ const LandingPage: React.FC = () => {
       </div>
     </div>;
 };
+
 export default LandingPage;
