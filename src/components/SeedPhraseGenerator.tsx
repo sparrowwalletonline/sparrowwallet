@@ -46,7 +46,7 @@ const SeedPhraseGenerator: React.FC = () => {
         <Button 
           onClick={generateWallet} 
           variant="outline" 
-          className="flex-1 bg-white border-slate-200"
+          className="flex-1 bg-white border-slate-200 shadow-sm hover:shadow-md transition-all duration-300"
           disabled={isGenerating}
         >
           <RefreshCw 
@@ -58,7 +58,7 @@ const SeedPhraseGenerator: React.FC = () => {
         <Button 
           onClick={handleCopy}
           variant="outline" 
-          className="flex-1 bg-white border-slate-200"
+          className="flex-1 bg-white border-slate-200 shadow-sm hover:shadow-md transition-all duration-300"
           disabled={seedPhrase.length === 0 || isGenerating}
         >
           <Copy className={`h-4 w-4 mr-2 ${copyAnimation ? 'clipboard-animation' : ''}`} />
