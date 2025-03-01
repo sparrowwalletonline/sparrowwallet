@@ -130,8 +130,8 @@ const SeedPhraseValidation: React.FC = () => {
             </div>
           </div>
           
-          {/* Word input fields - Improved visibility */}
-          <div className="space-y-5 bg-wallet-card p-5 rounded-lg">
+          {/* Word input fields - Enhanced visibility */}
+          <div className="space-y-5 bg-wallet-card p-5 rounded-lg border-2 border-green-500/30">
             <h3 className="text-lg font-semibold mb-2">Gib die folgenden Wörter ein:</h3>
             {wordIndices.map((wordIndex, index) => (
               <div key={index} className="space-y-2">
