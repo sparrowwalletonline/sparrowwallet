@@ -84,7 +84,7 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
         
-        <div className="py-16 my-12 -mx-6 px-6 bg-gradient-to-br from-blue-500 to-blue-400 text-white rounded-3xl">
+        <div className="py-16 my-12 -mx-6 px-6 bg-gradient-to-b from-blue-500 via-blue-600 to-blue-900 text-white rounded-3xl">
           <div className="text-center mb-8">
             <h2 className="font-heading text-4xl font-bold mb-4">One Platform,<br />Millions of Assets</h2>
             <p className="text-blue-50 max-w-2xl mx-auto">
@@ -201,7 +201,7 @@ const LandingPage: React.FC = () => {
         <div className="py-16 my-12 -mx-6 px-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl">
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl font-bold mb-4">One Platform, Millions of Assets</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <p className="text-blue-50 max-w-2xl mx-auto">
               Trust Wallet is your gateway to the blockchain ecosystem. Store, trade, and discover over 8 million digital assets across 100+ blockchains.
             </p>
           </div>

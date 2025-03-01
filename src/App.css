@@ -19,6 +19,13 @@
   box-shadow: 0 6px 16px rgba(51, 117, 187, 0.3);
 }
 
+/* Blockchain platform section with improved gradient */
+.platform-section {
+  background: linear-gradient(to bottom, #3375BB 0%, #1E40AF 50%, #1E3A8A 100%);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Feature card styling */
 .feature-card {
   border-radius: 16px;
   background: white;
