@@ -17,10 +17,8 @@ const SeedPhraseValidation: React.FC = () => {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [attemptsLeft, setAttemptsLeft] = useState(3);
   
-  // Select three random word indices for validation
   useEffect(() => {
     if (seedPhrase && seedPhrase.length >= 12) {
-      // Generate three random indices between 0-11
       const indices = [];
       while (indices.length < 3) {
         const randomIndex = Math.floor(Math.random() * 12);
@@ -28,7 +26,6 @@ const SeedPhraseValidation: React.FC = () => {
           indices.push(randomIndex);
         }
       }
-      // Sort indices to display in order
       indices.sort((a, b) => a - b);
       setWordIndices(indices);
       console.log("Selected word indices for validation:", indices);
@@ -42,7 +39,6 @@ const SeedPhraseValidation: React.FC = () => {
   };
   
   const handleValidate = () => {
-    // Check if input words match the seed phrase words at the selected indices
     const isValid = wordIndices.every((wordIndex, index) => 
       inputValues[index] === seedPhrase[wordIndex]
     );
@@ -56,7 +52,6 @@ const SeedPhraseValidation: React.FC = () => {
         duration: 2000,
       });
       
-      // Proceed to wallet creation
       setTimeout(() => {
         createWallet();
         navigate('/');
@@ -121,7 +116,6 @@ const SeedPhraseValidation: React.FC = () => {
             </p>
           </div>
           
-          {/* Seed phrase security info */}
           <div className="bg-yellow-600/20 border border-yellow-600/50 p-4 rounded-lg flex gap-3">
             <AlertCircle className="text-yellow-500 flex-shrink-0 mt-1" size={20} />
             <div className="text-sm">
@@ -130,11 +124,10 @@ const SeedPhraseValidation: React.FC = () => {
             </div>
           </div>
           
-          {/* Word input fields - Enhanced visibility */}
           <div className="space-y-5 bg-wallet-card p-5 rounded-lg border-2 border-green-500/30">
-            <h3 className="text-lg font-semibold mb-2">Gib die folgenden Wörter ein:</h3>
+            <h3 className="text-lg font-semibold mb-4 text-white">Gib die folgenden Wörter ein:</h3>
             {wordIndices.map((wordIndex, index) => (
-              <div key={index} className="space-y-2">
+              <div key={index} className="space-y-2 mb-4">
                 <label className="block text-wallet-gray font-medium">Wort Nr. {wordIndex + 1}</label>
                 <Input
                   value={inputValues[index]}
@@ -147,7 +140,6 @@ const SeedPhraseValidation: React.FC = () => {
             ))}
           </div>
           
-          {/* Attempts counter */}
           <div className="text-center text-wallet-gray text-sm font-medium">
             Verbleibende Versuche: <span className="text-white">{attemptsLeft}</span>
           </div>
