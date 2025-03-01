@@ -39,7 +39,7 @@ const LandingPage: React.FC = () => {
         </Button>
         
         <div className="mt-12 relative">
-          <img src="/lovable-uploads/a2446f52-838c-4fb8-b6ba-73814411330e.png" alt="Trusty Wallet Features" className="w-full max-w-lg mx-auto" />
+          <img alt="Trusty Wallet Features" className="w-full max-w-lg mx-auto" src="/lovable-uploads/057ecf4e-ca5a-4928-9979-cb5032455af3.jpg" />
         </div>
         
         <div className="mt-12 flex justify-between">
