@@ -46,16 +46,11 @@ const LandingPage: React.FC = () => {
           </p>
           
           <div className="w-full max-w-xs mx-auto mb-6">
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl border-8 border-black">
-              <img 
-                src="/lovable-uploads/1b77eb0f-8d23-4584-b764-6202a16c8247.png" 
-                alt="Bitcoin Wallet App" 
-                className="w-full"
-              />
-              <div className="absolute top-0 left-0 w-full flex justify-center">
-                <div className="bg-black w-1/3 h-7 rounded-b-xl"></div>
-              </div>
-            </div>
+            <img 
+              src="/lovable-uploads/1b77eb0f-8d23-4584-b764-6202a16c8247.png" 
+              alt="Bitcoin Wallet App" 
+              className="w-full"
+            />
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4">
