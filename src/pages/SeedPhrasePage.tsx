@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -20,7 +19,10 @@ const SeedPhrasePage: React.FC = () => {
   useEffect(() => {
     if (!seedPhrase || seedPhrase.length < 12) { // If we don't have a real seed phrase yet
       console.log("Generating initial BIP39 seed phrase in SeedPhrasePage...");
-      createWallet(); // Generate the seed phrase immediately when component mounts
+      // Trigger seed phrase generation with a small delay to ensure component is fully mounted
+      setTimeout(() => {
+        createWallet();
+      }, 100);
     } else {
       console.log("Seed phrase already exists:", seedPhrase);
     }
@@ -70,7 +72,9 @@ const SeedPhrasePage: React.FC = () => {
   };
   
   // Debug log to track seed phrase
-  console.log("Current seed phrase in SeedPhrasePage:", seedPhrase);
+  useEffect(() => {
+    console.log("Current seed phrase in SeedPhrasePage:", seedPhrase);
+  }, [seedPhrase]);
   
   return (
     <div className="min-h-screen flex flex-col bg-wallet-darkBg text-white p-6 animate-fade-in">

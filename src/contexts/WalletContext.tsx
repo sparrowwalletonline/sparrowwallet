@@ -64,7 +64,12 @@ const generateSeedPhrase = (): string[] => {
     // Generate a random mnemonic (128-256 bits)
     const mnemonic = bip39.generateMnemonic(128); // 128 bits = 12 words
     console.log("Generated BIP39 mnemonic:", mnemonic);
-    return mnemonic.split(' ');
+    
+    // For debugging, log the words
+    const words = mnemonic.split(' ');
+    console.log("BIP39 word list (should be 12 words):", words);
+    
+    return words;
   } catch (error) {
     console.error("Error generating seed phrase:", error);
     // Fallback to a dummy seed phrase in case of error
@@ -106,8 +111,9 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         console.log("Generated BIP39 seed phrase:", newSeedPhrase);
         
         // Only set the seed phrase after we've confirmed it was generated
-        if (newSeedPhrase.length >= 12) {
-          setSeedPhrase(newSeedPhrase); // Set the new seed phrase
+        if (newSeedPhrase && newSeedPhrase.length >= 12) {
+          // Create a new array reference to ensure React re-renders
+          setSeedPhrase([...newSeedPhrase]); 
           console.log("Seed phrase set in WalletContext:", newSeedPhrase);
           
           toast({

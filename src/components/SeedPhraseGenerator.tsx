@@ -11,7 +11,7 @@ const SeedPhraseGenerator: React.FC = () => {
   const [copyAnimation, setCopyAnimation] = useState(false);
   
   const handleCopy = () => {
-    if (seedPhrase.length >= 12) {
+    if (seedPhrase && seedPhrase.length >= 12) {
       const phraseText = seedPhrase.join(' ');
       copyToClipboard(phraseText);
       setCopyAnimation(true);
@@ -30,7 +30,6 @@ const SeedPhraseGenerator: React.FC = () => {
     createWallet();
   };
 
-  // Log seed phrase for debugging
   useEffect(() => {
     console.log("SeedPhraseGenerator rendered with seedPhrase:", seedPhrase);
   }, [seedPhrase]);
