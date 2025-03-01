@@ -64,7 +64,7 @@ const SeedPhrasePage: React.FC = () => {
   
   const handleBackClick = () => {
     cancelWalletCreation();
-    navigate('/pass-phrase');
+    navigate('/passphrase');
   };
   
   // Debug log to track seed phrase
