@@ -100,18 +100,19 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   // Actually create the wallet with a full seed phrase
   const createWallet = () => {
+    console.log("createWallet function called - starting generation");
     setIsGenerating(true);
-    console.log("Creating wallet with BIP39...");
     
     // Force a slight delay for UI feedback
     setTimeout(() => {
       try {
         // Generate the new seed phrase using BIP39
         const newSeedPhrase = generateSeedPhrase();
-        console.log("Generated BIP39 seed phrase:", newSeedPhrase);
+        console.log("Generated BIP39 seed phrase in createWallet:", newSeedPhrase);
         
         // Only set the seed phrase after we've confirmed it was generated
         if (newSeedPhrase && newSeedPhrase.length >= 12) {
+          console.log("Setting seed phrase state with new array reference");
           // Create a new array reference to ensure React re-renders
           setSeedPhrase([...newSeedPhrase]); 
           console.log("Seed phrase set in WalletContext:", newSeedPhrase);
@@ -122,7 +123,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             duration: 2000,
           });
         } else {
-          console.error("Generated seed phrase is too short:", newSeedPhrase);
+          console.error("Generated seed phrase is too short or invalid:", newSeedPhrase);
           
           toast({
             title: "Error",
@@ -141,6 +142,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           duration: 3000,
         });
       } finally {
+        console.log("Setting isGenerating to false");
         setIsGenerating(false);
       }
     }, 500);

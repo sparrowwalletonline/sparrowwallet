@@ -26,7 +26,7 @@ const SeedPhraseGenerator: React.FC = () => {
   };
 
   const handleGenerateWallet = () => {
-    console.log("Generate button clicked in SeedPhraseGenerator");
+    console.log("Generate button clicked in SeedPhraseGenerator - triggering wallet creation");
     createWallet();
   };
 

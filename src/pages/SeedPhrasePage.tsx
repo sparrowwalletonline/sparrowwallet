@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -21,8 +22,9 @@ const SeedPhrasePage: React.FC = () => {
       console.log("Generating initial BIP39 seed phrase in SeedPhrasePage...");
       // Trigger seed phrase generation with a small delay to ensure component is fully mounted
       setTimeout(() => {
+        console.log("Calling createWallet from SeedPhrasePage useEffect");
         createWallet();
-      }, 100);
+      }, 500);
     } else {
       console.log("Seed phrase already exists:", seedPhrase);
     }
