@@ -12,6 +12,11 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ title }) => {
   const { toggleMenu } = useMenu();
 
+  const handleMenuClick = () => {
+    console.log('Menu button clicked');
+    toggleMenu();
+  };
+
   return (
     <header className="flex justify-between items-center py-4 px-4 w-full">
       <Button 
@@ -29,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
         variant="ghost" 
         size="icon" 
         className="rounded-full p-0 h-9 w-9 bg-wallet-card"
-        onClick={toggleMenu}
+        onClick={handleMenuClick}
       >
         <Menu className="h-5 w-5 text-gray-400" />
       </Button>

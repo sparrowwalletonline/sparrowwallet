@@ -12,7 +12,11 @@ const MenuContext = createContext<MenuContextType | undefined>(undefined);
 export const MenuProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const toggleMenu = () => setIsMenuOpen(prev => !prev);
+  const toggleMenu = () => {
+    console.log('Toggle menu called, current state:', isMenuOpen);
+    setIsMenuOpen(prev => !prev);
+  };
+  
   const closeMenu = () => setIsMenuOpen(false);
 
   return (

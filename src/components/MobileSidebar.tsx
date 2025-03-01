@@ -1,14 +1,12 @@
 
 import React, { useEffect } from 'react';
 import { useMenu } from '@/contexts/MenuContext';
-import { useWallet } from '@/contexts/WalletContext';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
-import { Home, PlusCircle, Settings, Info, X, ArrowRight } from 'lucide-react';
+import { Home, Settings, Info, X, ArrowRight } from 'lucide-react';
 
 const MobileSidebar: React.FC = () => {
   const { isMenuOpen, closeMenu } = useMenu();
-  const { generateWallet } = useWallet();
   
   // Close menu when clicking outside or pressing escape
   useEffect(() => {
@@ -37,10 +35,7 @@ const MobileSidebar: React.FC = () => {
     };
   }, [isMenuOpen, closeMenu]);
 
-  const handleCreateWallet = () => {
-    generateWallet();
-    closeMenu();
-  };
+  console.log('MobileSidebar rendered, isMenuOpen:', isMenuOpen);
 
   return (
     <>
@@ -50,7 +45,11 @@ const MobileSidebar: React.FC = () => {
       )}
       
       {/* Sidebar */}
-      <div className={`fixed top-0 right-0 z-50 w-[280px] h-full bg-wallet-darkBg transform transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+      <div 
+        className={`fixed top-0 right-0 z-50 w-[280px] h-full bg-wallet-darkBg transform transition-transform duration-300 ease-in-out ${
+          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
           <div className="flex justify-between items-center p-6 border-b border-gray-800">
@@ -58,7 +57,10 @@ const MobileSidebar: React.FC = () => {
               <WalletLogo className="w-8 h-8" />
               <span className="font-heading text-lg font-bold text-white">Trust Wallet</span>
             </div>
-            <button onClick={closeMenu} className="text-gray-400 hover:text-white">
+            <button 
+              onClick={closeMenu} 
+              className="text-gray-400 hover:text-white"
+            >
               <X className="w-6 h-6" />
             </button>
           </div>
@@ -90,7 +92,10 @@ const MobileSidebar: React.FC = () => {
           {/* Call to Action */}
           <div className="p-6 border-t border-gray-800">
             <Button 
-              onClick={handleCreateWallet} 
+              onClick={() => {
+                closeMenu();
+                window.location.href = "/generate-wallet";
+              }} 
               className="w-full py-6 text-base flex items-center justify-center gap-2"
             >
               Create a new wallet <ArrowRight className="h-4 w-4" />
