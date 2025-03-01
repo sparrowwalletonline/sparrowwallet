@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
 import { ArrowRight, Check, Menu, Star, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift, Coins, Wallet, Search, X } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
+
 const LandingPage: React.FC = () => {
   const {
     generateWallet
@@ -23,8 +24,8 @@ const LandingPage: React.FC = () => {
       <div className="flex-1 flex flex-col p-6">
         <div className="space-y-6 mb-10">
           <h1 className="font-heading tracking-tight text-gray-900 leading-[1.3] font-bold text-4xl md:text-5xl">
-            The most trusted<br />
-            & secure<br />
+            The most<br />
+            trusted & secure<br />
             crypto wallet
           </h1>
           
@@ -117,7 +118,7 @@ const LandingPage: React.FC = () => {
                   <div className="w-10 h-10 rounded-full bg-orange-400 flex items-center justify-center text-white">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M23.638 14.904c-1.602 6.425-8.113 10.334-14.542 8.746C2.67 22.052-1.244 15.546.345 9.105 1.952 2.677 8.458-1.233 14.895.355c6.447 1.605 10.346 8.11 8.743 14.549z" fill="#FFF" />
-                      <path d="M17.291 10.174c.25-1.669-.998-2.564-2.7-3.165l.55-2.212-1.346-.336-.535 2.151c-.355-.088-.717-.172-1.078-.253l.54-2.165-1.344-.336-.552 2.21a44.184 44.184 0 01-.86-.202l.001-.007-1.855-.463-.358 1.437s.998.23.978.244c.545.136.644.497.627.784l-.627 2.518c.037.01.087.024.14.046l-.142-.036-.879 3.524c-.067.166-.236.414-.618.32.013.02-.979-.244-.979-.244l-.67 1.545 1.75.437c.325.082.644.167.958.247l-.558 2.24 1.342.336.552-2.215c.368.1.726.193 1.077.28l-.55 2.2 1.346.336.558-2.234c2.297.435 4.03.26 4.758-1.818.586-1.674-.03-2.641-1.237-3.267.879-.203 1.544-.78 1.723-1.974zm-3.081 4.298c-.417 1.674-3.233.77-4.147.542l.74-2.967c.914.228 3.85.68 3.407 2.425zm.415-4.348c-.38 1.52-2.725.747-3.487.557l.67-2.693c.762.19 3.217.543 2.817 2.136z" fill="#FFF" />
+                      <path d="M17.291 10.174c.25-1.669-.998-2.564-2.7-3.165l.55-2.212-1.346-.336-.535 2.151c-.355-.088-.717-.172-1.078-.253l.54-2.165-1.344-.336-.552 2.21a44.184 44.184 0 01-.86-.202l.001-.007-1.855-.463-.358 1.437s.998.23.978.244c.545.136.644.497.627.784l-.627 2.518c.037.01.087.024.14.046l-.142-.036-.879 3.524c-.067.166-.236.414-.618.32.013.02-.979-.244-.979-.244l-.67 1.545 1.75.437c.325.082.644.167.958.247l-.558 2.24 1.342.336.558-2.234c2.297.435 4.03.26 4.758-1.818.586-1.674-.03-2.641-1.237-3.267.879-.203 1.544-.78 1.723-1.974zm-3.081 4.298c-.417 1.674-3.233.77-4.147.542l.74-2.967c.914.228 3.85.68 3.407 2.425zm.415-4.348c-.38 1.52-2.725.747-3.487.557l.67-2.693c.762.19 3.217.543 2.817 2.136z" fill="#FFF" />
                     </svg>
                   </div>
                   <span className="font-semibold">Bitcoin (BTC)</span>
@@ -302,6 +303,7 @@ const LandingPage: React.FC = () => {
       </div>
     </div>;
 };
+
 const FeatureCard = ({
   icon,
   title,
@@ -317,6 +319,7 @@ const FeatureCard = ({
       <p className="text-gray-600 text-sm">{description}</p>
     </div>;
 };
+
 const SecurityCard = ({
   title,
   description
@@ -329,6 +332,7 @@ const SecurityCard = ({
       <p className="text-blue-100 text-sm">{description}</p>
     </div>;
 };
+
 const AssetCard = ({
   icon,
   title,
@@ -362,6 +366,7 @@ const AssetCard = ({
       <p className="text-gray-600 text-sm">{description}</p>
     </div>;
 };
+
 const StepCard = ({
   number,
   title,
@@ -379,6 +384,7 @@ const StepCard = ({
       <p className="text-gray-600 text-sm">{description}</p>
     </div>;
 };
+
 const TestimonialCard = ({
   quote,
   author,
@@ -399,6 +405,7 @@ const TestimonialCard = ({
       </div>
     </div>;
 };
+
 const FAQItem = ({
   question,
   answer
@@ -423,6 +430,7 @@ const FAQItem = ({
         </div>}
     </div>;
 };
+
 const SupportedFeature = ({
   label,
   supported
@@ -439,4 +447,5 @@ const SupportedFeature = ({
         </div>}
     </div>;
 };
+
 export default LandingPage;
