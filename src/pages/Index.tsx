@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { WalletProvider, useWallet } from '@/contexts/WalletContext';
 import LandingPage from './LandingPage';
@@ -6,7 +5,6 @@ import GenerateWallet from './GenerateWallet';
 import WalletView from './WalletView';
 import WalletChoice from './WalletChoice';
 import PassPhrase from './PassPhrase';
-import SeedPhraseValidation from './SeedPhraseValidation';
 
 // Wrapper component to handle view switching
 const WalletApp: React.FC = () => {
@@ -20,18 +18,7 @@ const WalletApp: React.FC = () => {
   const showLandingPage = seedPhrase.length === 0;
   const showWalletChoice = seedPhrase.length === 1; // Special case for our flow
   const showPassPhrase = seedPhrase.length === 2; // New state for PassPhrase page
-  const showValidation = seedPhrase.length === 3; // New state for validation page
-  const showCreateWallet = !hasWallet && seedPhrase.length > 3;
-  
-  console.log("Current state in Index:", { 
-    hasWallet, 
-    seedPhraseLength: seedPhrase.length,
-    showLandingPage,
-    showWalletChoice,
-    showPassPhrase,
-    showValidation,
-    showCreateWallet
-  });
+  const showCreateWallet = !hasWallet && seedPhrase.length > 2;
   
   useEffect(() => {
     // Determine the current view based on state
@@ -39,11 +26,8 @@ const WalletApp: React.FC = () => {
     if (showLandingPage) newView = 'landing';
     else if (showWalletChoice) newView = 'choice';
     else if (showPassPhrase) newView = 'passphrase';
-    else if (showValidation) newView = 'validation';
     else if (showCreateWallet) newView = 'create';
     else if (hasWallet) newView = 'wallet';
-
-    console.log("Switching to view:", newView);
 
     // Only change direction if view actually changes
     if (newView !== currentView && currentView !== '') {
@@ -56,13 +40,9 @@ const WalletApp: React.FC = () => {
         setSlideDirection('right');
       } else if (currentView === 'passphrase' && newView === 'choice') {
         setSlideDirection('left');
-      } else if (currentView === 'passphrase' && newView === 'validation') {
+      } else if (currentView === 'passphrase' && newView === 'create') {
         setSlideDirection('right');
-      } else if (currentView === 'validation' && newView === 'passphrase') {
-        setSlideDirection('left');
-      } else if (currentView === 'validation' && newView === 'create') {
-        setSlideDirection('right');
-      } else if (currentView === 'create' && newView === 'validation') {
+      } else if (currentView === 'create' && newView === 'passphrase') {
         setSlideDirection('left');
       } else if (currentView === 'create' && newView === 'wallet') {
         setSlideDirection('right');
@@ -84,7 +64,7 @@ const WalletApp: React.FC = () => {
       // Initial load, no transition
       setCurrentView(newView);
     }
-  }, [showLandingPage, showWalletChoice, showPassPhrase, showValidation, showCreateWallet, hasWallet, currentView]);
+  }, [showLandingPage, showWalletChoice, showPassPhrase, showCreateWallet, hasWallet, currentView]);
   
   const getTransitionClass = () => {
     const baseClass = "w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg overflow-hidden transition-effect";
@@ -105,7 +85,6 @@ const WalletApp: React.FC = () => {
       if (previousView === 'landing') return <LandingPage />;
       if (previousView === 'choice') return <WalletChoice />;
       if (previousView === 'passphrase') return <PassPhrase />;
-      if (previousView === 'validation') return <SeedPhraseValidation />;
       if (previousView === 'create') return <GenerateWallet />;
       if (previousView === 'wallet') return <WalletView />;
     }
@@ -114,7 +93,6 @@ const WalletApp: React.FC = () => {
     if (currentView === 'landing') return <LandingPage />;
     if (currentView === 'choice') return <WalletChoice />;
     if (currentView === 'passphrase') return <PassPhrase />;
-    if (currentView === 'validation') return <SeedPhraseValidation />;
     if (currentView === 'create') return <GenerateWallet />;
     if (currentView === 'wallet') return <WalletView />;
     
