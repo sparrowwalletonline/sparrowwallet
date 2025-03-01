@@ -1,10 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Check, AlertCircle } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import { useToast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { Input } from '@/components/ui/input';
 import Header from '@/components/Header';
 
 const SeedPhraseValidation: React.FC = () => {
@@ -128,19 +128,21 @@ const SeedPhraseValidation: React.FC = () => {
             <h3 className="text-xl font-bold mb-6 text-white">Gib die folgenden Wörter ein:</h3>
             {wordIndices.map((wordIndex, index) => (
               <div key={index} className="space-y-3 mb-8">
-                <label className="block text-white text-lg font-bold">Wort Nr. {wordIndex + 1}</label>
-                <div className="relative">
-                  <Input
-                    value={inputValues[index]}
-                    onChange={(e) => handleInputChange(index, e.target.value)}
-                    className="bg-white text-black text-xl"
-                    placeholder={`Gib das ${wordIndex + 1}. Wort ein`}
-                    autoComplete="off"
-                    style={{
-                      boxShadow: '0 0 0 4px rgba(34, 197, 94, 0.2), 0 4px 16px rgba(0, 0, 0, 0.3)'
-                    }}
-                  />
-                </div>
+                <label htmlFor={`word-${index}`} className="block text-white text-lg font-bold">
+                  Wort Nr. {wordIndex + 1}
+                </label>
+                <input
+                  id={`word-${index}`}
+                  type="text"
+                  value={inputValues[index]}
+                  onChange={(e) => handleInputChange(index, e.target.value)}
+                  className="flex h-16 w-full rounded-lg border-4 border-green-500 bg-white text-black px-6 py-4 text-xl font-medium focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-offset-2"
+                  placeholder={`Gib das ${wordIndex + 1}. Wort ein`}
+                  autoComplete="off"
+                  style={{
+                    boxShadow: '0 0 0 4px rgba(34, 197, 94, 0.2), 0 4px 16px rgba(0, 0, 0, 0.3)'
+                  }}
+                />
               </div>
             ))}
           </div>
