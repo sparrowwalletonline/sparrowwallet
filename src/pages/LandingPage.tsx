@@ -127,7 +127,7 @@ const LandingPage: React.FC = () => {
                 </div>
               </div>
               
-              <div>
+              <div className="border-b border-gray-100 pb-4 mb-4">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 rounded-full bg-orange-400 flex items-center justify-center text-white">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -144,6 +144,54 @@ const LandingPage: React.FC = () => {
                   <SupportedFeature label="Swap" supported={false} />
                   <SupportedFeature label="Earn" supported={false} />
                   <SupportedFeature label="dApps" supported={false} />
+                </div>
+              </div>
+              
+              <div className="border-b border-gray-100 pb-4 mb-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2L3 12l9 4.5L21 12 12 2z" fill="#5064FB"/>
+                      <path d="M12 22.5l9-5.3-9-4.5-9 4.5 9 5.3z" fill="#5064FB"/>
+                      <path d="M12 2v7l9 3-9-10z" fill="#6C78F1" fillOpacity=".8"/>
+                      <path d="M12 2L3 12l9-3V2z" fill="#5064FB" fillOpacity=".5"/>
+                      <path d="M12 16.5v6l9-5.3-9-.7z" fill="#6C78F1" fillOpacity=".8"/>
+                      <path d="M12 22.5v-6l-9-.7 9 6.7z" fill="#5064FB" fillOpacity=".5"/>
+                    </svg>
+                  </div>
+                  <span className="font-semibold">Cosmos (ATOM)</span>
+                </div>
+                
+                <div className="space-y-2 ml-13">
+                  <SupportedFeature label="Buy" supported={true} />
+                  <SupportedFeature label="Sell" supported={true} />
+                  <SupportedFeature label="Swap" supported={false} />
+                  <SupportedFeature label="Earn" supported={true} />
+                  <SupportedFeature label="dApps" supported={false} />
+                </div>
+              </div>
+              
+              <div className="border-b border-gray-100 pb-4 mb-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M11.999 0L11.798 0.675V16.4236L11.999 16.6236L19.364 12.3171L11.999 0Z" fill="#343434"/>
+                      <path d="M11.999 0L4.63599 12.3171L11.999 16.6236V8.8927V0Z" fill="#8C8C8C"/>
+                      <path d="M11.999 18.0319L11.8862 18.1688V23.7944L11.999 24.0001L19.3689 13.7283L11.999 18.0319Z" fill="#3C3C3B"/>
+                      <path d="M11.999 24.0001V18.0319L4.63599 13.7283L11.999 24.0001Z" fill="#8C8C8C"/>
+                      <path d="M11.999 16.6236L19.364 12.3171L11.999 8.8927V16.6236Z" fill="#141414"/>
+                      <path d="M4.63599 12.3171L11.999 16.6236V8.8927L4.63599 12.3171Z" fill="#393939"/>
+                    </svg>
+                  </div>
+                  <span className="font-semibold">Ethereum (ETH)</span>
+                </div>
+                
+                <div className="space-y-2 ml-13">
+                  <SupportedFeature label="Buy" supported={true} />
+                  <SupportedFeature label="Sell" supported={true} />
+                  <SupportedFeature label="Swap" supported={true} />
+                  <SupportedFeature label="Earn" supported={true} />
+                  <SupportedFeature label="dApps" supported={true} />
                 </div>
               </div>
             </div>
