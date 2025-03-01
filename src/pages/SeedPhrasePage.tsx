@@ -1,14 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Shield, Check, ArrowLeft } from 'lucide-react';
+import { Shield, Check, ArrowLeft, LogIn } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import { useToast } from '@/components/ui/use-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import SeedPhraseGenerator from '@/components/SeedPhraseGenerator';
 
 const SeedPhrasePage: React.FC = () => {
-  const { seedPhrase, cancelWalletCreation } = useWallet();
+  const { seedPhrase, cancelWalletCreation, session } = useWallet();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [savedPhrase, setSavedPhrase] = useState(false);
@@ -47,6 +47,18 @@ const SeedPhrasePage: React.FC = () => {
       
       <div className="w-full text-center mt-6">
         <h1 className="font-heading text-xl font-medium">Wallet erstellen</h1>
+        {!session && (
+          <div className="mt-2 text-sm text-wallet-gray">
+            <span>Melde dich an, um deine Seed Phrase in der Cloud zu sichern </span>
+            <Link 
+              to="/auth" 
+              className="text-wallet-blue hover:underline inline-flex items-center"
+            >
+              <LogIn size={14} className="mr-1" />
+              Anmelden
+            </Link>
+          </div>
+        )}
       </div>
       
       <div className="flex-1 flex flex-col items-center justify-center py-6">

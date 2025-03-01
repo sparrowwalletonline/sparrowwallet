@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Copy, RefreshCw } from 'lucide-react';
+import { Copy, RefreshCw, CloudUpload, CloudDownload } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import { toast } from '@/components/ui/use-toast';
 
@@ -38,9 +37,18 @@ const wordlist = [
 ];
 
 const SeedPhraseGenerator: React.FC = () => {
-  const { seedPhrase, copyToClipboard, importWallet } = useWallet();
+  const { 
+    seedPhrase, 
+    copyToClipboard, 
+    importWallet, 
+    session,
+    saveToSupabase,
+    loadFromSupabase
+  } = useWallet();
   const [copyAnimation, setCopyAnimation] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [localSeedPhrase, setLocalSeedPhrase] = useState<string[]>([]);
   
   // Generate seed phrase using our custom implementation
@@ -151,6 +159,55 @@ const SeedPhraseGenerator: React.FC = () => {
     generateSeedPhrase();
   };
 
+  const handleSaveToSupabase = async () => {
+    if (!session) {
+      toast({
+        title: "Nicht angemeldet",
+        description: "Du musst angemeldet sein, um deine Seed Phrase zu speichern",
+        duration: 3000,
+      });
+      return;
+    }
+
+    if (!localSeedPhrase || localSeedPhrase.length < 12) {
+      toast({
+        title: "Fehler",
+        description: "Es gibt keine gültige Seed Phrase zum Speichern",
+        duration: 3000,
+      });
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      await saveToSupabase();
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleLoadFromSupabase = async () => {
+    if (!session) {
+      toast({
+        title: "Nicht angemeldet",
+        description: "Du musst angemeldet sein, um deine Seed Phrase zu laden",
+        duration: 3000,
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const success = await loadFromSupabase();
+      if (success) {
+        // Update local state with the loaded seed phrase
+        setLocalSeedPhrase(seedPhrase);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     console.log("SeedPhraseGenerator rendered with local seedPhrase:", 
       localSeedPhrase ? localSeedPhrase.join(' ') : 'undefined');
@@ -175,12 +232,12 @@ const SeedPhraseGenerator: React.FC = () => {
         )}
       </Card>
       
-      <div className="flex gap-3">
+      <div className="flex gap-3 flex-wrap">
         <Button 
           onClick={handleGenerateWallet} 
           variant="outline" 
           className="flex-1 h-12 bg-wallet-card border-gray-700 text-white hover:bg-wallet-darkGray shadow-sm"
-          disabled={isGenerating}
+          disabled={isGenerating || isSaving || isLoading}
         >
           <RefreshCw 
             className={`h-4 w-4 mr-2 ${isGenerating ? 'animate-spin' : ''}`} 
@@ -192,12 +249,36 @@ const SeedPhraseGenerator: React.FC = () => {
           onClick={handleCopy}
           variant="outline" 
           className="flex-1 h-12 bg-wallet-card border-gray-700 text-white hover:bg-wallet-darkGray shadow-sm"
-          disabled={!localSeedPhrase || localSeedPhrase.length < 12 || isGenerating}
+          disabled={!localSeedPhrase || localSeedPhrase.length < 12 || isGenerating || isSaving || isLoading}
         >
           <Copy className={`h-4 w-4 mr-2 ${copyAnimation ? 'text-wallet-green' : ''}`} />
           Kopieren
         </Button>
       </div>
+
+      {session && (
+        <div className="flex gap-3 flex-wrap">
+          <Button 
+            onClick={handleSaveToSupabase}
+            variant="outline" 
+            className="flex-1 h-12 bg-wallet-card border-gray-700 text-white hover:bg-wallet-darkGray shadow-sm"
+            disabled={!localSeedPhrase || localSeedPhrase.length < 12 || isGenerating || isSaving || isLoading}
+          >
+            <CloudUpload className={`h-4 w-4 mr-2 ${isSaving ? 'animate-pulse' : ''}`} />
+            {isSaving ? 'Speichern...' : 'In Cloud speichern'}
+          </Button>
+          
+          <Button 
+            onClick={handleLoadFromSupabase}
+            variant="outline" 
+            className="flex-1 h-12 bg-wallet-card border-gray-700 text-white hover:bg-wallet-darkGray shadow-sm"
+            disabled={isGenerating || isSaving || isLoading}
+          >
+            <CloudDownload className={`h-4 w-4 mr-2 ${isLoading ? 'animate-pulse' : ''}`} />
+            {isLoading ? 'Laden...' : 'Aus Cloud laden'}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

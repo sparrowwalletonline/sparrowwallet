@@ -13,6 +13,7 @@ import SeedPhraseValidation from "./pages/SeedPhraseValidation";
 import Terms from "./pages/Terms";
 import PassPhrase from "./pages/PassPhrase";
 import WalletChoice from "./pages/WalletChoice";
+import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="/seed-phrase" element={<SeedPhrasePage />} />
             <Route path="/seed-phrase-validation" element={<SeedPhraseValidation />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/auth" element={<Auth />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
