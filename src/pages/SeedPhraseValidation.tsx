@@ -6,6 +6,7 @@ import { useWallet } from '@/contexts/WalletContext';
 import { useToast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
+import Header from '@/components/Header';
 
 const SeedPhraseValidation: React.FC = () => {
   const { seedPhrase, createWallet, cancelWalletCreation } = useWallet();
@@ -80,18 +81,15 @@ const SeedPhraseValidation: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-wallet-darkBg text-white p-6 animate-fade-in">
-      <div className="absolute top-6 left-6">
+      <div className="w-full relative">
+        <Header title="Passphrase bestätigen" />
         <button 
           onClick={handleBackClick}
-          className="text-white hover:text-gray-300 transition-colors"
+          className="absolute left-4 top-0 bottom-0 my-auto text-white hover:text-gray-300 transition-colors h-9 w-9 flex items-center justify-center"
           aria-label="Zurück"
         >
           <ArrowLeft size={24} />
         </button>
-      </div>
-      
-      <div className="w-full text-center mt-6">
-        <h1 className="font-heading text-xl font-medium">Passphrase bestätigen</h1>
       </div>
       
       <div className="flex-1 flex flex-col items-center justify-center py-6">
