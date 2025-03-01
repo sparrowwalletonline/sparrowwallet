@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { WalletProvider, useWallet } from '@/contexts/WalletContext';
 import LandingPage from './LandingPage';
 import GenerateWallet from './GenerateWallet';
@@ -9,14 +9,50 @@ import WalletChoice from './WalletChoice';
 // Wrapper component to handle view switching
 const WalletApp: React.FC = () => {
   const { hasWallet, seedPhrase } = useWallet();
+  const [currentView, setCurrentView] = useState<string>('');
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Determine which view to show
   const showLandingPage = seedPhrase.length === 0;
   const showWalletChoice = seedPhrase.length === 1; // Special case for our flow
   const showCreateWallet = !hasWallet && seedPhrase.length > 1;
   
+  useEffect(() => {
+    // Determine the current view based on state
+    let newView = '';
+    if (showLandingPage) newView = 'landing';
+    else if (showWalletChoice) newView = 'choice';
+    else if (showCreateWallet) newView = 'create';
+    else if (hasWallet) newView = 'wallet';
+
+    // Only trigger transition if view actually changes
+    if (newView !== currentView && currentView !== '') {
+      setIsTransitioning(true);
+      
+      // After a short delay, update to the new view
+      const timer = setTimeout(() => {
+        setCurrentView(newView);
+        setIsTransitioning(false);
+      }, 300);
+      
+      return () => clearTimeout(timer);
+    } else {
+      setCurrentView(newView);
+    }
+  }, [showLandingPage, showWalletChoice, showCreateWallet, hasWallet, currentView]);
+  
+  const getTransitionClasses = () => {
+    let baseClasses = "w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg overflow-hidden slide-transition";
+    
+    if (isTransitioning) {
+      return `${baseClasses} slide-transition-exit`;
+    }
+    
+    return baseClasses;
+  };
+
   return (
-    <div className="slide-transition w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg overflow-hidden">
+    <div className={getTransitionClasses()}>
       {showLandingPage && <LandingPage />}
       {showWalletChoice && <WalletChoice />}
       {showCreateWallet && <GenerateWallet />}
