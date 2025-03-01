@@ -25,14 +25,14 @@ const LandingPage: React.FC = () => {
       
       <div className="flex-1 flex flex-col p-6">
         <div className="space-y-4 mb-8">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 leading-tight">
+          <h1 className="text-4xl font-heading font-bold tracking-tight text-gray-900 leading-tight">
             True crypto ownership.
             <br />
             Powerful Web3
             <br />
             experiences
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg font-sans text-gray-600">
             Unlock the power of your cryptocurrency assets and explore the world of Web3 with Trusty Wallet.
           </p>
         </div>
@@ -54,11 +54,11 @@ const LandingPage: React.FC = () => {
         
         <div className="mt-12 flex justify-between">
           <div className="text-center">
-            <div className="text-blue-500 font-bold text-2xl">140M</div>
+            <div className="text-blue-500 font-heading font-bold text-2xl">140M</div>
             <div className="text-gray-600">people</div>
           </div>
           <div className="text-center">
-            <div className="text-blue-500 font-bold text-2xl">2017</div>
+            <div className="text-blue-500 font-heading font-bold text-2xl">2017</div>
             <div className="text-gray-600">Founded in</div>
           </div>
         </div>
