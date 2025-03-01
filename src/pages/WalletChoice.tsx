@@ -66,7 +66,7 @@ const WalletChoice: React.FC = () => {
       
       <button 
         onClick={handleBackClick}
-        className="absolute top-6 left-6 text-white hover:text-gray-300 transition-colors"
+        className="absolute top-4 left-4 text-white hover:text-gray-300 transition-colors h-9 w-9 flex items-center justify-center"
         aria-label="Back to landing page"
       >
         <ArrowLeft size={24} />

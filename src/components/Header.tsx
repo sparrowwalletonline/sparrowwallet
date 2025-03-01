@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -94,7 +95,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
 
   return (
     <header className="flex justify-between items-center py-4 px-4 w-full">
-      <div className="w-9"></div> {/* Empty div for spacing to maintain alignment */}
+      <div className="w-9 h-9 flex items-center justify-center"></div> {/* Empty div with height and centered content */}
       
       <h1 className="text-lg font-semibold text-white">{title}</h1>
       
