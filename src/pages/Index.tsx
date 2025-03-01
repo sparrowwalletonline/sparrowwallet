@@ -23,6 +23,16 @@ const WalletApp: React.FC = () => {
   const showValidation = seedPhrase.length === 3; // New state for validation page
   const showCreateWallet = !hasWallet && seedPhrase.length > 3;
   
+  console.log("Current state in Index:", { 
+    hasWallet, 
+    seedPhraseLength: seedPhrase.length,
+    showLandingPage,
+    showWalletChoice,
+    showPassPhrase,
+    showValidation,
+    showCreateWallet
+  });
+  
   useEffect(() => {
     // Determine the current view based on state
     let newView = '';
@@ -32,6 +42,8 @@ const WalletApp: React.FC = () => {
     else if (showValidation) newView = 'validation';
     else if (showCreateWallet) newView = 'create';
     else if (hasWallet) newView = 'wallet';
+
+    console.log("Switching to view:", newView);
 
     // Only change direction if view actually changes
     if (newView !== currentView && currentView !== '') {

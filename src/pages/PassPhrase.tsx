@@ -6,7 +6,7 @@ import { useWallet } from '@/contexts/WalletContext';
 import { useNavigate } from 'react-router-dom';
 
 const PassPhrase: React.FC = () => {
-  const { createWallet, cancelWalletCreation } = useWallet();
+  const { createWallet, cancelWalletCreation, importWallet } = useWallet();
   const navigate = useNavigate();
   
   const handleBackClick = () => {
@@ -15,11 +15,15 @@ const PassPhrase: React.FC = () => {
   };
   
   const handleCreatePassphrase = () => {
-    // Set the seedPhrase length to 3 to trigger validation page
-    // We'll use a special array with 3 items to indicate validation stage
-    const { importWallet } = useWallet();
-    importWallet("validation validation validation");
-    navigate('/seed-phrase');
+    console.log("Generating seed phrase");
+    // Create a real 12-word seed phrase
+    createWallet();
+    
+    // Wait a short time for the seed phrase to be generated before navigating
+    setTimeout(() => {
+      console.log("Navigating to validation page");
+      navigate('/seed-phrase');
+    }, 500);
   };
   
   return (

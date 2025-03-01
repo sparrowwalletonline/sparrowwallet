@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Shield, Check, ArrowLeft } from 'lucide-react';
@@ -8,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import SeedPhraseGenerator from '@/components/SeedPhraseGenerator';
 
 const SeedPhrasePage: React.FC = () => {
-  const { cancelWalletCreation, importWallet } = useWallet();
+  const { cancelWalletCreation } = useWallet();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [savedPhrase, setSavedPhrase] = useState(false);
@@ -16,9 +15,6 @@ const SeedPhrasePage: React.FC = () => {
   
   const handleConfirm = () => {
     if (savedPhrase && agreedToTerms) {
-      // Set seedPhrase to length 3 to trigger validation page
-      importWallet("validation validation validation");
-      
       toast({
         title: "Seed phrase confirmed!",
         description: "Let's validate your phrase...",

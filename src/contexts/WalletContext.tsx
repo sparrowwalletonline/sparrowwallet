@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import * as bip39 from 'bip39';
@@ -93,6 +94,18 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         if (newSeedPhrase && newSeedPhrase.length >= 12) {
           setSeedPhrase([...newSeedPhrase]);
           console.log("Seed phrase set in WalletContext:", newSeedPhrase.join(' '));
+          // Immediately mark wallet as created instead of waiting for useEffect
+          setHasWallet(true);
+          
+          const simulatedBtcBalance = 0.01;
+          setBtcBalance(simulatedBtcBalance);
+          
+          const calculatedUsdBalance = simulatedBtcBalance * btcPrice;
+          setUsdBalance(calculatedUsdBalance);
+          
+          setWalletAddress(generateBtcAddress());
+          
+          setBalance(Math.random() * 10);
         } else {
           console.error("Generated seed phrase is invalid in WalletContext:", newSeedPhrase);
         }
@@ -149,8 +162,10 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   useEffect(() => {
     console.log("Seed phrase updated in WalletContext:", seedPhrase ? seedPhrase.join(' ') : 'undefined');
+    console.log("Seed phrase length:", seedPhrase.length);
     
     if (seedPhrase && seedPhrase.length >= 12) {
+      console.log("Valid seed phrase detected with 12+ words, setting hasWallet to true");
       setHasWallet(true);
       
       const simulatedBtcBalance = 0.01;
