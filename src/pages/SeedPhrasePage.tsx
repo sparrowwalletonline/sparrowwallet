@@ -9,11 +9,12 @@ import SeedPhraseGenerator from '@/components/SeedPhraseGenerator';
 import Header from '@/components/Header';
 
 const SeedPhrasePage: React.FC = () => {
-  const { seedPhrase, cancelWalletCreation, session } = useWallet();
+  const { seedPhrase, cancelWalletCreation, session, saveToSupabase } = useWallet();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [savedPhrase, setSavedPhrase] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [autoSaved, setAutoSaved] = useState(false);
   
   // Pre-fill checkboxes if coming back from validation page
   useEffect(() => {
@@ -22,6 +23,29 @@ const SeedPhrasePage: React.FC = () => {
       setAgreedToTerms(true);
     }
   }, [seedPhrase]);
+
+  // Auto-save to Supabase if user is logged in
+  useEffect(() => {
+    const autoSaveToCloud = async () => {
+      if (session && seedPhrase && seedPhrase.length >= 12 && !autoSaved) {
+        try {
+          const saved = await saveToSupabase();
+          if (saved) {
+            setAutoSaved(true);
+            toast({
+              title: "Automatisch gespeichert",
+              description: "Deine Seed Phrase wurde automatisch in der Cloud gesichert",
+              duration: 3000,
+            });
+          }
+        } catch (error) {
+          console.error("Error auto-saving to Supabase:", error);
+        }
+      }
+    };
+
+    autoSaveToCloud();
+  }, [session, seedPhrase, saveToSupabase, autoSaved, toast]);
   
   const handleConfirm = () => {
     if (savedPhrase && agreedToTerms) {
