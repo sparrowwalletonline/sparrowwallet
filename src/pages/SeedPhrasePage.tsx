@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import SeedPhraseGenerator from '@/components/SeedPhraseGenerator';
 
 const SeedPhrasePage: React.FC = () => {
-  const { cancelWalletCreation } = useWallet();
+  const { cancelWalletCreation, importWallet } = useWallet();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [savedPhrase, setSavedPhrase] = useState(false);
@@ -16,16 +16,17 @@ const SeedPhrasePage: React.FC = () => {
   
   const handleConfirm = () => {
     if (savedPhrase && agreedToTerms) {
-      // In a real app, you would proceed to the next step here
+      // Set seedPhrase to length 3 to trigger validation page
+      importWallet("validation validation validation");
+      
       toast({
         title: "Seed phrase confirmed!",
-        description: "Your wallet is being created...",
+        description: "Let's validate your phrase...",
         duration: 2000,
       });
-      // Navigate to the home page for now since wallet-view doesn't exist
-      setTimeout(() => {
-        navigate('/');
-      }, 1500);
+      
+      // Navigate to validation page
+      navigate('/');
     }
   };
   

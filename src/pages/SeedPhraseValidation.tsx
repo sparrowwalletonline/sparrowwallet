@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,7 +10,7 @@ import { motion } from 'framer-motion';
 const SeedPhraseValidation: React.FC = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { seedPhrase } = useWallet();
+  const { seedPhrase, importWallet, createWallet } = useWallet();
   
   // State for validation
   const [wordIndices, setWordIndices] = useState<number[]>([]);
@@ -82,10 +81,14 @@ const SeedPhraseValidation: React.FC = () => {
         duration: 2000,
       });
       
-      // Navigate to the home or wallet page
+      // Move to the next stage by setting seedPhrase length to 4
+      // This will trigger the GenerateWallet component to be shown
+      importWallet("next next next next");
+      
+      // Initiate wallet creation with the actual seed phrase
       setTimeout(() => {
-        navigate('/');
-      }, 1500);
+        createWallet();
+      }, 500);
     }
   };
   

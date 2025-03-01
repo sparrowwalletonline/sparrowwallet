@@ -15,6 +15,10 @@ const PassPhrase: React.FC = () => {
   };
   
   const handleCreatePassphrase = () => {
+    // Set the seedPhrase length to 3 to trigger validation page
+    // We'll use a special array with 3 items to indicate validation stage
+    const { importWallet } = useWallet();
+    importWallet("validation validation validation");
     navigate('/seed-phrase');
   };
   
