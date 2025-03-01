@@ -1,14 +1,17 @@
 
 import React from 'react';
-import { Bell, Settings } from 'lucide-react';
+import { Bell, Settings, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
+import { useMenu } from '@/contexts/MenuContext';
 
 interface HeaderProps {
   title: string;
 }
 
 const Header: React.FC<HeaderProps> = ({ title }) => {
+  const { toggleMenu } = useMenu();
+
   return (
     <header className="flex justify-between items-center py-4 px-4 w-full">
       <Button 
@@ -26,9 +29,9 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
         variant="ghost" 
         size="icon" 
         className="rounded-full p-0 h-9 w-9 bg-wallet-card"
-        onClick={() => toast({ title: "Notifications", description: "No new notifications" })}
+        onClick={toggleMenu}
       >
-        <Bell className="h-5 w-5 text-gray-400" />
+        <Menu className="h-5 w-5 text-gray-400" />
       </Button>
     </header>
   );
