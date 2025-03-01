@@ -10,6 +10,7 @@ import WalletChoice from './WalletChoice';
 const WalletApp: React.FC = () => {
   const { hasWallet, seedPhrase } = useWallet();
   const [currentView, setCurrentView] = useState<string>('');
+  const [previousView, setPreviousView] = useState<string>('');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left'>('right');
 
@@ -26,55 +27,72 @@ const WalletApp: React.FC = () => {
     else if (showCreateWallet) newView = 'create';
     else if (hasWallet) newView = 'wallet';
 
-    // Set slide direction based on navigation flow
-    if (currentView === 'landing' && newView !== 'landing') {
-      setSlideDirection('right');
-    } else if (currentView !== 'landing' && newView === 'landing') {
-      setSlideDirection('left');
-    } else if (currentView === 'choice' && newView === 'create') {
-      setSlideDirection('right');
-    } else if (currentView === 'create' && newView === 'choice') {
-      setSlideDirection('left');
-    } else if (currentView === 'create' && newView === 'wallet') {
-      setSlideDirection('right');
-    }
-
-    // Only trigger transition if view actually changes
+    // Only change direction if view actually changes
     if (newView !== currentView && currentView !== '') {
+      // Set slide direction based on view flow
+      if (currentView === 'landing' && newView === 'choice') {
+        setSlideDirection('right');
+      } else if (currentView === 'choice' && newView === 'landing') {
+        setSlideDirection('left');
+      } else if (currentView === 'choice' && newView === 'create') {
+        setSlideDirection('right');
+      } else if (currentView === 'create' && newView === 'choice') {
+        setSlideDirection('left');
+      } else if (currentView === 'create' && newView === 'wallet') {
+        setSlideDirection('right');
+      } else if (currentView === 'wallet' && newView === 'landing') {
+        setSlideDirection('left');
+      }
+
+      setPreviousView(currentView);
       setIsTransitioning(true);
       
-      // After a short delay, update to the new view
+      // After a delay, update to the new view
       const timer = setTimeout(() => {
         setCurrentView(newView);
         setIsTransitioning(false);
-      }, 500); // 500ms for transition
+      }, 800); // Match transition duration in CSS
       
       return () => clearTimeout(timer);
-    } else {
+    } else if (currentView === '') {
+      // Initial load, no transition
       setCurrentView(newView);
     }
   }, [showLandingPage, showWalletChoice, showCreateWallet, hasWallet, currentView]);
   
-  const getTransitionClasses = () => {
-    let baseClasses = "w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg overflow-hidden slide-transition";
+  const getTransitionClass = () => {
+    const baseClass = "w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg overflow-hidden transition-effect";
     
     if (isTransitioning) {
       return slideDirection === 'right' 
-        ? `${baseClasses} slide-transition-exit`
-        : `${baseClasses} slide-transition-enter`;
+        ? `${baseClass} slide-out-left` 
+        : `${baseClass} slide-out-right`;
     }
     
-    return baseClasses;
+    return `${baseClass} slide-in`;
   };
 
-  return (
-    <div className={getTransitionClasses()}>
-      {showLandingPage && <LandingPage />}
-      {showWalletChoice && <WalletChoice />}
-      {showCreateWallet && <GenerateWallet />}
-      {hasWallet && <WalletView />}
-    </div>
-  );
+  // Determine which view to render
+  const renderView = () => {
+    // During transition, show the previous view
+    if (isTransitioning) {
+      if (previousView === 'landing') return <LandingPage />;
+      if (previousView === 'choice') return <WalletChoice />;
+      if (previousView === 'create') return <GenerateWallet />;
+      if (previousView === 'wallet') return <WalletView />;
+    }
+
+    // After transition, show the current view
+    if (currentView === 'landing') return <LandingPage />;
+    if (currentView === 'choice') return <WalletChoice />;
+    if (currentView === 'create') return <GenerateWallet />;
+    if (currentView === 'wallet') return <WalletView />;
+    
+    // Fallback
+    return <LandingPage />;
+  };
+
+  return <div className={getTransitionClass()}>{renderView()}</div>;
 };
 
 // Main component with provider
