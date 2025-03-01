@@ -8,6 +8,8 @@ import { MenuProvider } from "@/contexts/MenuContext";
 import MobileSidebar from "@/components/MobileSidebar";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import SeedPhrasePage from "./pages/SeedPhrasePage";
+import Terms from "./pages/Terms";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +23,8 @@ const App = () => (
           <MobileSidebar />
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/seed-phrase" element={<SeedPhrasePage />} />
+            <Route path="/terms" element={<Terms />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

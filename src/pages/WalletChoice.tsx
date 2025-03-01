@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
 import { useWallet } from '@/contexts/WalletContext';
 import { ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const WalletChoice: React.FC = () => {
   const { generateWallet, importWallet, cancelWalletCreation } = useWallet();
@@ -57,6 +58,15 @@ const WalletChoice: React.FC = () => {
         >
           Bestehende Wallet öffnen
         </Button>
+        
+        <Link to="/seed-phrase" className="w-full">
+          <Button 
+            variant="ghost" 
+            className="w-full py-2 text-base text-white hover:bg-gray-800/30"
+          >
+            Seed Phrase verwalten
+          </Button>
+        </Link>
       </div>
       
       <div className="text-center text-xs text-gray-500 mt-4">
