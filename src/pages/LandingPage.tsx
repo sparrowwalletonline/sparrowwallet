@@ -3,21 +3,34 @@ import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
 import { ArrowRight, Check, Menu, Star, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift, Coins, Wallet, Search, X } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
+import { useMenu } from '@/contexts/MenuContext';
+
 const LandingPage: React.FC = () => {
-  const {
-    generateWallet
-  } = useWallet();
+  const { generateWallet } = useWallet();
+  const { toggleMenu } = useMenu();
   const [searchQuery, setSearchQuery] = useState('');
+  
   const handleCreateWallet = () => {
     generateWallet();
   };
+  
+  const handleMenuClick = () => {
+    console.log('Landing page menu button clicked');
+    toggleMenu();
+  };
+  
   return <div className="min-h-screen flex flex-col bg-white text-gray-800">
       <header className="w-full p-6 flex justify-between items-center">
         <div className="flex items-center gap-2">
           <WalletLogo className="w-8 h-8" />
           <span className="font-heading text-xl font-bold">Trust Wallet</span>
         </div>
-        <Menu className="w-6 h-6 cursor-pointer text-gray-800" />
+        <button 
+          onClick={handleMenuClick}
+          className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-800"
+        >
+          <Menu className="w-6 h-6 cursor-pointer" />
+        </button>
       </header>
       
       <div className="flex-1 flex flex-col p-6">
@@ -302,6 +315,7 @@ const LandingPage: React.FC = () => {
       </div>
     </div>;
 };
+
 const FeatureCard = ({
   icon,
   title,
@@ -317,6 +331,7 @@ const FeatureCard = ({
       <p className="text-gray-600 text-sm">{description}</p>
     </div>;
 };
+
 const SecurityCard = ({
   title,
   description
@@ -329,6 +344,7 @@ const SecurityCard = ({
       <p className="text-blue-100 text-sm">{description}</p>
     </div>;
 };
+
 const AssetCard = ({
   icon,
   title,
@@ -362,6 +378,7 @@ const AssetCard = ({
       <p className="text-gray-600 text-sm">{description}</p>
     </div>;
 };
+
 const StepCard = ({
   number,
   title,
@@ -379,6 +396,7 @@ const StepCard = ({
       <p className="text-gray-600 text-sm">{description}</p>
     </div>;
 };
+
 const TestimonialCard = ({
   quote,
   author,
@@ -399,6 +417,7 @@ const TestimonialCard = ({
       </div>
     </div>;
 };
+
 const FAQItem = ({
   question,
   answer
@@ -423,6 +442,7 @@ const FAQItem = ({
         </div>}
     </div>;
 };
+
 const SupportedFeature = ({
   label,
   supported
@@ -439,4 +459,5 @@ const SupportedFeature = ({
         </div>}
     </div>;
 };
+
 export default LandingPage;
