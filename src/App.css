@@ -1,3 +1,4 @@
+
 /* Remove default styles */
 #root {
   max-width: 100%;
@@ -6,4 +7,26 @@
   text-align: left;
 }
 
-/* Remove other unnecessary styles */
+/* Trust Wallet specific styling */
+.trust-button {
+  background: linear-gradient(90deg, #3375BB 0%, #0EA5E9 100%);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(51, 117, 187, 0.2);
+}
+
+.trust-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(51, 117, 187, 0.3);
+}
+
+.feature-card {
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
