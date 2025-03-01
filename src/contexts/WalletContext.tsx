@@ -18,7 +18,6 @@ interface WalletContextType {
   importWallet: (phrase: string) => void;
   resetWallet: () => void;
   copyToClipboard: (text: string) => void;
-  isSetupMode: boolean;
 }
 
 // Create the context with default values
@@ -37,7 +36,6 @@ const WalletContext = createContext<WalletContextType>({
   importWallet: () => {},
   resetWallet: () => {},
   copyToClipboard: () => {},
-  isSetupMode: false,
 });
 
 // BIP39 word list (simplified for demo)
@@ -95,14 +93,12 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [usdBalance, setUsdBalance] = useState(0);
   const [walletAddress, setWalletAddress] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [isSetupMode, setIsSetupMode] = useState(false);
 
   // Generate a new wallet with a random seed phrase
   const generateWallet = () => {
-    // Set setup mode to true to show the setup page
-    setIsSetupMode(true);
-    // Use a placeholder for the seed phrase to trigger the setup UI flow
-    setSeedPhrase(['setup']);
+    // Just setting the seed phrase will trigger the appropriate UI
+    // via the seedPhrase length check in Index.tsx
+    setSeedPhrase(['word']);
   };
 
   // Actually create the wallet with a full seed phrase
@@ -114,14 +110,12 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       const newSeedPhrase = generateSeedPhrase();
       setSeedPhrase(newSeedPhrase);
       setIsGenerating(false);
-      setIsSetupMode(false);
     }, 500);
   };
 
   // Cancel wallet creation process
   const cancelWalletCreation = () => {
     setSeedPhrase([]);
-    setIsSetupMode(false);
   };
 
   // Import an existing wallet using a provided seed phrase
@@ -203,8 +197,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       cancelWalletCreation,
       importWallet,
       resetWallet,
-      copyToClipboard,
-      isSetupMode
+      copyToClipboard
     }}>
       {children}
     </WalletContext.Provider>

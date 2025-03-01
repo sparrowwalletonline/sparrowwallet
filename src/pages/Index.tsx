@@ -5,23 +5,20 @@ import LandingPage from './LandingPage';
 import GenerateWallet from './GenerateWallet';
 import WalletView from './WalletView';
 import WalletChoice from './WalletChoice';
-import WalletSetup from './WalletSetup';
 
 // Wrapper component to handle view switching
 const WalletApp: React.FC = () => {
-  const { hasWallet, seedPhrase, isSetupMode } = useWallet();
+  const { hasWallet, seedPhrase } = useWallet();
 
   // Determine which view to show
   const showLandingPage = seedPhrase.length === 0;
-  const showWalletChoice = seedPhrase.length === 1 && !isSetupMode; // Special case for our flow
-  const showWalletSetup = isSetupMode && seedPhrase.length === 1;
-  const showGenerateWallet = !hasWallet && seedPhrase.length > 1 && !isSetupMode;
+  const showWalletChoice = seedPhrase.length === 1; // Special case for our flow
+  const showGenerateWallet = !hasWallet && seedPhrase.length > 1;
   
   return (
     <div className="slide-transition w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg overflow-hidden">
       {showLandingPage && <LandingPage />}
       {showWalletChoice && <WalletChoice />}
-      {showWalletSetup && <WalletSetup />}
       {showGenerateWallet && <GenerateWallet />}
       {hasWallet && <WalletView />}
     </div>
