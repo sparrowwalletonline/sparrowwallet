@@ -19,6 +19,7 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-md hover:shadow-lg hover:-translate-y-0.5",
         ghost: "hover:bg-accent hover:text-accent-foreground hover:shadow-sm hover:-translate-y-0.5",
         link: "text-[#0500ff] underline-offset-4 hover:underline",
+        wallet: "bg-green-600 text-primary-foreground hover:bg-green-700 shadow-md hover:shadow-lg hover:-translate-y-0.5",
       },
       size: {
         default: "h-10 px-4 py-2",
