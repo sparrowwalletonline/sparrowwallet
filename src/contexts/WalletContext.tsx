@@ -63,7 +63,7 @@ const generateSeedPhrase = (): string[] => {
   try {
     // Generate a random mnemonic (128-256 bits)
     const mnemonic = bip39.generateMnemonic(128); // 128 bits = 12 words
-    console.log("Generated mnemonic:", mnemonic);
+    console.log("Generated BIP39 mnemonic:", mnemonic);
     return mnemonic.split(' ');
   } catch (error) {
     console.error("Error generating seed phrase:", error);
@@ -107,13 +107,17 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         
         // Only set the seed phrase after we've confirmed it was generated
         if (newSeedPhrase.length >= 12) {
-          setSeedPhrase([...newSeedPhrase]); // Create a new array reference to ensure re-render
+          setSeedPhrase(newSeedPhrase); // Set the new seed phrase
+          console.log("Seed phrase set in WalletContext:", newSeedPhrase);
+          
           toast({
             title: "Seed phrase generated",
             description: "New seed phrase has been created successfully.",
             duration: 2000,
           });
         } else {
+          console.error("Generated seed phrase is too short:", newSeedPhrase);
+          
           toast({
             title: "Error",
             description: "Failed to generate a valid seed phrase. Please try again.",
@@ -123,6 +127,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         }
       } catch (error) {
         console.error("Error in createWallet:", error);
+        
         toast({
           title: "Error",
           description: "An error occurred while creating the wallet.",
@@ -187,7 +192,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     
     // In a real app, we would validate the seed phrase here
     // For this demo, we'll just set hasWallet if there's a seed phrase with 12+ words
-    if (seedPhrase.length >= 12) {
+    if (seedPhrase && seedPhrase.length >= 12) {
       setHasWallet(true);
       
       // Simulate values

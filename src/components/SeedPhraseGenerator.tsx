@@ -38,7 +38,7 @@ const SeedPhraseGenerator: React.FC = () => {
   return (
     <div className="flex flex-col gap-6 w-full animate-fade-in">
       <Card className="p-4 border border-gray-700 bg-wallet-card shadow-md rounded-xl">
-        {seedPhrase.length >= 12 ? (
+        {seedPhrase && seedPhrase.length >= 12 ? (
           <div className="grid grid-cols-3 gap-2 text-left">
             {seedPhrase.map((word, i) => (
               <div key={i} className="flex items-center">
@@ -71,7 +71,7 @@ const SeedPhraseGenerator: React.FC = () => {
           onClick={handleCopy}
           variant="outline" 
           className="flex-1 h-12 bg-wallet-card border-gray-700 text-white hover:bg-wallet-darkGray shadow-sm"
-          disabled={seedPhrase.length < 12 || isGenerating}
+          disabled={!seedPhrase || seedPhrase.length < 12 || isGenerating}
         >
           <Copy className={`h-4 w-4 mr-2 ${copyAnimation ? 'text-wallet-green' : ''}`} />
           Kopieren

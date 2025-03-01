@@ -18,9 +18,11 @@ const SeedPhrasePage: React.FC = () => {
   
   // Generate a seed phrase on component mount if one doesn't exist
   useEffect(() => {
-    if (seedPhrase.length < 12) { // If we don't have a real seed phrase yet
-      console.log("Generating initial BIP39 seed phrase...");
+    if (!seedPhrase || seedPhrase.length < 12) { // If we don't have a real seed phrase yet
+      console.log("Generating initial BIP39 seed phrase in SeedPhrasePage...");
       createWallet(); // Generate the seed phrase immediately when component mounts
+    } else {
+      console.log("Seed phrase already exists:", seedPhrase);
     }
   }, []);
   
@@ -33,7 +35,7 @@ const SeedPhrasePage: React.FC = () => {
   };
   
   const handleCopy = () => {
-    if (seedPhrase.length >= 12) {
+    if (seedPhrase && seedPhrase.length >= 12) {
       const phraseText = seedPhrase.join(' ');
       copyToClipboard(phraseText);
       setCopyAnimation(true);
