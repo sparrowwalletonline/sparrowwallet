@@ -3,7 +3,6 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
-import WalletLogo from '@/components/WalletLogo';
 
 const PassPhrase: React.FC = () => {
   const { createWallet, cancelWalletCreation } = useWallet();
@@ -33,7 +32,11 @@ const PassPhrase: React.FC = () => {
       </div>
       
       <div className="flex-1 flex flex-col items-center justify-center">
-        <WalletLogo className="w-32 h-32 mb-8" color="green" />
+        <img 
+          src="/lovable-uploads/592e4215-1f4a-4c0d-a1e9-504a24191442.png" 
+          alt="Wallet Logo" 
+          className="w-32 h-32 mb-8"
+        />
       </div>
       
       <div className="w-full max-w-xs text-left mb-6">
