@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Check, AlertCircle } from 'lucide-react';
@@ -124,15 +125,15 @@ const SeedPhraseValidation: React.FC = () => {
             </div>
           </div>
           
-          <div className="space-y-5 bg-wallet-card p-5 rounded-lg border-2 border-green-500/30">
+          <div className="space-y-5 bg-wallet-card p-6 rounded-lg border-2 border-green-500">
             <h3 className="text-lg font-semibold mb-4 text-white">Gib die folgenden Wörter ein:</h3>
             {wordIndices.map((wordIndex, index) => (
-              <div key={index} className="space-y-2 mb-4">
-                <label className="block text-wallet-gray font-medium">Wort Nr. {wordIndex + 1}</label>
+              <div key={index} className="space-y-2 mb-6">
+                <label className="block text-white font-semibold text-base">Wort Nr. {wordIndex + 1}</label>
                 <Input
                   value={inputValues[index]}
                   onChange={(e) => handleInputChange(index, e.target.value)}
-                  className="bg-white text-black w-full p-4 rounded-md text-base border-2 border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-500"
+                  className="bg-white text-black w-full p-4 text-base border-2 border-green-500/50 focus:border-green-500"
                   placeholder={`Gib das ${wordIndex + 1}. Wort ein`}
                   autoComplete="off"
                 />
@@ -147,7 +148,7 @@ const SeedPhraseValidation: React.FC = () => {
           <div className="flex flex-col space-y-3 pt-4">
             <Button 
               onClick={handleValidate}
-              className="w-full py-6 bg-green-600 hover:bg-green-700 text-white font-medium"
+              className="w-full py-6 bg-green-600 hover:bg-green-700 text-white font-medium text-base"
               disabled={inputValues.some(value => !value)}
             >
               Bestätigen
