@@ -6,7 +6,7 @@ import { Copy, RefreshCw } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 
 const SeedPhraseGenerator: React.FC = () => {
-  const { seedPhrase, isGenerating, generateWallet, copyToClipboard } = useWallet();
+  const { seedPhrase, isGenerating, createWallet, copyToClipboard } = useWallet();
   const [copyAnimation, setCopyAnimation] = useState(false);
   
   const handleCopy = () => {
@@ -16,9 +16,9 @@ const SeedPhraseGenerator: React.FC = () => {
     setTimeout(() => setCopyAnimation(false), 1500);
   };
 
-  // Create a proper handler function that doesn't pass the event to generateWallet
+  // Create a proper handler function that calls createWallet to generate a new seed phrase
   const handleGenerateWallet = () => {
-    generateWallet();
+    createWallet();
   };
 
   return (

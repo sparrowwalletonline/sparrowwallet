@@ -8,7 +8,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { Link } from 'react-router-dom';
 
 const SeedPhrasePage: React.FC = () => {
-  const { seedPhrase, generateWallet, copyToClipboard, cancelWalletCreation } = useWallet();
+  const { seedPhrase, createWallet, copyToClipboard, cancelWalletCreation } = useWallet();
   const { toast } = useToast();
   const [isGenerating, setIsGenerating] = useState(false);
   const [savedPhrase, setSavedPhrase] = useState(false);
@@ -24,7 +24,8 @@ const SeedPhrasePage: React.FC = () => {
   
   const handleRegeneratePhrase = () => {
     setIsGenerating(true);
-    generateWallet();
+    // Call createWallet directly to generate a new seed phrase
+    createWallet();
     setTimeout(() => {
       setIsGenerating(false);
     }, 600);
