@@ -94,6 +94,7 @@ const SeedPhraseGenerator: React.FC = () => {
   const handleCopy = () => {
     if (localSeedPhrase && localSeedPhrase.length >= 12) {
       const phraseText = localSeedPhrase.join(' ');
+      console.log("Copying to clipboard:", phraseText);
       copyToClipboard(phraseText);
       setCopyAnimation(true);
       setTimeout(() => setCopyAnimation(false), 1500);
@@ -101,6 +102,13 @@ const SeedPhraseGenerator: React.FC = () => {
       toast({
         title: "Copied!",
         description: "Seed phrase copied to clipboard",
+        duration: 2000,
+      });
+    } else {
+      console.error("Cannot copy: localSeedPhrase is invalid", localSeedPhrase);
+      toast({
+        title: "Error",
+        description: "Could not copy seed phrase",
         duration: 2000,
       });
     }
