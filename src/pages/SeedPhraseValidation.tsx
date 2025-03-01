@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Check, AlertCircle } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 
 const SeedPhraseValidation: React.FC = () => {
-  const { seedPhrase, createWallet, cancelWalletCreation } = useWallet();
+  const { seedPhrase, createWallet } = useWallet();
   const { toast } = useToast();
   const navigate = useNavigate();
   
@@ -17,41 +17,53 @@ const SeedPhraseValidation: React.FC = () => {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [attemptsLeft, setAttemptsLeft] = useState(3);
   
+  // Generate random word indices for validation
   useEffect(() => {
-    if (seedPhrase && seedPhrase.length >= 12) {
-      const indices = [];
-      while (indices.length < 3) {
-        const randomIndex = Math.floor(Math.random() * 12);
-        if (!indices.includes(randomIndex)) {
-          indices.push(randomIndex);
-        }
-      }
-      indices.sort((a, b) => a - b);
-      setWordIndices(indices);
-      console.log("Selected word indices for validation:", indices, "SeedPhrase length:", seedPhrase.length);
-    } else {
+    if (!seedPhrase || seedPhrase.length < 12) {
       console.error("SeedPhrase is missing or invalid:", seedPhrase);
+      navigate('/seed-phrase');
+      return;
     }
-  }, [seedPhrase]);
+    
+    console.log("Generating random indices from seed phrase. Seed phrase length:", seedPhrase.length);
+    
+    // Select 3 unique random indices from the seed phrase
+    const indices = [];
+    while (indices.length < 3) {
+      const randomIndex = Math.floor(Math.random() * 12);
+      if (!indices.includes(randomIndex)) {
+        indices.push(randomIndex);
+      }
+    }
+    indices.sort((a, b) => a - b);
+    setWordIndices(indices);
+    console.log("Selected word indices for validation:", indices);
+  }, [seedPhrase, navigate]);
   
-  const handleInputChange = (index: number, value: string) => {
+  // Handle input change for a word
+  const handleInputChange = useCallback((index: number, value: string) => {
     const newInputValues = [...inputValues];
     newInputValues[index] = value.trim().toLowerCase();
     setInputValues(newInputValues);
-    console.log("Input changed:", index, value, "New values:", newInputValues);
-  };
+    console.log(`Input ${index} changed to: "${value.trim().toLowerCase()}"`);
+  }, [inputValues]);
   
-  const handleValidate = () => {
-    console.log("Validating inputs:", inputValues);
-    console.log("Against seed phrase words:", wordIndices.map(i => seedPhrase[i]));
+  // Validate the entered words against the seed phrase
+  const handleValidate = useCallback(() => {
+    console.log("Starting validation process...");
+    console.log("Input values:", inputValues);
+    console.log("Expected words:", wordIndices.map(idx => seedPhrase[idx]));
     
     const isValid = wordIndices.every((wordIndex, index) => {
-      const match = inputValues[index] === seedPhrase[wordIndex];
-      console.log(`Comparing input ${index} (${inputValues[index]}) with word ${wordIndex} (${seedPhrase[wordIndex]}): ${match}`);
+      const expected = seedPhrase[wordIndex];
+      const actual = inputValues[index];
+      const match = actual === expected;
+      console.log(`Comparing word ${wordIndex+1}: expected="${expected}", actual="${actual}", match=${match}`);
       return match;
     });
     
     setIsCorrect(isValid);
+    console.log("Validation result:", isValid ? "Correct" : "Incorrect");
     
     if (isValid) {
       toast({
@@ -86,22 +98,22 @@ const SeedPhraseValidation: React.FC = () => {
         });
       }
     }
-  };
+  }, [wordIndices, inputValues, seedPhrase, attemptsLeft, toast, createWallet, navigate]);
   
-  const handleBackClick = () => {
+  const handleBackClick = useCallback(() => {
     navigate('/seed-phrase');
-  };
+  }, [navigate]);
   
-  const handleViewSeedPhrase = () => {
+  const handleViewSeedPhrase = useCallback(() => {
     navigate('/seed-phrase');
-  };
-
+  }, [navigate]);
+  
+  // Safety check - if no seed phrase is available, redirect
   if (!seedPhrase || seedPhrase.length < 12) {
-    console.error("SeedPhrase is missing or invalid, redirecting to seed-phrase page");
-    navigate('/seed-phrase');
+    console.error("No valid seed phrase available, redirecting...");
     return null;
   }
-
+  
   return (
     <div className="min-h-screen flex flex-col bg-wallet-darkBg text-white p-6 animate-fade-in">
       <div className="w-full relative">
@@ -138,7 +150,7 @@ const SeedPhraseValidation: React.FC = () => {
             </div>
           </div>
           
-          <div className="space-y-5 bg-green-900/30 p-6 rounded-xl shadow-lg border border-green-500">
+          <div className="space-y-5 bg-gray-800 p-6 rounded-xl shadow-lg border border-green-500">
             <h3 className="text-xl font-bold mb-4 text-white">Gib die folgenden Wörter ein:</h3>
             
             {wordIndices.map((wordIndex, index) => (
@@ -146,16 +158,14 @@ const SeedPhraseValidation: React.FC = () => {
                 <label className="block text-white text-lg font-bold mb-2">
                   Wort Nr. {wordIndex + 1}
                 </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={inputValues[index]}
-                    onChange={(e) => handleInputChange(index, e.target.value)}
-                    className="w-full h-14 bg-white text-black text-lg font-medium px-4 py-3 rounded-lg border-2 border-green-500 focus:border-green-400 focus:outline-none"
-                    placeholder={`Gib das ${wordIndex + 1}. Wort ein`}
-                    autoComplete="off"
-                  />
-                </div>
+                <input
+                  type="text"
+                  value={inputValues[index]}
+                  onChange={(e) => handleInputChange(index, e.target.value)}
+                  className="w-full h-14 bg-white text-black text-lg font-medium px-4 py-3 rounded-lg border-2 border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  placeholder={`Gib das ${wordIndex + 1}. Wort ein`}
+                  autoComplete="off"
+                />
               </div>
             ))}
           </div>
@@ -167,7 +177,8 @@ const SeedPhraseValidation: React.FC = () => {
           <div className="flex flex-col space-y-4 pt-6">
             <Button 
               onClick={handleValidate}
-              className="w-full py-6 text-lg bg-green-600 hover:bg-green-700 text-white font-bold"
+              variant="wallet"
+              className="w-full py-6 text-lg font-bold"
               disabled={inputValues.some(value => !value)}
             >
               Bestätigen
