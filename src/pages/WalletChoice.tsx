@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -13,6 +14,7 @@ const WalletChoice: React.FC = () => {
   const navigate = useNavigate();
   const [session, setSession] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isImportLoading, setIsImportLoading] = useState(false);
   
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -48,7 +50,12 @@ const WalletChoice: React.FC = () => {
   };
   
   const handleImportWallet = () => {
-    importWallet("dummy phrase to trigger import UI");
+    setIsImportLoading(true);
+    
+    setTimeout(() => {
+      importWallet("dummy phrase to trigger import UI");
+      setIsImportLoading(false);
+    }, 3000);
   };
 
   const handleBackClick = () => {
@@ -101,9 +108,16 @@ const WalletChoice: React.FC = () => {
           onClick={handleImportWallet}
           variant="ghost" 
           className="w-full py-2 text-base text-white hover:bg-gray-800/30"
-          disabled={isLoading}
+          disabled={isLoading || isImportLoading}
         >
-          Bestehende Wallet öffnen
+          {isImportLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 
+              Wallet wird geöffnet...
+            </>
+          ) : (
+            "Bestehende Wallet öffnen"
+          )}
         </Button>
       </div>
       

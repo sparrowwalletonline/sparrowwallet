@@ -144,14 +144,16 @@ const LandingPage: React.FC = () => {
   }, []);
   
   const handleCreateWallet = () => {
-    if (session) {
-      setIsLoading(true);
-      setTimeout(() => {
+    setIsLoading(true);
+    
+    setTimeout(() => {
+      if (session) {
         generateWallet();
-      }, 2000);
-    } else {
-      setShowRegistrationModal(true);
-    }
+      } else {
+        setIsLoading(false);
+        setShowRegistrationModal(true);
+      }
+    }, 3000);
   };
   
   const handleRegister = async (email, password) => {
