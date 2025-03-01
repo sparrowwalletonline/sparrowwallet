@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Check, AlertCircle } from 'lucide-react';
@@ -131,24 +130,26 @@ const SeedPhraseValidation: React.FC = () => {
             </div>
           </div>
           
-          {/* Word input fields */}
-          <div className="space-y-4">
+          {/* Word input fields - Improved visibility */}
+          <div className="space-y-5 bg-wallet-card p-5 rounded-lg">
+            <h3 className="text-lg font-semibold mb-2">Gib die folgenden Wörter ein:</h3>
             {wordIndices.map((wordIndex, index) => (
               <div key={index} className="space-y-2">
-                <label className="text-wallet-gray">Wort Nr.{wordIndex + 1}</label>
+                <label className="block text-wallet-gray font-medium">Wort Nr. {wordIndex + 1}</label>
                 <Input
                   value={inputValues[index]}
                   onChange={(e) => handleInputChange(index, e.target.value)}
-                  className="bg-gray-100 text-black w-full p-3 rounded-md"
-                  placeholder={`Gib das Wort ein`}
+                  className="bg-white text-black w-full p-4 rounded-md text-base border-2 border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-500"
+                  placeholder={`Gib das ${wordIndex + 1}. Wort ein`}
+                  autoComplete="off"
                 />
               </div>
             ))}
           </div>
           
           {/* Attempts counter */}
-          <div className="text-center text-wallet-gray text-sm">
-            Verbleibende Versuche: {attemptsLeft}
+          <div className="text-center text-wallet-gray text-sm font-medium">
+            Verbleibende Versuche: <span className="text-white">{attemptsLeft}</span>
           </div>
           
           <div className="flex flex-col space-y-3 pt-4">
