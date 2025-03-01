@@ -110,8 +110,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
     // Set up wallet with default values for demo
     setWalletAddress(generateBtcAddress());
-    setBtcBalance(1);
-    setUsdBalance(btcPrice);
+    setBtcBalance(0);
+    setUsdBalance(0);
     setHasWallet(true);
 
     toast({

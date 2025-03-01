@@ -14,7 +14,7 @@ const WalletApp: React.FC = () => {
   const showGenerateWallet = !hasWallet && seedPhrase.length > 0;
   
   return (
-    <div className="slide-transition max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg">
+    <div className="slide-transition w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg">
       {showLandingPage && <LandingPage />}
       {showGenerateWallet && <GenerateWallet />}
       {hasWallet && <WalletView />}
@@ -25,7 +25,7 @@ const WalletApp: React.FC = () => {
 // Main component with provider
 const Index: React.FC = () => {
   return (
-    <div className="min-h-screen bg-wallet-darkBg flex justify-center">
+    <div className="min-h-screen bg-wallet-darkBg flex justify-center w-full">
       <WalletProvider>
         <WalletApp />
       </WalletProvider>
