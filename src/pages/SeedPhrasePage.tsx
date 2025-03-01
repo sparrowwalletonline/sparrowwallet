@@ -24,7 +24,7 @@ const SeedPhrasePage: React.FC = () => {
       setTimeout(() => {
         console.log("Calling createWallet from SeedPhrasePage useEffect");
         createWallet();
-      }, 500);
+      }, 100); // Reduced delay to be more responsive
     } else {
       console.log("Seed phrase already exists:", seedPhrase);
     }
@@ -75,7 +75,7 @@ const SeedPhrasePage: React.FC = () => {
   
   // Debug log to track seed phrase
   useEffect(() => {
-    console.log("Current seed phrase in SeedPhrasePage:", seedPhrase);
+    console.log("Current seed phrase in SeedPhrasePage:", seedPhrase ? seedPhrase.join(' ') : 'undefined');
   }, [seedPhrase]);
   
   return (

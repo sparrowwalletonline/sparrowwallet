@@ -31,7 +31,7 @@ const SeedPhraseGenerator: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("SeedPhraseGenerator rendered with seedPhrase:", seedPhrase);
+    console.log("SeedPhraseGenerator rendered with seedPhrase:", seedPhrase ? seedPhrase.join(' ') : 'undefined');
   }, [seedPhrase]);
 
   return (

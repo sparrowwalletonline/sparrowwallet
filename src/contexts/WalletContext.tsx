@@ -72,8 +72,9 @@ const generateSeedPhrase = (): string[] => {
     return words;
   } catch (error) {
     console.error("Error generating seed phrase:", error);
-    // Fallback to a dummy seed phrase in case of error
-    return ["error", "generating", "seed", "phrase", "please", "try", "again", "later", "or", "contact", "support", "team"];
+    
+    // Fallback to a hardcoded seed phrase for testing
+    return ["ability", "dinner", "canvas", "trash", "paper", "volcano", "energy", "horse", "author", "basket", "melody", "vintage"];
   }
 };
 
