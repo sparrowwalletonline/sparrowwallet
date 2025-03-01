@@ -45,6 +45,19 @@ const LandingPage: React.FC = () => {
             Buy, store, collect NFTs, exchange & earn crypto. Join 50 million+ people using Trust Wallet.
           </p>
           
+          <div className="w-full max-w-xs mx-auto mb-6">
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl border-8 border-black">
+              <img 
+                src="/lovable-uploads/1b77eb0f-8d23-4584-b764-6202a16c8247.png" 
+                alt="Bitcoin Wallet App" 
+                className="w-full"
+              />
+              <div className="absolute top-0 left-0 w-full flex justify-center">
+                <div className="bg-black w-1/3 h-7 rounded-b-xl"></div>
+              </div>
+            </div>
+          </div>
+          
           <div className="flex flex-col sm:flex-row gap-4">
             <Button onClick={handleCreateWallet} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue">
               Create a new wallet <ArrowRight className="h-4 w-4" />
@@ -199,7 +212,7 @@ const LandingPage: React.FC = () => {
         <div className="py-16 my-12 -mx-6 px-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl">
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl font-bold mb-4">One Platform, Millions of Assets</h2>
-            <p className="max-w-2xl mx-auto text-gray-500">
+            <p className="text-blue-50 max-w-2xl mx-auto">
               Trust Wallet is your gateway to the blockchain ecosystem. Store, trade, and discover over 8 million digital assets across 100+ blockchains.
             </p>
           </div>
