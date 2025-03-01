@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Check, AlertCircle } from 'lucide-react';
@@ -125,31 +124,39 @@ const SeedPhraseValidation: React.FC = () => {
             </div>
           </div>
           
-          <div className="space-y-5 bg-wallet-card p-6 rounded-lg border-2 border-green-500">
-            <h3 className="text-lg font-semibold mb-4 text-white">Gib die folgenden Wörter ein:</h3>
+          <div className="space-y-5 bg-green-500/20 p-8 rounded-xl shadow-lg border-4 border-green-500">
+            <h3 className="text-xl font-bold mb-6 text-white">Gib die folgenden Wörter ein:</h3>
             {wordIndices.map((wordIndex, index) => (
-              <div key={index} className="space-y-2 mb-6">
-                <label className="block text-white font-semibold text-base">Wort Nr. {wordIndex + 1}</label>
-                <Input
-                  value={inputValues[index]}
-                  onChange={(e) => handleInputChange(index, e.target.value)}
-                  className="bg-white text-black w-full p-4 text-base border-2 border-green-500/50 focus:border-green-500"
-                  placeholder={`Gib das ${wordIndex + 1}. Wort ein`}
-                  autoComplete="off"
-                />
+              <div key={index} className="space-y-3 mb-8">
+                <label className="block text-white text-lg font-bold">Wort Nr. {wordIndex + 1}</label>
+                <div className="relative">
+                  <Input
+                    value={inputValues[index]}
+                    onChange={(e) => handleInputChange(index, e.target.value)}
+                    className="bg-white text-black text-xl"
+                    placeholder={`Gib das ${wordIndex + 1}. Wort ein`}
+                    autoComplete="off"
+                    style={{
+                      boxShadow: '0 0 0 4px rgba(34, 197, 94, 0.2), 0 4px 16px rgba(0, 0, 0, 0.3)'
+                    }}
+                  />
+                </div>
               </div>
             ))}
           </div>
           
-          <div className="text-center text-wallet-gray text-sm font-medium">
-            Verbleibende Versuche: <span className="text-white">{attemptsLeft}</span>
+          <div className="text-center text-wallet-gray text-lg font-medium">
+            Verbleibende Versuche: <span className="text-white font-bold">{attemptsLeft}</span>
           </div>
           
-          <div className="flex flex-col space-y-3 pt-4">
+          <div className="flex flex-col space-y-4 pt-6">
             <Button 
               onClick={handleValidate}
-              className="w-full py-6 bg-green-600 hover:bg-green-700 text-white font-medium text-base"
+              className="w-full py-8 text-lg bg-green-600 hover:bg-green-700 text-white font-bold shadow-lg"
               disabled={inputValues.some(value => !value)}
+              style={{
+                boxShadow: '0 4px 12px rgba(34, 197, 94, 0.5)'
+              }}
             >
               Bestätigen
             </Button>
@@ -157,14 +164,14 @@ const SeedPhraseValidation: React.FC = () => {
             <Button 
               onClick={handleViewSeedPhrase}
               variant="outline"
-              className="w-full text-green-500 border-green-500 hover:bg-green-500/10"
+              className="w-full text-lg text-green-500 border-green-500 hover:bg-green-500/10 font-bold"
             >
               Passphrase erneut anschauen
             </Button>
           </div>
           
           {isCorrect === false && (
-            <div className="bg-red-900/30 border border-red-700 p-3 rounded-lg text-sm text-center">
+            <div className="bg-red-900/30 border border-red-700 p-5 rounded-lg text-base text-center font-bold">
               Die eingegebenen Wörter stimmen nicht mit deiner Passphrase überein.
             </div>
           )}
