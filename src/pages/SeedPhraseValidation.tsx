@@ -20,8 +20,25 @@ const SeedPhraseValidation: React.FC = () => {
   
   // Generate 3 random words from the seed phrase to validate
   useEffect(() => {
+    console.log("SeedPhraseValidation component mounted");
+    console.log("Current seedPhrase in context:", seedPhrase);
+    
     if (!seedPhrase || seedPhrase.length < 12) {
-      console.error("No valid seed phrase found, redirecting");
+      console.error("No valid seed phrase found in context, checking localStorage");
+      
+      // Try to get from localStorage as fallback
+      const savedSeedPhrase = localStorage.getItem('walletSeedPhrase');
+      if (savedSeedPhrase) {
+        const parsedPhrase = JSON.parse(savedSeedPhrase);
+        if (parsedPhrase && parsedPhrase.length >= 12) {
+          console.log("Found seed phrase in localStorage, length:", parsedPhrase.length);
+          // Use the localStorage seed phrase for validation
+          selectRandomWords(parsedPhrase);
+          return;
+        }
+      }
+      
+      console.error("No valid seed phrase found anywhere, redirecting");
       toast({
         title: "Keine gültige Seed Phrase",
         description: "Du wirst zurück zur Seed Phrase-Seite geleitet",
@@ -31,11 +48,17 @@ const SeedPhraseValidation: React.FC = () => {
       return;
     }
     
+    // Select random words for validation
+    selectRandomWords(seedPhrase);
+  }, [seedPhrase, navigate, toast]);
+  
+  // Helper function to select random words
+  const selectRandomWords = (phrase: string[]) => {
     // Select 3 random words from the seed phrase
     const getRandomWordIndices = () => {
       const indices: number[] = [];
       while (indices.length < 3) {
-        const randomIndex = Math.floor(Math.random() * seedPhrase.length);
+        const randomIndex = Math.floor(Math.random() * phrase.length);
         if (!indices.includes(randomIndex)) {
           indices.push(randomIndex);
         }
@@ -46,12 +69,12 @@ const SeedPhraseValidation: React.FC = () => {
     const indices = getRandomWordIndices();
     const selectedWordsArray = indices.map(index => ({
       index,
-      word: seedPhrase[index]
+      word: phrase[index]
     }));
     
     console.log("Selected words for validation:", selectedWordsArray);
     setSelectedWords(selectedWordsArray);
-  }, [seedPhrase, navigate, toast]);
+  };
   
   const handleInputChange = (index: number, value: string) => {
     const newInputs = [...userInputs];
@@ -63,6 +86,8 @@ const SeedPhraseValidation: React.FC = () => {
     if (isValidating) return;
     
     setIsValidating(true);
+    console.log("Validating inputs:", userInputs);
+    console.log("Against selected words:", selectedWords);
     
     // Check if the user's inputs match the selected words
     const areAllValid = selectedWords.every((item, index) => 

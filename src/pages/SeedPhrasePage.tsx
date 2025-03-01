@@ -50,6 +50,7 @@ const SeedPhrasePage: React.FC = () => {
   
   const handleConfirm = async () => {
     if (!seedPhrase || seedPhrase.length < 12) {
+      console.error("No valid seed phrase available:", seedPhrase);
       toast({
         title: "Keine Seed Phrase",
         description: "Bitte generiere zuerst eine Seed Phrase",
@@ -57,6 +58,8 @@ const SeedPhrasePage: React.FC = () => {
       });
       return;
     }
+    
+    console.log("Confirming with seed phrase:", seedPhrase);
     
     if (savedPhrase && agreedToTerms) {
       setIsConfirming(true);
@@ -71,12 +74,15 @@ const SeedPhrasePage: React.FC = () => {
           }
         }
         
+        // Store the seedPhrase in localStorage as a fallback
+        localStorage.setItem('walletSeedPhrase', JSON.stringify(seedPhrase));
+        
         // Add a delay to improve the UX
         setTimeout(() => {
-          console.log("Navigating to validation page with seedPhrase:", seedPhrase);
+          console.log("Navigating to validation page with seedPhrase length:", seedPhrase.length);
           navigate('/seed-phrase-validation');
           setIsConfirming(false);
-        }, 1000);
+        }, 500);
       } catch (error) {
         console.error("Error during confirmation:", error);
         toast({
@@ -86,6 +92,12 @@ const SeedPhrasePage: React.FC = () => {
         });
         setIsConfirming(false);
       }
+    } else {
+      toast({
+        title: "Bitte bestätige",
+        description: "Bitte bestätige, dass du die Seed Phrase gespeichert hast und den Nutzungsbedingungen zustimmst",
+        variant: "destructive",
+      });
     }
   };
   
