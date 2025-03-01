@@ -18,13 +18,13 @@ const SeedPhrasePage: React.FC = () => {
   // Generate a seed phrase on component mount if one doesn't exist
   useEffect(() => {
     if (seedPhrase.length <= 2) { // If we don't have a real seed phrase yet
-      console.log("Generating initial seed phrase...");
+      console.log("Generating initial BIP39 seed phrase...");
       createWallet(); // Generate the seed phrase immediately when component mounts
     }
   }, []);
   
   const handleRegeneratePhrase = () => {
-    console.log("Regenerating seed phrase...");
+    console.log("Regenerating BIP39 seed phrase...");
     // Call createWallet directly to generate a new seed phrase
     createWallet();
     

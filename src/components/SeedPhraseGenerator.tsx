@@ -31,7 +31,7 @@ const SeedPhraseGenerator: React.FC = () => {
       </div>
       
       <Card className="p-4 border border-slate-200 shadow-sm">
-        {seedPhrase.length > 0 ? (
+        {seedPhrase.length >= 12 ? (
           <div className="grid grid-cols-3 gap-2">
             {seedPhrase.map((word, i) => (
               <div key={i} className="flex items-center">
@@ -42,7 +42,7 @@ const SeedPhraseGenerator: React.FC = () => {
           </div>
         ) : (
           <div className="flex items-center justify-center py-12 text-wallet-gray italic text-sm">
-            No seed phrase generated yet
+            {isGenerating ? 'Generating seed phrase...' : 'No seed phrase generated yet'}
           </div>
         )}
       </Card>

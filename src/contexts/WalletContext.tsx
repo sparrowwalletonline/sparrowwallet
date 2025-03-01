@@ -1,6 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
+import * as bip39 from 'bip39';
 
 // Define the type for our context
 interface WalletContextType {
@@ -38,23 +39,6 @@ const WalletContext = createContext<WalletContextType>({
   copyToClipboard: () => {},
 });
 
-// BIP39 word list (simplified for demo)
-const bip39Words = [
-  'abandon', 'ability', 'able', 'about', 'above', 'absent', 'absorb', 'abstract', 'absurd', 'abuse',
-  'access', 'accident', 'account', 'accuse', 'achieve', 'acid', 'acoustic', 'acquire', 'across', 'act',
-  'action', 'actor', 'actress', 'actual', 'adapt', 'add', 'addict', 'address', 'adjust', 'admit',
-  'adult', 'advance', 'advice', 'aerobic', 'affair', 'afford', 'afraid', 'again', 'age', 'agent',
-  'agree', 'ahead', 'aim', 'air', 'airport', 'aisle', 'alarm', 'album', 'alcohol', 'alert',
-  'alien', 'all', 'alley', 'allow', 'almost', 'alone', 'alpha', 'already', 'also', 'alter',
-  'always', 'amateur', 'amazing', 'among', 'amount', 'amused', 'analyst', 'anchor', 'ancient', 'anger',
-  'angle', 'angry', 'animal', 'ankle', 'announce', 'annual', 'another', 'answer', 'antenna', 'antique',
-  'anxiety', 'any', 'apart', 'apology', 'appear', 'apple', 'approve', 'april', 'arch', 'arctic',
-  'area', 'arena', 'argue', 'arm', 'armed', 'armor', 'army', 'around', 'arrange', 'arrest',
-  'arrive', 'arrow', 'art', 'artefact', 'artist', 'artwork', 'ask', 'aspect', 'assault', 'asset',
-  'assist', 'assume', 'asthma', 'athlete', 'atom', 'attack', 'attend', 'attitude', 'attract', 'auction',
-  'audit', 'august', 'aunt', 'author', 'auto', 'autumn', 'average', 'avocado', 'avoid', 'awake'
-];
-
 // Helper to generate random number in range
 const getRandomInt = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -74,14 +58,11 @@ const generateBtcAddress = () => {
   return address;
 };
 
-// Generate a random seed phrase
-const generateSeedPhrase = () => {
-  const phrase: string[] = [];
-  for (let i = 0; i < 12; i++) {
-    const randomIndex = Math.floor(Math.random() * bip39Words.length);
-    phrase.push(bip39Words[randomIndex]);
-  }
-  return phrase;
+// Generate a BIP39 seed phrase
+const generateSeedPhrase = (): string[] => {
+  // Generate a random mnemonic (128-256 bits)
+  const mnemonic = bip39.generateMnemonic(128); // 128 bits = 12 words
+  return mnemonic.split(' ');
 };
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -108,17 +89,17 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   // Actually create the wallet with a full seed phrase
   const createWallet = () => {
     setIsGenerating(true);
-    console.log("Creating wallet...");
+    console.log("Creating wallet with BIP39...");
     
-    // Generate the new seed phrase immediately
+    // Generate the new seed phrase immediately using BIP39
     const newSeedPhrase = generateSeedPhrase();
-    console.log("Generated seed phrase:", newSeedPhrase);
+    console.log("Generated BIP39 seed phrase:", newSeedPhrase);
     
     // Small delay to show the loading state
     setTimeout(() => {
       setSeedPhrase(newSeedPhrase);
       setIsGenerating(false);
-      console.log("Seed phrase set:", newSeedPhrase);
+      console.log("BIP39 seed phrase set:", newSeedPhrase);
     }, 500);
   };
 
