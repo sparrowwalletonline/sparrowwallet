@@ -1,14 +1,45 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
 import { useWallet } from '@/contexts/WalletContext';
 import { ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/components/ui/use-toast';
+import Header from '@/components/Header';
 
 const WalletChoice: React.FC = () => {
   const { generateWallet, importWallet, cancelWalletCreation } = useWallet();
   const navigate = useNavigate();
+  const [session, setSession] = useState(null);
+  
+  useEffect(() => {
+    // Check for an active session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      
+      // If no session, redirect to landing page
+      if (!session) {
+        navigate('/');
+        toast({
+          title: "Anmeldung erforderlich",
+          description: "Bitte melde dich an, um fortzufahren",
+          variant: "destructive",
+        });
+      }
+    });
+
+    // Listen for authentication changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      if (!session) {
+        navigate('/');
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
   
   const handleCreateWallet = () => {
     // Navigate to PassPhrase page
@@ -25,8 +56,14 @@ const WalletChoice: React.FC = () => {
     cancelWalletCreation();
   };
   
+  if (!session) {
+    return null; // Don't render anything while checking authentication
+  }
+  
   return (
     <div className="min-h-screen flex flex-col items-center justify-between bg-wallet-darkBg text-white p-6 relative">
+      <Header title="Wallet auswählen" />
+      
       <button 
         onClick={handleBackClick}
         className="absolute top-6 left-6 text-white hover:text-gray-300 transition-colors"

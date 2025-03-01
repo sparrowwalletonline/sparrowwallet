@@ -1,23 +1,197 @@
-import React, { useState } from 'react';
+<lov-code>
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
 import { ArrowRight, Check, Menu, Star, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift, Coins, Wallet, Search, X, Loader2 } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import { useMenu } from '@/contexts/MenuContext';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/components/ui/use-toast';
+import { useNavigate } from 'react-router-dom';
+
+// Registration modal component
+const RegistrationModal = ({ isOpen, onClose, onRegister, isLoading }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  if (!isOpen) return null;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      toast({
+        title: "Fehler",
+        description: "Die Passwörter stimmen nicht überein",
+        variant: "destructive",
+      });
+      return;
+    }
+    onRegister(email, password);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+      <div className="bg-wallet-card text-white p-6 rounded-xl w-full max-w-md shadow-xl">
+        <h2 className="text-xl font-bold mb-4">Registrieren</h2>
+        <p className="text-gray-400 mb-6">Erstelle ein Konto, um deine Wallet zu sichern</p>
+        
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">E-Mail</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-2 rounded bg-wallet-darkBg border border-gray-700 text-white"
+              required
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium mb-1">Passwort</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-2 rounded bg-wallet-darkBg border border-gray-700 text-white"
+              required
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium mb-1">Passwort bestätigen</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full p-2 rounded bg-wallet-darkBg border border-gray-700 text-white"
+              required
+            />
+          </div>
+          
+          <div className="flex justify-end space-x-3 mt-6">
+            <Button 
+              type="button" 
+              onClick={onClose}
+              variant="ghost"
+              className="text-gray-400 hover:text-white"
+            >
+              Abbrechen
+            </Button>
+            <Button 
+              type="submit"
+              disabled={isLoading}
+              className="bg-wallet-blue hover:bg-wallet-darkBlue"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Registriere...
+                </>
+              ) : (
+                "Registrieren"
+              )}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+// Success modal component
+const SuccessModal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+      <div className="bg-wallet-card text-white p-6 rounded-xl w-full max-w-md shadow-xl text-center">
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500 flex items-center justify-center">
+          <Check className="h-8 w-8 text-white" />
+        </div>
+        <h2 className="text-xl font-bold mb-2">Konto erfolgreich erstellt!</h2>
+        <p className="text-gray-400 mb-6">Du wirst jetzt zur Wallet-Auswahl weitergeleitet.</p>
+        
+        <Button 
+          onClick={onClose}
+          className="bg-wallet-blue hover:bg-wallet-darkBlue"
+        >
+          Weiter
+        </Button>
+      </div>
+    </div>
+  );
+};
 
 const LandingPage: React.FC = () => {
   const { generateWallet } = useWallet();
   const { toggleMenu } = useMenu();
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showRegistrationModal, setShowRegistrationModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [session, setSession] = useState(null);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    // Check for an active session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    // Listen for authentication changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
   
   const handleCreateWallet = () => {
+    if (session) {
+      // User is already logged in, proceed to wallet creation
+      setIsLoading(true);
+      setTimeout(() => {
+        generateWallet();
+      }, 1500);
+    } else {
+      // Show registration modal
+      setShowRegistrationModal(true);
+    }
+  };
+  
+  const handleRegister = async (email, password) => {
     setIsLoading(true);
-    setTimeout(() => {
-      generateWallet();
-      // We don't need to set isLoading back to false here since 
-      // this component will be unmounted when the view changes
-    }, 3000); // Show loading animation for 3 seconds
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+      
+      if (error) {
+        throw error;
+      }
+      
+      // Show success modal
+      setShowRegistrationModal(false);
+      setShowSuccessModal(true);
+      
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast({
+        title: "Registrierung fehlgeschlagen",
+        description: error.message || "Bitte versuche es mit einer anderen E-Mail-Adresse",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const handleSuccessModalClose = () => {
+    setShowSuccessModal(false);
+    navigate('/wallet-choice');
   };
   
   const handleMenuClick = () => {
@@ -25,6 +199,150 @@ const LandingPage: React.FC = () => {
     toggleMenu();
   };
   
+  const FeatureCard = ({
+    icon,
+    title,
+    description
+  }: {
+    icon: React.ReactNode;
+    title: string;
+    description: string;
+  }) => {
+    return <div className="feature-card p-6 rounded-xl transition-all">
+        <div className="mb-4">{icon}</div>
+        <h3 className="font-heading font-semibold text-lg mb-2">{title}</h3>
+        <p className="text-gray-600 text-sm">{description}</p>
+      </div>;
+  };
+  
+  const SecurityCard = ({
+    title,
+    description
+  }: {
+    title: string;
+    description: string;
+  }) => {
+    return <div className="p-6 rounded-xl transition-all bg-white/10 backdrop-blur-sm hover:bg-white/20">
+        <h3 className="font-heading font-semibold text-lg mb-2">{title}</h3>
+        <p className="text-blue-100 text-sm">{description}</p>
+      </div>;
+  };
+  
+  const AssetCard = ({
+    icon,
+    title,
+    description,
+    color
+  }: {
+    icon: React.ReactNode;
+    title: string;
+    description: string;
+    color: string;
+  }) => {
+    const getGradient = () => {
+      switch (color) {
+        case 'indigo':
+          return 'from-indigo-500 to-indigo-600';
+        case 'purple':
+          return 'from-purple-500 to-purple-600';
+        case 'blue':
+          return 'from-blue-500 to-blue-600';
+        case 'teal':
+          return 'from-teal-500 to-teal-600';
+        default:
+          return 'from-blue-500 to-blue-600';
+      }
+    };
+    return <div className="p-6 rounded-xl transition-all bg-white shadow-md hover:shadow-lg">
+        <div className={`bg-gradient-to-r ${getGradient()} inline-flex p-3 rounded-lg text-white mb-4`}>
+          {icon}
+        </div>
+        <h3 className="font-heading font-semibold text-lg mb-2 bg-gradient-to-r from-indigo-500 to-blue-600 bg-clip-text text-transparent">{title}</h3>
+        <p className="text-gray-600 text-sm">{description}</p>
+      </div>;
+  };
+  
+  const StepCard = ({
+    number,
+    title,
+    description
+  }: {
+    number: string;
+    title: string;
+    description: string;
+  }) => {
+    return <div className="text-center">
+        <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto mb-4 font-bold text-xl">
+          {number}
+        </div>
+        <h3 className="font-heading font-semibold text-lg mb-2">{title}</h3>
+        <p className="text-gray-600 text-sm">{description}</p>
+      </div>;
+  };
+  
+  const TestimonialCard = ({
+    quote,
+    author,
+    role
+  }: {
+    quote: string;
+    author: string;
+    role: string;
+  }) => {
+    return <div className="bg-white p-6 rounded-xl shadow-sm">
+        <div className="flex mb-4">
+          {[1, 2, 3, 4, 5].map((_, index) => <Star key={index} className="h-4 w-4 text-yellow-400 fill-yellow-400" />)}
+        </div>
+        <p className="text-gray-700 mb-4 italic">"{quote}"</p>
+        <div>
+          <p className="font-medium">{author}</p>
+          <p className="text-gray-500 text-sm">{role}</p>
+        </div>
+      </div>;
+  };
+  
+  const FAQItem = ({
+    question,
+    answer
+  }: {
+    question: string;
+    answer: string;
+  }) => {
+    const [isOpen, setIsOpen] = React.useState(false);
+    return <div className="border-b border-gray-200 pb-4">
+        <button className="flex justify-between items-center w-full text-left py-2 font-medium" onClick={() => setIsOpen(!isOpen)}>
+          {question}
+          <span className="ml-6 flex-shrink-0">
+            {isOpen ? <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 12H6" />
+              </svg> : <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>}
+          </span>
+        </button>
+        {isOpen && <div className="mt-2 text-gray-600">
+            <p>{answer}</p>
+          </div>}
+      </div>;
+  };
+  
+  const SupportedFeature = ({
+    label,
+    supported
+  }: {
+    label: string;
+    supported: boolean;
+  }) => {
+    return <div className="flex items-center justify-between px-0 mx-0">
+        <span className="text-gray-600">{label}</span>
+        {supported ? <div className="w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center">
+            <Check className="w-3 h-3 text-white" />
+          </div> : <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center">
+            <X className="w-3 h-3 text-gray-500" />
+          </div>}
+      </div>;
+  };
+
   return <div className="min-h-screen flex flex-col bg-white text-gray-800">
       <header className="w-full p-6 flex justify-between items-center">
         <div className="flex items-center gap-2">
@@ -68,11 +386,11 @@ const LandingPage: React.FC = () => {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Creating wallet...
+                  Wird geladen...
                 </>
               ) : (
                 <>
-                  Create a new wallet <ArrowRight className="h-4 w-4" />
+                  Registrieren & Wallet erstellen <ArrowRight className="h-4 w-4" />
                 </>
               )}
             </Button>
@@ -257,234 +575,4 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="py-16 my-12 -mx-6 px-6 bg-gradient-to-b from-blue-900 to-indigo-800 text-white rounded-3xl">
-          <div className="text-center mb-12">
-            <h2 className="font-heading text-3xl font-bold mb-4">Enhanced Security & Privacy</h2>
-            <p className="text-blue-100 max-w-2xl mx-auto">
-              Your assets are protected by industry-leading security measures
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <SecurityCard title="Private Keys Stay on Your Device" description="We never have access to your assets or private information" />
-            <SecurityCard title="Secure Encryption" description="Multiple layers of encryption protect your digital assets" />
-            <SecurityCard title="Biometric Authentication" description="Use your fingerprint or face ID for an extra layer of security" />
-          </div>
-        </div>
-        
-        <div className="py-16">
-          <div className="text-center mb-12">
-            <h2 className="font-heading text-3xl font-bold mb-4">How it works</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Get started with Trust Wallet in three simple steps
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <StepCard number="1" title="Download Trust Wallet" description="Download the app from App Store or Google Play Store." />
-            <StepCard number="2" title="Create or import wallet" description="Create a new wallet or import an existing one." />
-            <StepCard number="3" title="Start exploring crypto" description="Buy, store, swap or stake your assets securely." />
-          </div>
-          
-          <div className="mt-10 text-center">
-            <Button onClick={handleCreateWallet} className="py-6 px-8 text-base flex items-center mx-auto justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium transition-all rounded-xl">
-              Create a new wallet <ArrowRight className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-        
-        <div className="py-16 bg-gradient-to-r from-purple-50 to-pink-50 -mx-6 px-6">
-          <div className="text-center mb-12">
-            <h2 className="font-heading text-3xl font-bold mb-4">Trusted by millions</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Join over 50 million people who trust Trust Wallet
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <TestimonialCard quote="Trust Wallet provides the best user experience and security for managing digital assets." author="John D." role="Crypto Investor" />
-            <TestimonialCard quote="I love how easy it is to connect to DeFi apps and view my NFTs - all in one place!" author="Sarah M." role="NFT Collector" />
-          </div>
-        </div>
-        
-        <div className="py-16">
-          <div className="text-center mb-12">
-            <h2 className="font-heading text-3xl font-bold mb-4">Frequently Asked Questions</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Have questions? We've got answers.
-            </p>
-          </div>
-          
-          <div className="space-y-6 max-w-3xl mx-auto">
-            <FAQItem question="Is Trust Wallet safe?" answer="Yes, Trust Wallet is designed with security as the top priority. Your private keys never leave your device and are protected by several layers of security." />
-            <FAQItem question="How do I back up my wallet?" answer="When you create a wallet, you'll be prompted to write down your recovery phrase. This is the only way to recover your wallet if your device is lost or damaged." />
-            <FAQItem question="Which cryptocurrencies does Trust Wallet support?" answer="Trust Wallet supports over 8 million cryptocurrencies and digital assets across 100+ blockchains, including popular coins like Bitcoin, Ethereum, Binance Coin, and more." />
-            <FAQItem question="How do I buy crypto in Trust Wallet?" answer="You can purchase cryptocurrency directly in the Trust Wallet app using your credit/debit card, bank transfer, or Apple Pay depending on your region." />
-          </div>
-        </div>
-        
-        <div className="py-16 bg-gradient-to-r from-blue-500 to-indigo-600 -mx-6 px-6 rounded-3xl text-white">
-          <div className="text-center">
-            <h2 className="font-heading text-3xl font-bold mb-4">Ready to start your crypto journey?</h2>
-            <p className="text-blue-100 max-w-2xl mx-auto mb-8">
-              Take control of your digital assets today with the most trusted crypto wallet
-            </p>
-            
-            <Button onClick={handleCreateWallet} className="py-6 px-8 text-base flex items-center mx-auto justify-center gap-2 bg-white hover:bg-blue-50 text-blue-600 font-medium transition-all rounded-xl">
-              Create a new wallet <ArrowRight className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-        
-        <div className="text-center text-xs text-gray-500 mt-auto pt-10">
-          By continuing, you agree to our <a href="#" className="underline hover:text-blue-500">Terms of Service</a> and <a href="#" className="underline hover:text-blue-500">Privacy Policy</a>.
-        </div>
-      </div>
-    </div>;
-};
-
-const FeatureCard = ({
-  icon,
-  title,
-  description
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) => {
-  return <div className="feature-card p-6 rounded-xl transition-all">
-      <div className="mb-4">{icon}</div>
-      <h3 className="font-heading font-semibold text-lg mb-2">{title}</h3>
-      <p className="text-gray-600 text-sm">{description}</p>
-    </div>;
-};
-
-const SecurityCard = ({
-  title,
-  description
-}: {
-  title: string;
-  description: string;
-}) => {
-  return <div className="p-6 rounded-xl transition-all bg-white/10 backdrop-blur-sm hover:bg-white/20">
-      <h3 className="font-heading font-semibold text-lg mb-2">{title}</h3>
-      <p className="text-blue-100 text-sm">{description}</p>
-    </div>;
-};
-
-const AssetCard = ({
-  icon,
-  title,
-  description,
-  color
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  color: string;
-}) => {
-  const getGradient = () => {
-    switch (color) {
-      case 'indigo':
-        return 'from-indigo-500 to-indigo-600';
-      case 'purple':
-        return 'from-purple-500 to-purple-600';
-      case 'blue':
-        return 'from-blue-500 to-blue-600';
-      case 'teal':
-        return 'from-teal-500 to-teal-600';
-      default:
-        return 'from-blue-500 to-blue-600';
-    }
-  };
-  return <div className="p-6 rounded-xl transition-all bg-white shadow-md hover:shadow-lg">
-      <div className={`bg-gradient-to-r ${getGradient()} inline-flex p-3 rounded-lg text-white mb-4`}>
-        {icon}
-      </div>
-      <h3 className="font-heading font-semibold text-lg mb-2 bg-gradient-to-r from-indigo-500 to-blue-600 bg-clip-text text-transparent">{title}</h3>
-      <p className="text-gray-600 text-sm">{description}</p>
-    </div>;
-};
-
-const StepCard = ({
-  number,
-  title,
-  description
-}: {
-  number: string;
-  title: string;
-  description: string;
-}) => {
-  return <div className="text-center">
-      <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto mb-4 font-bold text-xl">
-        {number}
-      </div>
-      <h3 className="font-heading font-semibold text-lg mb-2">{title}</h3>
-      <p className="text-gray-600 text-sm">{description}</p>
-    </div>;
-};
-
-const TestimonialCard = ({
-  quote,
-  author,
-  role
-}: {
-  quote: string;
-  author: string;
-  role: string;
-}) => {
-  return <div className="bg-white p-6 rounded-xl shadow-sm">
-      <div className="flex mb-4">
-        {[1, 2, 3, 4, 5].map((_, index) => <Star key={index} className="h-4 w-4 text-yellow-400 fill-yellow-400" />)}
-      </div>
-      <p className="text-gray-700 mb-4 italic">"{quote}"</p>
-      <div>
-        <p className="font-medium">{author}</p>
-        <p className="text-gray-500 text-sm">{role}</p>
-      </div>
-    </div>;
-};
-
-const FAQItem = ({
-  question,
-  answer
-}: {
-  question: string;
-  answer: string;
-}) => {
-  const [isOpen, setIsOpen] = React.useState(false);
-  return <div className="border-b border-gray-200 pb-4">
-      <button className="flex justify-between items-center w-full text-left py-2 font-medium" onClick={() => setIsOpen(!isOpen)}>
-        {question}
-        <span className="ml-6 flex-shrink-0">
-          {isOpen ? <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 12H6" />
-            </svg> : <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>}
-        </span>
-      </button>
-      {isOpen && <div className="mt-2 text-gray-600">
-          <p>{answer}</p>
-        </div>}
-    </div>;
-};
-
-const SupportedFeature = ({
-  label,
-  supported
-}: {
-  label: string;
-  supported: boolean;
-}) => {
-  return <div className="flex items-center justify-between px-0 mx-0">
-      <span className="text-gray-600">{label}</span>
-      {supported ? <div className="w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center">
-          <Check className="w-3 h-3 text-white" />
-        </div> : <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center">
-          <X className="w-3 h-3 text-gray-500" />
-        </div>}
-    </div>;
-};
-
-export default LandingPage;
+        <div className="py-16 my-12 -mx-6 px-6

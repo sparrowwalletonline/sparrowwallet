@@ -6,6 +6,7 @@ import GenerateWallet from './GenerateWallet';
 import WalletView from './WalletView';
 import WalletChoice from './WalletChoice';
 import PassPhrase from './PassPhrase';
+import { supabase } from '@/integrations/supabase/client';
 
 // Wrapper component to handle view switching
 const WalletApp: React.FC = () => {
@@ -14,21 +15,36 @@ const WalletApp: React.FC = () => {
   const [previousView, setPreviousView] = useState<string>('');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left'>('right');
+  const [session, setSession] = useState(null);
+
+  // Check for authentication
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   // Log current state for debugging
   useEffect(() => {
     console.log("Current state in Index:", { 
       hasWallet, 
       seedPhraseLength: seedPhrase.length, 
-      currentView 
+      currentView,
+      isAuthenticated: !!session
     });
-  }, [hasWallet, seedPhrase, currentView]);
+  }, [hasWallet, seedPhrase, currentView, session]);
 
   // Determine which view to show
-  const showLandingPage = seedPhrase.length === 0;
-  const showWalletChoice = seedPhrase.length === 1; // Special case for our flow
-  const showPassPhrase = seedPhrase.length === 2; // New state for PassPhrase page
-  const showCreateWallet = !hasWallet && seedPhrase.length > 2;
+  const showLandingPage = !session || seedPhrase.length === 0;
+  const showWalletChoice = session && seedPhrase.length === 1; // Special case for our flow
+  const showPassPhrase = session && seedPhrase.length === 2; // New state for PassPhrase page
+  const showCreateWallet = session && !hasWallet && seedPhrase.length > 2;
   
   useEffect(() => {
     // Determine the current view based on state
