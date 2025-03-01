@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { Bell, Settings, Menu, LogOut, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { useMenu } from '@/contexts/MenuContext';
 import { useNavigate } from 'react-router-dom';
-import { supabaseClient } from '@/integrations/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -25,14 +24,14 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
   React.useEffect(() => {
     // Get current session
     const getSession = async () => {
-      const { data } = await supabaseClient.auth.getSession();
+      const { data } = await supabase.auth.getSession();
       setSession(data.session);
     };
     
     getSession();
 
     // Listen for auth changes
-    const { data: authListener } = supabaseClient.auth.onAuthStateChange(
+    const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
       }
@@ -49,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
   };
 
   const handleSignOut = async () => {
-    await supabaseClient.auth.signOut();
+    await supabase.auth.signOut();
     toast({
       title: "Signed out",
       description: "You have been signed out successfully"
