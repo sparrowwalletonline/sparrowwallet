@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { WalletProvider, useWallet } from '@/contexts/WalletContext';
 import LandingPage from './LandingPage';
 import GenerateWallet from './GenerateWallet';
 import WalletView from './WalletView';
 import WalletChoice from './WalletChoice';
+import PassPhrase from './PassPhrase';
 
 // Wrapper component to handle view switching
 const WalletApp: React.FC = () => {
@@ -17,13 +17,15 @@ const WalletApp: React.FC = () => {
   // Determine which view to show
   const showLandingPage = seedPhrase.length === 0;
   const showWalletChoice = seedPhrase.length === 1; // Special case for our flow
-  const showCreateWallet = !hasWallet && seedPhrase.length > 1;
+  const showPassPhrase = seedPhrase.length === 2; // New state for PassPhrase page
+  const showCreateWallet = !hasWallet && seedPhrase.length > 2;
   
   useEffect(() => {
     // Determine the current view based on state
     let newView = '';
     if (showLandingPage) newView = 'landing';
     else if (showWalletChoice) newView = 'choice';
+    else if (showPassPhrase) newView = 'passphrase';
     else if (showCreateWallet) newView = 'create';
     else if (hasWallet) newView = 'wallet';
 
@@ -34,9 +36,13 @@ const WalletApp: React.FC = () => {
         setSlideDirection('right');
       } else if (currentView === 'choice' && newView === 'landing') {
         setSlideDirection('left');
-      } else if (currentView === 'choice' && newView === 'create') {
+      } else if (currentView === 'choice' && newView === 'passphrase') {
         setSlideDirection('right');
-      } else if (currentView === 'create' && newView === 'choice') {
+      } else if (currentView === 'passphrase' && newView === 'choice') {
+        setSlideDirection('left');
+      } else if (currentView === 'passphrase' && newView === 'create') {
+        setSlideDirection('right');
+      } else if (currentView === 'create' && newView === 'passphrase') {
         setSlideDirection('left');
       } else if (currentView === 'create' && newView === 'wallet') {
         setSlideDirection('right');
@@ -58,7 +64,7 @@ const WalletApp: React.FC = () => {
       // Initial load, no transition
       setCurrentView(newView);
     }
-  }, [showLandingPage, showWalletChoice, showCreateWallet, hasWallet, currentView]);
+  }, [showLandingPage, showWalletChoice, showPassPhrase, showCreateWallet, hasWallet, currentView]);
   
   const getTransitionClass = () => {
     const baseClass = "w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg overflow-hidden transition-effect";
@@ -78,6 +84,7 @@ const WalletApp: React.FC = () => {
     if (isTransitioning) {
       if (previousView === 'landing') return <LandingPage />;
       if (previousView === 'choice') return <WalletChoice />;
+      if (previousView === 'passphrase') return <PassPhrase />;
       if (previousView === 'create') return <GenerateWallet />;
       if (previousView === 'wallet') return <WalletView />;
     }
@@ -85,6 +92,7 @@ const WalletApp: React.FC = () => {
     // After transition, show the current view
     if (currentView === 'landing') return <LandingPage />;
     if (currentView === 'choice') return <WalletChoice />;
+    if (currentView === 'passphrase') return <PassPhrase />;
     if (currentView === 'create') return <GenerateWallet />;
     if (currentView === 'wallet') return <WalletView />;
     

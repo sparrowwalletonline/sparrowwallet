@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 
@@ -12,7 +11,7 @@ interface WalletContextType {
   usdBalance: number;
   walletAddress: string;
   isGenerating: boolean;
-  generateWallet: () => void;
+  generateWallet: (stage?: string) => void;
   createWallet: () => void;
   cancelWalletCreation: () => void;
   importWallet: (phrase: string) => void;
@@ -95,10 +94,14 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [isGenerating, setIsGenerating] = useState(false);
 
   // Generate a new wallet with a random seed phrase
-  const generateWallet = () => {
+  const generateWallet = (stage?: string) => {
     // Just setting the seed phrase will trigger the appropriate UI
-    // via the seedPhrase length check in Index.tsx
-    setSeedPhrase(['word']);
+    // If stage is 'passphrase', we're going to the PassPhrase page
+    if (stage === 'passphrase') {
+      setSeedPhrase(['word', 'word']); // Two words indicate PassPhrase page
+    } else {
+      setSeedPhrase(['word']); // One word indicates WalletChoice page
+    }
   };
 
   // Actually create the wallet with a full seed phrase

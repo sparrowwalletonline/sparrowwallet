@@ -9,7 +9,8 @@ const WalletChoice: React.FC = () => {
   const { generateWallet, importWallet, cancelWalletCreation } = useWallet();
   
   const handleCreateWallet = () => {
-    generateWallet();
+    // Update to use a new state to show PassPhrase page
+    generateWallet('passphrase');
   };
   
   const handleImportWallet = () => {
