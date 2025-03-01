@@ -5,12 +5,12 @@ import { Card } from '@/components/ui/card';
 import { Shield, Copy, RefreshCw, Check, ArrowLeft } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import { useToast } from '@/components/ui/use-toast';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SeedPhrasePage: React.FC = () => {
-  const { seedPhrase, createWallet, copyToClipboard, cancelWalletCreation } = useWallet();
+  const { seedPhrase, isGenerating, createWallet, copyToClipboard, cancelWalletCreation } = useWallet();
   const { toast } = useToast();
-  const [isGenerating, setIsGenerating] = useState(false);
+  const navigate = useNavigate();
   const [savedPhrase, setSavedPhrase] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [copyAnimation, setCopyAnimation] = useState(false);
@@ -18,17 +18,15 @@ const SeedPhrasePage: React.FC = () => {
   // Generate a seed phrase on component mount if one doesn't exist
   useEffect(() => {
     if (seedPhrase.length <= 2) { // If we don't have a real seed phrase yet
+      console.log("Generating initial seed phrase...");
       createWallet(); // Generate the seed phrase immediately when component mounts
     }
   }, []);
   
   const handleRegeneratePhrase = () => {
-    setIsGenerating(true);
+    console.log("Regenerating seed phrase...");
     // Call createWallet directly to generate a new seed phrase
     createWallet();
-    setTimeout(() => {
-      setIsGenerating(false);
-    }, 600);
     
     // Reset checkboxes when regenerating
     setSavedPhrase(false);
@@ -58,14 +56,19 @@ const SeedPhrasePage: React.FC = () => {
         description: "Your wallet is being created...",
         duration: 2000,
       });
+      // Navigate to the wallet view
+      setTimeout(() => {
+        navigate('/wallet-view');
+      }, 1500);
     }
   };
   
   const handleBackClick = () => {
     cancelWalletCreation();
+    navigate('/pass-phrase');
   };
   
-  // Now we add a console log to debug the seed phrase
+  // Debug log to track seed phrase
   console.log("Current seed phrase:", seedPhrase);
   
   return (

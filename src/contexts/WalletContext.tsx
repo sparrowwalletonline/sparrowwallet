@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 
@@ -107,12 +108,17 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   // Actually create the wallet with a full seed phrase
   const createWallet = () => {
     setIsGenerating(true);
+    console.log("Creating wallet...");
     
-    // Simulate API delay
+    // Generate the new seed phrase immediately
+    const newSeedPhrase = generateSeedPhrase();
+    console.log("Generated seed phrase:", newSeedPhrase);
+    
+    // Small delay to show the loading state
     setTimeout(() => {
-      const newSeedPhrase = generateSeedPhrase();
       setSeedPhrase(newSeedPhrase);
       setIsGenerating(false);
+      console.log("Seed phrase set:", newSeedPhrase);
     }, 500);
   };
 
