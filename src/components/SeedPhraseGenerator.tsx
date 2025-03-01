@@ -265,7 +265,7 @@ const SeedPhraseGenerator: React.FC = () => {
             disabled={!localSeedPhrase || localSeedPhrase.length < 12 || isGenerating || isSaving || isLoading}
           >
             <CloudUpload className={`h-4 w-4 mr-2 ${isSaving ? 'animate-pulse' : ''}`} />
-            {isSaving ? 'Speichern...' : 'In Cloud speichern'}
+            {isSaving ? 'Speichern...' : 'In Account speichern (unverschlüsselt)'}
           </Button>
           
           <Button 
@@ -275,7 +275,7 @@ const SeedPhraseGenerator: React.FC = () => {
             disabled={isGenerating || isSaving || isLoading}
           >
             <CloudDownload className={`h-4 w-4 mr-2 ${isLoading ? 'animate-pulse' : ''}`} />
-            {isLoading ? 'Laden...' : 'Aus Cloud laden'}
+            {isLoading ? 'Laden...' : 'Aus Account laden'}
           </Button>
         </div>
       )}
