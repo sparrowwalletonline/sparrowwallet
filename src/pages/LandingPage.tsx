@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
 import { ArrowRight, Check, Menu, Star, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift, Coins, Wallet, Search, X } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
-
 const LandingPage: React.FC = () => {
   const {
     generateWallet
@@ -34,7 +33,7 @@ const LandingPage: React.FC = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button onClick={handleCreateWallet} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium transition-all rounded-xl">
+            <Button onClick={handleCreateWallet} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue">
               Create a new wallet <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
@@ -67,7 +66,7 @@ const LandingPage: React.FC = () => {
         
         <div className="mt-12 grid grid-cols-3 gap-4">
           <div className="text-center">
-            <div className="text-blue-500 font-heading font-bold text-xl">50M+</div>
+            <div className="text-wallet-blue-500 font-heading font-bold text-xl bg-transparent">50M+</div>
             <div className="text-gray-600 text-sm">Users</div>
           </div>
           <div className="text-center">
@@ -187,7 +186,7 @@ const LandingPage: React.FC = () => {
         <div className="py-16 my-12 -mx-6 px-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl">
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl font-bold mb-4">One Platform, Millions of Assets</h2>
-            <p className="text-blue-50 max-w-2xl mx-auto">
+            <p className="max-w-2xl mx-auto text-gray-500">
               Trust Wallet is your gateway to the blockchain ecosystem. Store, trade, and discover over 8 million digital assets across 100+ blockchains.
             </p>
           </div>
@@ -303,7 +302,6 @@ const LandingPage: React.FC = () => {
       </div>
     </div>;
 };
-
 const FeatureCard = ({
   icon,
   title,
@@ -319,7 +317,6 @@ const FeatureCard = ({
       <p className="text-gray-600 text-sm">{description}</p>
     </div>;
 };
-
 const SecurityCard = ({
   title,
   description
@@ -332,7 +329,6 @@ const SecurityCard = ({
       <p className="text-blue-100 text-sm">{description}</p>
     </div>;
 };
-
 const AssetCard = ({
   icon,
   title,
@@ -366,7 +362,6 @@ const AssetCard = ({
       <p className="text-gray-600 text-sm">{description}</p>
     </div>;
 };
-
 const StepCard = ({
   number,
   title,
@@ -384,7 +379,6 @@ const StepCard = ({
       <p className="text-gray-600 text-sm">{description}</p>
     </div>;
 };
-
 const TestimonialCard = ({
   quote,
   author,
@@ -405,7 +399,6 @@ const TestimonialCard = ({
       </div>
     </div>;
 };
-
 const FAQItem = ({
   question,
   answer
@@ -430,7 +423,6 @@ const FAQItem = ({
         </div>}
     </div>;
 };
-
 const SupportedFeature = ({
   label,
   supported
@@ -447,5 +439,4 @@ const SupportedFeature = ({
         </div>}
     </div>;
 };
-
 export default LandingPage;
