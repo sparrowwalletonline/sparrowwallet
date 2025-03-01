@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
 import { useWallet } from '@/contexts/WalletContext';
 import { ArrowLeft } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import Header from '@/components/Header';
@@ -96,19 +96,10 @@ const WalletChoice: React.FC = () => {
         >
           Bestehende Wallet öffnen
         </Button>
-        
-        <Link to="/seed-phrase" className="w-full">
-          <Button 
-            variant="ghost" 
-            className="w-full py-2 text-base text-white hover:bg-gray-800/30"
-          >
-            Seed Phrase verwalten
-          </Button>
-        </Link>
       </div>
       
       <div className="text-center text-xs text-gray-500 mt-4">
-        © 2023 Trust Wallet
+        © 2025 Trust Wallet
       </div>
     </div>
   );
