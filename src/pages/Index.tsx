@@ -1,12 +1,34 @@
-// Update this page (the content is just a fallback if you fail to update the page)
 
-const Index = () => {
+import React, { useEffect } from 'react';
+import { WalletProvider, useWallet } from '@/contexts/WalletContext';
+import GenerateWallet from './GenerateWallet';
+import WalletView from './WalletView';
+
+// Wrapper component to handle view switching
+const WalletApp: React.FC = () => {
+  const { hasWallet, generateWallet } = useWallet();
+
+  // Generate seed phrase on first load
+  useEffect(() => {
+    if (!hasWallet) {
+      generateWallet();
+    }
+  }, [generateWallet, hasWallet]);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="slide-transition max-w-md mx-auto bg-white min-h-screen shadow-lg">
+      {hasWallet ? <WalletView /> : <GenerateWallet />}
+    </div>
+  );
+};
+
+// Main component with provider
+const Index: React.FC = () => {
+  return (
+    <div className="min-h-screen bg-slate-100 flex justify-center">
+      <WalletProvider>
+        <WalletApp />
+      </WalletProvider>
     </div>
   );
 };
