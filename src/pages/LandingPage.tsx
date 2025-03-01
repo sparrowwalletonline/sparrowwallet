@@ -7,7 +7,7 @@ import { useWallet } from '@/contexts/WalletContext';
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
-  const { setSeedPhrase } = useWallet();
+  const { hasWallet } = useWallet(); // Only use what we need from useWallet
   
   const handleGetStarted = () => {
     // Navigate to Auth page instead of setting seed phrase directly
