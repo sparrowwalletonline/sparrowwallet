@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { Bell, Settings, Menu, User, LogOut } from 'lucide-react';
+import { User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { useMenu } from '@/contexts/MenuContext';
@@ -14,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Menu } from 'lucide-react';
 
 interface HeaderProps {
   title: string;
@@ -94,14 +94,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
 
   return (
     <header className="flex justify-between items-center py-4 px-4 w-full">
-      <Button 
-        variant="ghost" 
-        size="icon" 
-        className="rounded-full p-0 h-9 w-9 bg-wallet-card"
-        onClick={() => toast({ title: "Settings", description: "Settings not available in demo" })}
-      >
-        <Settings className="h-5 w-5 text-gray-400" />
-      </Button>
+      <div className="w-9"></div> {/* Empty div for spacing to maintain alignment */}
       
       <h1 className="text-lg font-semibold text-white">{title}</h1>
       
