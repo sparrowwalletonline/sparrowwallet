@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -38,7 +37,7 @@ const wordlist = [
 ];
 
 const SeedPhraseGenerator: React.FC = () => {
-  const { copyToClipboard } = useWallet();
+  const { seedPhrase, copyToClipboard } = useWallet();
   const [copyAnimation, setCopyAnimation] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [localSeedPhrase, setLocalSeedPhrase] = useState<string[]>([]);
@@ -86,10 +85,16 @@ const SeedPhraseGenerator: React.FC = () => {
     }
   };
   
-  // Generate seed phrase on component mount
+  // Initialize seed phrase on component mount - check if we already have one in context
   useEffect(() => {
-    generateSeedPhrase();
-  }, []);
+    if (seedPhrase && seedPhrase.length >= 12) {
+      console.log("Using existing seed phrase from context");
+      setLocalSeedPhrase(seedPhrase);
+    } else {
+      console.log("No existing seed phrase found, generating a new one");
+      generateSeedPhrase();
+    }
+  }, [seedPhrase]);
   
   const handleCopy = () => {
     if (localSeedPhrase && localSeedPhrase.length >= 12) {

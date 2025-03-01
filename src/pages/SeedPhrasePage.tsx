@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Shield, Check, ArrowLeft } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
@@ -8,11 +8,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import SeedPhraseGenerator from '@/components/SeedPhraseGenerator';
 
 const SeedPhrasePage: React.FC = () => {
-  const { cancelWalletCreation } = useWallet();
+  const { seedPhrase, cancelWalletCreation } = useWallet();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [savedPhrase, setSavedPhrase] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  
+  // Pre-fill checkboxes if coming back from validation page
+  useEffect(() => {
+    if (seedPhrase && seedPhrase.length >= 12) {
+      setSavedPhrase(true);
+      setAgreedToTerms(true);
+    }
+  }, [seedPhrase]);
   
   const handleConfirm = () => {
     if (savedPhrase && agreedToTerms) {
