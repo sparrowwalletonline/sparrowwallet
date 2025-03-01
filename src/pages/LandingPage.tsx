@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
-import { ArrowRight, Check, Menu, Star, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift } from 'lucide-react';
+import { ArrowRight, Check, Menu, Star, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift, Coins, Wallet } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 
 const LandingPage: React.FC = () => {
@@ -83,6 +83,43 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
         
+        {/* One Platform, Millions of Assets Section */}
+        <div className="py-16 my-12 -mx-6 px-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl">
+          <div className="text-center mb-12">
+            <h2 className="font-heading text-3xl font-bold mb-4 bg-gradient-to-r from-blue-500 to-indigo-600 bg-clip-text text-transparent">One Platform, Millions of Assets</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Trust Wallet is your gateway to the blockchain ecosystem. Store, trade, and discover over 8 million digital assets across 100+ blockchains.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <AssetCard 
+              icon={<Globe className="h-6 w-6 text-indigo-500" />}
+              title="Global Access"
+              description="Access the blockchain ecosystem from anywhere in the world"
+              color="indigo"
+            />
+            <AssetCard 
+              icon={<Coins className="h-6 w-6 text-purple-500" />}
+              title="Multiple Assets"
+              description="Support for 8M+ cryptocurrencies and digital assets"
+              color="purple"
+            />
+            <AssetCard 
+              icon={<Users className="h-6 w-6 text-blue-500" />}
+              title="Growing Community"
+              description="Join 50M+ users who trust our platform"
+              color="blue"
+            />
+            <AssetCard 
+              icon={<Wallet className="h-6 w-6 text-teal-500" />}
+              title="One Wallet"
+              description="Manage all your digital assets in one secure place"
+              color="teal"
+            />
+          </div>
+        </div>
+        
         {/* Features Section */}
         <div className="py-16 bg-gray-50 my-12 -mx-6 px-6">
           <div className="text-center mb-12">
@@ -125,6 +162,31 @@ const LandingPage: React.FC = () => {
             />
           </div>
         </div>
+
+        {/* Enhanced Security Section with Colorful Background */}
+        <div className="py-16 my-12 -mx-6 px-6 bg-gradient-to-b from-blue-900 to-indigo-800 text-white rounded-3xl">
+          <div className="text-center mb-12">
+            <h2 className="font-heading text-3xl font-bold mb-4">Enhanced Security & Privacy</h2>
+            <p className="text-blue-100 max-w-2xl mx-auto">
+              Your assets are protected by industry-leading security measures
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <SecurityCard
+              title="Private Keys Stay on Your Device"
+              description="We never have access to your assets or private information"
+            />
+            <SecurityCard
+              title="Secure Encryption"
+              description="Multiple layers of encryption protect your digital assets"
+            />
+            <SecurityCard
+              title="Biometric Authentication"
+              description="Use your fingerprint or face ID for an extra layer of security"
+            />
+          </div>
+        </div>
         
         {/* How It Works Section */}
         <div className="py-16">
@@ -161,7 +223,7 @@ const LandingPage: React.FC = () => {
         </div>
         
         {/* Testimonials Section */}
-        <div className="py-16 bg-gray-50 -mx-6 px-6">
+        <div className="py-16 bg-gradient-to-r from-purple-50 to-pink-50 -mx-6 px-6">
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl font-bold mb-4">Trusted by millions</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
@@ -213,14 +275,14 @@ const LandingPage: React.FC = () => {
         </div>
         
         {/* CTA Section */}
-        <div className="py-16 bg-blue-50 -mx-6 px-6 rounded-3xl">
+        <div className="py-16 bg-gradient-to-r from-blue-500 to-indigo-600 -mx-6 px-6 rounded-3xl text-white">
           <div className="text-center">
             <h2 className="font-heading text-3xl font-bold mb-4">Ready to start your crypto journey?</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto mb-8">
+            <p className="text-blue-100 max-w-2xl mx-auto mb-8">
               Take control of your digital assets today with the most trusted crypto wallet
             </p>
             
-            <Button onClick={handleCreateWallet} className="py-6 px-8 text-base flex items-center mx-auto justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium transition-all rounded-xl">
+            <Button onClick={handleCreateWallet} className="py-6 px-8 text-base flex items-center mx-auto justify-center gap-2 bg-white hover:bg-blue-50 text-blue-600 font-medium transition-all rounded-xl">
               Create a new wallet <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
@@ -240,6 +302,39 @@ const FeatureCard = ({ icon, title, description }: { icon: React.ReactNode, titl
     <div className="feature-card p-6 rounded-xl transition-all">
       <div className="mb-4">{icon}</div>
       <h3 className="font-heading font-semibold text-lg mb-2">{title}</h3>
+      <p className="text-gray-600 text-sm">{description}</p>
+    </div>
+  );
+};
+
+// Security Card Component 
+const SecurityCard = ({ title, description }: { title: string, description: string }) => {
+  return (
+    <div className="p-6 rounded-xl transition-all bg-white/10 backdrop-blur-sm hover:bg-white/20">
+      <h3 className="font-heading font-semibold text-lg mb-2">{title}</h3>
+      <p className="text-blue-100 text-sm">{description}</p>
+    </div>
+  );
+};
+
+// Asset Card Component
+const AssetCard = ({ icon, title, description, color }: { icon: React.ReactNode, title: string, description: string, color: string }) => {
+  const getGradient = () => {
+    switch (color) {
+      case 'indigo': return 'from-indigo-500 to-indigo-600';
+      case 'purple': return 'from-purple-500 to-purple-600';
+      case 'blue': return 'from-blue-500 to-blue-600';
+      case 'teal': return 'from-teal-500 to-teal-600';
+      default: return 'from-blue-500 to-blue-600';
+    }
+  };
+  
+  return (
+    <div className="p-6 rounded-xl transition-all bg-white shadow-md hover:shadow-lg">
+      <div className={`bg-gradient-to-r ${getGradient()} inline-flex p-3 rounded-lg text-white mb-4`}>
+        {icon}
+      </div>
+      <h3 className="font-heading font-semibold text-lg mb-2 bg-gradient-to-r from-indigo-500 to-blue-600 bg-clip-text text-transparent">{title}</h3>
       <p className="text-gray-600 text-sm">{description}</p>
     </div>
   );
