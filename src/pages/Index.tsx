@@ -13,13 +13,13 @@ const WalletApp: React.FC = () => {
   // Determine which view to show
   const showLandingPage = seedPhrase.length === 0;
   const showWalletChoice = seedPhrase.length === 1; // Special case for our flow
-  const showGenerateWallet = !hasWallet && seedPhrase.length > 1;
+  const showCreateWallet = !hasWallet && seedPhrase.length > 1;
   
   return (
     <div className="slide-transition w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg overflow-hidden">
       {showLandingPage && <LandingPage />}
       {showWalletChoice && <WalletChoice />}
-      {showGenerateWallet && <GenerateWallet />}
+      {showCreateWallet && <GenerateWallet />}
       {hasWallet && <WalletView />}
     </div>
   );
