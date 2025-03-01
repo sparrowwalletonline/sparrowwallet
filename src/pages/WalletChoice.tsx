@@ -31,7 +31,7 @@ const WalletChoice: React.FC = () => {
       <div className="flex flex-col w-full max-w-md gap-4 mb-10">
         <Button 
           onClick={handleCreateWallet}
-          className="w-full py-6 text-base bg-[#32CD32] hover:bg-[#28A428] text-white font-medium"
+          className="w-full py-6 text-base bg-wallet-blue hover:bg-wallet-darkBlue text-white font-medium"
         >
           Neue Wallet erstellen
         </Button>
