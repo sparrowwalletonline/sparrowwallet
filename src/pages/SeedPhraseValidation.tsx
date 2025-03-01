@@ -28,7 +28,9 @@ const SeedPhraseValidation: React.FC = () => {
       }
       indices.sort((a, b) => a - b);
       setWordIndices(indices);
-      console.log("Selected word indices for validation:", indices);
+      console.log("Selected word indices for validation:", indices, "SeedPhrase length:", seedPhrase.length);
+    } else {
+      console.error("SeedPhrase is missing or invalid:", seedPhrase);
     }
   }, [seedPhrase]);
   
@@ -36,12 +38,18 @@ const SeedPhraseValidation: React.FC = () => {
     const newInputValues = [...inputValues];
     newInputValues[index] = value.trim().toLowerCase();
     setInputValues(newInputValues);
+    console.log("Input changed:", index, value, "New values:", newInputValues);
   };
   
   const handleValidate = () => {
-    const isValid = wordIndices.every((wordIndex, index) => 
-      inputValues[index] === seedPhrase[wordIndex]
-    );
+    console.log("Validating inputs:", inputValues);
+    console.log("Against seed phrase words:", wordIndices.map(i => seedPhrase[i]));
+    
+    const isValid = wordIndices.every((wordIndex, index) => {
+      const match = inputValues[index] === seedPhrase[wordIndex];
+      console.log(`Comparing input ${index} (${inputValues[index]}) with word ${wordIndex} (${seedPhrase[wordIndex]}): ${match}`);
+      return match;
+    });
     
     setIsCorrect(isValid);
     
@@ -88,6 +96,12 @@ const SeedPhraseValidation: React.FC = () => {
     navigate('/seed-phrase');
   };
 
+  if (!seedPhrase || seedPhrase.length < 12) {
+    console.error("SeedPhrase is missing or invalid, redirecting to seed-phrase page");
+    navigate('/seed-phrase');
+    return null;
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-wallet-darkBg text-white p-6 animate-fade-in">
       <div className="w-full relative">
@@ -124,25 +138,24 @@ const SeedPhraseValidation: React.FC = () => {
             </div>
           </div>
           
-          <div className="space-y-5 bg-green-500/20 p-8 rounded-xl shadow-lg border-4 border-green-500">
-            <h3 className="text-xl font-bold mb-6 text-white">Gib die folgenden Wörter ein:</h3>
+          <div className="space-y-5 bg-green-900/30 p-6 rounded-xl shadow-lg border border-green-500">
+            <h3 className="text-xl font-bold mb-4 text-white">Gib die folgenden Wörter ein:</h3>
+            
             {wordIndices.map((wordIndex, index) => (
-              <div key={index} className="space-y-3 mb-8">
-                <label htmlFor={`word-${index}`} className="block text-white text-lg font-bold">
+              <div key={index} className="mb-6">
+                <label className="block text-white text-lg font-bold mb-2">
                   Wort Nr. {wordIndex + 1}
                 </label>
-                <input
-                  id={`word-${index}`}
-                  type="text"
-                  value={inputValues[index]}
-                  onChange={(e) => handleInputChange(index, e.target.value)}
-                  className="flex h-16 w-full rounded-lg border-4 border-green-500 bg-white text-black px-6 py-4 text-xl font-medium focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-offset-2"
-                  placeholder={`Gib das ${wordIndex + 1}. Wort ein`}
-                  autoComplete="off"
-                  style={{
-                    boxShadow: '0 0 0 4px rgba(34, 197, 94, 0.2), 0 4px 16px rgba(0, 0, 0, 0.3)'
-                  }}
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={inputValues[index]}
+                    onChange={(e) => handleInputChange(index, e.target.value)}
+                    className="w-full h-14 bg-white text-black text-lg font-medium px-4 py-3 rounded-lg border-2 border-green-500 focus:border-green-400 focus:outline-none"
+                    placeholder={`Gib das ${wordIndex + 1}. Wort ein`}
+                    autoComplete="off"
+                  />
+                </div>
               </div>
             ))}
           </div>
@@ -154,11 +167,8 @@ const SeedPhraseValidation: React.FC = () => {
           <div className="flex flex-col space-y-4 pt-6">
             <Button 
               onClick={handleValidate}
-              className="w-full py-8 text-lg bg-green-600 hover:bg-green-700 text-white font-bold shadow-lg"
+              className="w-full py-6 text-lg bg-green-600 hover:bg-green-700 text-white font-bold"
               disabled={inputValues.some(value => !value)}
-              style={{
-                boxShadow: '0 4px 12px rgba(34, 197, 94, 0.5)'
-              }}
             >
               Bestätigen
             </Button>
@@ -166,7 +176,7 @@ const SeedPhraseValidation: React.FC = () => {
             <Button 
               onClick={handleViewSeedPhrase}
               variant="outline"
-              className="w-full text-lg text-green-500 border-green-500 hover:bg-green-500/10 font-bold"
+              className="w-full py-6 text-lg text-green-500 border-green-500 hover:bg-green-500/10 font-bold"
             >
               Passphrase erneut anschauen
             </Button>
