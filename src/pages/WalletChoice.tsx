@@ -21,12 +21,14 @@ const WalletChoice: React.FC = () => {
     <div className="min-h-screen flex flex-col items-center justify-between bg-wallet-darkBg text-white p-6">
       <div className="flex-1"></div>
       
-      <div className="flex flex-col items-center justify-center gap-6 w-full max-w-md">
-        <WalletLogo className="w-24 h-24 mb-4" color="green" />
+      <div className="flex flex-col items-center justify-center gap-6 w-full max-w-md mb-auto">
+        <WalletLogo className="w-28 h-28 mb-6" color="green" />
         <h1 className="font-heading text-3xl font-bold text-center">Trust Wallet</h1>
       </div>
       
-      <div className="flex flex-col w-full max-w-md gap-4 mt-auto mb-10">
+      <div className="flex-1"></div>
+      
+      <div className="flex flex-col w-full max-w-md gap-4 mb-10">
         <Button 
           onClick={handleCreateWallet}
           className="w-full py-6 text-base bg-[#32CD32] hover:bg-[#28A428] text-white font-medium"
