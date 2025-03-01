@@ -66,14 +66,23 @@ const generateSeedPhrase = (): string[] => {
 };
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [hasWallet, setHasWallet] = useState(false);
-  const [seedPhrase, setSeedPhrase] = useState<string[]>([]);
+  const savedSeedPhrase = localStorage.getItem('walletSeedPhrase');
+  const initialSeedPhrase = savedSeedPhrase ? JSON.parse(savedSeedPhrase) : [];
+  
+  const [hasWallet, setHasWallet] = useState(initialSeedPhrase.length >= 12);
+  const [seedPhrase, setSeedPhrase] = useState<string[]>(initialSeedPhrase);
   const [balance, setBalance] = useState(0);
   const [btcBalance, setBtcBalance] = useState(0);
   const [btcPrice, setBtcPrice] = useState(40000);
   const [usdBalance, setUsdBalance] = useState(0);
   const [walletAddress, setWalletAddress] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+
+  useEffect(() => {
+    if (seedPhrase && seedPhrase.length >= 12) {
+      localStorage.setItem('walletSeedPhrase', JSON.stringify(seedPhrase));
+    }
+  }, [seedPhrase]);
 
   const generateWallet = (stage?: string) => {
     if (stage === 'passphrase') {
@@ -94,6 +103,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           const newSeedPhrase = generateSeedPhrase();
           if (newSeedPhrase && newSeedPhrase.length >= 12) {
             setSeedPhrase([...newSeedPhrase]);
+            localStorage.setItem('walletSeedPhrase', JSON.stringify(newSeedPhrase));
             console.log("Seed phrase set in WalletContext:", newSeedPhrase.join(' '));
             setHasWallet(true);
             const simulatedBtcBalance = 0.01;
@@ -131,6 +141,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       if (!seedPhrase || seedPhrase.length < 12 || (words.join(' ') !== seedPhrase.join(' '))) {
         console.log("Setting new seed phrase in importWallet");
         setSeedPhrase(words);
+        localStorage.setItem('walletSeedPhrase', JSON.stringify(words));
         
         if (words.length >= 12) {
           setHasWallet(true);
@@ -154,6 +165,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setBtcBalance(0);
     setUsdBalance(0);
     setWalletAddress('');
+    localStorage.removeItem('walletSeedPhrase');
   };
 
   const copyToClipboard = (text: string) => {

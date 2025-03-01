@@ -93,14 +93,16 @@ const SeedPhraseGenerator: React.FC = () => {
   // Initialize seed phrase on component mount - check if we already have one in context
   useEffect(() => {
     console.log("SeedPhraseGenerator mounted, checking for existing seed phrase");
+    
+    // CRITICAL FIX: Only generate if we don't have a valid seed phrase already
     if (seedPhrase && seedPhrase.length >= 12) {
       console.log("Using existing seed phrase from context:", seedPhrase);
       setLocalSeedPhrase(seedPhrase);
     } else {
-      console.log("No existing seed phrase found, generating a new one");
+      console.log("No existing seed phrase found or invalid one, generating a new one");
       generateSeedPhrase();
     }
-  }, []);
+  }, []); // Only run once on mount
   
   const handleCopy = () => {
     if (localSeedPhrase && localSeedPhrase.length >= 12) {
