@@ -11,6 +11,7 @@ const WalletApp: React.FC = () => {
   const { hasWallet, seedPhrase } = useWallet();
   const [currentView, setCurrentView] = useState<string>('');
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [slideDirection, setSlideDirection] = useState<'right' | 'left'>('right');
 
   // Determine which view to show
   const showLandingPage = seedPhrase.length === 0;
@@ -25,6 +26,19 @@ const WalletApp: React.FC = () => {
     else if (showCreateWallet) newView = 'create';
     else if (hasWallet) newView = 'wallet';
 
+    // Set slide direction based on navigation flow
+    if (currentView === 'landing' && newView !== 'landing') {
+      setSlideDirection('right');
+    } else if (currentView !== 'landing' && newView === 'landing') {
+      setSlideDirection('left');
+    } else if (currentView === 'choice' && newView === 'create') {
+      setSlideDirection('right');
+    } else if (currentView === 'create' && newView === 'choice') {
+      setSlideDirection('left');
+    } else if (currentView === 'create' && newView === 'wallet') {
+      setSlideDirection('right');
+    }
+
     // Only trigger transition if view actually changes
     if (newView !== currentView && currentView !== '') {
       setIsTransitioning(true);
@@ -33,7 +47,7 @@ const WalletApp: React.FC = () => {
       const timer = setTimeout(() => {
         setCurrentView(newView);
         setIsTransitioning(false);
-      }, 500); // Increased from 300ms to 500ms for more noticeable transition
+      }, 500); // 500ms for transition
       
       return () => clearTimeout(timer);
     } else {
@@ -42,13 +56,15 @@ const WalletApp: React.FC = () => {
   }, [showLandingPage, showWalletChoice, showCreateWallet, hasWallet, currentView]);
   
   const getTransitionClasses = () => {
-    let baseClasses = "w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg overflow-hidden";
+    let baseClasses = "w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg overflow-hidden slide-transition";
     
     if (isTransitioning) {
-      return `${baseClasses} slide-transition slide-transition-exit`;
+      return slideDirection === 'right' 
+        ? `${baseClasses} slide-transition-exit`
+        : `${baseClasses} slide-transition-enter`;
     }
     
-    return `${baseClasses} slide-transition slide-transition-enter`;
+    return baseClasses;
   };
 
   return (
