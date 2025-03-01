@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { WalletProvider, useWallet } from '@/contexts/WalletContext';
 import LandingPage from './LandingPage';
 import GenerateWallet from './GenerateWallet';
@@ -14,7 +14,7 @@ const WalletApp: React.FC = () => {
   const showGenerateWallet = !hasWallet && seedPhrase.length > 0;
   
   return (
-    <div className="slide-transition w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg">
+    <div className="slide-transition w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg overflow-hidden">
       {showLandingPage && <LandingPage />}
       {showGenerateWallet && <GenerateWallet />}
       {hasWallet && <WalletView />}

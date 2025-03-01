@@ -38,14 +38,14 @@ const LandingPage: React.FC = () => {
           
           <Button 
             onClick={handleCreateWallet}
-            className="w-full py-6 text-base flex items-center justify-center gap-2"
+            className="w-full py-6 text-base flex items-center justify-center gap-2 bg-wallet-accent hover:bg-wallet-accent/90 text-black font-medium transition-all shadow-[0_0_15px_rgba(0,255,95,0.3)] hover:shadow-[0_0_20px_rgba(0,255,95,0.5)]"
           >
             Create Wallet <ArrowRight className="h-4 w-4" />
           </Button>
         </div>
         
         <div className="text-center text-xs text-muted-foreground max-w-xs">
-          By creating a wallet, you agree to our Terms of Service and Privacy Policy.
+          By creating a wallet, you agree to our <a href="#" className="underline hover:text-wallet-accent">Terms of Service</a> and <a href="#" className="underline hover:text-wallet-accent">Privacy Policy</a>.
         </div>
       </div>
     </div>
