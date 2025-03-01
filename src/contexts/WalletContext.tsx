@@ -73,6 +73,26 @@ const generateSeedPhrase = (): string[] => {
   }
 };
 
+const encryptSeedPhrase = (phrase: string[]): string => {
+  try {
+    // Very basic encryption - NOT for production use
+    return btoa(JSON.stringify(phrase));
+  } catch (error) {
+    console.error("Error encrypting seed phrase:", error);
+    return "";
+  }
+};
+
+const decryptSeedPhrase = (encryptedPhrase: string): string[] => {
+  try {
+    // Very basic decryption - NOT for production use
+    return JSON.parse(atob(encryptedPhrase));
+  } catch (error) {
+    console.error("Error decrypting seed phrase:", error);
+    return [];
+  }
+};
+
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const savedSeedPhrase = localStorage.getItem('walletSeedPhrase');
   const initialSeedPhrase = savedSeedPhrase ? JSON.parse(savedSeedPhrase) : [];
@@ -119,11 +139,13 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
 
     try {
+      const encryptedPhrase = encryptSeedPhrase(seedPhrase);
+      
       const { data, error } = await supabase
         .from('wallet_seed_phrases')
         .upsert({
           user_id: session.user.id,
-          encrypted_seed_phrase: JSON.stringify(seedPhrase)
+          encrypted_seed_phrase: encryptedPhrase
         }, {
           onConflict: 'user_id'
         });
@@ -184,38 +206,28 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       }
 
       if (data && data.encrypted_seed_phrase) {
-        try {
-          const loadedPhrase = JSON.parse(data.encrypted_seed_phrase);
+        const decryptedPhrase = decryptSeedPhrase(data.encrypted_seed_phrase);
+        
+        if (decryptedPhrase && decryptedPhrase.length >= 12) {
+          setSeedPhrase(decryptedPhrase);
+          setHasWallet(true);
+          const simulatedBtcBalance = 0.01;
+          setBtcBalance(simulatedBtcBalance);
+          const calculatedUsdBalance = simulatedBtcBalance * btcPrice;
+          setUsdBalance(calculatedUsdBalance);
+          setWalletAddress(generateBtcAddress());
+          setBalance(Math.random() * 10);
           
-          if (loadedPhrase && loadedPhrase.length >= 12) {
-            setSeedPhrase(loadedPhrase);
-            setHasWallet(true);
-            const simulatedBtcBalance = 0.01;
-            setBtcBalance(simulatedBtcBalance);
-            const calculatedUsdBalance = simulatedBtcBalance * btcPrice;
-            setUsdBalance(calculatedUsdBalance);
-            setWalletAddress(generateBtcAddress());
-            setBalance(Math.random() * 10);
-            
-            toast({
-              title: "Erfolgreich geladen",
-              description: "Deine Seed Phrase wurde aus der Cloud geladen",
-            });
-            return true;
-          } else {
-            console.error("Invalid loaded seed phrase:", loadedPhrase);
-            toast({
-              title: "Fehler beim Laden",
-              description: "Die gespeicherte Seed Phrase ist ungültig",
-              variant: "destructive",
-            });
-            return false;
-          }
-        } catch (parseError) {
-          console.error("Error parsing stored seed phrase:", parseError);
+          toast({
+            title: "Erfolgreich geladen",
+            description: "Deine Seed Phrase wurde aus der Cloud geladen",
+          });
+          return true;
+        } else {
+          console.error("Invalid decrypted seed phrase:", decryptedPhrase);
           toast({
             title: "Fehler beim Laden",
-            description: "Fehler beim Parsen der gespeicherten Seed Phrase",
+            description: "Die gespeicherte Seed Phrase ist ungültig",
             variant: "destructive",
           });
           return false;
@@ -254,6 +266,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     
     setTimeout(() => {
       try {
+        // Only generate a new seed phrase if we don't already have one
         if (!seedPhrase || seedPhrase.length < 12) {
           const newSeedPhrase = generateSeedPhrase();
           if (newSeedPhrase && newSeedPhrase.length >= 12) {
@@ -283,6 +296,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const cancelWalletCreation = () => {
+    // Don't clear the seed phrase anymore, just leave the flow
     console.log("Cancelled wallet creation but keeping seed phrase:", seedPhrase.join(' '));
   };
 
@@ -291,6 +305,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       const words = typeof phrase === 'string' ? phrase.split(' ') : phrase;
       console.log("Importing wallet with phrase:", words.join(' '));
       
+      // Only set if it's a new phrase or we don't have one yet
       if (!seedPhrase || seedPhrase.length < 12 || (words.join(' ') !== seedPhrase.join(' '))) {
         console.log("Setting new seed phrase in importWallet");
         setSeedPhrase(words);

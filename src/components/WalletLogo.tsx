@@ -4,23 +4,17 @@ import React from 'react';
 interface WalletLogoProps {
   className?: string;
   color?: 'blue' | 'green';
-  size?: 'small' | 'medium' | 'large';
 }
 
-const WalletLogo: React.FC<WalletLogoProps> = ({ className, color = 'blue', size = 'medium' }) => {
+const WalletLogo: React.FC<WalletLogoProps> = ({ className, color = 'blue' }) => {
   // Define gradient colors based on the color prop
   const gradientColors = color === 'blue' 
     ? { from: '#0033ff', to: '#00ffaa' }
     : { from: '#4ade80', to: '#22c55e' };
   
-  // Determine size based on the size prop
-  const sizeClass = size === 'small' ? 'w-8 h-8' : 
-                    size === 'large' ? 'w-24 h-24' : 
-                    'w-16 h-16'; // medium is default
-  
   return (
     <div className={`flex items-center ${className}`}>
-      <div className={`${sizeClass} bg-gradient-to-br ${color === 'blue' ? 'from-blue-600 to-blue-400' : 'from-green-500 to-green-400'} rounded-md flex items-center justify-center shadow-lg relative overflow-hidden`}>
+      <div className={`bg-gradient-to-br ${color === 'blue' ? 'from-blue-600 to-blue-400' : 'from-green-500 to-green-400'} rounded-md flex items-center justify-center shadow-lg relative overflow-hidden`}>
         <svg 
           viewBox="0 0 100 100" 
           className="w-full h-full"

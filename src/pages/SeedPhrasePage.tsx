@@ -46,7 +46,7 @@ const SeedPhrasePage: React.FC = () => {
       </div>
       
       <div className="w-full text-center mt-6">
-        <h1 className="font-heading text-xl font-medium">Wallet erstellen (Test Page)</h1>
+        <h1 className="font-heading text-xl font-medium">Wallet erstellen</h1>
         {!session && (
           <div className="mt-2 text-sm text-wallet-gray">
             <span>Melde dich an, um deine Seed Phrase in der Cloud zu sichern </span>
@@ -74,14 +74,6 @@ const SeedPhrasePage: React.FC = () => {
             <p className="text-wallet-gray text-sm mb-4">
               Schreibe diese Wörter in der richtigen Reihenfolge auf. Bewahre sie sicher auf und teile sie mit niemandem.
             </p>
-            
-            {session && (
-              <div className="bg-green-800/30 border border-green-600/50 rounded p-2 mb-4">
-                <p className="text-green-400 text-xs">
-                  Test Page: Seed Phrase wird ohne Verschlüsselung in deinem Account gespeichert.
-                </p>
-              </div>
-            )}
           </div>
           
           <SeedPhraseGenerator />
