@@ -63,15 +63,15 @@ const generateSeedPhrase = (): string[] => {
   try {
     // Generate a random mnemonic (128-256 bits)
     const mnemonic = bip39.generateMnemonic(128); // 128 bits = 12 words
-    console.log("Generated BIP39 mnemonic:", mnemonic);
+    console.log("Generated BIP39 mnemonic in WalletContext:", mnemonic);
     
     // For debugging, log the words
     const words = mnemonic.split(' ');
-    console.log("BIP39 word list (should be 12 words):", words);
+    console.log("BIP39 word list in WalletContext (should be 12 words):", words);
     
     return words;
   } catch (error) {
-    console.error("Error generating seed phrase:", error);
+    console.error("Error generating seed phrase in WalletContext:", error);
     
     // Fallback to a hardcoded seed phrase for testing
     return ["ability", "dinner", "canvas", "trash", "paper", "volcano", "energy", "horse", "author", "basket", "melody", "vintage"];
@@ -101,49 +101,26 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   // Actually create the wallet with a full seed phrase
   const createWallet = () => {
-    console.log("createWallet function called - starting generation");
+    console.log("createWallet function called in WalletContext - starting generation");
     setIsGenerating(true);
     
-    // Force a slight delay for UI feedback
+    // Generate the seed phrase
     setTimeout(() => {
       try {
         // Generate the new seed phrase using BIP39
         const newSeedPhrase = generateSeedPhrase();
-        console.log("Generated BIP39 seed phrase in createWallet:", newSeedPhrase);
         
         // Only set the seed phrase after we've confirmed it was generated
         if (newSeedPhrase && newSeedPhrase.length >= 12) {
-          console.log("Setting seed phrase state with new array reference");
           // Create a new array reference to ensure React re-renders
           setSeedPhrase([...newSeedPhrase]); 
-          console.log("Seed phrase set in WalletContext:", newSeedPhrase);
-          
-          toast({
-            title: "Seed phrase generated",
-            description: "New seed phrase has been created successfully.",
-            duration: 2000,
-          });
+          console.log("Seed phrase set in WalletContext:", newSeedPhrase.join(' '));
         } else {
-          console.error("Generated seed phrase is too short or invalid:", newSeedPhrase);
-          
-          toast({
-            title: "Error",
-            description: "Failed to generate a valid seed phrase. Please try again.",
-            variant: "destructive",
-            duration: 3000,
-          });
+          console.error("Generated seed phrase is invalid in WalletContext:", newSeedPhrase);
         }
       } catch (error) {
         console.error("Error in createWallet:", error);
-        
-        toast({
-          title: "Error",
-          description: "An error occurred while creating the wallet.",
-          variant: "destructive",
-          duration: 3000,
-        });
       } finally {
-        console.log("Setting isGenerating to false");
         setIsGenerating(false);
       }
     }, 500);
@@ -177,6 +154,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(
       () => {
+        console.log("Text copied to clipboard successfully:", text);
         toast({
           title: "Copied to clipboard",
           description: "The text has been copied to your clipboard.",
@@ -197,7 +175,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   // Effect to update hasWallet when seedPhrase changes
   useEffect(() => {
-    console.log("Seed phrase updated in context:", seedPhrase);
+    console.log("Seed phrase updated in WalletContext:", seedPhrase ? seedPhrase.join(' ') : 'undefined');
     
     // In a real app, we would validate the seed phrase here
     // For this demo, we'll just set hasWallet if there's a seed phrase with 12+ words

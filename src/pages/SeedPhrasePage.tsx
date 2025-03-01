@@ -1,57 +1,18 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Shield, Copy, RefreshCw, Check, ArrowLeft } from 'lucide-react';
+import { Shield, Check, ArrowLeft } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import { useToast } from '@/components/ui/use-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import SeedPhraseGenerator from '@/components/SeedPhraseGenerator';
 
 const SeedPhrasePage: React.FC = () => {
-  const { seedPhrase, isGenerating, createWallet, copyToClipboard, cancelWalletCreation } = useWallet();
+  const { cancelWalletCreation } = useWallet();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [savedPhrase, setSavedPhrase] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
-  const [copyAnimation, setCopyAnimation] = useState(false);
-  
-  // Generate a seed phrase on component mount if one doesn't exist
-  useEffect(() => {
-    if (!seedPhrase || seedPhrase.length < 12) { // If we don't have a real seed phrase yet
-      console.log("Generating initial BIP39 seed phrase in SeedPhrasePage...");
-      // Trigger seed phrase generation with a small delay to ensure component is fully mounted
-      setTimeout(() => {
-        console.log("Calling createWallet from SeedPhrasePage useEffect");
-        createWallet();
-      }, 100); // Reduced delay to be more responsive
-    } else {
-      console.log("Seed phrase already exists:", seedPhrase);
-    }
-  }, []);
-  
-  const handleRegeneratePhrase = () => {
-    console.log("Regenerating BIP39 seed phrase - button clicked");
-    setSavedPhrase(false);
-    setAgreedToTerms(false);
-    // Call createWallet directly to generate a new seed phrase
-    createWallet();
-  };
-  
-  const handleCopy = () => {
-    if (seedPhrase && seedPhrase.length >= 12) {
-      const phraseText = seedPhrase.join(' ');
-      copyToClipboard(phraseText);
-      setCopyAnimation(true);
-      setTimeout(() => setCopyAnimation(false), 1500);
-      
-      toast({
-        title: "Copied!",
-        description: "Seed phrase copied to clipboard",
-        duration: 2000,
-      });
-    }
-  };
   
   const handleConfirm = () => {
     if (savedPhrase && agreedToTerms) {
@@ -72,11 +33,6 @@ const SeedPhrasePage: React.FC = () => {
     cancelWalletCreation();
     navigate('/passphrase');
   };
-  
-  // Debug log to track seed phrase
-  useEffect(() => {
-    console.log("Current seed phrase in SeedPhrasePage:", seedPhrase ? seedPhrase.join(' ') : 'undefined');
-  }, [seedPhrase]);
   
   return (
     <div className="min-h-screen flex flex-col bg-wallet-darkBg text-white p-6 animate-fade-in">
