@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
-import { ArrowRight, Check, Menu, Star, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift, Coins, Wallet, Search, X } from 'lucide-react';
+import { ArrowRight, Check, Menu, Star, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift, Coins, Wallet, Search, X, Loader2 } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import { useMenu } from '@/contexts/MenuContext';
 
@@ -9,9 +9,15 @@ const LandingPage: React.FC = () => {
   const { generateWallet } = useWallet();
   const { toggleMenu } = useMenu();
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   
   const handleCreateWallet = () => {
-    generateWallet();
+    setIsLoading(true);
+    setTimeout(() => {
+      generateWallet();
+      // We don't need to set isLoading back to false here since 
+      // this component will be unmounted when the view changes
+    }, 1500); // Show loading animation for 1.5 seconds
   };
   
   const handleMenuClick = () => {
@@ -54,8 +60,21 @@ const LandingPage: React.FC = () => {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button onClick={handleCreateWallet} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue">
-              Create a new wallet <ArrowRight className="h-4 w-4" />
+            <Button 
+              onClick={handleCreateWallet} 
+              disabled={isLoading}
+              className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Creating wallet...
+                </>
+              ) : (
+                <>
+                  Create a new wallet <ArrowRight className="h-4 w-4" />
+                </>
+              )}
             </Button>
           </div>
           
