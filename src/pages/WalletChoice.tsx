@@ -3,9 +3,10 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
 import { useWallet } from '@/contexts/WalletContext';
+import { ArrowLeft } from 'lucide-react';
 
 const WalletChoice: React.FC = () => {
-  const { generateWallet, importWallet } = useWallet();
+  const { generateWallet, importWallet, cancelWalletCreation } = useWallet();
   
   const handleCreateWallet = () => {
     generateWallet();
@@ -16,9 +17,21 @@ const WalletChoice: React.FC = () => {
     // The actual import functionality would be implemented later
     importWallet("dummy phrase to trigger import UI");
   };
+
+  const handleBackClick = () => {
+    cancelWalletCreation();
+  };
   
   return (
-    <div className="min-h-screen flex flex-col items-center justify-between bg-wallet-darkBg text-white p-6">
+    <div className="min-h-screen flex flex-col items-center justify-between bg-wallet-darkBg text-white p-6 relative">
+      <button 
+        onClick={handleBackClick}
+        className="absolute top-6 left-6 text-white hover:text-gray-300 transition-colors"
+        aria-label="Back to landing page"
+      >
+        <ArrowLeft size={24} />
+      </button>
+      
       <div className="flex-1"></div>
       
       <div className="flex flex-col items-center justify-center gap-6 w-full max-w-md mb-auto">
