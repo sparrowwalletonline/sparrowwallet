@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -9,7 +8,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 
-// Registration modal component
 const RegistrationModal = ({ isOpen, onClose, onRegister, isLoading }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -100,7 +98,6 @@ const RegistrationModal = ({ isOpen, onClose, onRegister, isLoading }) => {
   );
 };
 
-// Success modal component
 const SuccessModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
@@ -135,12 +132,10 @@ const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   
   useEffect(() => {
-    // Check for an active session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
     });
 
-    // Listen for authentication changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
@@ -150,13 +145,11 @@ const LandingPage: React.FC = () => {
   
   const handleCreateWallet = () => {
     if (session) {
-      // User is already logged in, proceed to wallet creation
       setIsLoading(true);
       setTimeout(() => {
         generateWallet();
-      }, 1500);
+      }, 2000);
     } else {
-      // Show registration modal
       setShowRegistrationModal(true);
     }
   };
@@ -173,10 +166,8 @@ const LandingPage: React.FC = () => {
         throw error;
       }
       
-      // Show success modal
       setShowRegistrationModal(false);
       setShowSuccessModal(true);
-      
     } catch (error) {
       console.error("Registration error:", error);
       toast({
@@ -577,7 +568,6 @@ const LandingPage: React.FC = () => {
         </div>
       </div>
       
-      {/* Render modals */}
       <RegistrationModal
         isOpen={showRegistrationModal}
         onClose={() => setShowRegistrationModal(false)}
