@@ -14,38 +14,57 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <div className="flex-1 flex flex-col items-center justify-center p-6 gap-10">
-        <WalletLogo className="w-24 h-24 animate-scale-in" />
-        
-        <div className="space-y-4 text-center max-w-xs">
-          <h1 className="text-3xl font-bold tracking-tight text-white">
-            Trusty Wallet
+      <header className="w-full p-6 flex justify-between items-center">
+        <WalletLogo className="w-12 h-12" />
+        <div className="w-8 h-8 flex flex-col gap-1.5 justify-center items-end cursor-pointer">
+          <span className="block w-8 h-0.5 bg-white"></span>
+          <span className="block w-8 h-0.5 bg-white"></span>
+          <span className="block w-8 h-0.5 bg-white"></span>
+        </div>
+      </header>
+      
+      <div className="flex-1 flex flex-col p-6">
+        <div className="space-y-4 mb-8">
+          <h1 className="text-4xl font-bold tracking-tight text-white leading-tight">
+            True crypto ownership.
+            <br />
+            Powerful Web3
+            <br />
+            experiences
           </h1>
-          <p className="text-muted-foreground">
-            The most trusted & secure crypto wallet. Buy, store, exchange & earn crypto.
+          <p className="text-lg text-muted-foreground">
+            Unlock the power of your cryptocurrency assets and explore the world of Web3 with Trusty Wallet.
           </p>
         </div>
         
-        <div className="glass-morph rounded-xl p-6 w-full max-w-sm space-y-6">
-          <div className="space-y-2 text-center">
-            <h2 className="text-xl font-semibold text-white">
-              Get Started
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Create a new wallet in seconds and start your crypto journey
-            </p>
-          </div>
-          
-          <Button 
-            onClick={handleCreateWallet}
-            className="w-full py-6 text-base flex items-center justify-center gap-2 bg-wallet-accent hover:bg-wallet-accent/90 text-black font-medium transition-all shadow-[0_0_15px_rgba(0,255,95,0.3)] hover:shadow-[0_0_20px_rgba(0,255,95,0.5)]"
-          >
-            Create Wallet <ArrowRight className="h-4 w-4" />
-          </Button>
+        <Button 
+          onClick={handleCreateWallet}
+          className="w-full py-6 text-base flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium transition-all rounded-full"
+        >
+          Download Mobile App <ArrowRight className="h-4 w-4" />
+        </Button>
+        
+        <div className="mt-12 relative">
+          <img 
+            src="/lovable-uploads/a2446f52-838c-4fb8-b6ba-73814411330e.png" 
+            alt="Trusty Wallet Features" 
+            className="w-full max-w-lg mx-auto" 
+          />
         </div>
         
-        <div className="text-center text-xs text-muted-foreground max-w-xs">
-          By creating a wallet, you agree to our <a href="#" className="underline hover:text-wallet-accent">Terms of Service</a> and <a href="#" className="underline hover:text-wallet-accent">Privacy Policy</a>.
+        <div className="mt-12 flex justify-between">
+          <div className="text-center">
+            <div className="text-blue-500 font-bold text-2xl">140M</div>
+            <div className="text-muted-foreground">people</div>
+          </div>
+          <div className="text-center">
+            <div className="text-blue-500 font-bold text-2xl">2017</div>
+            <div className="text-muted-foreground">Founded in</div>
+          </div>
+        </div>
+        
+        <div className="text-center text-xs text-muted-foreground mt-auto pt-6">
+          By continuing, you agree to our <a href="#" className="underline hover:text-wallet-accent">Terms of Service</a> and <a href="#" className="underline hover:text-wallet-accent">Privacy Policy</a>.
         </div>
       </div>
     </div>

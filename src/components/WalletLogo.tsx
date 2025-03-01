@@ -7,14 +7,23 @@ interface WalletLogoProps {
 
 const WalletLogo: React.FC<WalletLogoProps> = ({ className }) => {
   return (
-    <div className={`flex flex-col items-center ${className}`}>
-      <div className="bg-gradient-to-br from-wallet-darkBlue to-wallet-blue w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg mb-2 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.4),transparent_70%)]"></div>
-        <img 
-          src="https://trustwallet.com/favicon.ico" 
-          alt="Trusty Wallet Logo" 
-          className="w-12 h-12" 
-        />
+    <div className={`flex items-center ${className}`}>
+      <div className="bg-gradient-to-br from-blue-700 to-blue-400 rounded-md flex items-center justify-center shadow-lg relative overflow-hidden">
+        <svg 
+          viewBox="0 0 100 100" 
+          className="w-full h-full"
+        >
+          <path
+            d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z"
+            fill="url(#logo-gradient)"
+          />
+          <defs>
+            <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#0033ff" />
+              <stop offset="100%" stopColor="#00ffaa" />
+            </linearGradient>
+          </defs>
+        </svg>
       </div>
     </div>
   );
