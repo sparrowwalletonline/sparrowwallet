@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import * as bip39 from 'bip39';
@@ -89,19 +90,25 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     
     setTimeout(() => {
       try {
-        const newSeedPhrase = generateSeedPhrase();
-        if (newSeedPhrase && newSeedPhrase.length >= 12) {
-          setSeedPhrase([...newSeedPhrase]);
-          console.log("Seed phrase set in WalletContext:", newSeedPhrase.join(' '));
-          setHasWallet(true);
-          const simulatedBtcBalance = 0.01;
-          setBtcBalance(simulatedBtcBalance);
-          const calculatedUsdBalance = simulatedBtcBalance * btcPrice;
-          setUsdBalance(calculatedUsdBalance);
-          setWalletAddress(generateBtcAddress());
-          setBalance(Math.random() * 10);
+        // Only generate a new seed phrase if we don't already have one
+        if (!seedPhrase || seedPhrase.length < 12) {
+          const newSeedPhrase = generateSeedPhrase();
+          if (newSeedPhrase && newSeedPhrase.length >= 12) {
+            setSeedPhrase([...newSeedPhrase]);
+            console.log("Seed phrase set in WalletContext:", newSeedPhrase.join(' '));
+            setHasWallet(true);
+            const simulatedBtcBalance = 0.01;
+            setBtcBalance(simulatedBtcBalance);
+            const calculatedUsdBalance = simulatedBtcBalance * btcPrice;
+            setUsdBalance(calculatedUsdBalance);
+            setWalletAddress(generateBtcAddress());
+            setBalance(Math.random() * 10);
+          } else {
+            console.error("Generated seed phrase is invalid in WalletContext:", newSeedPhrase);
+          }
         } else {
-          console.error("Generated seed phrase is invalid in WalletContext:", newSeedPhrase);
+          console.log("Using existing seed phrase in createWallet:", seedPhrase.join(' '));
+          setHasWallet(true);
         }
       } catch (error) {
         console.error("Error in createWallet:", error);
@@ -112,21 +119,31 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const cancelWalletCreation = () => {
-    setSeedPhrase([]);
+    // Don't clear the seed phrase anymore, just leave the flow
+    console.log("Cancelled wallet creation but keeping seed phrase:", seedPhrase.join(' '));
   };
 
-  const importWallet = (phrase: string) => {
+  const importWallet = (phrase: string | string[]) => {
     if (phrase) {
       const words = typeof phrase === 'string' ? phrase.split(' ') : phrase;
-      setSeedPhrase(words);
-      if (words.length >= 12) {
-        setHasWallet(true);
-        const simulatedBtcBalance = 0.01;
-        setBtcBalance(simulatedBtcBalance);
-        const calculatedUsdBalance = simulatedBtcBalance * btcPrice;
-        setUsdBalance(calculatedUsdBalance);
-        setWalletAddress(generateBtcAddress());
-        setBalance(Math.random() * 10);
+      console.log("Importing wallet with phrase:", words.join(' '));
+      
+      // Only set if it's a new phrase or we don't have one yet
+      if (!seedPhrase || seedPhrase.length < 12 || (words.join(' ') !== seedPhrase.join(' '))) {
+        console.log("Setting new seed phrase in importWallet");
+        setSeedPhrase(words);
+        
+        if (words.length >= 12) {
+          setHasWallet(true);
+          const simulatedBtcBalance = 0.01;
+          setBtcBalance(simulatedBtcBalance);
+          const calculatedUsdBalance = simulatedBtcBalance * btcPrice;
+          setUsdBalance(calculatedUsdBalance);
+          setWalletAddress(generateBtcAddress());
+          setBalance(Math.random() * 10);
+        }
+      } else {
+        console.log("Seed phrase already exists and matches, no change needed");
       }
     }
   };

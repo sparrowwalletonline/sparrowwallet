@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -37,7 +38,7 @@ const wordlist = [
 ];
 
 const SeedPhraseGenerator: React.FC = () => {
-  const { seedPhrase, copyToClipboard } = useWallet();
+  const { seedPhrase, copyToClipboard, importWallet } = useWallet();
   const [copyAnimation, setCopyAnimation] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [localSeedPhrase, setLocalSeedPhrase] = useState<string[]>([]);
@@ -60,6 +61,8 @@ const SeedPhraseGenerator: React.FC = () => {
       // Add a small delay to show loading state
       setTimeout(() => {
         setLocalSeedPhrase(words);
+        // Save the generated phrase to the wallet context
+        importWallet(words);
         setIsGenerating(false);
         
         toast({
@@ -76,6 +79,8 @@ const SeedPhraseGenerator: React.FC = () => {
       // Fallback to hardcoded phrase on error
       const fallbackPhrase = ["ability", "dinner", "canvas", "trash", "paper", "volcano", "energy", "horse", "author", "basket", "melody", "vintage"];
       setLocalSeedPhrase(fallbackPhrase);
+      // Save the fallback phrase to the wallet context
+      importWallet(fallbackPhrase);
       
       toast({
         title: "Error",
@@ -87,14 +92,15 @@ const SeedPhraseGenerator: React.FC = () => {
   
   // Initialize seed phrase on component mount - check if we already have one in context
   useEffect(() => {
+    console.log("SeedPhraseGenerator mounted, checking for existing seed phrase");
     if (seedPhrase && seedPhrase.length >= 12) {
-      console.log("Using existing seed phrase from context");
+      console.log("Using existing seed phrase from context:", seedPhrase);
       setLocalSeedPhrase(seedPhrase);
     } else {
       console.log("No existing seed phrase found, generating a new one");
       generateSeedPhrase();
     }
-  }, [seedPhrase]);
+  }, []);
   
   const handleCopy = () => {
     if (localSeedPhrase && localSeedPhrase.length >= 12) {
