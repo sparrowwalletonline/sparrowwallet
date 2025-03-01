@@ -17,7 +17,7 @@ const LandingPage: React.FC = () => {
       generateWallet();
       // We don't need to set isLoading back to false here since 
       // this component will be unmounted when the view changes
-    }, 1500); // Show loading animation for 1.5 seconds
+    }, 3000); // Show loading animation for 3 seconds
   };
   
   const handleMenuClick = () => {
