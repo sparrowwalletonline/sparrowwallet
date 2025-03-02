@@ -1,12 +1,25 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { WalletProvider, useWallet } from '@/contexts/WalletContext';
 import Header from '@/components/Header';
 import WalletBalance from '@/components/WalletBalance';
 import WalletActions from '@/components/WalletActions';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, Home, RefreshCcw, Compass, Globe } from 'lucide-react';
 
-const WalletView: React.FC = () => {
+// Inner component that uses the wallet context
+const WalletViewContent: React.FC = () => {
+  const { hasWallet } = useWallet();
+  const navigate = useNavigate();
+
+  // Redirect if no wallet exists
+  React.useEffect(() => {
+    if (!hasWallet) {
+      navigate('/');
+    }
+  }, [hasWallet, navigate]);
+
   return (
     <div className="min-h-screen flex flex-col bg-wallet-darkBg text-wallet-text">
       <Header title="Home" />
@@ -81,6 +94,19 @@ const WalletView: React.FC = () => {
           <NavItem icon={<Compass className="h-5 w-5" />} label="Discover" />
           <NavItem icon={<Globe className="h-5 w-5" />} label="Browser" />
         </div>
+      </div>
+    </div>
+  );
+};
+
+// Wrapper component with provider
+const WalletView: React.FC = () => {
+  return (
+    <div className="min-h-screen bg-wallet-darkBg flex justify-center w-full">
+      <div className="w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg">
+        <WalletProvider>
+          <WalletViewContent />
+        </WalletProvider>
       </div>
     </div>
   );

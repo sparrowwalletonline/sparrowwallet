@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { WalletProvider, useWallet } from '@/contexts/WalletContext';
 import LandingPage from './LandingPage';
 import GenerateWallet from './GenerateWallet';
-import WalletView from './WalletView';
 import WalletChoice from './WalletChoice';
 import PassPhrase from './PassPhrase';
 import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
 
 // Wrapper component to handle view switching
 const WalletApp: React.FC = () => {
@@ -16,6 +16,7 @@ const WalletApp: React.FC = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [slideDirection, setSlideDirection] = useState<'right' | 'left'>('right');
   const [session, setSession] = useState(null);
+  const navigate = useNavigate();
 
   // Check for authentication
   useEffect(() => {
@@ -38,7 +39,13 @@ const WalletApp: React.FC = () => {
       currentView,
       isAuthenticated: !!session
     });
-  }, [hasWallet, seedPhrase, currentView, session]);
+
+    // If user has a wallet, redirect to the dedicated wallet page
+    if (hasWallet && seedPhrase.length > 2 && !currentView) {
+      navigate('/wallet');
+      return;
+    }
+  }, [hasWallet, seedPhrase, currentView, session, navigate]);
 
   // Determine which view to show
   const showLandingPage = !session || seedPhrase.length === 0;
@@ -53,7 +60,6 @@ const WalletApp: React.FC = () => {
     else if (showWalletChoice) newView = 'choice';
     else if (showPassPhrase) newView = 'passphrase';
     else if (showCreateWallet) newView = 'create';
-    else if (hasWallet) newView = 'wallet';
 
     console.log("Determined view:", newView);
 
@@ -71,10 +77,6 @@ const WalletApp: React.FC = () => {
       } else if (currentView === 'passphrase' && newView === 'create') {
         setSlideDirection('right');
       } else if (currentView === 'create' && newView === 'passphrase') {
-        setSlideDirection('left');
-      } else if (currentView === 'create' && newView === 'wallet') {
-        setSlideDirection('right');
-      } else if (currentView === 'wallet' && newView === 'landing') {
         setSlideDirection('left');
       }
 
@@ -114,7 +116,6 @@ const WalletApp: React.FC = () => {
       if (previousView === 'choice') return <WalletChoice />;
       if (previousView === 'passphrase') return <PassPhrase />;
       if (previousView === 'create') return <GenerateWallet />;
-      if (previousView === 'wallet') return <WalletView />;
     }
 
     // After transition, show the current view
@@ -122,7 +123,6 @@ const WalletApp: React.FC = () => {
     if (currentView === 'choice') return <WalletChoice />;
     if (currentView === 'passphrase') return <PassPhrase />;
     if (currentView === 'create') return <GenerateWallet />;
-    if (currentView === 'wallet') return <WalletView />;
     
     // Fallback
     return <LandingPage />;

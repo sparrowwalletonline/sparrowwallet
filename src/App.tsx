@@ -14,6 +14,7 @@ import Terms from "./pages/Terms";
 import PassPhrase from "./pages/PassPhrase";
 import WalletChoice from "./pages/WalletChoice";
 import Auth from "./pages/Auth";
+import WalletView from "./pages/WalletView";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
           <MobileSidebar />
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/wallet" element={<WalletView />} />
             <Route path="/wallet-choice" element={<WalletChoice />} />
             <Route path="/passphrase" element={<PassPhrase />} />
             <Route path="/seed-phrase" element={<SeedPhrasePage />} />
