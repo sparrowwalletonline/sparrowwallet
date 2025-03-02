@@ -1,11 +1,10 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from '@supabase/supabase-js';
 
 // Import the types and utility functions
-import { WalletContextType } from './WalletContextTypes';
+import { WalletContextType, Wallet } from './WalletContextTypes';
 import { generateBtcAddress, generateSeedPhrase } from '../utils/walletUtils';
 import { copyToClipboard } from '../utils/clipboardUtils';
 import { saveWalletToSupabase, loadWalletFromSupabase } from '../utils/supabaseWalletUtils';
@@ -25,6 +24,8 @@ const WalletContext = createContext<WalletContextType>({
   session: null,
   isRefreshingPrices: false,
   cryptoPrices: {},
+  wallets: [],
+  activeWallet: null,
   refreshPrices: async () => {},
   generateWallet: () => {},
   createWallet: () => {},
@@ -34,6 +35,8 @@ const WalletContext = createContext<WalletContextType>({
   copyToClipboard: () => {},
   saveToSupabase: async () => false,
   loadFromSupabase: async () => false,
+  addNewWallet: () => {},
+  setActiveWallet: () => {},
 });
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -54,6 +57,42 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [session, setSession] = useState<Session | null>(null);
   const [isRefreshingPrices, setIsRefreshingPrices] = useState(false);
   const [cryptoPrices, setCryptoPrices] = useState<Record<string, CryptoPrice>>({});
+
+  // Add new state for multiple wallets
+  const [wallets, setWallets] = useState<Wallet[]>(() => {
+    const savedWallets = localStorage.getItem('wallets');
+    if (savedWallets) {
+      return JSON.parse(savedWallets);
+    }
+    
+    // Create default wallet if we have a seed phrase
+    if (initialSeedPhrase.length >= 12) {
+      const defaultWallet: Wallet = {
+        id: '1',
+        name: 'Main Wallet',
+        seedPhrase: initialSeedPhrase,
+        walletAddress: localStorage.getItem('walletAddress') || generateBtcAddress(),
+        btcBalance: 0.01,
+        ethBalance: 0,
+        isActive: true
+      };
+      return [defaultWallet];
+    }
+    
+    return [];
+  });
+
+  const [activeWallet, setActiveWalletState] = useState<Wallet | null>(() => {
+    const active = wallets.find(w => w.isActive);
+    return active || null;
+  });
+
+  // Save wallets to localStorage when they change
+  useEffect(() => {
+    if (wallets.length > 0) {
+      localStorage.setItem('wallets', JSON.stringify(wallets));
+    }
+  }, [wallets]);
 
   // Initialize session
   useEffect(() => {
@@ -151,6 +190,60 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
+  // Function to add a new wallet
+  const addNewWallet = (name: string) => {
+    const newWalletId = `wallet-${Date.now()}`;
+    const newSeedPhrase = generateSeedPhrase();
+    
+    const newWallet: Wallet = {
+      id: newWalletId,
+      name: name,
+      seedPhrase: newSeedPhrase,
+      walletAddress: generateBtcAddress(),
+      btcBalance: 0,
+      ethBalance: 0,
+      isActive: false
+    };
+    
+    setWallets(prev => [...prev, newWallet]);
+    
+    toast({
+      title: "Wallet hinzugefügt",
+      description: `${name} wurde erfolgreich erstellt.`,
+    });
+  };
+
+  // Function to set active wallet
+  const setActiveWallet = (walletId: string) => {
+    setWallets(prev => 
+      prev.map(wallet => ({
+        ...wallet,
+        isActive: wallet.id === walletId
+      }))
+    );
+    
+    const newActiveWallet = wallets.find(w => w.id === walletId) || null;
+    setActiveWalletState(newActiveWallet);
+    
+    // Update current wallet details from the active wallet
+    if (newActiveWallet) {
+      setSeedPhrase(newActiveWallet.seedPhrase);
+      setWalletAddress(newActiveWallet.walletAddress);
+      setBtcBalance(newActiveWallet.btcBalance);
+      setEthBalance(newActiveWallet.ethBalance);
+      
+      // Recalculate USD balance
+      const calculatedUsdBalance = (newActiveWallet.btcBalance * btcPrice) + 
+                                  (newActiveWallet.ethBalance * ethPrice);
+      setUsdBalance(calculatedUsdBalance);
+      
+      toast({
+        title: "Wallet gewechselt",
+        description: `${newActiveWallet.name} ist jetzt aktiv.`,
+      });
+    }
+  };
+
   // Create a new wallet
   const createWallet = () => {
     console.log("createWallet function called - starting generation");
@@ -171,8 +264,25 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             setEthBalance(0); // Set ETH balance to 0
             const calculatedUsdBalance = (simulatedBtcBalance * btcPrice) + (0 * ethPrice);
             setUsdBalance(calculatedUsdBalance);
-            setWalletAddress(generateBtcAddress());
+            const newAddress = generateBtcAddress();
+            setWalletAddress(newAddress);
+            localStorage.setItem('walletAddress', newAddress);
             setBalance(Math.random() * 10);
+            
+            // Create first wallet in the wallets array
+            if (wallets.length === 0) {
+              const defaultWallet: Wallet = {
+                id: '1',
+                name: 'Main Wallet',
+                seedPhrase: newSeedPhrase,
+                walletAddress: newAddress,
+                btcBalance: simulatedBtcBalance,
+                ethBalance: 0,
+                isActive: true
+              };
+              setWallets([defaultWallet]);
+              setActiveWalletState(defaultWallet);
+            }
           } else {
             console.error("Generated seed phrase is invalid:", newSeedPhrase);
           }
@@ -230,7 +340,11 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setEthBalance(0);
     setUsdBalance(0);
     setWalletAddress('');
+    setWallets([]);
+    setActiveWalletState(null);
     localStorage.removeItem('walletSeedPhrase');
+    localStorage.removeItem('wallets');
+    localStorage.removeItem('walletAddress');
   };
 
   // Log when seed phrase changes
@@ -259,6 +373,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       session,
       isRefreshingPrices,
       cryptoPrices,
+      wallets,
+      activeWallet,
       refreshPrices,
       generateWallet,
       createWallet,
@@ -267,7 +383,9 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       resetWallet,
       copyToClipboard,
       saveToSupabase,
-      loadFromSupabase
+      loadFromSupabase,
+      addNewWallet,
+      setActiveWallet
     }}>
       {children}
     </WalletContext.Provider>
