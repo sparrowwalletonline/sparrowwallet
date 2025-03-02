@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { useWallet } from '@/contexts/WalletContext';
 import { QRCodeSVG } from 'qrcode.react';
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, Search, Copy, AlertTriangle, X } from 'lucide-react';
@@ -81,6 +82,12 @@ const WalletBalance: React.FC = () => {
       };
     });
 
+  // Add the missing filteredTokens implementation
+  const filteredTokens = tokens.filter(token => 
+    token.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    token.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   function getNetworkName(symbol: string): string {
     switch(symbol) {
       case "BTC": return "Bitcoin";
@@ -93,6 +100,18 @@ const WalletBalance: React.FC = () => {
       default: return symbol;
     }
   }
+
+  // Add missing handleTokenSelect function
+  const handleTokenSelect = (token: Token, action: 'send' | 'receive') => {
+    setSelectedToken(token);
+    setIsTokenSelectionOpen(false);
+    
+    if (action === 'send') {
+      setIsSendDialogOpen(true);
+    } else if (action === 'receive') {
+      setIsReceiveDialogOpen(true);
+    }
+  };
 
   const handleSendClick = () => {
     setSelectedToken(null);
@@ -110,6 +129,23 @@ const WalletBalance: React.FC = () => {
 
   const handleBuyClick = () => {
     setIsBuyDialogOpen(true);
+  };
+
+  // Add missing handleSetMaxAmount function
+  const handleSetMaxAmount = () => {
+    if (selectedToken) {
+      setAmount(selectedToken.balance.toString());
+    }
+  };
+
+  // Add missing handleSend function
+  const handleSend = () => {
+    // Implementation for sending tokens would go here
+    toast({
+      title: "Transaktion in Bearbeitung",
+      description: `${amount} ${selectedToken?.symbol} werden an ${recipientAddress} gesendet.`,
+    });
+    setIsSendDialogOpen(false);
   };
 
   const handleCopyAddress = () => {
@@ -415,7 +451,7 @@ const WalletBalance: React.FC = () => {
 
       <Dialog open={isBuyDialogOpen} onOpenChange={setIsBuyDialogOpen}>
         <DialogContent className="bg-gray-900 border border-gray-800 text-white sm:max-w-md">
-          <DialogHeader className="flex flex-col space-y-1.5 text-center sm:text-left">
+          <DialogHeader>
             <DialogTitle className="text-xl">Kauf nicht verfügbar</DialogTitle>
           </DialogHeader>
           <DialogDescription className="text-gray-300">
