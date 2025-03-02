@@ -26,6 +26,11 @@ export const getQrCodeValue = (walletAddress: string, cryptoSymbol: string): str
       return `bitcoin:${walletAddress}`;
     case 'ETH':
       return `ethereum:${walletAddress}`;
+    case 'BNB':
+      return `binance:${walletAddress}`;
+    case 'MATIC':
+    case 'POL':
+      return `polygon:${walletAddress}`;
     default:
       return walletAddress;
   }
