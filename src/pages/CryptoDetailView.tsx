@@ -37,6 +37,17 @@ const CryptoDetailView: React.FC = () => {
     ? cryptoPrices[symbol] 
     : null;
     
+  console.log("Symbol from URL:", symbol);
+  console.log("Available cryptoPrices:", Object.keys(cryptoPrices));
+  console.log("Crypto data found:", cryptoData);
+  
+  useEffect(() => {
+    // If prices aren't loaded yet, refresh them
+    if (Object.keys(cryptoPrices).length === 0) {
+      refreshPrices();
+    }
+  }, [cryptoPrices, refreshPrices]);
+  
   const getCryptoBalance = () => {
     if (!symbol) return 0;
     
