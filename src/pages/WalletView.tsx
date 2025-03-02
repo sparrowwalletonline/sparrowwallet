@@ -8,7 +8,18 @@ import WalletActions from '@/components/WalletActions';
 import ManageCryptoDialog from '@/components/ManageCryptoDialog';
 import ManageWalletsDialog from '@/components/ManageWalletsDialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RefreshCcw, Home, Compass, Globe, Shield, Plus, ChevronDown, Check, Bus } from 'lucide-react';
+import { 
+  RefreshCcw, 
+  Home, 
+  Compass, 
+  Shield, 
+  Plus, 
+  ChevronDown, 
+  Check, 
+  Bus, 
+  PlusSquare, 
+  Clock 
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -19,6 +30,27 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { 
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardFooter, 
+  CardHeader, 
+  CardTitle 
+} from "@/components/ui/card";
+import { toast } from "@/components/ui/use-toast";
+
+// Type definitions for transactions
+interface Transaction {
+  id: string;
+  date: Date;
+  type: 'receive' | 'send' | 'swap';
+  amount: number;
+  currency: string;
+  status: 'completed' | 'pending' | 'failed';
+  address?: string;
+  fee?: number;
+}
 
 const WalletViewContent: React.FC = () => {
   const { 
@@ -52,6 +84,58 @@ const WalletViewContent: React.FC = () => {
   const btcValue = (btcBalance * btcPrice).toFixed(2);
   const ethValue = (ethBalance * ethPrice).toFixed(2);
   
+  const [transactions, setTransactions] = useState<Transaction[]>([
+    {
+      id: '1',
+      date: new Date(Date.now() - 86400000), // yesterday
+      type: 'receive',
+      amount: 0.005,
+      currency: 'BTC',
+      status: 'completed',
+      address: '3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5'
+    },
+    {
+      id: '2',
+      date: new Date(Date.now() - 172800000), // 2 days ago
+      type: 'send',
+      amount: 0.001,
+      currency: 'BTC',
+      status: 'completed',
+      address: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+      fee: 0.00005
+    },
+    {
+      id: '3',
+      date: new Date(Date.now() - 345600000), // 4 days ago
+      type: 'swap',
+      amount: 0.01,
+      currency: 'ETH',
+      status: 'completed'
+    }
+  ]);
+  
+  const [isAddToHomeDialogOpen, setIsAddToHomeDialogOpen] = useState(false);
+
+  useEffect(() => {
+    refreshPrices();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (Object.keys(cryptoPrices).length > 0) {
+      if (cryptoPrices.BTC) {
+        setBtcPrice(cryptoPrices.BTC.price);
+      }
+      if (cryptoPrices.ETH) {
+        setEthPrice(cryptoPrices.ETH.price);
+      }
+      
+      const calculatedUsdBalance = (btcBalance * (cryptoPrices.BTC?.price || btcPrice)) + 
+                                  (ethBalance * (cryptoPrices.ETH?.price || ethPrice));
+      //setUsdBalance(calculatedUsdBalance);
+    }
+  }, [cryptoPrices, btcBalance, ethBalance]);
+
   const handleAddWallet = () => {
     if (newWalletName.trim()) {
       addNewWallet(newWalletName.trim());
@@ -74,6 +158,21 @@ const WalletViewContent: React.FC = () => {
 
   const handleCryptoClick = (symbol: string) => {
     navigate(`/wallet/crypto/${symbol}`);
+  };
+
+  // Add to Home function for iOS
+  const handleAddToHomeScreen = () => {
+    setIsAddToHomeDialogOpen(true);
+  };
+
+  const formatDate = (date: Date): string => {
+    return new Intl.DateTimeFormat('de-DE', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(date);
   };
 
   const cryptoData = Object.entries(cryptoPrices)
@@ -200,7 +299,7 @@ const WalletViewContent: React.FC = () => {
         <div className="mt-6">
           <Tabs defaultValue="crypto" className="w-full">
             <div className="flex justify-between items-center">
-              <TabsList className="grid w-40 grid-cols-2 bg-transparent border-b border-gray-800">
+              <TabsList className="grid w-60 grid-cols-3 bg-transparent border-b border-gray-800">
                 <TabsTrigger 
                   value="crypto" 
                   className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none rounded-none bg-transparent text-gray-400"
@@ -212,6 +311,12 @@ const WalletViewContent: React.FC = () => {
                   className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none rounded-none bg-transparent text-gray-400"
                 >
                   NFTs
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="transactions" 
+                  className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none rounded-none bg-transparent text-gray-400"
+                >
+                  Transaktionen
                 </TabsTrigger>
               </TabsList>
               
@@ -262,6 +367,22 @@ const WalletViewContent: React.FC = () => {
                 <p>No NFTs found</p>
               </div>
             </TabsContent>
+            <TabsContent value="transactions" className="pt-4">
+              <div className="space-y-4">
+                {transactions.map((transaction) => (
+                  <TransactionItem 
+                    key={transaction.id}
+                    transaction={transaction}
+                    formatDate={formatDate}
+                  />
+                ))}
+                {transactions.length === 0 && (
+                  <div className="text-center py-8 text-gray-400">
+                    <p>Keine Transaktionen gefunden</p>
+                  </div>
+                )}
+              </div>
+            </TabsContent>
           </Tabs>
         </div>
       </div>
@@ -285,9 +406,9 @@ const WalletViewContent: React.FC = () => {
             onClick={() => handleNavItemClick('https://www.coindesk.com/')}
           />
           <NavItem 
-            icon={<Globe className="h-5 w-5" />} 
-            label="Browser" 
-            onClick={() => handleNavItemClick('/wallet')}
+            icon={<PlusSquare className="h-5 w-5" />} 
+            label="Add to Home" 
+            onClick={handleAddToHomeScreen}
           />
         </div>
       </div>
@@ -301,6 +422,123 @@ const WalletViewContent: React.FC = () => {
         isOpen={isManageWalletsOpen}
         onClose={handleManageWalletsClose}
       />
+
+      {/* Add to Home Screen Dialog */}
+      <Dialog open={isAddToHomeDialogOpen} onOpenChange={setIsAddToHomeDialogOpen}>
+        <DialogContent className="bg-gray-900 border border-gray-800 text-white">
+          <DialogHeader>
+            <DialogTitle>Zur Startseite hinzufügen</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-sm text-gray-400">
+              So fügen Sie diese App zu Ihrem iOS-Startbildschirm hinzu:
+            </p>
+            <ol className="list-decimal list-inside space-y-2 text-sm text-gray-300">
+              <li>Tippen Sie auf das Teilen-Symbol <span className="bg-gray-700 px-2 py-1 rounded">Teilen</span> unten im Browser</li>
+              <li>Scrollen Sie nach unten und tippen Sie auf "Zum Home-Bildschirm"</li>
+              <li>Tippen Sie oben rechts auf "Hinzufügen"</li>
+            </ol>
+            <div className="pt-4">
+              <p className="text-xs text-gray-400">
+                So haben Sie schnellen Zugriff auf Ihre Wallet direkt vom Home-Bildschirm.
+              </p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button 
+              variant="wallet" 
+              onClick={() => setIsAddToHomeDialogOpen(false)}
+            >
+              Verstanden
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
+// Transaction Item Component
+interface TransactionItemProps {
+  transaction: Transaction;
+  formatDate: (date: Date) => string;
+}
+
+const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, formatDate }) => {
+  // Determine icon and styles based on transaction type
+  const getTransactionDetails = () => {
+    switch(transaction.type) {
+      case 'receive':
+        return {
+          icon: <RefreshCcw className="h-4 w-4 text-green-500" />,
+          label: 'Empfangen',
+          amountPrefix: '+',
+          amountColor: 'text-green-500'
+        };
+      case 'send':
+        return {
+          icon: <RefreshCcw className="h-4 w-4 text-red-500 transform rotate-180" />,
+          label: 'Gesendet',
+          amountPrefix: '-',
+          amountColor: 'text-red-500'
+        };
+      case 'swap':
+        return {
+          icon: <RefreshCcw className="h-4 w-4 text-blue-500" />,
+          label: 'Getauscht',
+          amountPrefix: '',
+          amountColor: 'text-blue-500'
+        };
+      default:
+        return {
+          icon: <Clock className="h-4 w-4 text-gray-500" />,
+          label: 'Unbekannt',
+          amountPrefix: '',
+          amountColor: 'text-gray-400'
+        };
+    }
+  };
+
+  const details = getTransactionDetails();
+
+  return (
+    <div className="p-3 bg-gray-800/50 rounded-lg">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-gray-700 rounded-full">
+            {details.icon}
+          </div>
+          <div>
+            <div className="font-medium">{details.label}</div>
+            <div className="text-xs text-gray-400">{formatDate(transaction.date)}</div>
+          </div>
+        </div>
+        <div className="text-right">
+          <div className={details.amountColor}>
+            {details.amountPrefix}{transaction.amount} {transaction.currency}
+          </div>
+          <div className="text-xs text-gray-400">
+            {transaction.status === 'completed' ? 'Abgeschlossen' : 
+             transaction.status === 'pending' ? 'Ausstehend' : 'Fehlgeschlagen'}
+          </div>
+        </div>
+      </div>
+      {transaction.address && (
+        <div className="mt-2 pt-2 border-t border-gray-700">
+          <div className="text-xs text-gray-400 flex justify-between">
+            <span>Adresse:</span>
+            <span className="truncate max-w-[200px]">{transaction.address}</span>
+          </div>
+        </div>
+      )}
+      {transaction.fee !== undefined && (
+        <div className="mt-1">
+          <div className="text-xs text-gray-400 flex justify-between">
+            <span>Gebühr:</span>
+            <span>{transaction.fee} {transaction.currency}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

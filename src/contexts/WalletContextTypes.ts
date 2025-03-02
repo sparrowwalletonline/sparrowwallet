@@ -2,6 +2,17 @@
 import { Session } from '@supabase/supabase-js';
 import { CryptoPrice } from '../utils/cryptoPriceUtils';
 
+export interface Transaction {
+  id: string;
+  date: Date;
+  type: 'receive' | 'send' | 'swap';
+  amount: number;
+  currency: string;
+  status: 'completed' | 'pending' | 'failed';
+  address?: string;
+  fee?: number;
+}
+
 export interface Wallet {
   id: string;
   name: string;
@@ -10,6 +21,7 @@ export interface Wallet {
   btcBalance: number;
   ethBalance: number;
   isActive: boolean;
+  transactions?: Transaction[];
 }
 
 export interface WalletContextType {
