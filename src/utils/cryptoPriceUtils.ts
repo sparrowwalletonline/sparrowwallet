@@ -149,12 +149,6 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
     cachedPrices = mergedPrices;
     lastFetchTime = now;
     
-    // Let user know prices are updated
-    toast({
-      title: "Preise aktualisiert",
-      description: "Kryptowährungs-Preise erfolgreich aktualisiert.",
-    });
-    
     console.log("Merged crypto prices have these keys:", Object.keys(mergedPrices).join(', '));
     return mergedPrices;
   } catch (error) {
