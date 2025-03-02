@@ -29,7 +29,7 @@ export interface WalletContextType {
   wallets: Wallet[];
   activeWallet: Wallet | null;
   enabledCryptos: string[];
-  refreshPrices: () => Promise<void>;
+  refreshPrices: () => Promise<Record<string, CryptoPrice>>;
   generateWallet: (stage?: string) => void;
   createWallet: () => void;
   cancelWalletCreation: () => void;
@@ -41,5 +41,5 @@ export interface WalletContextType {
   addNewWallet: (name: string) => void;
   setActiveWallet: (walletId: string) => void;
   updateEnabledCryptos: (cryptoIds: string[]) => void;
-  deleteWallet: (walletId: string) => void; // Neue Funktion zum Löschen einer Wallet
+  deleteWallet: (walletId: string) => void;
 }

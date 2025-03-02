@@ -27,7 +27,7 @@ const WalletContext = createContext<WalletContextType>({
   wallets: [],
   activeWallet: null,
   enabledCryptos: ['bitcoin', 'ethereum', 'binancecoin', 'matic-network'],
-  refreshPrices: async () => {},
+  refreshPrices: async () => fallbackCryptoData,
   generateWallet: () => {},
   createWallet: () => {},
   cancelWalletCreation: () => {},
