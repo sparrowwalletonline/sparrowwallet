@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { X, Search, ArrowLeft, Plus } from 'lucide-react';
+import { X, Search, ArrowLeft } from 'lucide-react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -97,13 +97,6 @@ const ManageCryptoDialog: React.FC<ManageCryptoDialogProps> = ({ isOpen, onClose
             </Button>
             <h2 className="text-lg font-medium">Suchen</h2>
           </div>
-          <Button 
-            variant="ghost" 
-            size="icon"
-            className="text-gray-400 hover:text-white"
-          >
-            <Plus className="h-5 w-5" />
-          </Button>
         </div>
         
         {/* Search */}
@@ -174,7 +167,7 @@ const ManageCryptoDialog: React.FC<ManageCryptoDialogProps> = ({ isOpen, onClose
             className="w-full bg-green-500 hover:bg-green-600 text-white"
             onClick={handleSave}
           >
-            Du hast deine Kryptowährung nicht gesehen? Importieren
+            Token importieren
           </Button>
         </div>
       </DialogContent>
