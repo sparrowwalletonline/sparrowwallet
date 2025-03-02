@@ -1,4 +1,3 @@
-
 import { toast } from '@/components/ui/use-toast';
 
 export interface CryptoPrice {
@@ -13,7 +12,7 @@ export interface CryptoPrice {
 export const fallbackCryptoData: Record<string, CryptoPrice> = {
   BTC: { 
     symbol: 'BTC', 
-    price: 69872.34, // Updated to more current value
+    price: 69872.34, 
     change_percentage_24h: 1.65,
     name: 'Bitcoin',
     image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png'
@@ -83,8 +82,20 @@ export const fallbackCryptoData: Record<string, CryptoPrice> = {
   }
 };
 
+// Global cache to store fetched prices
+let cachedPrices: Record<string, CryptoPrice> | null = null;
+let lastFetchTime = 0;
+const CACHE_DURATION = 30000; // 30 seconds cache
+
 // Function to fetch current prices from CoinGecko API
 export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> => {
+  // Check if we have valid cached data
+  const now = Date.now();
+  if (cachedPrices && (now - lastFetchTime < CACHE_DURATION)) {
+    console.log("Using cached crypto prices, last fetched", (now - lastFetchTime)/1000, "seconds ago");
+    return cachedPrices;
+  }
+  
   try {
     console.log("Fetching crypto prices from API...");
     // Attempt to fetch top 50 cryptocurrencies by market cap
@@ -99,7 +110,9 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
         title: "API-Fehler",
         description: "Verwende Fallback-Daten für Kryptowährungen."
       });
-      return fallbackCryptoData;
+      
+      // If we have cached data, prefer that over fallback
+      return cachedPrices || fallbackCryptoData;
     }
     
     const data = await response.json();
@@ -107,7 +120,7 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
     // If we got empty data, return the fallback
     if (!data || !Array.isArray(data) || data.length === 0) {
       console.error('Invalid or empty data received from API');
-      return fallbackCryptoData;
+      return cachedPrices || fallbackCryptoData;
     }
     
     // Format the API data into our structure
@@ -132,6 +145,10 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
     // but we prioritize API data by putting it AFTER fallback in the merge
     const mergedPrices = { ...fallbackCryptoData, ...prices };
 
+    // Update our cache
+    cachedPrices = mergedPrices;
+    lastFetchTime = now;
+    
     // Let user know prices are updated
     toast({
       title: "Preise aktualisiert",
@@ -148,8 +165,8 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
       description: "Es werden Fallback-Preise angezeigt."
     });
     
-    // Return the fallback data
-    return fallbackCryptoData;
+    // Return cached prices if available, otherwise fallback
+    return cachedPrices || fallbackCryptoData;
   }
 };
 
@@ -182,3 +199,9 @@ export const getCryptoDataBySymbol = (
   
   return null;
 }
+
+// Function to clear the cache - can be called when user manually refreshes
+export const clearCryptoCache = () => {
+  cachedPrices = null;
+  lastFetchTime = 0;
+};

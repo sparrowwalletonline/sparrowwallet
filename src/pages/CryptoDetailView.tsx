@@ -1,11 +1,10 @@
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useWallet } from '@/contexts/WalletContext';
 import { 
   ChevronLeft, 
   MoreVertical, 
-  LineChart,
   RefreshCcw, 
   ArrowUp,
   ArrowDown,
@@ -19,7 +18,13 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from '@/components/ui/use-toast';
-import { CryptoPrice, getCryptoDataBySymbol, fallbackCryptoData } from '@/utils/cryptoPriceUtils';
+import { 
+  CryptoPrice, 
+  getCryptoDataBySymbol, 
+  fallbackCryptoData, 
+  fetchCryptoPrices, 
+  clearCryptoCache 
+} from '@/utils/cryptoPriceUtils';
 
 const getChartImagePath = (symbol: string) => {
   const charts = {
@@ -36,54 +41,42 @@ const CryptoDetailView: React.FC = () => {
   const { symbol: urlSymbol } = useParams<{ symbol: string }>();
   const navigate = useNavigate();
   const { 
-    cryptoPrices, 
+    cryptoPrices: contextCryptoPrices,
     btcBalance, 
     ethBalance, 
-    refreshPrices, 
-    isRefreshingPrices 
+    refreshPrices: contextRefreshPrices, 
+    isRefreshingPrices: contextIsRefreshing 
   } = useWallet();
   
   const [selectedTimeframe, setSelectedTimeframe] = useState('1T');
   const [isLoading, setIsLoading] = useState(true);
   const [cryptoData, setCryptoData] = useState<CryptoPrice | null>(null);
+  const [localPrices, setLocalPrices] = useState<Record<string, CryptoPrice>>(contextCryptoPrices);
+  const [isRefreshingPrices, setIsRefreshingPrices] = useState(false);
   
   const symbol = urlSymbol ? urlSymbol.toUpperCase() : '';
   
+  // Initial load and when symbol changes
   useEffect(() => {
     if (!symbol) return;
     
-    // First check if we already have it in cryptoPrices
-    const data = getCryptoDataBySymbol(symbol, cryptoPrices);
-    if (data) {
-      console.log("Using existing price data for", symbol, data);
-      setCryptoData(data);
-      return;
-    }
-    
-    // If we don't have it yet, use fallback temporarily and fetch fresh data
-    const fallbackData = getCryptoDataBySymbol(symbol, fallbackCryptoData);
-    if (fallbackData) {
-      setCryptoData(fallbackData);
-    }
-  }, [symbol, cryptoPrices]);
-  
-  console.log("Symbol from URL:", urlSymbol);
-  console.log("Normalized symbol:", symbol);
-  console.log("Available cryptoPrices keys:", Object.keys(cryptoPrices));
-  console.log("Current crypto data:", cryptoData);
-  
-  useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
       
       try {
-        const updatedPrices = await refreshPrices();
-        if (symbol) {
-          const freshData = getCryptoDataBySymbol(symbol, updatedPrices);
-          if (freshData) {
-            console.log("Updated crypto data with fresh prices for", symbol, freshData);
-            setCryptoData(freshData);
-          }
+        // Always fetch fresh prices when viewing details
+        const prices = await fetchCryptoPrices();
+        setLocalPrices(prices);
+        
+        // Get data for this specific symbol
+        const data = getCryptoDataBySymbol(symbol, prices);
+        if (data) {
+          console.log("Detail view: Using fresh price data for", symbol, data);
+          setCryptoData(data);
+        } else {
+          console.error("Could not find data for symbol:", symbol);
+          const fallback = getCryptoDataBySymbol(symbol, fallbackCryptoData);
+          if (fallback) setCryptoData(fallback);
         }
       } catch (error) {
         console.error("Failed to load crypto prices:", error);
@@ -92,15 +85,32 @@ const CryptoDetailView: React.FC = () => {
           title: "Fehler beim Laden",
           description: "Kryptowährungs-Daten konnten nicht geladen werden."
         });
+        
+        // Use fallback if fetch fails
+        const fallback = getCryptoDataBySymbol(symbol, fallbackCryptoData);
+        if (fallback) setCryptoData(fallback);
       } finally {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 300);
+        setIsLoading(false);
       }
     };
     
     loadData();
-  }, [refreshPrices, symbol]);
+  }, [symbol]);
+  
+  // Also update when context prices change
+  useEffect(() => {
+    if (!symbol) return;
+    
+    // Update local prices from context
+    setLocalPrices(contextCryptoPrices);
+    
+    // Get data for this specific symbol from updated prices
+    const data = getCryptoDataBySymbol(symbol, contextCryptoPrices);
+    if (data) {
+      console.log("Detail view: Updated from context for", symbol, data);
+      setCryptoData(data);
+    }
+  }, [contextCryptoPrices, symbol]);
   
   const getCryptoBalance = () => {
     if (!symbol) return 0;
@@ -121,22 +131,43 @@ const CryptoDetailView: React.FC = () => {
   };
   
   const handleRefresh = async () => {
+    setIsRefreshingPrices(true);
     setIsLoading(true);
+    
     try {
-      const updatedPrices = await refreshPrices();
+      // Clear the cache to force a fresh fetch
+      clearCryptoCache();
+      
+      // Fetch fresh prices
+      const prices = await fetchCryptoPrices();
+      setLocalPrices(prices);
+      
+      // Also update the context
+      await contextRefreshPrices();
+      
+      // Get data for this specific symbol
       if (symbol) {
-        const freshData = getCryptoDataBySymbol(symbol, updatedPrices);
-        if (freshData) {
-          console.log("Manually refreshed crypto data for", symbol, freshData);
-          setCryptoData(freshData);
+        const data = getCryptoDataBySymbol(symbol, prices);
+        if (data) {
+          console.log("Detail view: Manually refreshed data for", symbol, data);
+          setCryptoData(data);
         }
       }
+      
+      toast({
+        title: "Daten aktualisiert",
+        description: "Die neuesten Preisdaten wurden geladen.",
+      });
     } catch (error) {
       console.error("Error refreshing prices:", error);
+      toast({
+        variant: "destructive",
+        title: "Aktualisierung fehlgeschlagen",
+        description: "Bitte versuchen Sie es später erneut.",
+      });
     } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 300);
+      setIsRefreshingPrices(false);
+      setIsLoading(false);
     }
   };
   
@@ -159,7 +190,7 @@ const CryptoDetailView: React.FC = () => {
       <div className="min-h-screen bg-wallet-darkBg text-white flex flex-col items-center justify-center p-4">
         <p className="text-xl mb-2">Crypto nicht gefunden: {symbol}</p>
         <p className="text-sm text-gray-400 mt-2 mb-4">
-          Verfügbare Kryptowährungen: {Object.keys(cryptoPrices).join(', ') || Object.keys(fallbackCryptoData).join(', ')}
+          Verfügbare Kryptowährungen: {Object.keys(localPrices).join(', ') || Object.keys(fallbackCryptoData).join(', ')}
         </p>
         <p className="text-sm text-gray-400 mb-6">
           Bitte stellen Sie sicher, dass die Kryptowährung verfügbar ist.
