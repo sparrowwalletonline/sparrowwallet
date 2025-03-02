@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useWallet } from '@/contexts/WalletContext';
 import { Bitcoin } from 'lucide-react';
@@ -30,13 +29,11 @@ const WalletBalance: React.FC = () => {
   const [recipientAddress, setRecipientAddress] = useState('');
   const [amount, setAmount] = useState('');
   
-  // Format address to be shorter for display
   const formatAddress = (address: string) => {
     if (!address) return '';
     return `${address.slice(0, 8)}...${address.slice(-8)}`;
   };
 
-  // Format USD amount with commas
   const formatUSD = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -46,7 +43,6 @@ const WalletBalance: React.FC = () => {
     }).format(amount);
   };
 
-  // Generate tokens from cryptoPrices and enabledCryptos
   const tokens: Token[] = Object.entries(cryptoPrices)
     .filter(([symbol, data]) => {
       const id = data.name ? data.name.toLowerCase().replace(/\s+/g, '-') : symbol.toLowerCase();
@@ -115,7 +111,6 @@ const WalletBalance: React.FC = () => {
       description: `Dies ist eine Demo. ${amount} ${selectedToken.symbol} würden an ${recipientAddress} gesendet werden.`,
     });
 
-    // Reset form
     setRecipientAddress('');
     setAmount('');
     setIsSendDialogOpen(false);
@@ -151,7 +146,6 @@ const WalletBalance: React.FC = () => {
         <CryptoAction icon="earn" label="Earn" />
       </div>
       
-      {/* Promotion Card */}
       <div className="mt-4 bg-[#232733] rounded-xl p-4 border border-gray-800">
         <div className="flex items-center gap-3">
           <div className="flex-shrink-0">
@@ -171,10 +165,8 @@ const WalletBalance: React.FC = () => {
         </div>
       </div>
 
-      {/* Token Selection Dialog */}
       <Dialog open={isTokenSelectionOpen} onOpenChange={setIsTokenSelectionOpen}>
-        <DialogContent className="bg-gray-900 border border-gray-800 text-white p-0 max-w-md overflow-hidden flex flex-col">
-          {/* Header */}
+        <DialogContent fullScreen className="bg-gray-900 border border-gray-800 text-white p-0 max-w-full md:max-w-3xl overflow-hidden flex flex-col">
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800">
             <div className="flex items-center gap-3">
               <Button 
@@ -189,7 +181,6 @@ const WalletBalance: React.FC = () => {
             </div>
           </div>
           
-          {/* Search */}
           <div className="px-4 py-3">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
@@ -202,7 +193,6 @@ const WalletBalance: React.FC = () => {
             </div>
           </div>
           
-          {/* Tokens List */}
           <div className="flex-1 overflow-y-auto">
             <div className="space-y-1">
               {filteredTokens.map((token) => (
@@ -247,10 +237,8 @@ const WalletBalance: React.FC = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Send Token Dialog */}
       <Dialog open={isSendDialogOpen} onOpenChange={setIsSendDialogOpen}>
-        <DialogContent className="bg-gray-900 border border-gray-800 text-white p-0 max-w-md overflow-hidden flex flex-col">
-          {/* Header */}
+        <DialogContent fullScreen className="bg-gray-900 border border-gray-800 text-white p-0 max-w-full md:max-w-3xl overflow-hidden flex flex-col">
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800">
             <div className="flex items-center gap-3">
               <Button 
@@ -265,11 +253,10 @@ const WalletBalance: React.FC = () => {
             </div>
           </div>
           
-          {/* Token Info */}
           <div className="flex flex-col items-center py-4">
             {selectedToken && (
               <>
-                <div className={`w-12 h-12 rounded-full ${selectedToken.iconColor} flex items-center justify-center overflow-hidden mb-2`}>
+                <div className={`w-12 h-12 rounded-full ${selectedToken.iconColor} flex items-center justify-center mb-2`}>
                   {selectedToken.logoUrl ? (
                     <img src={selectedToken.logoUrl} alt={selectedToken.symbol} className="w-full h-full object-cover" />
                   ) : (
@@ -281,7 +268,6 @@ const WalletBalance: React.FC = () => {
             )}
           </div>
           
-          {/* Send Form */}
           <div className="px-4 py-2 space-y-4 flex-1">
             <div>
               <label className="block text-sm mb-2">Adresse des Empfängers</label>
@@ -316,7 +302,6 @@ const WalletBalance: React.FC = () => {
             </div>
           </div>
           
-          {/* Footer */}
           <div className="border-t border-gray-800 p-4">
             <Button 
               variant="wallet" 
