@@ -123,18 +123,11 @@ const WalletViewContent: React.FC = () => {
 
   useEffect(() => {
     if (Object.keys(cryptoPrices).length > 0) {
-      if (cryptoPrices.BTC) {
-        setBtcPrice(cryptoPrices.BTC.price);
-      }
-      if (cryptoPrices.ETH) {
-        setEthPrice(cryptoPrices.ETH.price);
-      }
-      
       const calculatedUsdBalance = (btcBalance * (cryptoPrices.BTC?.price || btcPrice)) + 
                                   (ethBalance * (cryptoPrices.ETH?.price || ethPrice));
       //setUsdBalance(calculatedUsdBalance);
     }
-  }, [cryptoPrices, btcBalance, ethBalance]);
+  }, [cryptoPrices, btcBalance, ethBalance, btcPrice, ethPrice]);
 
   const handleAddWallet = () => {
     if (newWalletName.trim()) {
