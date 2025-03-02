@@ -70,7 +70,7 @@ function App() {
                   <SeedPhrasePage />
                 </PrivateRoute>
               } />
-              <Route path="/pass-phrase" element={
+              <Route path="/passphrase" element={
                 <PrivateRoute>
                   <PassPhrase />
                 </PrivateRoute>
