@@ -20,7 +20,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const CryptoDetailView: React.FC = () => {
-  const { symbol } = useParams<{ symbol: string }>();
+  const { symbol: urlSymbol } = useParams<{ symbol: string }>();
   const navigate = useNavigate();
   const { 
     cryptoPrices, 
@@ -31,22 +31,44 @@ const CryptoDetailView: React.FC = () => {
   } = useWallet();
   
   const [selectedTimeframe, setSelectedTimeframe] = useState('1T');
+  const [isLoading, setIsLoading] = useState(true);
   
-  // Find the crypto data from the prices
-  const cryptoData = symbol && cryptoPrices[symbol] 
-    ? cryptoPrices[symbol] 
-    : null;
+  // Normalize symbol to uppercase for consistent comparison
+  const symbol = urlSymbol ? urlSymbol.toUpperCase() : '';
+  
+  // Find the crypto data from the prices, with case-insensitive matching
+  const cryptoData = React.useMemo(() => {
+    if (!symbol) return null;
     
-  console.log("Symbol from URL:", symbol);
+    // Check for direct match with the symbol
+    if (cryptoPrices[symbol]) {
+      return cryptoPrices[symbol];
+    }
+    
+    // If there's no direct match, check all keys in a case-insensitive way
+    const keys = Object.keys(cryptoPrices);
+    const matchingKey = keys.find(key => key.toUpperCase() === symbol.toUpperCase());
+    return matchingKey ? cryptoPrices[matchingKey] : null;
+  }, [cryptoPrices, symbol]);
+  
+  console.log("Symbol from URL (normalized):", symbol);
   console.log("Available cryptoPrices:", Object.keys(cryptoPrices));
   console.log("Crypto data found:", cryptoData);
   
   useEffect(() => {
-    // If prices aren't loaded yet, refresh them
-    if (Object.keys(cryptoPrices).length === 0) {
-      refreshPrices();
-    }
-  }, [cryptoPrices, refreshPrices]);
+    const loadData = async () => {
+      setIsLoading(true);
+      
+      // If prices aren't loaded yet, refresh them
+      if (Object.keys(cryptoPrices).length === 0) {
+        await refreshPrices();
+      }
+      
+      setIsLoading(false);
+    };
+    
+    loadData();
+  }, [refreshPrices]);
   
   const getCryptoBalance = () => {
     if (!symbol) return 0;
@@ -73,10 +95,22 @@ const CryptoDetailView: React.FC = () => {
   const now = new Date();
   const formattedDate = formatDate(now);
   
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-wallet-darkBg text-white flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center">
+          <RefreshCcw className="animate-spin h-8 w-8 mb-4" />
+          <p>Lade Kryptowährungs-Daten...</p>
+        </div>
+      </div>
+    );
+  }
+  
   if (!cryptoData) {
     return (
       <div className="min-h-screen bg-wallet-darkBg text-white flex flex-col items-center justify-center">
-        <p>Crypto nicht gefunden</p>
+        <p>Crypto nicht gefunden: {symbol}</p>
+        <p className="text-sm text-gray-400 mt-2">Verfügbare Kryptowährungen: {Object.keys(cryptoPrices).join(', ')}</p>
         <Button variant="wallet" onClick={() => navigate(-1)} className="mt-4">
           Zurück
         </Button>
