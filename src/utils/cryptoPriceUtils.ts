@@ -51,7 +51,7 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
     return {
       BTC: { symbol: 'BTC', price: 40000, change_percentage_24h: 0 },
       ETH: { symbol: 'ETH', price: 2000, change_percentage_24h: 0 },
-      BNB: { symbol: 'BNB', price: 610, change_percentage_24h: 0 },
+      BNB: { symbol: 'BNB', price: 608.96, change_percentage_24h: 2.19 },
       SOL: { symbol: 'SOL', price: 150, change_percentage_24h: 0 },
       XRP: { symbol: 'XRP', price: 0.5, change_percentage_24h: 0 },
       ADA: { symbol: 'ADA', price: 0.59, change_percentage_24h: 0 },

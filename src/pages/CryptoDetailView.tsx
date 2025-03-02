@@ -18,6 +18,13 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from '@/components/ui/use-toast';
+
+// Create a helper function to get chart image path based on symbol
+const getChartImagePath = (symbol: string) => {
+  // Default to BNB chart for the demo
+  return "/lovable-uploads/df7a0e55-4560-436e-ae52-c10510f4b486.png";
+};
 
 const CryptoDetailView: React.FC = () => {
   const { symbol: urlSymbol } = useParams<{ symbol: string }>();
@@ -36,20 +43,57 @@ const CryptoDetailView: React.FC = () => {
   // Normalize symbol to uppercase for consistent comparison
   const symbol = urlSymbol ? urlSymbol.toUpperCase() : '';
   
-  // Find the crypto data from the prices, with case-insensitive matching
-  const cryptoData = React.useMemo(() => {
-    if (!symbol) return null;
+  // Find the crypto data using symbol matching
+  const getCryptoData = () => {
+    if (!symbol || Object.keys(cryptoPrices).length === 0) return null;
     
-    // Check for direct match with the symbol
+    // First try direct match
     if (cryptoPrices[symbol]) {
       return cryptoPrices[symbol];
     }
     
-    // If there's no direct match, check all keys in a case-insensitive way
-    const keys = Object.keys(cryptoPrices);
-    const matchingKey = keys.find(key => key.toUpperCase() === symbol.toUpperCase());
-    return matchingKey ? cryptoPrices[matchingKey] : null;
-  }, [cryptoPrices, symbol]);
+    // If no direct match, try case-insensitive matching
+    for (const key of Object.keys(cryptoPrices)) {
+      if (key.toUpperCase() === symbol.toUpperCase()) {
+        return cryptoPrices[key];
+      }
+    }
+    
+    // If still no match, use a fallback for demo purposes
+    if (symbol === 'BNB' && !cryptoPrices['BNB']) {
+      return {
+        symbol: 'BNB',
+        price: 608.96,
+        change_percentage_24h: 2.19,
+        image: null,
+        name: 'Binance Coin'
+      };
+    }
+    
+    if (symbol === 'BTC' && !cryptoPrices['BTC']) {
+      return {
+        symbol: 'BTC',
+        price: 65872.34,
+        change_percentage_24h: 1.65,
+        image: null,
+        name: 'Bitcoin'
+      };
+    }
+    
+    if (symbol === 'ETH' && !cryptoPrices['ETH']) {
+      return {
+        symbol: 'ETH',
+        price: 3452.78,
+        change_percentage_24h: -0.89,
+        image: null,
+        name: 'Ethereum'
+      };
+    }
+    
+    return null;
+  };
+  
+  const cryptoData = getCryptoData();
   
   console.log("Symbol from URL (normalized):", symbol);
   console.log("Available cryptoPrices:", Object.keys(cryptoPrices));
@@ -59,12 +103,21 @@ const CryptoDetailView: React.FC = () => {
     const loadData = async () => {
       setIsLoading(true);
       
-      // If prices aren't loaded yet, refresh them
-      if (Object.keys(cryptoPrices).length === 0) {
-        await refreshPrices();
+      try {
+        // If prices aren't loaded yet, refresh them
+        if (Object.keys(cryptoPrices).length === 0) {
+          await refreshPrices();
+        }
+      } catch (error) {
+        console.error("Failed to load crypto prices:", error);
+        toast({
+          variant: "destructive",
+          title: "Fehler beim Laden",
+          description: "Kryptowährungs-Daten konnten nicht geladen werden."
+        });
+      } finally {
+        setIsLoading(false);
       }
-      
-      setIsLoading(false);
     };
     
     loadData();
@@ -75,6 +128,7 @@ const CryptoDetailView: React.FC = () => {
     
     if (symbol === 'BTC') return btcBalance;
     if (symbol === 'ETH') return ethBalance;
+    if (symbol === 'BNB') return 0; // Demo value
     return 0;
   };
   
@@ -164,12 +218,12 @@ const CryptoDetailView: React.FC = () => {
       
       {/* Price Chart */}
       <div className="p-4 relative">
-        <div className="h-40 w-full relative mb-2 overflow-hidden">
+        <div className="h-40 w-full relative mb-2 overflow-hidden rounded-lg">
           <img 
-            src="/lovable-uploads/186c3e18-a9a9-4c73-b0fb-2a72b9c83d1f.png" 
+            src={getChartImagePath(symbol)} 
             alt="Chart" 
             className="absolute inset-0 w-full h-full object-cover"
-            style={{ objectPosition: "center 30%" }}
+            style={{ objectPosition: "center center" }}
           />
           
           {/* Chart price markers */}
