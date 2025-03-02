@@ -7,14 +7,23 @@ import Header from '@/components/Header';
 import { ArrowLeft, ArrowRight, RefreshCcw, Home, X, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter
+} from '@/components/ui/dialog';
 
 const BrowserView: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [url, setUrl] = useState<string>('https://www.coingecko.com/');
-  const [inputUrl, setInputUrl] = useState<string>('https://www.coingecko.com/');
+  const [url, setUrl] = useState<string>('https://defillama.com/');
+  const [inputUrl, setInputUrl] = useState<string>('https://defillama.com/');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [showBlockedDialog, setShowBlockedDialog] = useState<boolean>(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const loadTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -52,7 +61,9 @@ const BrowserView: React.FC = () => {
   }, [isLoading, url]);
 
   const handleFrameBlocked = () => {
-    setError(`${new URL(url).hostname} refused to connect. This website likely blocks embedding in iframes.`);
+    const hostname = new URL(url).hostname;
+    setError(`${hostname} refused to connect. This website likely blocks embedding in iframes.`);
+    setShowBlockedDialog(true);
     toast({
       title: "Connection Blocked",
       description: "This website doesn't allow being displayed in our browser. Try a crypto-friendly site instead.",
@@ -71,6 +82,7 @@ const BrowserView: React.FC = () => {
   const handleNavigate = () => {
     setIsLoading(true);
     setError(null);
+    setShowBlockedDialog(false);
     // Format URL with https:// if not present
     const formattedUrl = inputUrl.startsWith('http') ? inputUrl : `https://${inputUrl}`;
     setUrl(formattedUrl);
@@ -79,6 +91,7 @@ const BrowserView: React.FC = () => {
   const handleRefresh = () => {
     setIsLoading(true);
     setError(null);
+    setShowBlockedDialog(false);
     // Force refresh by setting to blank and then back
     const currentUrl = url;
     setUrl('about:blank');
@@ -122,6 +135,7 @@ const BrowserView: React.FC = () => {
     
     setIsLoading(false);
     setError(`Could not load ${url}. The website may be blocking embedding or is unavailable.`);
+    setShowBlockedDialog(true);
     toast({
       title: "Connection Error",
       description: "The website refused to connect. Try a different URL.",
@@ -131,11 +145,23 @@ const BrowserView: React.FC = () => {
 
   // Safe crypto websites that are known to work in iframes
   const recommendedSites = [
-    { name: "CoinGecko", url: "https://www.coingecko.com/" },
-    { name: "Etherscan", url: "https://etherscan.io/" },
-    { name: "DEXTools", url: "https://www.dextools.io/" },
-    { name: "DeFiLlama", url: "https://defillama.com/" }
+    { name: "DeFiLlama", url: "https://defillama.com/" },
+    { name: "CryptoSlate", url: "https://cryptoslate.com/" },
+    { name: "CoinPaprika", url: "https://coinpaprika.com/" },
+    { name: "CryptoCompare", url: "https://www.cryptocompare.com/" }
   ];
+
+  const handleTryRecommendedSite = (siteUrl: string, siteName: string) => {
+    setUrl(siteUrl);
+    setInputUrl(siteUrl);
+    setError(null);
+    setIsLoading(true);
+    setShowBlockedDialog(false);
+    toast({
+      title: "Loading Alternative Site",
+      description: `Trying ${siteName} which should work in our browser.`,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-wallet-darkBg flex justify-center w-full">
@@ -206,43 +232,6 @@ const BrowserView: React.FC = () => {
                 </div>
               )}
               
-              {error && (
-                <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-90 z-10 p-4">
-                  <div className="bg-gray-800 p-6 rounded-lg max-w-sm text-center">
-                    <div className="flex justify-center mb-4">
-                      <AlertTriangle className="h-10 w-10 text-yellow-500" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-white mb-2">Connection Blocked</h3>
-                    <p className="text-gray-300 mb-4">{error}</p>
-                    
-                    <div className="mb-4">
-                      <h4 className="text-sm font-medium text-gray-400 mb-2">Try these crypto-friendly sites:</h4>
-                      <div className="grid grid-cols-2 gap-2">
-                        {recommendedSites.map((site) => (
-                          <Button 
-                            key={site.url}
-                            variant="secondary" 
-                            className="text-xs" 
-                            onClick={() => {
-                              setUrl(site.url);
-                              setInputUrl(site.url);
-                              setError(null);
-                              setIsLoading(true);
-                            }}
-                          >
-                            {site.name}
-                          </Button>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <Button variant="outline" onClick={handleGoHome} className="w-full">
-                      Return to Wallet
-                    </Button>
-                  </div>
-                </div>
-              )}
-              
               <iframe 
                 ref={iframeRef}
                 src={url} 
@@ -253,6 +242,42 @@ const BrowserView: React.FC = () => {
                 sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
               />
             </div>
+
+            <Dialog open={showBlockedDialog} onOpenChange={setShowBlockedDialog}>
+              <DialogContent className="bg-gray-900 border-gray-800 text-white max-w-sm mx-auto">
+                <DialogHeader>
+                  <div className="flex justify-center mb-2">
+                    <AlertTriangle className="h-10 w-10 text-yellow-500" />
+                  </div>
+                  <DialogTitle className="text-center text-lg font-semibold text-white">Connection Blocked</DialogTitle>
+                  <DialogDescription className="text-gray-300 text-center">
+                    {error}
+                  </DialogDescription>
+                </DialogHeader>
+                
+                <div className="py-2">
+                  <h4 className="text-sm font-medium text-gray-400 mb-3 text-center">Try these crypto-friendly sites:</h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {recommendedSites.map((site) => (
+                      <Button 
+                        key={site.url}
+                        variant="secondary" 
+                        className="text-xs" 
+                        onClick={() => handleTryRecommendedSite(site.url, site.name)}
+                      >
+                        {site.name}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                
+                <DialogFooter className="flex justify-center mt-4">
+                  <Button variant="outline" onClick={handleGoHome} className="w-full">
+                    Return to Wallet
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </WalletProvider>
         </MenuProvider>
       </div>
