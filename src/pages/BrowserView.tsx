@@ -1,10 +1,10 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { MenuProvider } from '@/contexts/MenuContext';
 import { WalletProvider } from '@/contexts/WalletContext';
 import Header from '@/components/Header';
-import { ArrowLeft, ArrowRight, RefreshCcw, Home, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, RefreshCcw, Home, X, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 
@@ -15,6 +15,8 @@ const BrowserView: React.FC = () => {
   const [inputUrl, setInputUrl] = useState<string>('https://www.coingecko.com/');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const loadTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Get URL from state if available
   useEffect(() => {
@@ -23,6 +25,40 @@ const BrowserView: React.FC = () => {
       setInputUrl(location.state.url);
     }
   }, [location]);
+
+  // Set up load timeout to detect CSP/X-Frame-Options blocks
+  useEffect(() => {
+    if (isLoading) {
+      // Clear any existing timeout
+      if (loadTimeoutRef.current) {
+        clearTimeout(loadTimeoutRef.current);
+      }
+      
+      // Set a timeout to check if the iframe loaded within 5 seconds
+      loadTimeoutRef.current = setTimeout(() => {
+        // If we're still loading after 5 seconds, it's likely blocked
+        if (isLoading) {
+          setIsLoading(false);
+          handleFrameBlocked();
+        }
+      }, 5000);
+    }
+    
+    return () => {
+      if (loadTimeoutRef.current) {
+        clearTimeout(loadTimeoutRef.current);
+      }
+    };
+  }, [isLoading, url]);
+
+  const handleFrameBlocked = () => {
+    setError(`${new URL(url).hostname} refused to connect. This website likely blocks embedding in iframes.`);
+    toast({
+      title: "Connection Blocked",
+      description: "This website doesn't allow being displayed in our browser. Try a crypto-friendly site instead.",
+      variant: "destructive",
+    });
+  };
 
   const handleGoBack = () => {
     navigate(-1);
@@ -54,11 +90,36 @@ const BrowserView: React.FC = () => {
   };
 
   const handleLoad = () => {
+    // Clear any loading timeout
+    if (loadTimeoutRef.current) {
+      clearTimeout(loadTimeoutRef.current);
+    }
+    
     setIsLoading(false);
     setError(null);
+    
+    // Check if iframe actually loaded content or was blocked
+    try {
+      if (iframeRef.current) {
+        // This will throw an error if the iframe is blocked by CSP
+        const iframeDoc = iframeRef.current.contentDocument || iframeRef.current.contentWindow?.document;
+        
+        // If we can't access the document, it was likely blocked
+        if (!iframeDoc) {
+          handleFrameBlocked();
+        }
+      }
+    } catch (e) {
+      // If we get an error trying to access the iframe content, it was blocked
+      handleFrameBlocked();
+    }
   };
 
   const handleError = () => {
+    if (loadTimeoutRef.current) {
+      clearTimeout(loadTimeoutRef.current);
+    }
+    
     setIsLoading(false);
     setError(`Could not load ${url}. The website may be blocking embedding or is unavailable.`);
     toast({
@@ -67,6 +128,14 @@ const BrowserView: React.FC = () => {
       variant: "destructive",
     });
   };
+
+  // Safe crypto websites that are known to work in iframes
+  const recommendedSites = [
+    { name: "CoinGecko", url: "https://www.coingecko.com/" },
+    { name: "Etherscan", url: "https://etherscan.io/" },
+    { name: "DEXTools", url: "https://www.dextools.io/" },
+    { name: "DeFiLlama", url: "https://defillama.com/" }
+  ];
 
   return (
     <div className="min-h-screen bg-wallet-darkBg flex justify-center w-full">
@@ -140,18 +209,42 @@ const BrowserView: React.FC = () => {
               {error && (
                 <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-90 z-10 p-4">
                   <div className="bg-gray-800 p-6 rounded-lg max-w-sm text-center">
-                    <p className="text-white mb-4">{error}</p>
-                    <div className="flex flex-col space-y-3">
-                      <Button onClick={() => setUrl('https://www.coingecko.com/')}>Try CoinGecko</Button>
-                      <Button onClick={() => setUrl('https://etherscan.io/')}>Try Etherscan</Button>
-                      <Button onClick={() => setUrl('https://opensea.io/')}>Try OpenSea</Button>
-                      <Button variant="outline" onClick={handleGoHome}>Return to Wallet</Button>
+                    <div className="flex justify-center mb-4">
+                      <AlertTriangle className="h-10 w-10 text-yellow-500" />
                     </div>
+                    <h3 className="text-lg font-semibold text-white mb-2">Connection Blocked</h3>
+                    <p className="text-gray-300 mb-4">{error}</p>
+                    
+                    <div className="mb-4">
+                      <h4 className="text-sm font-medium text-gray-400 mb-2">Try these crypto-friendly sites:</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {recommendedSites.map((site) => (
+                          <Button 
+                            key={site.url}
+                            variant="secondary" 
+                            className="text-xs" 
+                            onClick={() => {
+                              setUrl(site.url);
+                              setInputUrl(site.url);
+                              setError(null);
+                              setIsLoading(true);
+                            }}
+                          >
+                            {site.name}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <Button variant="outline" onClick={handleGoHome} className="w-full">
+                      Return to Wallet
+                    </Button>
                   </div>
                 </div>
               )}
               
               <iframe 
+                ref={iframeRef}
                 src={url} 
                 className="w-full h-full border-none"
                 onLoad={handleLoad}
