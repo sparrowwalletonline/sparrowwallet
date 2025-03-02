@@ -42,4 +42,6 @@ export interface WalletContextType {
   setActiveWallet: (walletId: string) => void;
   updateEnabledCryptos: (cryptoIds: string[]) => void;
   deleteWallet: (walletId: string) => void;
+  saveWalletAddressToUserAccount: () => Promise<boolean>;
+  loadWalletFromUserAccount: () => Promise<boolean>;
 }

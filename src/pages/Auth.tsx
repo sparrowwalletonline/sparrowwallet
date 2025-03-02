@@ -15,7 +15,7 @@ const Auth: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { hasWallet, loadFromSupabase, session } = useWallet();
+  const { hasWallet, loadFromSupabase, session, loadWalletFromUserAccount } = useWallet();
   
   // Check if the user is already authenticated
   useEffect(() => {
@@ -26,20 +26,30 @@ const Auth: React.FC = () => {
   
   // Function to check if the user has a wallet and redirect accordingly
   const checkUserWallet = async () => {
-    if (hasWallet) {
-      // User already has a wallet, redirect to wallet view
+    // Versuche zuerst, die Wallet-Adresse aus user_wallets zu laden
+    const walletLoaded = await loadWalletFromUserAccount();
+    
+    if (walletLoaded) {
+      // Wallet-Adresse wurde erfolgreich geladen
       navigate('/wallet');
       return;
     }
     
-    // Try to load wallet from Supabase
-    const walletLoaded = await loadFromSupabase();
+    // Wenn keine Wallet-Adresse gefunden wurde, versuche die Seed-Phrase zu laden
+    if (hasWallet) {
+      // Benutzer hat bereits eine Wallet, leite zur Wallet-Ansicht weiter
+      navigate('/wallet');
+      return;
+    }
     
-    if (walletLoaded) {
-      // Wallet loaded successfully, redirect to wallet view
+    // Versuche, Wallet aus Supabase zu laden
+    const seedPhraseLoaded = await loadFromSupabase();
+    
+    if (seedPhraseLoaded) {
+      // Wallet wurde erfolgreich geladen, leite zur Wallet-Ansicht weiter
       navigate('/wallet');
     } else {
-      // No wallet found, redirect to wallet creation flow
+      // Keine Wallet gefunden, leite zur Wallet-Erstellung weiter
       navigate('/wallet-choice');
     }
   };

@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from "@/integrations/supabase/client";
@@ -40,6 +41,8 @@ const WalletContext = createContext<WalletContextType>({
   setActiveWallet: () => {},
   updateEnabledCryptos: () => {},
   deleteWallet: () => {},
+  saveWalletAddressToUserAccount: async () => false,
+  loadWalletFromUserAccount: async () => false,
 });
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -83,7 +86,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         name: 'Main Wallet',
         seedPhrase: initialSeedPhrase,
         walletAddress: localStorage.getItem('walletAddress') || generateBtcAddress(),
-        btcBalance: 0.01,
+        btcBalance: 0,
         ethBalance: 0,
         isActive: true
       };
@@ -117,12 +120,18 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      if (session) {
+        loadWalletFromUserAccount(); // Versuche, die Wallet-Daten zu laden, wenn der Benutzer angemeldet ist
+      }
     });
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
+      if (session) {
+        loadWalletFromUserAccount(); // Auch bei Statusänderungen versuchen zu laden
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -154,6 +163,150 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   }, [seedPhrase]);
 
+  // Neue Funktion: Speichern der Wallet-Adresse in der Supabase-Datenbank für den angemeldeten Benutzer
+  const saveWalletAddressToUserAccount = async (): Promise<boolean> => {
+    if (!session?.user || !walletAddress) {
+      console.error('Kein Benutzer angemeldet oder keine Wallet-Adresse vorhanden');
+      return false;
+    }
+
+    try {
+      // Prüfe zuerst, ob bereits eine Wallet für diesen Benutzer existiert
+      const { data: existingWallet, error: checkError } = await supabase
+        .from('user_wallets')
+        .select('id')
+        .eq('user_id', session.user.id)
+        .maybeSingle();
+
+      if (checkError) {
+        console.error('Fehler beim Prüfen der vorhandenen Wallet:', checkError);
+        toast({
+          title: "Fehler",
+          description: "Wallet-Daten konnten nicht überprüft werden",
+          variant: "destructive",
+        });
+        return false;
+      }
+
+      if (existingWallet) {
+        // Aktualisiere vorhandene Wallet
+        const { error: updateError } = await supabase
+          .from('user_wallets')
+          .update({
+            wallet_address: walletAddress,
+            btc_balance: btcBalance,
+            eth_balance: ethBalance
+          })
+          .eq('user_id', session.user.id);
+
+        if (updateError) {
+          console.error('Fehler beim Aktualisieren der Wallet:', updateError);
+          toast({
+            title: "Fehler",
+            description: "Wallet-Daten konnten nicht aktualisiert werden",
+            variant: "destructive",
+          });
+          return false;
+        }
+      } else {
+        // Erstelle neue Wallet für Benutzer
+        const { error: insertError } = await supabase
+          .from('user_wallets')
+          .insert({
+            user_id: session.user.id,
+            wallet_address: walletAddress,
+            btc_balance: btcBalance,
+            eth_balance: ethBalance
+          });
+
+        if (insertError) {
+          console.error('Fehler beim Erstellen der Wallet:', insertError);
+          toast({
+            title: "Fehler",
+            description: "Wallet-Daten konnten nicht gespeichert werden",
+            variant: "destructive",
+          });
+          return false;
+        }
+      }
+
+      toast({
+        title: "Erfolg",
+        description: "Wallet-Daten erfolgreich gespeichert",
+      });
+      return true;
+    } catch (error) {
+      console.error('Unerwarteter Fehler beim Speichern der Wallet:', error);
+      toast({
+        title: "Fehler",
+        description: "Ein unerwarteter Fehler ist aufgetreten",
+        variant: "destructive",
+      });
+      return false;
+    }
+  };
+
+  // Neue Funktion: Laden der Wallet-Adresse aus der Supabase-Datenbank für den angemeldeten Benutzer
+  const loadWalletFromUserAccount = async (): Promise<boolean> => {
+    if (!session?.user) {
+      console.log('Kein Benutzer angemeldet für das Laden der Wallet-Daten');
+      return false;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('user_wallets')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Fehler beim Laden der Wallet-Daten:', error);
+        return false;
+      }
+
+      if (data) {
+        console.log('Wallet-Daten erfolgreich geladen:', data);
+        setWalletAddress(data.wallet_address);
+        setBtcBalance(Number(data.btc_balance));
+        setEthBalance(Number(data.eth_balance));
+        
+        // Aktualisieren der aktiven Wallet im Wallets-Array
+        if (activeWallet) {
+          const updatedWallets = wallets.map(wallet => {
+            if (wallet.isActive) {
+              return {
+                ...wallet,
+                walletAddress: data.wallet_address,
+                btcBalance: Number(data.btc_balance),
+                ethBalance: Number(data.eth_balance)
+              };
+            }
+            return wallet;
+          });
+          setWallets(updatedWallets);
+          
+          // Aktualisieren des activeWallet-Status
+          const newActiveWallet = updatedWallets.find(w => w.isActive);
+          if (newActiveWallet) {
+            setActiveWalletState(newActiveWallet);
+          }
+        }
+        
+        const calculatedUsdBalance = (Number(data.btc_balance) * btcPrice) + 
+                                    (Number(data.eth_balance) * ethPrice);
+        setUsdBalance(calculatedUsdBalance);
+        
+        return true;
+      }
+      
+      return false;
+    } catch (error) {
+      console.error('Unerwarteter Fehler beim Laden der Wallet-Daten:', error);
+      return false;
+    }
+  };
+
   const refreshPrices = async () => {
     setIsRefreshingPrices(true);
     try {
@@ -173,7 +326,15 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const saveToSupabase = async (): Promise<boolean> => {
-    return await saveWalletToSupabase(session, seedPhrase);
+    const seedPhraseSaved = await saveWalletToSupabase(session, seedPhrase);
+    
+    if (seedPhraseSaved && walletAddress) {
+      // Auch die Wallet-Adresse in der user_wallets Tabelle speichern
+      const walletSaved = await saveWalletAddressToUserAccount();
+      return seedPhraseSaved && walletSaved;
+    }
+    
+    return seedPhraseSaved;
   };
 
   const loadFromSupabase = async (): Promise<boolean> => {
@@ -189,6 +350,10 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     if (loadedSeedPhrase) {
       setSeedPhrase(loadedSeedPhrase);
       setHasWallet(true);
+      
+      // Auch die Wallet-Adresse aus der user_wallets Tabelle laden
+      await loadWalletFromUserAccount();
+      
       return true;
     }
     
@@ -206,12 +371,13 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const addNewWallet = (name: string) => {
     const newWalletId = `wallet-${Date.now()}`;
     const newSeedPhrase = generateSeedPhrase();
+    const newAddress = generateBtcAddress();
     
     const newWallet: Wallet = {
       id: newWalletId,
       name: name,
       seedPhrase: newSeedPhrase,
-      walletAddress: generateBtcAddress(),
+      walletAddress: newAddress,
       btcBalance: 0,
       ethBalance: 0,
       isActive: false
@@ -223,6 +389,12 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       title: "Wallet hinzugefügt",
       description: `${name} wurde erfolgreich erstellt.`,
     });
+    
+    // Falls der Benutzer angemeldet ist und dies die erste Wallet ist, speichere sie in Supabase
+    if (session && wallets.length === 0) {
+      setWalletAddress(newAddress);
+      saveWalletAddressToUserAccount();
+    }
   };
 
   const setActiveWallet = (walletId: string) => {
@@ -250,6 +422,11 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         title: "Wallet gewechselt",
         description: `${newActiveWallet.name} ist jetzt aktiv.`,
       });
+      
+      // Wenn der Benutzer angemeldet ist, aktualisiere die Wallet-Daten in Supabase
+      if (session) {
+        saveWalletAddressToUserAccount();
+      }
     }
   };
 
@@ -266,7 +443,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             localStorage.setItem('walletSeedPhrase', JSON.stringify(newSeedPhrase));
             console.log("Seed phrase set:", newSeedPhrase.join(' '));
             setHasWallet(true);
-            const simulatedBtcBalance = 0.01;
+            const simulatedBtcBalance = 0;  // Beginne mit 0 Guthaben
             setBtcBalance(simulatedBtcBalance);
             setEthBalance(0);
             const calculatedUsdBalance = (simulatedBtcBalance * btcPrice) + (0 * ethPrice);
@@ -274,7 +451,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             const newAddress = generateBtcAddress();
             setWalletAddress(newAddress);
             localStorage.setItem('walletAddress', newAddress);
-            setBalance(Math.random() * 10);
+            setBalance(0);  // Auch hier 0 Guthaben
             
             if (wallets.length === 0) {
               const defaultWallet: Wallet = {
@@ -289,12 +466,24 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
               setWallets([defaultWallet]);
               setActiveWalletState(defaultWallet);
             }
+            
+            // Wenn der Benutzer angemeldet ist, speichere Wallet-Daten in Supabase
+            if (session) {
+              setTimeout(() => {
+                saveWalletAddressToUserAccount();
+              }, 500);
+            }
           } else {
             console.error("Generated seed phrase is invalid:", newSeedPhrase);
           }
         } else {
           console.log("Using existing seed phrase in createWallet:", seedPhrase.join(' '));
           setHasWallet(true);
+          
+          // Wenn der Benutzer angemeldet ist, speichere Wallet-Daten in Supabase
+          if (session && walletAddress) {
+            saveWalletAddressToUserAccount();
+          }
         }
       } catch (error) {
         console.error("Error in createWallet:", error);
@@ -320,13 +509,21 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         
         if (words.length >= 12) {
           setHasWallet(true);
-          const simulatedBtcBalance = 0.01;
+          const simulatedBtcBalance = 0;  // Beginne mit 0 Guthaben
           setBtcBalance(simulatedBtcBalance);
           setEthBalance(0);
           const calculatedUsdBalance = (simulatedBtcBalance * btcPrice) + (0 * ethPrice);
           setUsdBalance(calculatedUsdBalance);
-          setWalletAddress(generateBtcAddress());
-          setBalance(Math.random() * 10);
+          const newAddress = generateBtcAddress();
+          setWalletAddress(newAddress);
+          setBalance(0);  // Auch hier 0 Guthaben
+          
+          // Wenn der Benutzer angemeldet ist, speichere Wallet-Daten in Supabase
+          if (session) {
+            setTimeout(() => {
+              saveWalletAddressToUserAccount();
+            }, 500);
+          }
         }
       } else {
         console.log("Seed phrase already exists and matches, no change needed");
@@ -347,6 +544,11 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     localStorage.removeItem('walletSeedPhrase');
     localStorage.removeItem('wallets');
     localStorage.removeItem('walletAddress');
+    
+    // Falls der Benutzer angemeldet ist, Wallet-Daten in Supabase auf 0 zurücksetzen, aber nicht löschen
+    if (session) {
+      saveWalletAddressToUserAccount();
+    }
   };
 
   useEffect(() => {
@@ -392,6 +594,11 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setUsdBalance(calculatedUsdBalance);
       
       setActiveWalletState(updatedWallets[0]);
+      
+      // Wenn der Benutzer angemeldet ist, aktualisiere die Wallet-Daten in Supabase
+      if (session) {
+        saveWalletAddressToUserAccount();
+      }
     }
     
     setWallets(updatedWallets);
@@ -432,7 +639,9 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       addNewWallet,
       setActiveWallet,
       updateEnabledCryptos,
-      deleteWallet
+      deleteWallet,
+      saveWalletAddressToUserAccount,
+      loadWalletFromUserAccount
     }}>
       {children}
     </WalletContext.Provider>

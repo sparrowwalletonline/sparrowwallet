@@ -30,6 +30,33 @@ export type Database = {
         }
         Relationships: []
       }
+      user_wallets: {
+        Row: {
+          btc_balance: number
+          created_at: string
+          eth_balance: number
+          id: string
+          user_id: string
+          wallet_address: string
+        }
+        Insert: {
+          btc_balance?: number
+          created_at?: string
+          eth_balance?: number
+          id?: string
+          user_id: string
+          wallet_address: string
+        }
+        Update: {
+          btc_balance?: number
+          created_at?: string
+          eth_balance?: number
+          id?: string
+          user_id?: string
+          wallet_address?: string
+        }
+        Relationships: []
+      }
       wallet_seed_phrases: {
         Row: {
           created_at: string

@@ -9,7 +9,7 @@ import SeedPhraseGenerator from '@/components/SeedPhraseGenerator';
 import Header from '@/components/Header';
 
 const SeedPhrasePage: React.FC = () => {
-  const { seedPhrase, cancelWalletCreation, session, saveToSupabase } = useWallet();
+  const { seedPhrase, cancelWalletCreation, session, saveToSupabase, saveWalletAddressToUserAccount } = useWallet();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [savedPhrase, setSavedPhrase] = useState(false);
@@ -30,12 +30,17 @@ const SeedPhrasePage: React.FC = () => {
     const autoSaveToCloud = async () => {
       if (session && seedPhrase && seedPhrase.length >= 12 && !autoSaved) {
         try {
-          const saved = await saveToSupabase();
-          if (saved) {
+          // Seed-Phrase in Supabase speichern
+          const savedSeedPhrase = await saveToSupabase();
+          
+          // Wallet-Adresse in Supabase speichern
+          const savedWalletAddress = await saveWalletAddressToUserAccount();
+          
+          if (savedSeedPhrase && savedWalletAddress) {
             setAutoSaved(true);
             toast({
               title: "Automatisch gespeichert",
-              description: "Deine Seed Phrase wurde automatisch in der Cloud gesichert",
+              description: "Deine Seed Phrase und Wallet-Adresse wurden automatisch in der Cloud gesichert",
               duration: 3000,
             });
           }
@@ -46,7 +51,7 @@ const SeedPhrasePage: React.FC = () => {
     };
 
     autoSaveToCloud();
-  }, [session, seedPhrase, saveToSupabase, autoSaved, toast]);
+  }, [session, seedPhrase, saveToSupabase, saveWalletAddressToUserAccount, autoSaved, toast]);
   
   const handleConfirm = async () => {
     // CRITICAL FIX: First check localStorage if context doesn't have the seed phrase
@@ -86,10 +91,12 @@ const SeedPhrasePage: React.FC = () => {
       try {
         // Ensure the seed phrase is saved to Supabase before proceeding
         if (session) {
-          console.log("Saving seed phrase to user account before validation");
-          const saved = await saveToSupabase();
-          if (!saved) {
-            throw new Error("Fehler beim Speichern der Seed Phrase");
+          console.log("Saving seed phrase and wallet address to user account before validation");
+          const savedSeedPhrase = await saveToSupabase();
+          const savedWalletAddress = await saveWalletAddressToUserAccount();
+          
+          if (!savedSeedPhrase || !savedWalletAddress) {
+            throw new Error("Fehler beim Speichern der Wallet-Daten");
           }
         }
         
