@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -47,6 +48,19 @@ const Auth: React.FC = () => {
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    
+    // Add a notification toast for the delay
+    if (isLogin) {
+      toast({
+        title: "Anmeldung wird verarbeitet",
+        description: "Bitte warte einen Moment...",
+      });
+    }
+    
+    // Add a 3-second delay (only for login)
+    if (isLogin) {
+      await new Promise(resolve => setTimeout(resolve, 3000));
+    }
     
     try {
       if (isLogin) {
