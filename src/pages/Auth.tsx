@@ -2,237 +2,182 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card } from '@/components/ui/card';
-import { ArrowLeft, Mail, Lock, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { useWallet } from '@/contexts/WalletContext';
 import { toast } from '@/components/ui/use-toast';
+import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { useWallet } from '@/contexts/WalletContext';
 
 const Auth: React.FC = () => {
-  const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { session } = useWallet();
-
-  // Redirect to home if already logged in
+  const { hasWallet, loadFromSupabase, session } = useWallet();
+  
+  // Check if the user is already authenticated
   useEffect(() => {
     if (session) {
-      navigate('/');
+      checkUserWallet();
     }
-  }, [session, navigate]);
-
-  const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!email || !password) {
-      toast({
-        title: "Fehler",
-        description: "Bitte fülle alle Felder aus",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    setIsLoading(true);
-    
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      
-      if (error) {
-        throw error;
-      }
-      
-      toast({
-        title: "Erfolgreich angemeldet",
-        description: "Du wirst weitergeleitet...",
-      });
-      
-      // Redirect will happen automatically via the useEffect
-    } catch (error: any) {
-      console.error('Error signing in:', error);
-      toast({
-        title: "Anmeldung fehlgeschlagen",
-        description: error.message || "Bitte überprüfe deine Anmeldedaten",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [session]);
   
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!email || !password || !confirmPassword) {
-      toast({
-        title: "Fehler",
-        description: "Bitte fülle alle Felder aus",
-        variant: "destructive",
-      });
+  // Function to check if the user has a wallet and redirect accordingly
+  const checkUserWallet = async () => {
+    if (hasWallet) {
+      // User already has a wallet, redirect to wallet view
+      navigate('/wallet');
       return;
     }
     
-    if (password !== confirmPassword) {
-      toast({
-        title: "Fehler",
-        description: "Die Passwörter stimmen nicht überein",
-        variant: "destructive",
-      });
-      return;
-    }
+    // Try to load wallet from Supabase
+    const walletLoaded = await loadFromSupabase();
     
-    setIsLoading(true);
-    
-    try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-      
-      if (error) {
-        throw error;
-      }
-      
-      toast({
-        title: "Registrierung erfolgreich",
-        description: "Dein Konto wurde erstellt. Du wirst jetzt angemeldet.",
-      });
-      
-      // Redirect will happen automatically via the useEffect
-    } catch (error: any) {
-      console.error('Error signing up:', error);
-      toast({
-        title: "Registrierung fehlgeschlagen",
-        description: error.message || "Bitte versuche es mit einer anderen E-Mail-Adresse",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  
-  const handleSubmit = (e: React.FormEvent) => {
-    if (isSignUp) {
-      handleSignUp(e);
+    if (walletLoaded) {
+      // Wallet loaded successfully, redirect to wallet view
+      navigate('/wallet');
     } else {
-      handleSignIn(e);
+      // No wallet found, redirect to wallet creation flow
+      navigate('/wallet-choice');
     }
+  };
+  
+  const handleAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    try {
+      if (isLogin) {
+        // Login
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        
+        if (error) throw error;
+        
+        toast({
+          title: "Anmeldung erfolgreich",
+          description: "Du wurdest erfolgreich angemeldet",
+        });
+        
+        // After successful login, check if user has a wallet
+        await checkUserWallet();
+      } else {
+        // Signup
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+        
+        if (error) throw error;
+        
+        toast({
+          title: "Registrierung erfolgreich",
+          description: "Bitte überprüfe deine E-Mail, um die Registrierung abzuschließen",
+        });
+        
+        // For new users, we'll redirect them to wallet creation after they verify their email
+        // and log in for the first time
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: "Fehler",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const toggleView = () => {
+    setIsLogin(!isLogin);
   };
   
   return (
-    <div className="min-h-screen flex flex-col bg-wallet-darkBg text-white p-6 animate-fade-in">
-      <div className="absolute top-6 left-6">
-        <button 
-          onClick={() => navigate(-1)}
-          className="text-white hover:text-gray-300 transition-colors"
-          aria-label="Zurück"
-        >
-          <ArrowLeft size={24} />
-        </button>
-      </div>
-      
-      <div className="flex-1 flex flex-col items-center justify-center">
-        <Card className="w-full max-w-md p-8 bg-wallet-card border-gray-700">
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold mb-2">
-              {isSignUp ? 'Konto erstellen' : 'Anmelden'}
-            </h1>
-            <p className="text-wallet-gray text-sm">
-              {isSignUp 
-                ? 'Erstelle ein Konto, um deine Wallet-Daten zu sichern' 
-                : 'Melde dich an, um auf deine Wallet zuzugreifen'}
-            </p>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-wallet-darkBg p-4">
+      <div className="w-full max-w-md bg-wallet-card p-8 rounded-xl shadow-lg border border-gray-800">
+        <h1 className="text-2xl font-bold text-center text-white mb-6">
+          {isLogin ? 'Anmelden' : 'Registrieren'}
+        </h1>
+        
+        <form onSubmit={handleAuth} className="space-y-4">
+          <div className="space-y-2">
+            <label htmlFor="email" className="text-sm font-medium text-gray-300">
+              E-Mail
+            </label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="name@example.com"
+                required
+                className="pl-10 bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
           </div>
           
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-medium text-wallet-gray">
-                  E-Mail
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-wallet-gray h-4 w-4" />
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 bg-gray-800 text-white border-gray-700"
-                    placeholder="deine@email.de"
-                    required
-                  />
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <label htmlFor="password" className="text-sm font-medium text-wallet-gray">
-                  Passwort
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-wallet-gray h-4 w-4" />
-                  <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 bg-gray-800 text-white border-gray-700"
-                    placeholder="••••••••"
-                    required
-                  />
-                </div>
-              </div>
-              
-              {isSignUp && (
-                <div className="space-y-2">
-                  <label htmlFor="confirmPassword" className="text-sm font-medium text-wallet-gray">
-                    Passwort bestätigen
-                  </label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-wallet-gray h-4 w-4" />
-                    <Input
-                      id="confirmPassword"
-                      type="password"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="pl-10 bg-gray-800 text-white border-gray-700"
-                      placeholder="••••••••"
-                      required
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            <Button 
-              type="submit" 
-              className="w-full py-6 bg-wallet-blue hover:bg-wallet-darkBlue"
-              disabled={isLoading}
-            >
-              {isLoading 
-                ? 'Wird bearbeitet...' 
-                : isSignUp ? 'Registrieren' : 'Anmelden'}
-            </Button>
-            
-            <div className="text-center mt-4">
+          <div className="space-y-2">
+            <label htmlFor="password" className="text-sm font-medium text-gray-300">
+              Passwort
+            </label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+                className="pl-10 pr-10 bg-gray-800 border-gray-700 text-white"
+              />
               <button
                 type="button"
-                onClick={() => setIsSignUp(!isSignUp)}
-                className="text-wallet-blue hover:underline text-sm"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
               >
-                {isSignUp 
-                  ? 'Bereits ein Konto? Anmelden' 
-                  : 'Kein Konto? Registrieren'}
+                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
             </div>
-          </form>
-        </Card>
+          </div>
+          
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-wallet-blue hover:bg-wallet-darkBlue text-white py-6"
+          >
+            {loading ? (
+              <span className="flex items-center justify-center">
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                {isLogin ? 'Anmelden...' : 'Registrieren...'}
+              </span>
+            ) : (
+              <>{isLogin ? 'Anmelden' : 'Registrieren'}</>
+            )}
+          </Button>
+        </form>
+        
+        <div className="mt-6 text-center">
+          <button
+            type="button"
+            onClick={toggleView}
+            className="text-wallet-blue hover:underline text-sm"
+          >
+            {isLogin ? 'Noch kein Konto? Registrieren' : 'Bereits ein Konto? Anmelden'}
+          </button>
+        </div>
       </div>
     </div>
   );

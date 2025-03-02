@@ -55,12 +55,36 @@ function App() {
                 </PrivateRoute>
               } />
               <Route path="/terms" element={<Terms />} />
-              <Route path="/wallet-choice" element={<WalletChoice />} />
-              <Route path="/generate-wallet" element={<GenerateWallet />} />
-              <Route path="/seed-phrase" element={<SeedPhrasePage />} />
-              <Route path="/pass-phrase" element={<PassPhrase />} />
-              <Route path="/seed-phrase-validation" element={<SeedPhraseValidation />} />
-              <Route path="/congrats" element={<CongratsPage />} />
+              <Route path="/wallet-choice" element={
+                <PrivateRoute>
+                  <WalletChoice />
+                </PrivateRoute>
+              } />
+              <Route path="/generate-wallet" element={
+                <PrivateRoute>
+                  <GenerateWallet />
+                </PrivateRoute>
+              } />
+              <Route path="/seed-phrase" element={
+                <PrivateRoute>
+                  <SeedPhrasePage />
+                </PrivateRoute>
+              } />
+              <Route path="/pass-phrase" element={
+                <PrivateRoute>
+                  <PassPhrase />
+                </PrivateRoute>
+              } />
+              <Route path="/seed-phrase-validation" element={
+                <PrivateRoute>
+                  <SeedPhraseValidation />
+                </PrivateRoute>
+              } />
+              <Route path="/congrats" element={
+                <PrivateRoute>
+                  <CongratsPage />
+                </PrivateRoute>
+              } />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Router>

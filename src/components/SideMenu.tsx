@@ -12,7 +12,7 @@ import { useWallet } from '@/contexts/WalletContext';
 const SideMenu: React.FC = () => {
   const { isMenuOpen, closeMenu } = useMenu();
   const navigate = useNavigate();
-  const { session } = useWallet();
+  const { session, hasWallet, loadFromSupabase } = useWallet();
   
   // Close menu when clicking outside or pressing escape
   useEffect(() => {
@@ -61,15 +61,37 @@ const SideMenu: React.FC = () => {
     }
   };
 
-  const handleNavigation = (path: string) => {
+  const handleNavigation = async (path: string) => {
     // For wallet route, check if the user is authenticated first
-    if (path === '/wallet' && !session) {
-      toast({
-        title: "Anmeldung erforderlich",
-        description: "Du musst angemeldet sein, um auf deine Wallet zuzugreifen",
-        variant: "default"
-      });
-      navigate('/auth');
+    if (path === '/wallet') {
+      if (!session) {
+        toast({
+          title: "Anmeldung erforderlich",
+          description: "Du musst angemeldet sein, um auf deine Wallet zuzugreifen",
+          variant: "default"
+        });
+        navigate('/auth');
+      } else {
+        // User is authenticated, check if they have a wallet
+        if (hasWallet) {
+          navigate('/wallet');
+        } else {
+          // Try to load wallet from Supabase
+          const walletLoaded = await loadFromSupabase();
+          
+          if (walletLoaded) {
+            navigate('/wallet');
+          } else {
+            // Redirect to wallet creation flow
+            toast({
+              title: "Keine Wallet gefunden",
+              description: "Erstelle deine erste Wallet",
+              variant: "default"
+            });
+            navigate('/wallet-choice');
+          }
+        }
+      }
     } else {
       navigate(path);
     }
