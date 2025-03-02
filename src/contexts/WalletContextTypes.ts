@@ -41,4 +41,5 @@ export interface WalletContextType {
   addNewWallet: (name: string) => void;
   setActiveWallet: (walletId: string) => void;
   updateEnabledCryptos: (cryptoIds: string[]) => void;
+  deleteWallet: (walletId: string) => void; // Neue Funktion zum Löschen einer Wallet
 }

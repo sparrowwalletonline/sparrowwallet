@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import WalletBalance from '@/components/WalletBalance';
 import WalletActions from '@/components/WalletActions';
 import ManageCryptoDialog from '@/components/ManageCryptoDialog';
+import ManageWalletsDialog from '@/components/ManageWalletsDialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, Home, RefreshCcw, Compass, Globe, Shield, Plus, ChevronDown, Check, Bus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -38,6 +39,7 @@ const WalletViewContent: React.FC = () => {
   const [newWalletName, setNewWalletName] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isManageCryptoOpen, setIsManageCryptoOpen] = useState(false);
+  const [isManageWalletsOpen, setIsManageWalletsOpen] = useState(false);
 
   React.useEffect(() => {
     if (!hasWallet) {
@@ -151,7 +153,12 @@ const WalletViewContent: React.FC = () => {
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
-                <Button variant="outline" size="sm" className="w-full bg-gray-800 hover:bg-gray-700 border-gray-700 flex gap-2 text-white">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full bg-gray-800 hover:bg-gray-700 border-gray-700 flex gap-2 text-white"
+                  onClick={() => setIsManageWalletsOpen(true)}
+                >
                   <Bus className="h-4 w-4" />
                   <span className="text-sm">Wallets verwalten</span>
                 </Button>
@@ -245,6 +252,11 @@ const WalletViewContent: React.FC = () => {
       <ManageCryptoDialog 
         isOpen={isManageCryptoOpen} 
         onClose={() => setIsManageCryptoOpen(false)} 
+      />
+      
+      <ManageWalletsDialog
+        isOpen={isManageWalletsOpen}
+        onClose={() => setIsManageWalletsOpen(false)}
       />
     </div>
   );

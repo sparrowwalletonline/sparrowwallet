@@ -39,10 +39,10 @@ const WalletContext = createContext<WalletContextType>({
   addNewWallet: () => {},
   setActiveWallet: () => {},
   updateEnabledCryptos: () => {},
+  deleteWallet: () => {},
 });
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Initialize state variables
   const savedSeedPhrase = localStorage.getItem('walletSeedPhrase');
   const initialSeedPhrase = savedSeedPhrase ? JSON.parse(savedSeedPhrase) : [];
   
@@ -60,7 +60,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [isRefreshingPrices, setIsRefreshingPrices] = useState(false);
   const [cryptoPrices, setCryptoPrices] = useState<Record<string, CryptoPrice>>({});
   
-  // Add state for enabled cryptocurrencies
   const [enabledCryptos, setEnabledCryptos] = useState<string[]>(() => {
     const savedEnabledCryptos = localStorage.getItem('enabledCryptos');
     return savedEnabledCryptos 
@@ -68,14 +67,12 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       : ['bitcoin', 'ethereum', 'binancecoin', 'matic-network'];
   });
 
-  // Add new state for multiple wallets
   const [wallets, setWallets] = useState<Wallet[]>(() => {
     const savedWallets = localStorage.getItem('wallets');
     if (savedWallets) {
       return JSON.parse(savedWallets);
     }
     
-    // Create default wallet if we have a seed phrase
     if (initialSeedPhrase.length >= 12) {
       const defaultWallet: Wallet = {
         id: '1',
@@ -97,19 +94,16 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return active || null;
   });
 
-  // Save wallets to localStorage when they change
   useEffect(() => {
     if (wallets.length > 0) {
       localStorage.setItem('wallets', JSON.stringify(wallets));
     }
   }, [wallets]);
 
-  // Save enabled cryptos to localStorage when they change
   useEffect(() => {
     localStorage.setItem('enabledCryptos', JSON.stringify(enabledCryptos));
   }, [enabledCryptos]);
 
-  // Initialize session
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -124,13 +118,11 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return () => subscription.unsubscribe();
   }, []);
 
-  // Fetch crypto prices on initial load
   useEffect(() => {
     refreshPrices();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Update BTC and ETH prices when cryptoPrices changes
   useEffect(() => {
     if (Object.keys(cryptoPrices).length > 0) {
       if (cryptoPrices.BTC) {
@@ -140,21 +132,18 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setEthPrice(cryptoPrices.ETH.price);
       }
       
-      // Recalculate USD balance based on new prices
       const calculatedUsdBalance = (btcBalance * (cryptoPrices.BTC?.price || btcPrice)) + 
                                   (ethBalance * (cryptoPrices.ETH?.price || ethPrice));
       setUsdBalance(calculatedUsdBalance);
     }
   }, [cryptoPrices, btcBalance, ethBalance]);
 
-  // Save seed phrase to local storage when it changes
   useEffect(() => {
     if (seedPhrase && seedPhrase.length >= 12) {
       localStorage.setItem('walletSeedPhrase', JSON.stringify(seedPhrase));
     }
   }, [seedPhrase]);
 
-  // Function to refresh crypto prices
   const refreshPrices = async () => {
     setIsRefreshingPrices(true);
     try {
@@ -167,17 +156,14 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
-  // Function to update enabled cryptocurrencies
   const updateEnabledCryptos = (cryptoIds: string[]) => {
     setEnabledCryptos(cryptoIds);
   };
 
-  // Save wallet to Supabase
   const saveToSupabase = async (): Promise<boolean> => {
     return await saveWalletToSupabase(session, seedPhrase);
   };
 
-  // Load wallet from Supabase
   const loadFromSupabase = async (): Promise<boolean> => {
     const loadedSeedPhrase = await loadWalletFromSupabase(
       session, 
@@ -197,7 +183,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return false;
   };
 
-  // Generate wallet in specific stage
   const generateWallet = (stage?: string) => {
     if (stage === 'passphrase') {
       setSeedPhrase(['word', 'word']);
@@ -206,7 +191,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
-  // Function to add a new wallet
   const addNewWallet = (name: string) => {
     const newWalletId = `wallet-${Date.now()}`;
     const newSeedPhrase = generateSeedPhrase();
@@ -229,7 +213,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     });
   };
 
-  // Function to set active wallet
   const setActiveWallet = (walletId: string) => {
     setWallets(prev => 
       prev.map(wallet => ({
@@ -241,14 +224,12 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const newActiveWallet = wallets.find(w => w.id === walletId) || null;
     setActiveWalletState(newActiveWallet);
     
-    // Update current wallet details from the active wallet
     if (newActiveWallet) {
       setSeedPhrase(newActiveWallet.seedPhrase);
       setWalletAddress(newActiveWallet.walletAddress);
       setBtcBalance(newActiveWallet.btcBalance);
       setEthBalance(newActiveWallet.ethBalance);
       
-      // Recalculate USD balance
       const calculatedUsdBalance = (newActiveWallet.btcBalance * btcPrice) + 
                                   (newActiveWallet.ethBalance * ethPrice);
       setUsdBalance(calculatedUsdBalance);
@@ -260,14 +241,12 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
-  // Create a new wallet
   const createWallet = () => {
     console.log("createWallet function called - starting generation");
     setIsGenerating(true);
     
     setTimeout(() => {
       try {
-        // Only generate a new seed phrase if we don't already have one
         if (!seedPhrase || seedPhrase.length < 12) {
           const newSeedPhrase = generateSeedPhrase();
           if (newSeedPhrase && newSeedPhrase.length >= 12) {
@@ -277,7 +256,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             setHasWallet(true);
             const simulatedBtcBalance = 0.01;
             setBtcBalance(simulatedBtcBalance);
-            setEthBalance(0); // Set ETH balance to 0
+            setEthBalance(0);
             const calculatedUsdBalance = (simulatedBtcBalance * btcPrice) + (0 * ethPrice);
             setUsdBalance(calculatedUsdBalance);
             const newAddress = generateBtcAddress();
@@ -285,7 +264,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             localStorage.setItem('walletAddress', newAddress);
             setBalance(Math.random() * 10);
             
-            // Create first wallet in the wallets array
             if (wallets.length === 0) {
               const defaultWallet: Wallet = {
                 id: '1',
@@ -314,18 +292,15 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }, 500);
   };
 
-  // Cancel wallet creation
   const cancelWalletCreation = () => {
     console.log("Cancelled wallet creation but keeping seed phrase:", seedPhrase.join(' '));
   };
 
-  // Import wallet from seed phrase
   const importWallet = (phrase: string | string[]) => {
     if (phrase) {
       const words = typeof phrase === 'string' ? phrase.split(' ') : phrase;
       console.log("Importing wallet with phrase:", words.join(' '));
       
-      // Only set if it's a new phrase or we don't have one yet
       if (!seedPhrase || seedPhrase.length < 12 || (words.join(' ') !== seedPhrase.join(' '))) {
         console.log("Setting new seed phrase in importWallet");
         setSeedPhrase(words);
@@ -335,7 +310,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           setHasWallet(true);
           const simulatedBtcBalance = 0.01;
           setBtcBalance(simulatedBtcBalance);
-          setEthBalance(0); // Set ETH balance to 0
+          setEthBalance(0);
           const calculatedUsdBalance = (simulatedBtcBalance * btcPrice) + (0 * ethPrice);
           setUsdBalance(calculatedUsdBalance);
           setWalletAddress(generateBtcAddress());
@@ -347,7 +322,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
-  // Reset wallet
   const resetWallet = () => {
     setHasWallet(false);
     setSeedPhrase([]);
@@ -363,7 +337,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     localStorage.removeItem('walletAddress');
   };
 
-  // Log when seed phrase changes
   useEffect(() => {
     console.log("Seed phrase updated:", seedPhrase ? seedPhrase.join(' ') : 'undefined');
     console.log("Seed phrase length:", seedPhrase.length);
@@ -373,6 +346,43 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setHasWallet(true);
     }
   }, [seedPhrase]);
+
+  const deleteWallet = (walletId: string) => {
+    const isMainWallet = wallets.find(w => w.id === walletId)?.name === 'Main Wallet';
+    if (isMainWallet) {
+      toast({
+        title: "Hauptwallet kann nicht gelöscht werden",
+        description: "Die Hauptwallet kann nicht gelöscht werden.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const isActiveWallet = wallets.find(w => w.id === walletId)?.isActive || false;
+
+    const updatedWallets = wallets.filter(wallet => wallet.id !== walletId);
+    
+    if (isActiveWallet && updatedWallets.length > 0) {
+      updatedWallets[0].isActive = true;
+      setSeedPhrase(updatedWallets[0].seedPhrase);
+      setWalletAddress(updatedWallets[0].walletAddress);
+      setBtcBalance(updatedWallets[0].btcBalance);
+      setEthBalance(updatedWallets[0].ethBalance);
+      
+      const calculatedUsdBalance = (updatedWallets[0].btcBalance * btcPrice) + 
+                                  (updatedWallets[0].ethBalance * ethPrice);
+      setUsdBalance(calculatedUsdBalance);
+      
+      setActiveWalletState(updatedWallets[0]);
+    }
+    
+    setWallets(updatedWallets);
+    
+    toast({
+      title: "Wallet gelöscht",
+      description: "Die Wallet wurde erfolgreich gelöscht.",
+    });
+  };
 
   return (
     <WalletContext.Provider value={{ 
@@ -403,7 +413,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       loadFromSupabase,
       addNewWallet,
       setActiveWallet,
-      updateEnabledCryptos
+      updateEnabledCryptos,
+      deleteWallet
     }}>
       {children}
     </WalletContext.Provider>
