@@ -26,15 +26,40 @@ export const saveWalletToSupabase = async (
     console.log("Encrypting and saving seed phrase to Supabase");
     const encryptedPhrase = encryptSeedPhrase(seedPhrase);
     
-    const { data, error } = await supabase
+    // First check if there's already an entry for this user
+    const { data: existingData, error: checkError } = await supabase
       .from('wallet_seed_phrases')
-      .upsert({
-        user_id: session.user.id,
-        encrypted_seed_phrase: encryptedPhrase
-      }, {
-        onConflict: 'user_id'
-      });
-
+      .select('id')
+      .eq('user_id', session.user.id)
+      .maybeSingle();
+      
+    if (checkError) {
+      console.error("Error checking existing seed phrase:", checkError);
+      // Continue with insert anyway
+    }
+    
+    let saveResult;
+    if (existingData?.id) {
+      // Update existing record
+      console.log("Updating existing seed phrase record");
+      saveResult = await supabase
+        .from('wallet_seed_phrases')
+        .update({
+          encrypted_seed_phrase: encryptedPhrase
+        })
+        .eq('user_id', session.user.id);
+    } else {
+      // Insert new record
+      console.log("Creating new seed phrase record");
+      saveResult = await supabase
+        .from('wallet_seed_phrases')
+        .insert({
+          user_id: session.user.id,
+          encrypted_seed_phrase: encryptedPhrase
+        });
+    }
+    
+    const { error } = saveResult;
     if (error) {
       console.error("Error saving seed phrase to Supabase:", error);
       toast({
@@ -85,7 +110,7 @@ export const loadWalletFromSupabase = async (
       .from('wallet_seed_phrases')
       .select('encrypted_seed_phrase')
       .eq('user_id', session.user.id)
-      .single();
+      .maybeSingle();
 
     if (error) {
       console.error("Error loading seed phrase from Supabase:", error);
