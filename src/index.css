@@ -134,13 +134,9 @@
   }
 }
 
-/* Modified to make wallet-balance-wrapper transparent in light theme */
+/* Modified to make wallet-balance-wrapper transparent in both light and dark theme */
 .wallet-balance-wrapper {
   @apply bg-transparent text-card-foreground;
-}
-
-.dark .wallet-balance-wrapper {
-  @apply bg-card text-card-foreground;
 }
 
 .light .crypto-action-button {
