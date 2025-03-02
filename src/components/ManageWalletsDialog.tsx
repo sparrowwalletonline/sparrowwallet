@@ -46,6 +46,8 @@ const ManageWalletsDialog: React.FC<ManageWalletsDialogProps> = ({ isOpen, onClo
           e.preventDefault();
           handleDialogClose();
         }}
+        // Remove the default close button by setting hideCloseButton
+        hideCloseButton={true}
       >
         {/* Header */}
         <DialogHeader className="px-4 py-3 border-b border-gray-800">
