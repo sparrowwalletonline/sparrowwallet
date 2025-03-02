@@ -295,16 +295,16 @@ const WalletViewContent: React.FC = () => {
         <div className="mt-6">
           <Tabs defaultValue="crypto" className="w-full">
             <div className="flex justify-between items-center border-b border-gray-800">
-              <TabsList className="flex gap-8 bg-transparent">
+              <TabsList className="flex bg-transparent">
                 <TabsTrigger 
                   value="crypto" 
-                  className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none rounded-none bg-transparent text-gray-400 px-2"
+                  className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none data-[state=active]:rounded-md data-[state=active]:bg-[#1A1F2C] rounded-md bg-transparent text-gray-400 mx-1 px-3"
                 >
                   Crypto
                 </TabsTrigger>
                 <TabsTrigger 
                   value="transactions" 
-                  className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none rounded-none bg-transparent text-gray-400 px-2"
+                  className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none data-[state=active]:rounded-md data-[state=active]:bg-[#1A1F2C] rounded-md bg-transparent text-gray-400 mx-1 px-3"
                 >
                   Transaktionen
                 </TabsTrigger>
