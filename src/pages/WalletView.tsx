@@ -235,6 +235,14 @@ const WalletViewContent: React.FC = () => {
                     logoUrl={crypto.logoUrl}
                   />
                 ))}
+                <div className="pt-4 text-center">
+                  <Button 
+                    variant="ghost" 
+                    className="text-green-500 hover:text-green-400 hover:bg-gray-800"
+                  >
+                    Kryptos verwalten
+                  </Button>
+                </div>
               </div>
             </TabsContent>
             <TabsContent value="nfts" className="pt-4">
