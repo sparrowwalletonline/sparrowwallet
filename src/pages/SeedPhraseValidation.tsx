@@ -117,9 +117,9 @@ const SeedPhraseValidation: React.FC = () => {
         description: "Deine Wallet wurde erfolgreich erstellt",
       });
       
-      // Delay before navigating to wallet view
+      // Delay before navigating to the congrats page
       setTimeout(() => {
-        navigate('/');
+        navigate('/congrats');
       }, 1500);
     } else {
       toast({

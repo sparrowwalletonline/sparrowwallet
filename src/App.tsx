@@ -15,6 +15,7 @@ import PassPhrase from "./pages/PassPhrase";
 import WalletChoice from "./pages/WalletChoice";
 import Auth from "./pages/Auth";
 import WalletView from "./pages/WalletView";
+import CongratsPage from "./pages/CongratsPage";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/passphrase" element={<PassPhrase />} />
             <Route path="/seed-phrase" element={<SeedPhrasePage />} />
             <Route path="/seed-phrase-validation" element={<SeedPhraseValidation />} />
+            <Route path="/congrats" element={<CongratsPage />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/auth" element={<Auth />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
