@@ -76,3 +76,18 @@
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(55, 59, 71, 0.2);
 }
+
+@keyframes pulse {
+  0% {
+    filter: drop-shadow(0 0 5px rgba(0, 255, 95, 0.5));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(0, 255, 95, 0.9));
+    transform: scale(1.05);
+  }
+  100% {
+    filter: drop-shadow(0 0 5px rgba(0, 255, 95, 0.5));
+    transform: scale(1);
+  }
+}

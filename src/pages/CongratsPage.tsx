@@ -28,6 +28,10 @@ const CongratsPage: React.FC = () => {
           <CheckCircle 
             className="h-24 w-24 text-wallet-green mb-6 animate-pulse" 
             strokeWidth={1.5}
+            style={{
+              filter: "drop-shadow(0 0 10px rgba(0, 255, 95, 0.7))",
+              animation: "pulse 2s infinite ease-in-out"
+            }}
           />
         </div>
         
