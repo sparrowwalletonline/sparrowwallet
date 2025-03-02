@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { WalletProvider, useWallet } from '@/contexts/WalletContext';
@@ -24,7 +23,7 @@ const WalletViewContent: React.FC = () => {
   const btcValue = (btcBalance * btcPrice).toFixed(2);
   const ethValue = (ethBalance * ethPrice).toFixed(2);
   
-  // Mock data for BNB and other currencies
+  // Updated mock data for cryptocurrencies with logo URLs
   const cryptoData = [
     {
       symbol: "BTC",
@@ -34,7 +33,8 @@ const WalletViewContent: React.FC = () => {
       value: parseFloat(btcValue),
       change: "+1.52%",
       iconColor: "bg-[#F7931A]",
-      changeColor: "text-green-500"
+      changeColor: "text-green-500",
+      logoUrl: "/lovable-uploads/7e1fa6ef-c45f-4ce0-af71-fa865a931600.png"
     },
     {
       symbol: "ETH",
@@ -44,7 +44,8 @@ const WalletViewContent: React.FC = () => {
       value: parseFloat(ethValue),
       change: "-0.12%",
       iconColor: "bg-[#627EEA]",
-      changeColor: "text-red-500"
+      changeColor: "text-red-500",
+      logoUrl: "/lovable-uploads/14bf916a-665e-4e15-b4c5-631d8d5ff633.png"
     },
     {
       symbol: "BNB",
@@ -54,7 +55,8 @@ const WalletViewContent: React.FC = () => {
       value: 30.51,
       change: "+2.55%",
       iconColor: "bg-[#F3BA2F]",
-      changeColor: "text-green-500"
+      changeColor: "text-green-500",
+      logoUrl: "/lovable-uploads/dc54f948-8605-4e6b-a659-7f492598ea5c.png"
     },
     {
       symbol: "POL",
@@ -64,7 +66,8 @@ const WalletViewContent: React.FC = () => {
       value: 5.40,
       change: "+3.37%",
       iconColor: "bg-[#8247E5]",
-      changeColor: "text-green-500"
+      changeColor: "text-green-500",
+      logoUrl: "/lovable-uploads/9c181aad-4d83-4b09-957f-11721da14747.png"
     }
   ];
 
@@ -126,6 +129,7 @@ const WalletViewContent: React.FC = () => {
                     change={crypto.change} 
                     iconColor={crypto.iconColor}
                     changeColor={crypto.changeColor}
+                    logoUrl={crypto.logoUrl}
                   />
                 ))}
               </div>
@@ -182,7 +186,8 @@ const CryptoItem = ({
   value, 
   change, 
   iconColor,
-  changeColor
+  changeColor,
+  logoUrl
 }: { 
   symbol: string, 
   name: string, 
@@ -191,7 +196,8 @@ const CryptoItem = ({
   value: number, 
   change: string, 
   iconColor: string,
-  changeColor: string
+  changeColor: string,
+  logoUrl: string
 }) => {
   // Format price with commas
   const formattedPrice = new Intl.NumberFormat('en-US', {
@@ -204,8 +210,8 @@ const CryptoItem = ({
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center">
-        <div className={`w-8 h-8 ${iconColor} rounded-full flex items-center justify-center mr-3`}>
-          <span className="text-xs font-bold text-white">{symbol.charAt(0)}</span>
+        <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 overflow-hidden`}>
+          <img src={logoUrl} alt={symbol} className="w-full h-full object-cover" />
         </div>
         <div>
           <div className="flex items-center">
