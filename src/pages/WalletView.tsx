@@ -110,6 +110,14 @@ const WalletViewContent: React.FC = () => {
       };
     });
 
+  const handleNavItemClick = (path: string) => {
+    if (path.startsWith('http')) {
+      window.open(path, '_blank');
+      return;
+    }
+    navigate(path);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-wallet-darkBg text-wallet-text">
       <Header title="Home" />
@@ -260,10 +268,27 @@ const WalletViewContent: React.FC = () => {
       
       <div className="mt-auto border-t border-gray-800">
         <div className="grid grid-cols-4 py-3">
-          <NavItem icon={<Home className="h-5 w-5" />} label="Home" active />
-          <NavItem icon={<RefreshCcw className="h-5 w-5" />} label="Swap" />
-          <NavItem icon={<Compass className="h-5 w-5" />} label="Discover" />
-          <NavItem icon={<Globe className="h-5 w-5" />} label="Browser" />
+          <NavItem 
+            icon={<Home className="h-5 w-5" />} 
+            label="Home" 
+            active 
+            onClick={() => handleNavItemClick('/wallet')}
+          />
+          <NavItem 
+            icon={<RefreshCcw className="h-5 w-5" />} 
+            label="Swap" 
+            onClick={() => handleNavItemClick('/wallet')}
+          />
+          <NavItem 
+            icon={<Compass className="h-5 w-5" />} 
+            label="Discover" 
+            onClick={() => handleNavItemClick('https://www.coindesk.com/')}
+          />
+          <NavItem 
+            icon={<Globe className="h-5 w-5" />} 
+            label="Browser" 
+            onClick={() => handleNavItemClick('/wallet')}
+          />
         </div>
       </div>
       
@@ -280,8 +305,21 @@ const WalletViewContent: React.FC = () => {
   );
 };
 
-const NavItem = ({ icon, label, active = false }: { icon: React.ReactNode, label: string, active?: boolean }) => (
-  <button className="flex flex-col items-center justify-center gap-1">
+const NavItem = ({ 
+  icon, 
+  label, 
+  active = false, 
+  onClick 
+}: { 
+  icon: React.ReactNode, 
+  label: string, 
+  active?: boolean,
+  onClick?: () => void 
+}) => (
+  <button 
+    className="flex flex-col items-center justify-center gap-1" 
+    onClick={onClick}
+  >
     <div className={`${active ? 'text-wallet-green' : 'text-gray-500'}`}>
       {icon}
     </div>

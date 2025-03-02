@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useMenu } from '@/contexts/MenuContext';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
-import { Home, CreditCard, Settings, X, User, LogOut } from 'lucide-react';
+import { Home, CreditCard, Settings, X, User, LogOut, Compass } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
@@ -62,6 +62,13 @@ const SideMenu: React.FC = () => {
   };
 
   const handleNavigation = async (path: string) => {
+    // For external links
+    if (path.startsWith('http')) {
+      window.open(path, '_blank');
+      closeMenu();
+      return;
+    }
+    
     // For wallet route, check if the user is authenticated first
     if (path === '/wallet') {
       if (!session) {
@@ -145,6 +152,15 @@ const SideMenu: React.FC = () => {
                 >
                   <CreditCard className="w-5 h-5" />
                   <span className="font-medium">Wallet</span>
+                </div>
+              </li>
+              <li>
+                <div 
+                  className="flex items-center gap-3 text-gray-200 hover:text-white cursor-pointer"
+                  onClick={() => handleNavigation('https://www.coindesk.com/')}
+                >
+                  <Compass className="w-5 h-5" />
+                  <span className="font-medium">Discover</span>
                 </div>
               </li>
               <li>
