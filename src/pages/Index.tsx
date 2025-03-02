@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { WalletProvider, useWallet } from '@/contexts/WalletContext';
+import { MenuProvider } from '@/contexts/MenuContext';
 import LandingPage from './LandingPage';
 import GenerateWallet from './GenerateWallet';
 import WalletChoice from './WalletChoice';
@@ -135,9 +136,11 @@ const WalletApp: React.FC = () => {
 const Index: React.FC = () => {
   return (
     <div className="min-h-screen bg-wallet-darkBg flex justify-center w-full">
-      <WalletProvider>
-        <WalletApp />
-      </WalletProvider>
+      <MenuProvider>
+        <WalletProvider>
+          <WalletApp />
+        </WalletProvider>
+      </MenuProvider>
     </div>
   );
 };
