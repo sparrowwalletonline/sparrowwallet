@@ -12,6 +12,7 @@ import PassPhrase from "./pages/PassPhrase";
 import SeedPhraseValidation from "./pages/SeedPhraseValidation";
 import CongratsPage from "./pages/CongratsPage";
 import WalletView from "./pages/WalletView";
+import BrowserView from "./pages/BrowserView";
 import Terms from "./pages/Terms";
 import Auth from "./pages/Auth";
 import CryptoDetailView from "./pages/CryptoDetailView";
@@ -52,6 +53,11 @@ function App() {
               <Route path="/wallet/crypto/:symbol" element={
                 <PrivateRoute>
                   <CryptoDetailView />
+                </PrivateRoute>
+              } />
+              <Route path="/browser" element={
+                <PrivateRoute>
+                  <BrowserView />
                 </PrivateRoute>
               } />
               <Route path="/terms" element={<Terms />} />

@@ -112,7 +112,7 @@ const WalletViewContent: React.FC = () => {
 
   const handleNavItemClick = (path: string) => {
     if (path.startsWith('http')) {
-      window.open(path, '_blank');
+      navigate('/browser', { state: { url: path } });
       return;
     }
     navigate(path);

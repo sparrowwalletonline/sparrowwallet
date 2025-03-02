@@ -62,9 +62,9 @@ const SideMenu: React.FC = () => {
   };
 
   const handleNavigation = async (path: string) => {
-    // For external links
+    // For external links, use the browser view
     if (path.startsWith('http')) {
-      window.open(path, '_blank');
+      navigate('/browser', { state: { url: path } });
       closeMenu();
       return;
     }
