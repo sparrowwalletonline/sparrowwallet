@@ -6,10 +6,20 @@ import WalletBalance from '@/components/WalletBalance';
 import WalletActions from '@/components/WalletActions';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, Home, RefreshCcw, Compass, Globe } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 // Inner component that uses the wallet context
 const WalletViewContent: React.FC = () => {
-  const { hasWallet, btcBalance, btcPrice, ethBalance, ethPrice } = useWallet();
+  const { 
+    hasWallet, 
+    btcBalance, 
+    btcPrice, 
+    ethBalance, 
+    ethPrice, 
+    cryptoPrices, 
+    refreshPrices,
+    isRefreshingPrices 
+  } = useWallet();
   const navigate = useNavigate();
 
   // Redirect if no wallet exists
@@ -23,50 +33,62 @@ const WalletViewContent: React.FC = () => {
   const btcValue = (btcBalance * btcPrice).toFixed(2);
   const ethValue = (ethBalance * ethPrice).toFixed(2);
   
-  // Updated mock data for cryptocurrencies with logo URLs
+  // Updated cryptocurrency data that uses real-time prices
   const cryptoData = [
     {
       symbol: "BTC",
       name: "Bitcoin",
       amount: btcBalance.toString(),
-      price: btcPrice,
+      price: cryptoPrices.BTC?.price || btcPrice,
       value: parseFloat(btcValue),
-      change: "+1.52%",
+      change: cryptoPrices.BTC ? 
+        (cryptoPrices.BTC.change_percentage_24h >= 0 ? "+" : "") + 
+        cryptoPrices.BTC.change_percentage_24h.toFixed(2) + "%" : 
+        "+1.52%",
       iconColor: "bg-[#F7931A]",
-      changeColor: "text-green-500",
+      changeColor: cryptoPrices.BTC?.change_percentage_24h >= 0 ? "text-green-500" : "text-red-500",
       logoUrl: "/lovable-uploads/7e1fa6ef-c45f-4ce0-af71-fa865a931600.png"
     },
     {
       symbol: "ETH",
       name: "Ethereum",
       amount: ethBalance.toString(),
-      price: ethPrice,
+      price: cryptoPrices.ETH?.price || ethPrice,
       value: parseFloat(ethValue),
-      change: "-0.12%",
+      change: cryptoPrices.ETH ? 
+        (cryptoPrices.ETH.change_percentage_24h >= 0 ? "+" : "") + 
+        cryptoPrices.ETH.change_percentage_24h.toFixed(2) + "%" : 
+        "-0.12%",
       iconColor: "bg-[#627EEA]",
-      changeColor: "text-red-500",
+      changeColor: cryptoPrices.ETH?.change_percentage_24h >= 0 ? "text-green-500" : "text-red-500",
       logoUrl: "/lovable-uploads/14bf916a-665e-4e15-b4c5-631d8d5ff633.png"
     },
     {
       symbol: "BNB",
       name: "BNB Smart Chain",
       amount: "0.05",
-      price: 610.26,
-      value: 30.51,
-      change: "+2.55%",
+      price: cryptoPrices.BNB?.price || 610.26,
+      value: cryptoPrices.BNB ? 0.05 * cryptoPrices.BNB.price : 30.51,
+      change: cryptoPrices.BNB ? 
+        (cryptoPrices.BNB.change_percentage_24h >= 0 ? "+" : "") + 
+        cryptoPrices.BNB.change_percentage_24h.toFixed(2) + "%" : 
+        "+2.55%",
       iconColor: "bg-[#F3BA2F]",
-      changeColor: "text-green-500",
+      changeColor: cryptoPrices.BNB?.change_percentage_24h >= 0 ? "text-green-500" : "text-red-500",
       logoUrl: "/lovable-uploads/dc54f948-8605-4e6b-a659-7f492598ea5c.png"
     },
     {
       symbol: "POL",
       name: "Polygon",
       amount: "20",
-      price: 0.27,
-      value: 5.40,
-      change: "+3.37%",
+      price: cryptoPrices.POL?.price || 0.27,
+      value: cryptoPrices.POL ? 20 * cryptoPrices.POL.price : 5.40,
+      change: cryptoPrices.POL ? 
+        (cryptoPrices.POL.change_percentage_24h >= 0 ? "+" : "") + 
+        cryptoPrices.POL.change_percentage_24h.toFixed(2) + "%" : 
+        "+3.37%",
       iconColor: "bg-[#8247E5]",
-      changeColor: "text-green-500",
+      changeColor: cryptoPrices.POL?.change_percentage_24h >= 0 ? "text-green-500" : "text-red-500",
       logoUrl: "/lovable-uploads/9c181aad-4d83-4b09-957f-11721da14747.png"
     }
   ];
@@ -102,20 +124,37 @@ const WalletViewContent: React.FC = () => {
         {/* Tabs for Crypto/NFTs */}
         <div className="mt-6">
           <Tabs defaultValue="crypto" className="w-full">
-            <TabsList className="grid w-40 grid-cols-2 bg-transparent border-b border-gray-800">
-              <TabsTrigger 
-                value="crypto" 
-                className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none rounded-none bg-transparent text-gray-400"
+            <div className="flex justify-between items-center">
+              <TabsList className="grid w-40 grid-cols-2 bg-transparent border-b border-gray-800">
+                <TabsTrigger 
+                  value="crypto" 
+                  className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none rounded-none bg-transparent text-gray-400"
+                >
+                  Crypto
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="nfts" 
+                  className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none rounded-none bg-transparent text-gray-400"
+                >
+                  NFTs
+                </TabsTrigger>
+              </TabsList>
+              
+              {/* Refresh Button */}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-gray-400 hover:text-white"
+                onClick={refreshPrices}
+                disabled={isRefreshingPrices}
               >
-                Crypto
-              </TabsTrigger>
-              <TabsTrigger 
-                value="nfts" 
-                className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none rounded-none bg-transparent text-gray-400"
-              >
-                NFTs
-              </TabsTrigger>
-            </TabsList>
+                <RefreshCcw className={`h-4 w-4 ${isRefreshingPrices ? 'animate-spin' : ''}`} />
+                <span className="ml-1 text-xs">
+                  {isRefreshingPrices ? 'Aktualisiere...' : 'Aktualisieren'}
+                </span>
+              </Button>
+            </div>
+            
             <TabsContent value="crypto" className="pt-4">
               <div className="space-y-4">
                 {cryptoData.map((crypto, index) => (
@@ -151,19 +190,6 @@ const WalletViewContent: React.FC = () => {
           <NavItem icon={<Compass className="h-5 w-5" />} label="Discover" />
           <NavItem icon={<Globe className="h-5 w-5" />} label="Browser" />
         </div>
-      </div>
-    </div>
-  );
-};
-
-// Wrapper component with provider
-const WalletView: React.FC = () => {
-  return (
-    <div className="min-h-screen bg-wallet-darkBg flex justify-center w-full">
-      <div className="w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg">
-        <WalletProvider>
-          <WalletViewContent />
-        </WalletProvider>
       </div>
     </div>
   );
@@ -229,6 +255,18 @@ const CryptoItem = ({
         <div className="text-xs text-gray-400 mt-1">
           ${value.toFixed(2)}
         </div>
+      </div>
+    </div>
+  );
+};
+
+const WalletView: React.FC = () => {
+  return (
+    <div className="min-h-screen bg-wallet-darkBg flex justify-center w-full">
+      <div className="w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg">
+        <WalletProvider>
+          <WalletViewContent />
+        </WalletProvider>
       </div>
     </div>
   );

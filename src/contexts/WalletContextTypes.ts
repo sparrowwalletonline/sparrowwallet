@@ -1,5 +1,6 @@
 
 import { Session } from '@supabase/supabase-js';
+import { CryptoPrice } from '../utils/cryptoPriceUtils';
 
 export interface WalletContextType {
   hasWallet: boolean;
@@ -13,6 +14,9 @@ export interface WalletContextType {
   walletAddress: string;
   isGenerating: boolean;
   session: Session | null;
+  isRefreshingPrices: boolean;
+  cryptoPrices: Record<string, CryptoPrice>;
+  refreshPrices: () => Promise<void>;
   generateWallet: (stage?: string) => void;
   createWallet: () => void;
   cancelWalletCreation: () => void;

@@ -9,6 +9,7 @@ import { WalletContextType } from './WalletContextTypes';
 import { generateBtcAddress, generateSeedPhrase } from '../utils/walletUtils';
 import { copyToClipboard } from '../utils/clipboardUtils';
 import { saveWalletToSupabase, loadWalletFromSupabase } from '../utils/supabaseWalletUtils';
+import { fetchCryptoPrices, CryptoPrice } from '../utils/cryptoPriceUtils';
 
 const WalletContext = createContext<WalletContextType>({
   hasWallet: false,
@@ -22,6 +23,9 @@ const WalletContext = createContext<WalletContextType>({
   walletAddress: '',
   isGenerating: false,
   session: null,
+  isRefreshingPrices: false,
+  cryptoPrices: {},
+  refreshPrices: async () => {},
   generateWallet: () => {},
   createWallet: () => {},
   cancelWalletCreation: () => {},
@@ -48,6 +52,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [walletAddress, setWalletAddress] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
+  const [isRefreshingPrices, setIsRefreshingPrices] = useState(false);
+  const [cryptoPrices, setCryptoPrices] = useState<Record<string, CryptoPrice>>({});
 
   // Initialize session
   useEffect(() => {
@@ -64,12 +70,52 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return () => subscription.unsubscribe();
   }, []);
 
+  // Fetch crypto prices on initial load
+  useEffect(() => {
+    refreshPrices();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Update BTC and ETH prices when cryptoPrices changes
+  useEffect(() => {
+    if (Object.keys(cryptoPrices).length > 0) {
+      if (cryptoPrices.BTC) {
+        setBtcPrice(cryptoPrices.BTC.price);
+      }
+      if (cryptoPrices.ETH) {
+        setEthPrice(cryptoPrices.ETH.price);
+      }
+      
+      // Recalculate USD balance based on new prices
+      const calculatedUsdBalance = (btcBalance * (cryptoPrices.BTC?.price || btcPrice)) + 
+                                  (ethBalance * (cryptoPrices.ETH?.price || ethPrice));
+      setUsdBalance(calculatedUsdBalance);
+    }
+  }, [cryptoPrices, btcBalance, ethBalance]);
+
   // Save seed phrase to local storage when it changes
   useEffect(() => {
     if (seedPhrase && seedPhrase.length >= 12) {
       localStorage.setItem('walletSeedPhrase', JSON.stringify(seedPhrase));
     }
   }, [seedPhrase]);
+
+  // Function to refresh crypto prices
+  const refreshPrices = async () => {
+    setIsRefreshingPrices(true);
+    try {
+      const prices = await fetchCryptoPrices();
+      setCryptoPrices(prices);
+      toast({
+        title: "Prices updated",
+        description: "Cryptocurrency prices have been refreshed.",
+      });
+    } catch (error) {
+      console.error("Error refreshing prices:", error);
+    } finally {
+      setIsRefreshingPrices(false);
+    }
+  };
 
   // Save wallet to Supabase
   const saveToSupabase = async (): Promise<boolean> => {
@@ -211,6 +257,9 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       walletAddress,
       isGenerating,
       session,
+      isRefreshingPrices,
+      cryptoPrices,
+      refreshPrices,
       generateWallet,
       createWallet,
       cancelWalletCreation,
