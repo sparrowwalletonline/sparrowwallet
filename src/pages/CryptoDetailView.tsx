@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useWallet } from '@/contexts/WalletContext';
@@ -44,30 +45,46 @@ const CryptoDetailView: React.FC = () => {
   
   const [selectedTimeframe, setSelectedTimeframe] = useState('1T');
   const [isLoading, setIsLoading] = useState(true);
+  const [cryptoData, setCryptoData] = useState<CryptoPrice | null>(null);
   
   const symbol = urlSymbol ? urlSymbol.toUpperCase() : '';
   
-  const cryptoData = useMemo(() => {
-    if (!symbol) return null;
+  useEffect(() => {
+    if (!symbol) return;
     
+    // First check if we already have it in cryptoPrices
     const data = getCryptoDataBySymbol(symbol, cryptoPrices);
+    if (data) {
+      console.log("Using existing price data for", symbol, data);
+      setCryptoData(data);
+      return;
+    }
     
-    if (data) return data;
-    
-    return fallbackCryptoData[symbol] || null;
+    // If we don't have it yet, use fallback temporarily and fetch fresh data
+    const fallbackData = getCryptoDataBySymbol(symbol, fallbackCryptoData);
+    if (fallbackData) {
+      setCryptoData(fallbackData);
+    }
   }, [symbol, cryptoPrices]);
   
   console.log("Symbol from URL:", urlSymbol);
   console.log("Normalized symbol:", symbol);
   console.log("Available cryptoPrices keys:", Object.keys(cryptoPrices));
-  console.log("Found crypto data:", cryptoData);
+  console.log("Current crypto data:", cryptoData);
   
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
       
       try {
-        await refreshPrices();
+        const updatedPrices = await refreshPrices();
+        if (symbol) {
+          const freshData = getCryptoDataBySymbol(symbol, updatedPrices);
+          if (freshData) {
+            console.log("Updated crypto data with fresh prices for", symbol, freshData);
+            setCryptoData(freshData);
+          }
+        }
       } catch (error) {
         console.error("Failed to load crypto prices:", error);
         toast({
@@ -83,7 +100,7 @@ const CryptoDetailView: React.FC = () => {
     };
     
     loadData();
-  }, [refreshPrices]);
+  }, [refreshPrices, symbol]);
   
   const getCryptoBalance = () => {
     if (!symbol) return 0;
@@ -103,19 +120,30 @@ const CryptoDetailView: React.FC = () => {
     });
   };
   
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
     setIsLoading(true);
-    refreshPrices().finally(() => {
+    try {
+      const updatedPrices = await refreshPrices();
+      if (symbol) {
+        const freshData = getCryptoDataBySymbol(symbol, updatedPrices);
+        if (freshData) {
+          console.log("Manually refreshed crypto data for", symbol, freshData);
+          setCryptoData(freshData);
+        }
+      }
+    } catch (error) {
+      console.error("Error refreshing prices:", error);
+    } finally {
       setTimeout(() => {
         setIsLoading(false);
       }, 300);
-    });
+    }
   };
   
   const now = new Date();
   const formattedDate = formatDate(now);
   
-  if (isLoading) {
+  if (isLoading && !cryptoData) {
     return (
       <div className="min-h-screen bg-wallet-darkBg text-white flex flex-col items-center justify-center">
         <div className="flex flex-col items-center justify-center">
@@ -143,6 +171,7 @@ const CryptoDetailView: React.FC = () => {
     );
   }
 
+  // Show price with loading state if we're refreshing but have data
   const price = cryptoData.price;
   const changeAmount = (cryptoData.change_percentage_24h / 100) * price;
   const changeFormatted = changeAmount >= 0 ? 
@@ -178,7 +207,10 @@ const CryptoDetailView: React.FC = () => {
       
       <div className="p-4">
         <div className="flex flex-col">
-          <h1 className="text-4xl font-bold">${price.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h1>
+          <div className="flex items-center">
+            <h1 className="text-4xl font-bold">${price.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h1>
+            {isLoading && <RefreshCcw className="animate-spin h-4 w-4 ml-2" />}
+          </div>
           <div className="flex items-center mt-1">
             <span className={`${changeColor} text-sm mr-2`}>
               {changeFormatted} ({changePercentFormatted})

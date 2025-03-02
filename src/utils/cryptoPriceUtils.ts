@@ -13,7 +13,7 @@ export interface CryptoPrice {
 export const fallbackCryptoData: Record<string, CryptoPrice> = {
   BTC: { 
     symbol: 'BTC', 
-    price: 65872.34, 
+    price: 69872.34, // Updated to more current value
     change_percentage_24h: 1.65,
     name: 'Bitcoin',
     image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png'
@@ -86,6 +86,7 @@ export const fallbackCryptoData: Record<string, CryptoPrice> = {
 // Function to fetch current prices from CoinGecko API
 export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> => {
   try {
+    console.log("Fetching crypto prices from API...");
     // Attempt to fetch top 50 cryptocurrencies by market cap
     const response = await fetch(
       `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=false&price_change_percentage=24h`
@@ -124,8 +125,11 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
       };
     });
     
+    console.log("Successfully fetched crypto data from API with symbols:", Object.keys(prices).join(', '));
+    
     // Always merge the API data with our fallback data
     // This ensures we have consistent data for the main cryptocurrencies
+    // but we prioritize API data by putting it AFTER fallback in the merge
     const mergedPrices = { ...fallbackCryptoData, ...prices };
 
     // Let user know prices are updated
@@ -134,7 +138,7 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
       description: "Kryptowährungs-Preise erfolgreich aktualisiert.",
     });
     
-    console.log("Fetched crypto prices:", mergedPrices);
+    console.log("Merged crypto prices have these keys:", Object.keys(mergedPrices).join(', '));
     return mergedPrices;
   } catch (error) {
     console.error('Error fetching crypto prices:', error);
