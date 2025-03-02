@@ -423,7 +423,8 @@ const WalletBalance: React.FC = () => {
               />
             </div>
             
-            <div className="relative w-full max-w-md mb-6">
+            <div className="w-full max-w-md mb-6">
+              <div className="text-center mb-2 text-sm text-gray-400">Deine {selectedToken?.symbol || 'Wallet'} Adresse</div>
               <div className="bg-[#2A2F3D] py-3 px-4 rounded-lg text-sm text-center break-all relative">
                 {walletAddress}
                 <Button 

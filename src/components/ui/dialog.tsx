@@ -37,6 +37,7 @@ const DialogContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.C
           : "left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-full max-w-lg gap-4 border bg-background p-6 shadow-lg data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
         className
       )}
+      aria-describedby={props['aria-describedby'] || "dialog-description"}
       {...props}
     >
       {children}
@@ -46,6 +47,7 @@ const DialogContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.C
           <span className="sr-only">Close</span>
         </DialogPrimitive.Close>
       )}
+      <span id="dialog-description" className="sr-only">Dialog Content</span>
     </DialogPrimitive.Content>
   </DialogPortal>);
 DialogContent.displayName = DialogPrimitive.Content.displayName;
