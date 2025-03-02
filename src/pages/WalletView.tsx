@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { WalletProvider, useWallet } from '@/contexts/WalletContext';
 import Header from '@/components/Header';
@@ -40,6 +40,7 @@ const WalletViewContent: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isManageCryptoOpen, setIsManageCryptoOpen] = useState(false);
   const [isManageWalletsOpen, setIsManageWalletsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   React.useEffect(() => {
     if (!hasWallet) {
@@ -64,6 +65,10 @@ const WalletViewContent: React.FC = () => {
 
   const handleManageCryptoClose = () => {
     setIsManageCryptoOpen(false);
+  };
+
+  const handleDropdownOpenChange = (open: boolean) => {
+    setIsDropdownOpen(open);
   };
 
   const cryptoData = Object.entries(cryptoPrices)
@@ -113,7 +118,7 @@ const WalletViewContent: React.FC = () => {
       
       <div className="px-4 mb-4">
         <div className="flex items-center">
-          <DropdownMenu>
+          <DropdownMenu open={isDropdownOpen} onOpenChange={handleDropdownOpenChange}>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-2 bg-transparent hover:bg-wallet-card rounded-lg px-2 py-1 transition-colors">
                 <Shield className="h-4 w-4 text-green-500" />
@@ -126,7 +131,10 @@ const WalletViewContent: React.FC = () => {
                 <DropdownMenuItem 
                   key={wallet.id} 
                   className="flex items-center justify-between cursor-pointer hover:bg-gray-800 text-sm py-2"
-                  onClick={() => setActiveWallet(wallet.id)}
+                  onClick={() => {
+                    setActiveWallet(wallet.id);
+                    setIsDropdownOpen(false);
+                  }}
                 >
                   <div className="flex items-center gap-2">
                     <Shield className="h-4 w-4 text-green-500" />
@@ -165,7 +173,10 @@ const WalletViewContent: React.FC = () => {
                   variant="outline" 
                   size="sm" 
                   className="w-full bg-gray-800 hover:bg-gray-700 border-gray-700 flex gap-2 text-white"
-                  onClick={() => setIsManageWalletsOpen(true)}
+                  onClick={() => {
+                    setIsManageWalletsOpen(true);
+                    setIsDropdownOpen(false);
+                  }}
                 >
                   <Bus className="h-4 w-4" />
                   <span className="text-sm">Wallets verwalten</span>

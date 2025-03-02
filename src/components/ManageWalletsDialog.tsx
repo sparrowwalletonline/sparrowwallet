@@ -38,7 +38,15 @@ const ManageWalletsDialog: React.FC<ManageWalletsDialogProps> = ({ isOpen, onClo
         if (!open) handleDialogClose();
       }}
     >
-      <DialogContent className="bg-gray-900 border border-gray-800 text-white p-0 max-w-md max-h-[85vh] overflow-hidden flex flex-col" onInteractOutside={handleDialogClose} onEscapeKeyDown={handleDialogClose}>
+      <DialogContent 
+        className="bg-gray-900 border border-gray-800 text-white p-0 max-w-md max-h-[85vh] overflow-hidden flex flex-col" 
+        onInteractOutside={handleDialogClose} 
+        onEscapeKeyDown={handleDialogClose}
+        onPointerDownOutside={(e) => {
+          e.preventDefault();
+          handleDialogClose();
+        }}
+      >
         {/* Header */}
         <DialogHeader className="px-4 py-3 border-b border-gray-800">
           <div className="flex items-center justify-between">
