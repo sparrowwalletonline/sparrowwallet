@@ -9,82 +9,82 @@ export interface CryptoPrice {
   name?: string;
 }
 
+// Default fallback data to ensure we always have something to display
+export const fallbackCryptoData: Record<string, CryptoPrice> = {
+  BTC: { 
+    symbol: 'BTC', 
+    price: 65872.34, 
+    change_percentage_24h: 1.65,
+    name: 'Bitcoin',
+    image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png'
+  },
+  ETH: { 
+    symbol: 'ETH', 
+    price: 3452.78, 
+    change_percentage_24h: -0.89,
+    name: 'Ethereum',
+    image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png'
+  },
+  BNB: { 
+    symbol: 'BNB', 
+    price: 608.96, 
+    change_percentage_24h: 2.19,
+    name: 'Binance Coin',
+    image: 'https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png'
+  },
+  SOL: { 
+    symbol: 'SOL', 
+    price: 150.42, 
+    change_percentage_24h: 3.75,
+    name: 'Solana',
+    image: 'https://assets.coingecko.com/coins/images/4128/large/solana.png'
+  },
+  XRP: { 
+    symbol: 'XRP', 
+    price: 0.5327, 
+    change_percentage_24h: -1.25,
+    name: 'XRP',
+    image: 'https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png'
+  },
+  ADA: { 
+    symbol: 'ADA', 
+    price: 0.59, 
+    change_percentage_24h: 0.85,
+    name: 'Cardano',
+    image: 'https://assets.coingecko.com/coins/images/975/large/cardano.png'
+  },
+  DOGE: { 
+    symbol: 'DOGE', 
+    price: 0.15, 
+    change_percentage_24h: 1.45,
+    name: 'Dogecoin',
+    image: 'https://assets.coingecko.com/coins/images/5/large/dogecoin.png'
+  },
+  DOT: { 
+    symbol: 'DOT', 
+    price: 6.5, 
+    change_percentage_24h: -0.35,
+    name: 'Polkadot',
+    image: 'https://assets.coingecko.com/coins/images/12171/large/polkadot.png'
+  },
+  MATIC: { 
+    symbol: 'MATIC', 
+    price: 0.27, 
+    change_percentage_24h: 2.72,
+    name: 'Polygon',
+    image: 'https://assets.coingecko.com/coins/images/4713/large/matic-token-icon.png'
+  },
+  SHIB: { 
+    symbol: 'SHIB', 
+    price: 0.00002, 
+    change_percentage_24h: 0.53,
+    name: 'Shiba Inu',
+    image: 'https://assets.coingecko.com/coins/images/11939/large/shiba.png'
+  }
+};
+
 // Function to fetch current prices from CoinGecko API
 export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> => {
-  // Default fallback data to ensure we always have something to display
-  const fallbackData: Record<string, CryptoPrice> = {
-    BTC: { 
-      symbol: 'BTC', 
-      price: 65872.34, 
-      change_percentage_24h: 1.65,
-      name: 'Bitcoin',
-      image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png'
-    },
-    ETH: { 
-      symbol: 'ETH', 
-      price: 3452.78, 
-      change_percentage_24h: -0.89,
-      name: 'Ethereum',
-      image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png'
-    },
-    BNB: { 
-      symbol: 'BNB', 
-      price: 608.96, 
-      change_percentage_24h: 2.19,
-      name: 'Binance Coin',
-      image: 'https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png'
-    },
-    SOL: { 
-      symbol: 'SOL', 
-      price: 150.42, 
-      change_percentage_24h: 3.75,
-      name: 'Solana',
-      image: 'https://assets.coingecko.com/coins/images/4128/large/solana.png'
-    },
-    XRP: { 
-      symbol: 'XRP', 
-      price: 0.5327, 
-      change_percentage_24h: -1.25,
-      name: 'XRP',
-      image: 'https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png'
-    },
-    ADA: { 
-      symbol: 'ADA', 
-      price: 0.59, 
-      change_percentage_24h: 0.85,
-      name: 'Cardano',
-      image: 'https://assets.coingecko.com/coins/images/975/large/cardano.png'
-    },
-    DOGE: { 
-      symbol: 'DOGE', 
-      price: 0.15, 
-      change_percentage_24h: 1.45,
-      name: 'Dogecoin',
-      image: 'https://assets.coingecko.com/coins/images/5/large/dogecoin.png'
-    },
-    DOT: { 
-      symbol: 'DOT', 
-      price: 6.5, 
-      change_percentage_24h: -0.35,
-      name: 'Polkadot',
-      image: 'https://assets.coingecko.com/coins/images/12171/large/polkadot.png'
-    },
-    MATIC: { 
-      symbol: 'MATIC', 
-      price: 0.27, 
-      change_percentage_24h: 2.72,
-      name: 'Polygon',
-      image: 'https://assets.coingecko.com/coins/images/4713/large/matic-token-icon.png'
-    },
-    SHIB: { 
-      symbol: 'SHIB', 
-      price: 0.00002, 
-      change_percentage_24h: 0.53,
-      name: 'Shiba Inu',
-      image: 'https://assets.coingecko.com/coins/images/11939/large/shiba.png'
-    }
-  };
-
   try {
     // Attempt to fetch top 50 cryptocurrencies by market cap
     const response = await fetch(
@@ -93,13 +93,12 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
     
     if (!response.ok) {
       console.error('API response was not OK:', response.status);
-      // Return the fallback data immediately if API request fails
       toast({
         variant: "destructive",
         title: "API-Fehler",
         description: "Verwende Fallback-Daten für Kryptowährungen."
       });
-      return fallbackData;
+      return fallbackCryptoData;
     }
     
     const data = await response.json();
@@ -107,7 +106,7 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
     // If we got empty data, return the fallback
     if (!data || !Array.isArray(data) || data.length === 0) {
       console.error('Invalid or empty data received from API');
-      return fallbackData;
+      return fallbackCryptoData;
     }
     
     // Format the API data into our structure
@@ -127,7 +126,7 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
     
     // Always merge the API data with our fallback data
     // This ensures we have consistent data for the main cryptocurrencies
-    const mergedPrices = { ...fallbackData, ...prices };
+    const mergedPrices = { ...fallbackCryptoData, ...prices };
 
     // Let user know prices are updated
     toast({
@@ -146,7 +145,7 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
     });
     
     // Return the fallback data
-    return fallbackData;
+    return fallbackCryptoData;
   }
 };
 
@@ -170,6 +169,11 @@ export const getCryptoDataBySymbol = (
   
   if (key) {
     return cryptoPrices[key];
+  }
+  
+  // If no match in cryptoPrices, check the fallback data
+  if (fallbackCryptoData[normalizedSymbol]) {
+    return fallbackCryptoData[normalizedSymbol];
   }
   
   return null;

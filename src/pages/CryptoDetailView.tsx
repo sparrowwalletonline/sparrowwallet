@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from '@/components/ui/use-toast';
-import { CryptoPrice, getCryptoDataBySymbol } from '@/utils/cryptoPriceUtils';
+import { CryptoPrice, getCryptoDataBySymbol, fallbackCryptoData } from '@/utils/cryptoPriceUtils';
 
 const getChartImagePath = (symbol: string) => {
   const charts = {
@@ -29,47 +29,6 @@ const getChartImagePath = (symbol: string) => {
   };
   
   return charts[symbol] || "/lovable-uploads/df7a0e55-4560-436e-ae52-c10510f4b486.png";
-};
-
-const getFallbackCryptoData = (symbol: string): CryptoPrice => {
-  const fallbackData: Record<string, CryptoPrice> = {
-    BTC: { 
-      symbol: 'BTC', 
-      price: 65872.34, 
-      change_percentage_24h: 1.65,
-      name: 'Bitcoin',
-      image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png'
-    },
-    ETH: { 
-      symbol: 'ETH', 
-      price: 3452.78, 
-      change_percentage_24h: -0.89,
-      name: 'Ethereum',
-      image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png'
-    },
-    BNB: { 
-      symbol: 'BNB', 
-      price: 608.96, 
-      change_percentage_24h: 2.19,
-      name: 'Binance Coin',
-      image: 'https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png'
-    },
-    SOL: { 
-      symbol: 'SOL', 
-      price: 150.42, 
-      change_percentage_24h: 3.75,
-      name: 'Solana',
-      image: 'https://assets.coingecko.com/coins/images/4128/large/solana.png'
-    }
-  };
-  
-  return fallbackData[symbol] || {
-    symbol: symbol,
-    price: 50000.00,
-    change_percentage_24h: 1.20,
-    name: symbol,
-    image: `https://cryptoicons.org/api/icon/${symbol.toLowerCase()}/200`
-  };
 };
 
 const CryptoDetailView: React.FC = () => {
@@ -92,9 +51,10 @@ const CryptoDetailView: React.FC = () => {
     if (!symbol) return null;
     
     const data = getCryptoDataBySymbol(symbol, cryptoPrices);
+    
     if (data) return data;
     
-    return getFallbackCryptoData(symbol);
+    return fallbackCryptoData[symbol] || null;
   }, [symbol, cryptoPrices]);
   
   console.log("Symbol from URL:", urlSymbol);
@@ -171,7 +131,7 @@ const CryptoDetailView: React.FC = () => {
       <div className="min-h-screen bg-wallet-darkBg text-white flex flex-col items-center justify-center p-4">
         <p className="text-xl mb-2">Crypto nicht gefunden: {symbol}</p>
         <p className="text-sm text-gray-400 mt-2 mb-4">
-          Verfügbare Kryptowährungen: {Object.keys(cryptoPrices).join(', ') || 'BTC, ETH, BNB, SOL'}
+          Verfügbare Kryptowährungen: {Object.keys(cryptoPrices).join(', ') || Object.keys(fallbackCryptoData).join(', ')}
         </p>
         <p className="text-sm text-gray-400 mb-6">
           Bitte stellen Sie sicher, dass die Kryptowährung verfügbar ist.

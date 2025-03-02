@@ -8,7 +8,7 @@ import { WalletContextType, Wallet } from './WalletContextTypes';
 import { generateBtcAddress, generateSeedPhrase } from '../utils/walletUtils';
 import { copyToClipboard } from '../utils/clipboardUtils';
 import { saveWalletToSupabase, loadWalletFromSupabase } from '../utils/supabaseWalletUtils';
-import { fetchCryptoPrices, CryptoPrice } from '../utils/cryptoPriceUtils';
+import { fetchCryptoPrices, CryptoPrice, fallbackCryptoData } from '../utils/cryptoPriceUtils';
 
 const WalletContext = createContext<WalletContextType>({
   hasWallet: false,
@@ -23,7 +23,7 @@ const WalletContext = createContext<WalletContextType>({
   isGenerating: false,
   session: null,
   isRefreshingPrices: false,
-  cryptoPrices: {},
+  cryptoPrices: fallbackCryptoData,
   wallets: [],
   activeWallet: null,
   enabledCryptos: ['bitcoin', 'ethereum', 'binancecoin', 'matic-network'],
@@ -58,7 +58,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [isGenerating, setIsGenerating] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [isRefreshingPrices, setIsRefreshingPrices] = useState(false);
-  const [cryptoPrices, setCryptoPrices] = useState<Record<string, CryptoPrice>>({});
+  const [cryptoPrices, setCryptoPrices] = useState<Record<string, CryptoPrice>>(fallbackCryptoData);
   
   const [enabledCryptos, setEnabledCryptos] = useState<string[]>(() => {
     const savedEnabledCryptos = localStorage.getItem('enabledCryptos');
@@ -159,8 +159,10 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     try {
       const prices = await fetchCryptoPrices();
       setCryptoPrices(prices);
+      return prices;
     } catch (error) {
       console.error("Error refreshing prices:", error);
+      return fallbackCryptoData;
     } finally {
       setIsRefreshingPrices(false);
     }
