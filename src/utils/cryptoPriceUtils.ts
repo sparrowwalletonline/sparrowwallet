@@ -120,12 +120,20 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
       };
     });
     
+    // Add our fallback data as a backup if certain coins weren't returned by the API
+    Object.keys(fallbackData).forEach(symbol => {
+      if (!prices[symbol]) {
+        prices[symbol] = fallbackData[symbol];
+      }
+    });
+    
     // Let user know prices are updated
     toast({
       title: "Preise aktualisiert",
       description: "Kryptowährungs-Preise erfolgreich aktualisiert.",
     });
     
+    console.log("Fetched crypto prices:", prices);
     return prices;
   } catch (error) {
     console.error('Error fetching crypto prices:', error);

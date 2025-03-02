@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useWallet } from '@/contexts/WalletContext';
@@ -20,8 +21,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from '@/components/ui/use-toast';
 import { CryptoPrice } from '@/utils/cryptoPriceUtils';
 
+// Use different charts for different cryptocurrencies
 const getChartImagePath = (symbol: string) => {
-  return "/lovable-uploads/df7a0e55-4560-436e-ae52-c10510f4b486.png";
+  const charts = {
+    "BTC": "/lovable-uploads/df7a0e55-4560-436e-ae52-c10510f4b486.png",
+    "ETH": "/lovable-uploads/df7a0e55-4560-436e-ae52-c10510f4b486.png",
+    "SOL": "/lovable-uploads/df7a0e55-4560-436e-ae52-c10510f4b486.png",
+    "BNB": "/lovable-uploads/df7a0e55-4560-436e-ae52-c10510f4b486.png",
+  };
+  
+  return charts[symbol] || "/lovable-uploads/df7a0e55-4560-436e-ae52-c10510f4b486.png";
 };
 
 const getFallbackCryptoData = (symbol: string): CryptoPrice => {
@@ -84,20 +93,23 @@ const CryptoDetailView: React.FC = () => {
   const cryptoData = useMemo(() => {
     if (!symbol) return null;
     
+    // First check if we have the exact symbol in cryptoPrices
+    if (cryptoPrices && cryptoPrices[symbol]) {
+      return cryptoPrices[symbol];
+    }
+    
+    // Next, try case-insensitive matching
     if (cryptoPrices && Object.keys(cryptoPrices).length > 0) {
-      if (cryptoPrices[symbol]) {
-        return cryptoPrices[symbol];
-      }
-      
-      const foundKey = Object.keys(cryptoPrices).find(
-        key => key.toUpperCase() === symbol.toUpperCase()
+      const key = Object.keys(cryptoPrices).find(
+        k => k.toUpperCase() === symbol.toUpperCase()
       );
       
-      if (foundKey) {
-        return cryptoPrices[foundKey];
+      if (key) {
+        return cryptoPrices[key];
       }
     }
     
+    // Fallback to our predefined data
     return getFallbackCryptoData(symbol);
   }, [symbol, cryptoPrices]);
   
@@ -219,7 +231,7 @@ const CryptoDetailView: React.FC = () => {
       
       <div className="p-4">
         <div className="flex flex-col">
-          <h1 className="text-4xl font-bold">${price.toFixed(2)}</h1>
+          <h1 className="text-4xl font-bold">${price.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h1>
           <div className="flex items-center mt-1">
             <span className={`${changeColor} text-sm mr-2`}>
               {changeFormatted} ({changePercentFormatted})
@@ -239,10 +251,10 @@ const CryptoDetailView: React.FC = () => {
           />
           
           <div className="absolute top-2 right-2 text-xs bg-black/50 px-1 rounded">
-            ${(price * 1.01).toFixed(2)}
+            ${(price * 1.05).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
           <div className="absolute bottom-2 left-2 text-xs bg-black/50 px-1 rounded">
-            ${(price * 0.99).toFixed(2)}
+            ${(price * 0.95).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
         </div>
         
@@ -331,7 +343,7 @@ const CryptoDetailView: React.FC = () => {
                     {cryptoData.change_percentage_24h >= 0 ? '+' : ''}{cryptoData.change_percentage_24h.toFixed(2)}%
                   </span>
                   <span className="text-xs text-gray-400">
-                    ${(getCryptoBalance() * cryptoData.price).toFixed(2)}
+                    ${(getCryptoBalance() * cryptoData.price).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </span>
                 </div>
               </div>
