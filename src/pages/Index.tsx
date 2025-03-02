@@ -48,10 +48,10 @@ const WalletApp: React.FC = () => {
     }
   }, [hasWallet, seedPhrase, currentView, session, navigate]);
 
-  // Determine which view to show
-  const showLandingPage = true; // Force landing page to always show for now
-  const showWalletChoice = session && seedPhrase.length === 1; // Special case for our flow
-  const showPassPhrase = session && seedPhrase.length === 2; // New state for PassPhrase page
+  // Determine which view to show - force landing page for now to debug
+  const showLandingPage = true; // Always show landing page for debugging
+  const showWalletChoice = session && seedPhrase.length === 1; 
+  const showPassPhrase = session && seedPhrase.length === 2;
   const showCreateWallet = session && !hasWallet && seedPhrase.length > 2;
   
   useEffect(() => {

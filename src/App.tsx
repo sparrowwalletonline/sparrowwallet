@@ -15,6 +15,8 @@ import WalletView from "./pages/WalletView";
 import Terms from "./pages/Terms";
 import Auth from "./pages/Auth";
 import CryptoDetailView from "./pages/CryptoDetailView";
+import { MenuProvider } from "./contexts/MenuContext";
+import { WalletProvider } from "./contexts/WalletContext";
 
 import "./App.css";
 
@@ -23,13 +25,25 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Router>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={
+            <MenuProvider>
+              <WalletProvider>
+                <LandingPage />
+              </WalletProvider>
+            </MenuProvider>
+          } />
           <Route path="/auth" element={<Auth />} />
           <Route path="/app" element={<Index />} />
           <Route path="/wallet" element={<WalletView />} />
           <Route path="/wallet/crypto/:symbol" element={<CryptoDetailView />} />
           <Route path="/terms" element={<Terms />} />
-          <Route path="/wallet-choice" element={<WalletChoice />} />
+          <Route path="/wallet-choice" element={
+            <MenuProvider>
+              <WalletProvider>
+                <WalletChoice />
+              </WalletProvider>
+            </MenuProvider>
+          } />
           <Route path="/generate-wallet" element={<GenerateWallet />} />
           <Route path="/seed-phrase" element={<SeedPhrasePage />} />
           <Route path="/pass-phrase" element={<PassPhrase />} />

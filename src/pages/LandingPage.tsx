@@ -339,6 +339,8 @@ const LandingPage = () => {
       </div>;
   };
 
+  console.log("Rendering LandingPage component");
+
   return (
     <div className="min-h-screen flex flex-col bg-white text-gray-800">
       <header className="w-full p-6 flex justify-between items-center">
