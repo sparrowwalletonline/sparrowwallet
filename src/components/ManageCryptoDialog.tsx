@@ -93,7 +93,7 @@ const ManageCryptoDialog: React.FC<ManageCryptoDialogProps> = ({ isOpen, onClose
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
-            <h2 className="text-lg font-medium">Suchen</h2>
+            <h2 className="text-lg font-medium">Kryptos verwalten</h2>
           </div>
         </div>
         
@@ -102,7 +102,7 @@ const ManageCryptoDialog: React.FC<ManageCryptoDialogProps> = ({ isOpen, onClose
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
             <Input
-              placeholder="Token-Name oder Kontraktadresse"
+              placeholder="Kryptowährung suchen"
               value={searchTerm}
               onChange={handleSearchChange}
               className="pl-10 bg-gray-800 border-gray-700"
@@ -165,7 +165,7 @@ const ManageCryptoDialog: React.FC<ManageCryptoDialogProps> = ({ isOpen, onClose
             className="w-full bg-green-500 hover:bg-green-600 text-white"
             onClick={handleSave}
           >
-            Token importieren
+            Speichern
           </Button>
         </div>
       </DialogContent>

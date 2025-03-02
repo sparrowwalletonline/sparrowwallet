@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { WalletProvider, useWallet } from '@/contexts/WalletContext';
@@ -9,7 +8,7 @@ import WalletActions from '@/components/WalletActions';
 import ManageCryptoDialog from '@/components/ManageCryptoDialog';
 import ManageWalletsDialog from '@/components/ManageWalletsDialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Home, RefreshCcw, Compass, Globe, Shield, Plus, ChevronDown, Check, Bus } from 'lucide-react';
+import { RefreshCcw, Home, Compass, Globe, Shield, Plus, ChevronDown, Check, Bus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -114,13 +113,6 @@ const WalletViewContent: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-wallet-darkBg text-wallet-text">
       <Header title="Home" />
-      
-      <div className="px-4 mb-4">
-        <div className="flex items-center bg-wallet-card rounded-full px-4 py-2">
-          <Search className="h-4 w-4 text-gray-400 mr-2" />
-          <span className="text-sm text-gray-400">Search</span>
-        </div>
-      </div>
       
       <div className="px-4 mb-4">
         <div className="flex items-center">
