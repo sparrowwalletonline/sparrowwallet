@@ -18,3 +18,15 @@ export const decryptSeedPhrase = (encryptedPhrase: string): string[] => {
     return [];
   }
 };
+
+export const getQrCodeValue = (walletAddress: string, cryptoSymbol: string): string => {
+  // Format QR code data based on crypto type
+  switch(cryptoSymbol.toUpperCase()) {
+    case 'BTC':
+      return `bitcoin:${walletAddress}`;
+    case 'ETH':
+      return `ethereum:${walletAddress}`;
+    default:
+      return walletAddress;
+  }
+};

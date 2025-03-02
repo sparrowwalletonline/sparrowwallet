@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useWallet } from '@/contexts/WalletContext';
-import { Bitcoin } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Search } from 'lucide-react';
+import { ArrowLeft, Search, Copy, AlertTriangle, X } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
+import { copyToClipboard } from '@/utils/clipboardUtils';
+import { getQrCodeValue } from '@/utils/encryptionUtils';
 
 interface Token {
   id: string;
@@ -24,6 +26,7 @@ const WalletBalance: React.FC = () => {
   const { btcBalance, btcPrice, ethBalance, ethPrice, usdBalance, walletAddress, cryptoPrices, enabledCryptos } = useWallet();
   const [isTokenSelectionOpen, setIsTokenSelectionOpen] = useState(false);
   const [isSendDialogOpen, setIsSendDialogOpen] = useState(false);
+  const [isReceiveDialogOpen, setIsReceiveDialogOpen] = useState(false);
   const [selectedToken, setSelectedToken] = useState<Token | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [recipientAddress, setRecipientAddress] = useState('');
@@ -90,10 +93,15 @@ const WalletBalance: React.FC = () => {
     }
   }
 
-  const handleTokenSelect = (token: Token) => {
+  const handleTokenSelect = (token: Token, action: 'send' | 'receive') => {
     setSelectedToken(token);
     setIsTokenSelectionOpen(false);
-    setIsSendDialogOpen(true);
+    
+    if (action === 'send') {
+      setIsSendDialogOpen(true);
+    } else {
+      setIsReceiveDialogOpen(true);
+    }
   };
 
   const handleSend = () => {
@@ -149,7 +157,21 @@ const WalletBalance: React.FC = () => {
     : tokens;
 
   const handleSendClick = () => {
+    setSelectedToken(null);
     setIsTokenSelectionOpen(true);
+    setSearchTerm('');
+  };
+
+  const handleReceiveClick = () => {
+    setSelectedToken(null);
+    setIsTokenSelectionOpen(true);
+    setSearchTerm('');
+  };
+
+  const handleCopyAddress = () => {
+    if (walletAddress) {
+      copyToClipboard(walletAddress);
+    }
   };
 
   return (
@@ -160,7 +182,7 @@ const WalletBalance: React.FC = () => {
       
       <div className="flex justify-between mt-6">
         <CryptoAction icon="send" label="Send" onClick={handleSendClick} />
-        <CryptoAction icon="receive" label="Receive" />
+        <CryptoAction icon="receive" label="Receive" onClick={handleReceiveClick} />
         <CryptoAction icon="buy" label="Buy" />
         <CryptoAction icon="earn" label="Earn" />
       </div>
@@ -196,7 +218,7 @@ const WalletBalance: React.FC = () => {
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
-              <h2 className="text-lg font-medium">Token zum Versenden auswählen</h2>
+              <h2 className="text-lg font-medium">Token auswählen</h2>
             </div>
           </div>
           
@@ -218,7 +240,7 @@ const WalletBalance: React.FC = () => {
                 <div 
                   key={token.id} 
                   className="flex items-center justify-between py-3 px-4 hover:bg-gray-800 cursor-pointer"
-                  onClick={() => handleTokenSelect(token)}
+                  onClick={() => handleTokenSelect(token, selectedToken ? (isReceiveDialogOpen ? 'receive' : 'send') : (isSendDialogOpen ? 'send' : 'receive'))}
                 >
                   <div className="flex items-center gap-3">
                     <div className={`w-8 h-8 rounded-full ${token.iconColor} flex items-center justify-center overflow-hidden`}>
@@ -328,6 +350,101 @@ const WalletBalance: React.FC = () => {
               onClick={handleSend}
             >
               Vorschau
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isReceiveDialogOpen} onOpenChange={setIsReceiveDialogOpen}>
+        <DialogContent fullScreen className="bg-gray-900 border border-gray-800 text-white p-0 max-w-full md:max-w-3xl overflow-hidden flex flex-col">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800">
+            <div className="flex items-center gap-3">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-gray-400 hover:text-white"
+                onClick={() => setIsReceiveDialogOpen(false)}
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <h2 className="text-lg font-medium">{selectedToken?.symbol} erhalten</h2>
+            </div>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-gray-400 hover:text-white"
+              onClick={() => setIsReceiveDialogOpen(false)}
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
+          
+          <div className="flex flex-col items-center py-4">
+            {selectedToken && (
+              <>
+                <div className={`w-12 h-12 rounded-full ${selectedToken.iconColor} flex items-center justify-center mb-2`}>
+                  {selectedToken.logoUrl ? (
+                    <img src={selectedToken.logoUrl} alt={selectedToken.symbol} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-lg text-white font-bold">{selectedToken.symbol.substring(0, 2)}</span>
+                  )}
+                </div>
+                <div className="text-sm text-gray-400">auf {selectedToken.network}</div>
+              </>
+            )}
+          </div>
+          
+          <div className="flex-1 flex flex-col items-center px-4 py-2">
+            <div className="bg-[#232733] p-4 rounded-lg mb-4 max-w-md w-full">
+              <div className="flex items-start gap-3 text-yellow-500">
+                <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                <p className="text-sm">
+                  Sende nur {selectedToken?.symbol} an diese Adresse. Das Senden anderer Coins kann zum dauerhaften Verlust führen.
+                </p>
+              </div>
+            </div>
+            
+            <div className="border-4 border-white p-2 rounded-lg bg-white mb-6">
+              <QRCodeSVG 
+                value={getQrCodeValue(walletAddress, selectedToken?.symbol || 'BTC')} 
+                size={220} 
+                bgColor={"#ffffff"} 
+                fgColor={"#000000"} 
+                level={"L"} 
+                includeMargin={false}
+                imageSettings={{
+                  src: '/lovable-uploads/f133f418-8915-4f9e-8d3e-6fcf786f6b2c.png',
+                  x: undefined,
+                  y: undefined,
+                  height: 60,
+                  width: 60,
+                  excavate: true,
+                }}
+              />
+            </div>
+            
+            <div className="relative w-full max-w-md mb-6">
+              <div className="bg-[#2A2F3D] py-3 px-4 rounded-lg text-sm text-center break-all relative">
+                {walletAddress}
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                  onClick={handleCopyAddress}
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-800 p-4">
+            <Button 
+              variant="wallet" 
+              className="w-full"
+              onClick={handleCopyAddress}
+            >
+              Adresse kopieren
             </Button>
           </div>
         </DialogContent>
