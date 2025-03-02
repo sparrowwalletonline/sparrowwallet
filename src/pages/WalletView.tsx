@@ -65,9 +65,6 @@ const WalletViewContent: React.FC = () => {
       let amount = "0";
       if (symbol === "BTC") amount = btcBalance.toString();
       else if (symbol === "ETH") amount = ethBalance.toString();
-      else if (symbol === "BNB") amount = "0.05";
-      else if (symbol === "MATIC" || symbol === "POL") amount = "20";
-      else amount = (Math.random() * 100).toFixed(symbol === "SHIB" || symbol === "DOGE" ? 0 : 2);
       
       const value = parseFloat(amount) * data.price;
       
