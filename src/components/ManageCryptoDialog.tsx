@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { useWallet } from '@/contexts/WalletContext';
+import { fetchCryptoPrices } from '@/utils/cryptoPriceUtils';
 
 interface CryptoOption {
   id: string;
@@ -21,37 +22,34 @@ interface ManageCryptoDialogProps {
   onClose: () => void;
 }
 
-const DEFAULT_CRYPTOS: CryptoOption[] = [
-  { id: 'bitcoin', symbol: 'BTC', name: 'Bitcoin', network: 'Bitcoin', isEnabled: true, image: "/lovable-uploads/7e1fa6ef-c45f-4ce0-af71-fa865a931600.png" },
-  { id: 'ethereum', symbol: 'ETH', name: 'Ethereum', network: 'Ethereum', isEnabled: true, image: "/lovable-uploads/14bf916a-665e-4e15-b4c5-631d8d5ff633.png" },
-  { id: 'binancecoin', symbol: 'BNB', name: 'BNB Smart Chain', network: 'BNB Smart Chain', isEnabled: true, image: "/lovable-uploads/dc54f948-8605-4e6b-a659-7f492598ea5c.png" },
-  { id: 'matic-network', symbol: 'POL', name: 'Polygon', network: 'Polygon', isEnabled: true, image: "/lovable-uploads/9c181aad-4d83-4b09-957f-11721da14747.png" },
-  { id: 'aeternity', symbol: 'AE', name: 'Aeternity', network: 'Aeternity', isEnabled: false },
-  { id: 'trustwallet', symbol: 'TWT', name: 'Trust Wallet', network: 'BNB Smart Chain', isEnabled: false },
-  { id: 'cardano', symbol: 'ADA', name: 'Cardano', network: 'Cardano', isEnabled: false },
-  { id: 'aion', symbol: 'AION', name: 'Aion', network: 'Aion', isEnabled: false },
-  { id: 'akash-network', symbol: 'AKT', name: 'Akash', network: 'Akash', isEnabled: false },
-  { id: 'algorand', symbol: 'ALGO', name: 'Algorand', network: 'Algorand', isEnabled: false },
-  { id: 'aptos', symbol: 'APT', name: 'Aptos', network: 'Aptos', isEnabled: false },
-  { id: 'cosmos', symbol: 'ATOM', name: 'Cosmos', network: 'Cosmos Hub', isEnabled: false },
-  { id: 'avalanche-2', symbol: 'AVAX', name: 'Avalanche', network: 'Avalanche C-Chain', isEnabled: false },
-];
-
 const ManageCryptoDialog: React.FC<ManageCryptoDialogProps> = ({ isOpen, onClose }) => {
-  const { updateEnabledCryptos, enabledCryptos } = useWallet();
+  const { updateEnabledCryptos, enabledCryptos, cryptoPrices } = useWallet();
   const [cryptoOptions, setCryptoOptions] = useState<CryptoOption[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Initialize cryptos with enabled status from context
-    const initialCryptos = DEFAULT_CRYPTOS.map(crypto => ({
-      ...crypto,
-      isEnabled: enabledCryptos.includes(crypto.id)
-    }));
-    
-    setCryptoOptions(initialCryptos);
-  }, [enabledCryptos, isOpen]);
+    if (isOpen) {
+      setIsLoading(true);
+      
+      // Create a list of cryptocurrencies based on the cryptoPrices from context
+      const options: CryptoOption[] = Object.entries(cryptoPrices).map(([symbol, data]) => {
+        // Convert symbol to lowercase for id (approximating CoinGecko's id format)
+        const id = data.name ? data.name.toLowerCase().replace(/\s+/g, '-') : symbol.toLowerCase();
+        
+        return {
+          id,
+          symbol,
+          name: data.name || symbol,
+          image: data.image,
+          isEnabled: enabledCryptos.includes(id)
+        };
+      });
+      
+      setCryptoOptions(options);
+      setIsLoading(false);
+    }
+  }, [enabledCryptos, isOpen, cryptoPrices]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
