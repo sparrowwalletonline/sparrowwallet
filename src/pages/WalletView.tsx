@@ -298,13 +298,13 @@ const WalletViewContent: React.FC = () => {
               <TabsList className="flex bg-transparent">
                 <TabsTrigger 
                   value="crypto" 
-                  className="data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:rounded-md data-[state=active]:bg-[#1A1F2C] dark:data-[state=active]:bg-[#1A1F2C] light:data-[state=active]:bg-[#F1F1F1] rounded-md bg-transparent text-muted-foreground mx-1 px-3"
+                  className="tabs-trigger data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-md bg-transparent text-muted-foreground mx-1 px-3"
                 >
                   Crypto
                 </TabsTrigger>
                 <TabsTrigger 
                   value="transactions" 
-                  className="data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:rounded-md data-[state=active]:bg-[#1A1F2C] dark:data-[state=active]:bg-[#1A1F2C] light:data-[state=active]:bg-[#F1F1F1] rounded-md bg-transparent text-muted-foreground mx-1 px-3"
+                  className="tabs-trigger data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-md bg-transparent text-muted-foreground mx-1 px-3"
                 >
                   Transaktionen
                 </TabsTrigger>

@@ -158,3 +158,12 @@
 .dark .dialog-content {
   @apply bg-gray-900 border-gray-800 text-white;
 }
+
+/* Add theme-specific styling for tabs */
+.light [data-state="active"].tabs-trigger {
+  @apply bg-white text-gray-800;
+}
+
+.dark [data-state="active"].tabs-trigger {
+  @apply bg-[#1A1F2C] text-white;
+}
