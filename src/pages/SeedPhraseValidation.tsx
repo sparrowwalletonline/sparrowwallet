@@ -15,8 +15,7 @@ const SeedPhraseValidation: React.FC = () => {
   
   const [selectedWords, setSelectedWords] = useState<{index: number, word: string}[]>([]);
   const [userInputs, setUserInputs] = useState<string[]>(['', '', '']);
-  const [isValidating, setIsValidating] = useState(false);
-  const [isValid, setIsValid] = useState(false);
+  const [validationStatus, setValidationStatus] = useState<'idle' | 'validating' | 'creating' | 'valid'>('idle');
   const [activeSeedPhrase, setActiveSeedPhrase] = useState<string[]>([]);
   
   // Find and setup the seed phrase for validation
@@ -97,9 +96,9 @@ const SeedPhraseValidation: React.FC = () => {
   };
   
   const validateInputs = () => {
-    if (isValidating) return;
+    if (validationStatus !== 'idle') return;
     
-    setIsValidating(true);
+    setValidationStatus('validating');
     console.log("Validating inputs:", userInputs);
     console.log("Against selected words:", selectedWords);
     
@@ -111,28 +110,63 @@ const SeedPhraseValidation: React.FC = () => {
     console.log("Validation result:", areAllValid);
     
     if (areAllValid) {
-      setIsValid(true);
-      toast({
-        title: "Validierung erfolgreich",
-        description: "Deine Wallet wurde erfolgreich erstellt",
-      });
-      
-      // Delay before navigating to the congrats page
+      // First delay - validating
       setTimeout(() => {
-        navigate('/congrats');
-      }, 1500);
+        setValidationStatus('creating');
+        
+        // Second delay - creating wallet
+        setTimeout(() => {
+          setValidationStatus('valid');
+          toast({
+            title: "Validierung erfolgreich",
+            description: "Deine Wallet wurde erfolgreich erstellt",
+          });
+          
+          // Final delay before navigating
+          setTimeout(() => {
+            navigate('/congrats');
+          }, 1000);
+        }, 3000);
+      }, 2000);
     } else {
       toast({
         title: "Validierung fehlgeschlagen",
         description: "Die eingegebenen Wörter stimmen nicht mit deiner Seed Phrase überein",
         variant: "destructive",
       });
-      setIsValidating(false);
+      setValidationStatus('idle');
     }
   };
   
   const handleBackClick = () => {
     navigate('/seed-phrase');
+  };
+  
+  // Helper function to get button text based on validation status
+  const getButtonText = () => {
+    switch (validationStatus) {
+      case 'validating':
+        return "Validiere...";
+      case 'creating':
+        return "Wallet wird erstellt...";
+      case 'valid':
+        return "Validiert!";
+      default:
+        return "Validieren";
+    }
+  };
+  
+  // Helper function to get button icon based on validation status
+  const getButtonIcon = () => {
+    switch (validationStatus) {
+      case 'validating':
+      case 'creating':
+        return <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>;
+      case 'valid':
+        return <CheckCircle size={16} className="mr-2" />;
+      default:
+        return null;
+    }
   };
   
   return (
@@ -175,7 +209,7 @@ const SeedPhraseValidation: React.FC = () => {
                   value={userInputs[index]}
                   onChange={(e) => handleInputChange(index, e.target.value)}
                   placeholder={`Gib das ${item.index + 1}. Wort ein`}
-                  disabled={isValidating || isValid}
+                  disabled={validationStatus !== 'idle'}
                   className="bg-wallet-card border-gray-700 text-white"
                 />
               </div>
@@ -198,21 +232,10 @@ const SeedPhraseValidation: React.FC = () => {
           <Button 
             onClick={validateInputs}
             className="w-full py-6 bg-wallet-blue hover:bg-wallet-darkBlue text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={userInputs.some(input => !input.trim()) || isValidating || isValid}
+            disabled={userInputs.some(input => !input.trim()) || validationStatus !== 'idle'}
           >
-            {isValid ? (
-              <>
-                <CheckCircle size={16} className="mr-2" />
-                Validiert
-              </>
-            ) : isValidating ? (
-              <>
-                <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                Validiere...
-              </>
-            ) : (
-              "Validieren"
-            )}
+            {getButtonIcon()}
+            {getButtonText()}
           </Button>
         </div>
       </div>
