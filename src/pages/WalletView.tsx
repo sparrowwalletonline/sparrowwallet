@@ -56,7 +56,7 @@ const WalletViewContent: React.FC = () => {
     }
   };
 
-  const cryptoData = [
+  const allCryptoData = [
     {
       id: 'bitcoin',
       symbol: "BTC",
@@ -116,8 +116,118 @@ const WalletViewContent: React.FC = () => {
       iconColor: "bg-[#8247E5]",
       changeColor: cryptoPrices.POL?.change_percentage_24h >= 0 ? "text-green-500" : "text-red-500",
       logoUrl: "/lovable-uploads/9c181aad-4d83-4b09-957f-11721da14747.png"
-    }
-  ].filter(crypto => enabledCryptos.includes(crypto.id));
+    },
+    {
+      id: 'aeternity',
+      symbol: "AE",
+      name: "Aeternity",
+      amount: "100",
+      price: 0.05,
+      value: 5.0,
+      change: "+1.2%",
+      iconColor: "bg-[#DE3F6B]",
+      changeColor: "text-green-500",
+      logoUrl: ""
+    },
+    {
+      id: 'trustwallet',
+      symbol: "TWT",
+      name: "Trust Wallet",
+      amount: "50",
+      price: 1.23,
+      value: 61.5,
+      change: "+0.8%",
+      iconColor: "bg-[#3375BB]",
+      changeColor: "text-green-500",
+      logoUrl: ""
+    },
+    {
+      id: 'cardano',
+      symbol: "ADA",
+      name: "Cardano",
+      amount: "200",
+      price: 0.59,
+      value: 118.0,
+      change: "-1.5%",
+      iconColor: "bg-[#0033AD]",
+      changeColor: "text-red-500",
+      logoUrl: ""
+    },
+    {
+      id: 'aion',
+      symbol: "AION",
+      name: "Aion",
+      amount: "300",
+      price: 0.01,
+      value: 3.0,
+      change: "+0.5%",
+      iconColor: "bg-[#00BFEC]",
+      changeColor: "text-green-500",
+      logoUrl: ""
+    },
+    {
+      id: 'akash-network',
+      symbol: "AKT",
+      name: "Akash",
+      amount: "150",
+      price: 0.31,
+      value: 46.5,
+      change: "+2.1%",
+      iconColor: "bg-[#F34C2D]",
+      changeColor: "text-green-500",
+      logoUrl: ""
+    },
+    {
+      id: 'algorand',
+      symbol: "ALGO",
+      name: "Algorand",
+      amount: "250",
+      price: 0.15,
+      value: 37.5,
+      change: "-0.7%",
+      iconColor: "bg-[#000000]",
+      changeColor: "text-red-500",
+      logoUrl: ""
+    },
+    {
+      id: 'aptos',
+      symbol: "APT",
+      name: "Aptos",
+      amount: "10",
+      price: 7.93,
+      value: 79.3,
+      change: "+4.2%",
+      iconColor: "bg-[#1B274F]",
+      changeColor: "text-green-500",
+      logoUrl: ""
+    },
+    {
+      id: 'cosmos',
+      symbol: "ATOM",
+      name: "Cosmos",
+      amount: "15",
+      price: 8.36,
+      value: 125.4,
+      change: "+1.3%",
+      iconColor: "bg-[#2E3148]",
+      changeColor: "text-green-500",
+      logoUrl: ""
+    },
+    {
+      id: 'avalanche-2',
+      symbol: "AVAX",
+      name: "Avalanche",
+      amount: "5",
+      price: 25.89,
+      value: 129.45,
+      change: "-2.1%",
+      iconColor: "bg-[#E84142]",
+      changeColor: "text-red-500",
+      logoUrl: ""
+    },
+  ];
+
+  const cryptoData = allCryptoData.filter(crypto => enabledCryptos.includes(crypto.id));
 
   return (
     <div className="min-h-screen flex flex-col bg-wallet-darkBg text-wallet-text">
@@ -320,7 +430,13 @@ const CryptoItem = ({
     <div className="flex items-center justify-between">
       <div className="flex items-center">
         <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 overflow-hidden`}>
-          <img src={logoUrl} alt={symbol} className="w-full h-full object-cover" />
+          {logoUrl ? (
+            <img src={logoUrl} alt={symbol} className="w-full h-full object-cover" />
+          ) : (
+            <div className={`w-full h-full ${iconColor} flex items-center justify-center`}>
+              <span className="text-xs text-white font-bold">{symbol.substring(0, 2)}</span>
+            </div>
+          )}
         </div>
         <div>
           <div className="flex items-center">
