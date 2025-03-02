@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { WalletProvider, useWallet } from '@/contexts/WalletContext';
 import Header from '@/components/Header';
 import WalletBalance from '@/components/WalletBalance';
@@ -69,6 +69,10 @@ const WalletViewContent: React.FC = () => {
 
   const handleDropdownOpenChange = (open: boolean) => {
     setIsDropdownOpen(open);
+  };
+
+  const handleCryptoClick = (symbol: string) => {
+    navigate(`/wallet/crypto/${symbol}`);
   };
 
   const cryptoData = Object.entries(cryptoPrices)
@@ -237,6 +241,7 @@ const WalletViewContent: React.FC = () => {
                     iconColor={crypto.iconColor}
                     changeColor={crypto.changeColor}
                     logoUrl={crypto.logoUrl}
+                    onClick={() => handleCryptoClick(crypto.symbol)}
                   />
                 ))}
                 <div className="pt-4 text-center">
@@ -290,6 +295,19 @@ const NavItem = ({ icon, label, active = false }: { icon: React.ReactNode, label
   </button>
 );
 
+interface CryptoItemProps { 
+  symbol: string;
+  name: string;
+  amount: string;
+  price: number;
+  value: number;
+  change: string;
+  iconColor: string;
+  changeColor: string;
+  logoUrl: string;
+  onClick: () => void;
+}
+
 const CryptoItem = ({ 
   symbol, 
   name, 
@@ -299,18 +317,9 @@ const CryptoItem = ({
   change, 
   iconColor,
   changeColor,
-  logoUrl
-}: { 
-  symbol: string, 
-  name: string, 
-  amount: string, 
-  price: number,
-  value: number, 
-  change: string, 
-  iconColor: string,
-  changeColor: string,
-  logoUrl: string
-}) => {
+  logoUrl,
+  onClick
+}: CryptoItemProps) => {
   const formattedPrice = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -319,7 +328,10 @@ const CryptoItem = ({
   }).format(price);
   
   return (
-    <div className="flex items-center justify-between">
+    <div 
+      className="flex items-center justify-between p-2 hover:bg-gray-800 rounded-lg cursor-pointer transition-colors"
+      onClick={onClick}
+    >
       <div className="flex items-center">
         <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 overflow-hidden`}>
           {logoUrl ? (

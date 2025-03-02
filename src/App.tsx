@@ -1,49 +1,46 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { MenuProvider } from "@/contexts/MenuContext";
-import MobileSidebar from "@/components/MobileSidebar";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "./components/ui/theme-provider";
+import { Toaster } from "./components/ui/toaster";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import SeedPhrasePage from "./pages/SeedPhrasePage";
-import SeedPhraseValidation from "./pages/SeedPhraseValidation";
-import Terms from "./pages/Terms";
-import PassPhrase from "./pages/PassPhrase";
+import LandingPage from "./pages/LandingPage";
 import WalletChoice from "./pages/WalletChoice";
-import Auth from "./pages/Auth";
-import WalletView from "./pages/WalletView";
+import GenerateWallet from "./pages/GenerateWallet";
+import SeedPhrasePage from "./pages/SeedPhrasePage";
+import PassPhrase from "./pages/PassPhrase";
+import SeedPhraseValidation from "./pages/SeedPhraseValidation";
 import CongratsPage from "./pages/CongratsPage";
+import WalletView from "./pages/WalletView";
+import Terms from "./pages/Terms";
+import Auth from "./pages/Auth";
+import CryptoDetailView from "./pages/CryptoDetailView";
 
-const queryClient = new QueryClient();
+import "./App.css";
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <MenuProvider>
-        <BrowserRouter>
-          <Toaster />
-          <Sonner />
-          <MobileSidebar />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/wallet" element={<WalletView />} />
-            <Route path="/wallet-choice" element={<WalletChoice />} />
-            <Route path="/passphrase" element={<PassPhrase />} />
-            <Route path="/seed-phrase" element={<SeedPhrasePage />} />
-            <Route path="/seed-phrase-validation" element={<SeedPhraseValidation />} />
-            <Route path="/congrats" element={<CongratsPage />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/auth" element={<Auth />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </MenuProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+function App() {
+  return (
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <Router>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/app" element={<Index />} />
+          <Route path="/wallet" element={<WalletView />} />
+          <Route path="/wallet/crypto/:symbol" element={<CryptoDetailView />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/wallet-choice" element={<WalletChoice />} />
+          <Route path="/generate-wallet" element={<GenerateWallet />} />
+          <Route path="/seed-phrase" element={<SeedPhrasePage />} />
+          <Route path="/pass-phrase" element={<PassPhrase />} />
+          <Route path="/seed-phrase-validation" element={<SeedPhraseValidation />} />
+          <Route path="/congrats" element={<CongratsPage />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
+      <Toaster />
+    </ThemeProvider>
+  );
+}
 
 export default App;
