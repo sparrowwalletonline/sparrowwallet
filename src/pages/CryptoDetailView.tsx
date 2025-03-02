@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useWallet } from '@/contexts/WalletContext';
 import { 
@@ -22,7 +22,7 @@ import { toast } from '@/components/ui/use-toast';
 
 // Create a helper function to get chart image path based on symbol
 const getChartImagePath = (symbol: string) => {
-  // Default to BNB chart for the demo
+  // We're using a single chart image for all cryptos in this demo
   return "/lovable-uploads/df7a0e55-4560-436e-ae52-c10510f4b486.png";
 };
 
@@ -43,71 +43,42 @@ const CryptoDetailView: React.FC = () => {
   // Normalize symbol to uppercase for consistent comparison
   const symbol = urlSymbol ? urlSymbol.toUpperCase() : '';
   
-  // Find the crypto data using symbol matching
-  const getCryptoData = () => {
-    if (!symbol || Object.keys(cryptoPrices).length === 0) return null;
+  // Use useMemo to find the crypto data with case-insensitive matching
+  const cryptoData = useMemo(() => {
+    if (!symbol || !cryptoPrices) return null;
     
-    // First try direct match
+    // First check for direct match
     if (cryptoPrices[symbol]) {
       return cryptoPrices[symbol];
     }
     
-    // If no direct match, try case-insensitive matching
-    for (const key of Object.keys(cryptoPrices)) {
-      if (key.toUpperCase() === symbol.toUpperCase()) {
-        return cryptoPrices[key];
-      }
+    // Then try case-insensitive matching
+    const foundKey = Object.keys(cryptoPrices).find(
+      key => key.toUpperCase() === symbol.toUpperCase()
+    );
+    
+    if (foundKey) {
+      return cryptoPrices[foundKey];
     }
     
-    // If still no match, use a fallback for demo purposes
-    if (symbol === 'BNB' && !cryptoPrices['BNB']) {
-      return {
-        symbol: 'BNB',
-        price: 608.96,
-        change_percentage_24h: 2.19,
-        image: null,
-        name: 'Binance Coin'
-      };
-    }
-    
-    if (symbol === 'BTC' && !cryptoPrices['BTC']) {
-      return {
-        symbol: 'BTC',
-        price: 65872.34,
-        change_percentage_24h: 1.65,
-        image: null,
-        name: 'Bitcoin'
-      };
-    }
-    
-    if (symbol === 'ETH' && !cryptoPrices['ETH']) {
-      return {
-        symbol: 'ETH',
-        price: 3452.78,
-        change_percentage_24h: -0.89,
-        image: null,
-        name: 'Ethereum'
-      };
-    }
-    
+    // Return null if no match found
     return null;
-  };
+  }, [symbol, cryptoPrices]);
   
-  const cryptoData = getCryptoData();
+  // Debug logging
+  console.log("Symbol from URL:", urlSymbol);
+  console.log("Normalized symbol:", symbol);
+  console.log("Available cryptoPrices keys:", Object.keys(cryptoPrices));
+  console.log("Found crypto data:", cryptoData);
   
-  console.log("Symbol from URL (normalized):", symbol);
-  console.log("Available cryptoPrices:", Object.keys(cryptoPrices));
-  console.log("Crypto data found:", cryptoData);
-  
+  // Load data when component mounts
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
       
       try {
-        // If prices aren't loaded yet, refresh them
-        if (Object.keys(cryptoPrices).length === 0) {
-          await refreshPrices();
-        }
+        // Always refresh prices when this component mounts to ensure we have the latest data
+        await refreshPrices();
       } catch (error) {
         console.error("Failed to load crypto prices:", error);
         toast({
@@ -116,7 +87,10 @@ const CryptoDetailView: React.FC = () => {
           description: "Kryptowährungs-Daten konnten nicht geladen werden."
         });
       } finally {
-        setIsLoading(false);
+        // Set loading to false after a short delay to ensure the UI has time to update
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 300);
       }
     };
     
@@ -128,7 +102,8 @@ const CryptoDetailView: React.FC = () => {
     
     if (symbol === 'BTC') return btcBalance;
     if (symbol === 'ETH') return ethBalance;
-    if (symbol === 'BNB') return 0; // Demo value
+    
+    // Default to 0 for other cryptos
     return 0;
   };
   
@@ -142,7 +117,12 @@ const CryptoDetailView: React.FC = () => {
   };
   
   const handleRefresh = () => {
-    refreshPrices();
+    setIsLoading(true);
+    refreshPrices().finally(() => {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
+    });
   };
   
   // Get the current timestamp for display
@@ -162,9 +142,14 @@ const CryptoDetailView: React.FC = () => {
   
   if (!cryptoData) {
     return (
-      <div className="min-h-screen bg-wallet-darkBg text-white flex flex-col items-center justify-center">
-        <p>Crypto nicht gefunden: {symbol}</p>
-        <p className="text-sm text-gray-400 mt-2">Verfügbare Kryptowährungen: {Object.keys(cryptoPrices).join(', ')}</p>
+      <div className="min-h-screen bg-wallet-darkBg text-white flex flex-col items-center justify-center p-4">
+        <p className="text-xl mb-2">Crypto nicht gefunden: {symbol}</p>
+        <p className="text-sm text-gray-400 mt-2 mb-4">
+          Verfügbare Kryptowährungen: {Object.keys(cryptoPrices).join(', ')}
+        </p>
+        <p className="text-sm text-gray-400 mb-6">
+          Bitte stellen Sie sicher, dass die Kryptowährung verfügbar ist.
+        </p>
         <Button variant="wallet" onClick={() => navigate(-1)} className="mt-4">
           Zurück
         </Button>
@@ -196,7 +181,7 @@ const CryptoDetailView: React.FC = () => {
           className="flex items-center text-lg"
         >
           <ChevronLeft className="h-5 w-5 mr-1" />
-          <span>{symbol}</span>
+          <span>{cryptoData.name || symbol}</span>
         </button>
         <button className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-800">
           <MoreVertical className="h-5 w-5" />
@@ -228,10 +213,10 @@ const CryptoDetailView: React.FC = () => {
           
           {/* Chart price markers */}
           <div className="absolute top-2 right-2 text-xs bg-black/50 px-1 rounded">
-            $611.05
+            ${(price * 1.01).toFixed(2)}
           </div>
           <div className="absolute bottom-2 left-2 text-xs bg-black/50 px-1 rounded">
-            $591.08
+            ${(price * 0.99).toFixed(2)}
           </div>
         </div>
         
@@ -291,7 +276,7 @@ const CryptoDetailView: React.FC = () => {
       
       {/* Actions */}
       <div className="grid grid-cols-5 gap-2 px-4 mt-2">
-        <CryptoAction icon="buy" label="Kaufen u." />
+        <CryptoAction icon="buy" label="Kaufen" />
         <CryptoAction icon="swap" label="Swap" />
         <CryptoAction icon="bridge" label="Bridge" />
         <CryptoAction icon="send" label="Senden" />
