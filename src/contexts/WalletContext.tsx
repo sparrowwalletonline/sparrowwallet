@@ -16,6 +16,8 @@ const WalletContext = createContext<WalletContextType>({
   balance: 0,
   btcBalance: 0,
   btcPrice: 0,
+  ethBalance: 0,
+  ethPrice: 0,
   usdBalance: 0,
   walletAddress: '',
   isGenerating: false,
@@ -40,6 +42,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [balance, setBalance] = useState(0);
   const [btcBalance, setBtcBalance] = useState(0);
   const [btcPrice, setBtcPrice] = useState(40000);
+  const [ethBalance, setEthBalance] = useState(0);
+  const [ethPrice, setEthPrice] = useState(2000);
   const [usdBalance, setUsdBalance] = useState(0);
   const [walletAddress, setWalletAddress] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
@@ -118,7 +122,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             setHasWallet(true);
             const simulatedBtcBalance = 0.01;
             setBtcBalance(simulatedBtcBalance);
-            const calculatedUsdBalance = simulatedBtcBalance * btcPrice;
+            setEthBalance(0); // Set ETH balance to 0
+            const calculatedUsdBalance = (simulatedBtcBalance * btcPrice) + (0 * ethPrice);
             setUsdBalance(calculatedUsdBalance);
             setWalletAddress(generateBtcAddress());
             setBalance(Math.random() * 10);
@@ -158,7 +163,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           setHasWallet(true);
           const simulatedBtcBalance = 0.01;
           setBtcBalance(simulatedBtcBalance);
-          const calculatedUsdBalance = simulatedBtcBalance * btcPrice;
+          setEthBalance(0); // Set ETH balance to 0
+          const calculatedUsdBalance = (simulatedBtcBalance * btcPrice) + (0 * ethPrice);
           setUsdBalance(calculatedUsdBalance);
           setWalletAddress(generateBtcAddress());
           setBalance(Math.random() * 10);
@@ -175,6 +181,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setSeedPhrase([]);
     setBalance(0);
     setBtcBalance(0);
+    setEthBalance(0);
     setUsdBalance(0);
     setWalletAddress('');
     localStorage.removeItem('walletSeedPhrase');
@@ -198,6 +205,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       balance,
       btcBalance,
       btcPrice,
+      ethBalance,
+      ethPrice,
       usdBalance,
       walletAddress,
       isGenerating,

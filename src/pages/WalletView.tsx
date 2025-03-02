@@ -10,7 +10,7 @@ import { Search, Home, RefreshCcw, Compass, Globe } from 'lucide-react';
 
 // Inner component that uses the wallet context
 const WalletViewContent: React.FC = () => {
-  const { hasWallet } = useWallet();
+  const { hasWallet, btcBalance, btcPrice, ethBalance, ethPrice } = useWallet();
   const navigate = useNavigate();
 
   // Redirect if no wallet exists
@@ -19,6 +19,10 @@ const WalletViewContent: React.FC = () => {
       navigate('/');
     }
   }, [hasWallet, navigate]);
+
+  // Calculate USD values
+  const btcValue = (btcBalance * btcPrice).toFixed(2);
+  const ethValue = (ethBalance * ethPrice).toFixed(2);
 
   return (
     <div className="min-h-screen flex flex-col bg-wallet-darkBg text-wallet-text">
@@ -70,10 +74,18 @@ const WalletViewContent: React.FC = () => {
                 <CryptoItem 
                   symbol="BTC" 
                   name="Bitcoin" 
-                  amount="0.01" 
-                  value="$828.20" 
+                  amount={btcBalance.toString()} 
+                  value={`$${btcValue}`} 
                   change="+2.43%" 
                   iconColor="bg-[#F7931A]" 
+                />
+                <CryptoItem 
+                  symbol="ETH" 
+                  name="Ethereum" 
+                  amount={ethBalance.toString()} 
+                  value={`$${ethValue}`} 
+                  change="+1.75%" 
+                  iconColor="bg-[#627EEA]" 
                 />
               </div>
             </TabsContent>

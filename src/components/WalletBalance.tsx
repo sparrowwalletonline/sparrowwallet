@@ -4,7 +4,7 @@ import { useWallet } from '@/contexts/WalletContext';
 import { Bitcoin } from 'lucide-react';
 
 const WalletBalance: React.FC = () => {
-  const { btcBalance, btcPrice, usdBalance, walletAddress } = useWallet();
+  const { btcBalance, btcPrice, ethBalance, ethPrice, usdBalance, walletAddress } = useWallet();
   
   // Format address to be shorter for display
   const formatAddress = (address: string) => {

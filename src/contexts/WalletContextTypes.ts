@@ -7,6 +7,8 @@ export interface WalletContextType {
   balance: number;
   btcBalance: number;
   btcPrice: number;
+  ethBalance: number;
+  ethPrice: number;
   usdBalance: number;
   walletAddress: string;
   isGenerating: boolean;
