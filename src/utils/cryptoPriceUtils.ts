@@ -94,6 +94,11 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
     if (!response.ok) {
       console.error('API response was not OK:', response.status);
       // Return the fallback data immediately if API request fails
+      toast({
+        variant: "destructive",
+        title: "API-Fehler",
+        description: "Verwende Fallback-Daten für Kryptowährungen."
+      });
       return fallbackData;
     }
     
@@ -120,21 +125,18 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
       };
     });
     
-    // Add our fallback data as a backup if certain coins weren't returned by the API
-    Object.keys(fallbackData).forEach(symbol => {
-      if (!prices[symbol]) {
-        prices[symbol] = fallbackData[symbol];
-      }
-    });
-    
+    // Always merge the API data with our fallback data
+    // This ensures we have consistent data for the main cryptocurrencies
+    const mergedPrices = { ...fallbackData, ...prices };
+
     // Let user know prices are updated
     toast({
       title: "Preise aktualisiert",
       description: "Kryptowährungs-Preise erfolgreich aktualisiert.",
     });
     
-    console.log("Fetched crypto prices:", prices);
-    return prices;
+    console.log("Fetched crypto prices:", mergedPrices);
+    return mergedPrices;
   } catch (error) {
     console.error('Error fetching crypto prices:', error);
     toast({
@@ -147,3 +149,28 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
     return fallbackData;
   }
 };
+
+// Helper function to get correct crypto data even if the symbol is not an exact match
+export const getCryptoDataBySymbol = (
+  symbol: string, 
+  cryptoPrices: Record<string, CryptoPrice>
+): CryptoPrice | null => {
+  if (!symbol) return null;
+
+  // First try direct match
+  if (cryptoPrices[symbol]) {
+    return cryptoPrices[symbol];
+  }
+  
+  // Then try case-insensitive match
+  const normalizedSymbol = symbol.toUpperCase();
+  const key = Object.keys(cryptoPrices).find(
+    k => k.toUpperCase() === normalizedSymbol
+  );
+  
+  if (key) {
+    return cryptoPrices[key];
+  }
+  
+  return null;
+}

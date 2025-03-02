@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useWallet } from '@/contexts/WalletContext';
@@ -19,9 +18,8 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from '@/components/ui/use-toast';
-import { CryptoPrice } from '@/utils/cryptoPriceUtils';
+import { CryptoPrice, getCryptoDataBySymbol } from '@/utils/cryptoPriceUtils';
 
-// Use different charts for different cryptocurrencies
 const getChartImagePath = (symbol: string) => {
   const charts = {
     "BTC": "/lovable-uploads/df7a0e55-4560-436e-ae52-c10510f4b486.png",
@@ -93,23 +91,9 @@ const CryptoDetailView: React.FC = () => {
   const cryptoData = useMemo(() => {
     if (!symbol) return null;
     
-    // First check if we have the exact symbol in cryptoPrices
-    if (cryptoPrices && cryptoPrices[symbol]) {
-      return cryptoPrices[symbol];
-    }
+    const data = getCryptoDataBySymbol(symbol, cryptoPrices);
+    if (data) return data;
     
-    // Next, try case-insensitive matching
-    if (cryptoPrices && Object.keys(cryptoPrices).length > 0) {
-      const key = Object.keys(cryptoPrices).find(
-        k => k.toUpperCase() === symbol.toUpperCase()
-      );
-      
-      if (key) {
-        return cryptoPrices[key];
-      }
-    }
-    
-    // Fallback to our predefined data
     return getFallbackCryptoData(symbol);
   }, [symbol, cryptoPrices]);
   
@@ -214,6 +198,9 @@ const CryptoDetailView: React.FC = () => {
   const balance = getCryptoBalance();
   const balanceValue = balance * price;
 
+  const highPrice = price * 1.05;
+  const lowPrice = price * 0.95;
+
   return (
     <div className="min-h-screen bg-wallet-darkBg text-white flex flex-col">
       <div className="flex justify-between items-center p-4 border-b border-gray-800">
@@ -251,10 +238,10 @@ const CryptoDetailView: React.FC = () => {
           />
           
           <div className="absolute top-2 right-2 text-xs bg-black/50 px-1 rounded">
-            ${(price * 1.05).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            ${highPrice.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
           <div className="absolute bottom-2 left-2 text-xs bg-black/50 px-1 rounded">
-            ${(price * 0.95).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            ${lowPrice.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
         </div>
         
