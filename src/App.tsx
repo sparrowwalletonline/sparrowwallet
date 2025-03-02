@@ -16,15 +16,14 @@ import Terms from "./pages/Terms";
 import Auth from "./pages/Auth";
 import CryptoDetailView from "./pages/CryptoDetailView";
 import { MenuProvider } from "./contexts/MenuContext";
-import { WalletProvider } from "./contexts/WalletContext";
+import { WalletProvider, useWallet } from "./contexts/WalletContext";
 import SideMenu from "./components/SideMenu";
 
 import "./App.css";
 
 // Authentication guard component
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-  // This will get the session status from the Wallet context
-  const { session } = WalletProvider();
+  const { session } = useWallet();
 
   if (!session) {
     // Redirect to auth page if not authenticated
@@ -38,40 +37,34 @@ function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <MenuProvider>
-        <Router>
-          <SideMenu />
-          <Routes>
-            <Route path="/" element={
-              <WalletProvider>
-                <LandingPage />
-              </WalletProvider>
-            } />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/app" element={<Index />} />
-            <Route path="/wallet" element={
-              <WalletProvider>
-                <WalletView />
-              </WalletProvider>
-            } />
-            <Route path="/wallet/crypto/:symbol" element={
-              <WalletProvider>
-                <CryptoDetailView />
-              </WalletProvider>
-            } />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/wallet-choice" element={
-              <WalletProvider>
-                <WalletChoice />
-              </WalletProvider>
-            } />
-            <Route path="/generate-wallet" element={<GenerateWallet />} />
-            <Route path="/seed-phrase" element={<SeedPhrasePage />} />
-            <Route path="/pass-phrase" element={<PassPhrase />} />
-            <Route path="/seed-phrase-validation" element={<SeedPhraseValidation />} />
-            <Route path="/congrats" element={<CongratsPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Router>
+        <WalletProvider>
+          <Router>
+            <SideMenu />
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/app" element={<Index />} />
+              <Route path="/wallet" element={
+                <PrivateRoute>
+                  <WalletView />
+                </PrivateRoute>
+              } />
+              <Route path="/wallet/crypto/:symbol" element={
+                <PrivateRoute>
+                  <CryptoDetailView />
+                </PrivateRoute>
+              } />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/wallet-choice" element={<WalletChoice />} />
+              <Route path="/generate-wallet" element={<GenerateWallet />} />
+              <Route path="/seed-phrase" element={<SeedPhrasePage />} />
+              <Route path="/pass-phrase" element={<PassPhrase />} />
+              <Route path="/seed-phrase-validation" element={<SeedPhraseValidation />} />
+              <Route path="/congrats" element={<CongratsPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Router>
+        </WalletProvider>
         <Toaster />
       </MenuProvider>
     </ThemeProvider>
