@@ -58,6 +58,14 @@ const WalletViewContent: React.FC = () => {
     }
   };
 
+  const handleManageWalletsClose = () => {
+    setIsManageWalletsOpen(false);
+  };
+
+  const handleManageCryptoClose = () => {
+    setIsManageCryptoOpen(false);
+  };
+
   const cryptoData = Object.entries(cryptoPrices)
     .filter(([symbol, data]) => {
       const id = data.name ? data.name.toLowerCase().replace(/\s+/g, '-') : symbol.toLowerCase();
@@ -251,12 +259,12 @@ const WalletViewContent: React.FC = () => {
       
       <ManageCryptoDialog 
         isOpen={isManageCryptoOpen} 
-        onClose={() => setIsManageCryptoOpen(false)} 
+        onClose={handleManageCryptoClose} 
       />
       
       <ManageWalletsDialog
         isOpen={isManageWalletsOpen}
-        onClose={() => setIsManageWalletsOpen(false)}
+        onClose={handleManageWalletsClose}
       />
     </div>
   );

@@ -26,8 +26,18 @@ const ManageWalletsDialog: React.FC<ManageWalletsDialogProps> = ({ isOpen, onClo
     return name === 'Main Wallet';
   };
 
+  // Force dialog to close by calling onClose without triggering state changes directly
+  const handleCloseDialog = () => {
+    onClose();
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+    <Dialog 
+      open={isOpen} 
+      onOpenChange={(open) => {
+        if (!open) handleCloseDialog();
+      }}
+    >
       <DialogContent className="bg-gray-900 border border-gray-800 text-white p-0 max-w-md max-h-[85vh] overflow-hidden flex flex-col">
         {/* Header */}
         <DialogHeader className="px-4 py-3 border-b border-gray-800">
@@ -37,7 +47,7 @@ const ManageWalletsDialog: React.FC<ManageWalletsDialogProps> = ({ isOpen, onClo
               variant="ghost" 
               size="icon" 
               className="text-gray-400 hover:text-white"
-              onClick={onClose}
+              onClick={handleCloseDialog}
             >
               <X className="h-5 w-5" />
             </Button>
