@@ -70,7 +70,11 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [wallets, setWallets] = useState<Wallet[]>(() => {
     const savedWallets = localStorage.getItem('wallets');
     if (savedWallets) {
-      return JSON.parse(savedWallets);
+      const parsedWallets = JSON.parse(savedWallets);
+      if (parsedWallets.length > 0 && !parsedWallets.some(w => w.isActive)) {
+        parsedWallets[0].isActive = true;
+      }
+      return parsedWallets;
     }
     
     if (initialSeedPhrase.length >= 12) {
@@ -91,11 +95,17 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const [activeWallet, setActiveWalletState] = useState<Wallet | null>(() => {
     const active = wallets.find(w => w.isActive);
-    return active || null;
+    return active || (wallets.length > 0 ? wallets[0] : null);
   });
 
   useEffect(() => {
     if (wallets.length > 0) {
+      if (!wallets.some(w => w.isActive)) {
+        const updatedWallets = [...wallets];
+        updatedWallets[0].isActive = true;
+        setWallets(updatedWallets);
+        setActiveWalletState(updatedWallets[0]);
+      }
       localStorage.setItem('wallets', JSON.stringify(wallets));
     }
   }, [wallets]);
@@ -348,7 +358,14 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   }, [seedPhrase]);
 
   const deleteWallet = (walletId: string) => {
-    const isMainWallet = wallets.find(w => w.id === walletId)?.name === 'Main Wallet';
+    const walletToDelete = wallets.find(w => w.id === walletId);
+    
+    if (!walletToDelete) {
+      console.error(`Wallet with ID ${walletId} not found`);
+      return;
+    }
+    
+    const isMainWallet = walletToDelete.name === 'Main Wallet';
     if (isMainWallet) {
       toast({
         title: "Hauptwallet kann nicht gelöscht werden",
@@ -358,8 +375,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       return;
     }
 
-    const isActiveWallet = wallets.find(w => w.id === walletId)?.isActive || false;
-
+    const isActiveWallet = walletToDelete.isActive;
     const updatedWallets = wallets.filter(wallet => wallet.id !== walletId);
     
     if (isActiveWallet && updatedWallets.length > 0) {
