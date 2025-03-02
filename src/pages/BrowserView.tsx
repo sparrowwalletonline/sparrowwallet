@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { MenuProvider } from '@/contexts/MenuContext';
 import { WalletProvider } from '@/contexts/WalletContext';
 import Header from '@/components/Header';
-import { ArrowLeft, ArrowRight, RefreshCcw, Home, X, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, ArrowRight, RefreshCcw, Home, X, AlertTriangle, Link } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { 
@@ -15,6 +15,16 @@ import {
   DialogDescription,
   DialogFooter
 } from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const BrowserView: React.FC = () => {
   const navigate = useNavigate();
@@ -24,6 +34,8 @@ const BrowserView: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [showBlockedDialog, setShowBlockedDialog] = useState<boolean>(false);
+  const [showProxyDialog, setShowProxyDialog] = useState<boolean>(false);
+  const [blockedSite, setBlockedSite] = useState<string | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const loadTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -61,14 +73,21 @@ const BrowserView: React.FC = () => {
   }, [isLoading, url]);
 
   const handleFrameBlocked = () => {
-    const hostname = new URL(url).hostname;
-    setError(`${hostname} refused to connect. This website likely blocks embedding in iframes.`);
-    setShowBlockedDialog(true);
-    toast({
-      title: "Connection Blocked",
-      description: "This website doesn't allow being displayed in our browser. Try a crypto-friendly site instead.",
-      variant: "destructive",
-    });
+    try {
+      const urlObj = new URL(url);
+      const hostname = urlObj.hostname;
+      setBlockedSite(hostname);
+      setError(`${hostname} refused to connect. This website likely blocks embedding in iframes.`);
+      setShowBlockedDialog(true);
+      toast({
+        title: "Connection Blocked",
+        description: "This website doesn't allow being displayed in our browser. Try a crypto-friendly site or view in external browser.",
+        variant: "destructive",
+      });
+    } catch (e) {
+      setError("Invalid URL or connection error.");
+      setShowBlockedDialog(true);
+    }
   };
 
   const handleGoBack = () => {
@@ -100,6 +119,36 @@ const BrowserView: React.FC = () => {
 
   const handleGoHome = () => {
     navigate('/wallet');
+  };
+
+  const handleOpenInExternalBrowser = () => {
+    // Open the URL in the user's default browser
+    window.open(url, '_blank');
+    setShowBlockedDialog(false);
+    toast({
+      title: "Opening External Browser",
+      description: "The website will open in your default browser.",
+    });
+  };
+
+  const handleShowProxyOption = () => {
+    setShowBlockedDialog(false);
+    setShowProxyDialog(true);
+  };
+
+  const handleUseProxy = () => {
+    if (blockedSite) {
+      // Use a web proxy service to load the blocked site
+      // For example: https://allorigins.win/ or cors-anywhere
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+      setUrl(proxyUrl);
+      setShowProxyDialog(false);
+      setIsLoading(true);
+      toast({
+        title: "Using Proxy Service",
+        description: "Attempting to load website through a proxy. This may not work for all sites.",
+      });
+    }
   };
 
   const handleLoad = () => {
@@ -148,7 +197,9 @@ const BrowserView: React.FC = () => {
     { name: "DeFiLlama", url: "https://defillama.com/" },
     { name: "CryptoSlate", url: "https://cryptoslate.com/" },
     { name: "CoinPaprika", url: "https://coinpaprika.com/" },
-    { name: "CryptoCompare", url: "https://www.cryptocompare.com/" }
+    { name: "CryptoCompare", url: "https://www.cryptocompare.com/" },
+    { name: "DEXTools", url: "https://www.dextools.io/" },
+    { name: "DexScreener", url: "https://dexscreener.com/" }
   ];
 
   const handleTryRecommendedSite = (siteUrl: string, siteName: string) => {
@@ -271,13 +322,52 @@ const BrowserView: React.FC = () => {
                   </div>
                 </div>
                 
-                <DialogFooter className="flex justify-center mt-4">
-                  <Button variant="outline" onClick={handleGoHome} className="w-full">
+                <DialogFooter className="flex flex-col space-y-2 mt-4">
+                  <Button 
+                    variant="default" 
+                    onClick={handleOpenInExternalBrowser} 
+                    className="w-full"
+                  >
+                    <Link className="h-4 w-4 mr-2" />
+                    Open in External Browser
+                  </Button>
+                  <Button 
+                    variant="secondary" 
+                    onClick={handleShowProxyOption} 
+                    className="w-full"
+                  >
+                    Try Using Proxy
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={handleGoHome} 
+                    className="w-full"
+                  >
                     Return to Wallet
                   </Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
+
+            <AlertDialog open={showProxyDialog} onOpenChange={setShowProxyDialog}>
+              <AlertDialogContent className="bg-gray-900 border-gray-800 text-white">
+                <AlertDialogHeader>
+                  <AlertDialogTitle className="text-white">Use Proxy Service?</AlertDialogTitle>
+                  <AlertDialogDescription className="text-gray-300">
+                    This will attempt to load {blockedSite} through a third-party proxy service. 
+                    This may have limited functionality and could pose security risks.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel className="bg-gray-800 text-white border-gray-700 hover:bg-gray-700">
+                    Cancel
+                  </AlertDialogCancel>
+                  <AlertDialogAction onClick={handleUseProxy} className="bg-emerald-600 hover:bg-emerald-700">
+                    Continue With Proxy
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </WalletProvider>
         </MenuProvider>
       </div>
