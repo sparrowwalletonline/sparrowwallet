@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useWallet } from '@/contexts/WalletContext';
@@ -25,16 +24,56 @@ import {
   fetchCryptoPrices, 
   clearCryptoCache 
 } from '@/utils/cryptoPriceUtils';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
-const getChartImagePath = (symbol: string) => {
-  const charts = {
-    "BTC": "/lovable-uploads/df7a0e55-4560-436e-ae52-c10510f4b486.png",
-    "ETH": "/lovable-uploads/df7a0e55-4560-436e-ae52-c10510f4b486.png",
-    "SOL": "/lovable-uploads/df7a0e55-4560-436e-ae52-c10510f4b486.png",
-    "BNB": "/lovable-uploads/df7a0e55-4560-436e-ae52-c10510f4b486.png",
-  };
+const generateChartData = (basePrice: number, days: number, volatility: number = 0.05) => {
+  const data = [];
+  let currentPrice = basePrice;
+  const now = new Date();
   
-  return charts[symbol] || "/lovable-uploads/df7a0e55-4560-436e-ae52-c10510f4b486.png";
+  const interval = days <= 1 ? 1 : (days <= 7 ? 6 : 24);
+  const totalPoints = days * (24 / interval);
+  
+  for (let i = totalPoints; i >= 0; i--) {
+    const time = new Date(now.getTime() - (i * interval * 60 * 60 * 1000));
+    
+    const change = currentPrice * (Math.random() * volatility * 2 - volatility);
+    currentPrice += change;
+    
+    if (currentPrice < 0) currentPrice = basePrice * 0.1;
+    
+    data.push({
+      time: time.toISOString(),
+      price: currentPrice,
+      formattedTime: formatTimeForChart(time, days)
+    });
+  }
+  
+  return data;
+};
+
+const formatTimeForChart = (date: Date, days: number): string => {
+  if (days <= 1) {
+    return date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+  } else if (days <= 7) {
+    return date.toLocaleDateString('de-DE', { weekday: 'short', hour: '2-digit' });
+  } else {
+    return date.toLocaleDateString('de-DE', { day: '2-digit', month: 'short' });
+  }
+};
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-gray-800 p-2 border border-gray-700 rounded-md text-white">
+        <p className="text-xs">{label}</p>
+        <p className="text-sm font-medium">
+          ${payload[0].value.toFixed(2)}
+        </p>
+      </div>
+    );
+  }
+  return null;
 };
 
 const CryptoDetailView: React.FC = () => {
@@ -53,10 +92,10 @@ const CryptoDetailView: React.FC = () => {
   const [cryptoData, setCryptoData] = useState<CryptoPrice | null>(null);
   const [localPrices, setLocalPrices] = useState<Record<string, CryptoPrice>>(contextCryptoPrices);
   const [isRefreshingPrices, setIsRefreshingPrices] = useState(false);
+  const [chartData, setChartData] = useState<any[]>([]);
   
   const symbol = urlSymbol ? urlSymbol.toUpperCase() : '';
   
-  // Initial load and when symbol changes
   useEffect(() => {
     if (!symbol) return;
     
@@ -64,19 +103,22 @@ const CryptoDetailView: React.FC = () => {
       setIsLoading(true);
       
       try {
-        // Always fetch fresh prices when viewing details
         const prices = await fetchCryptoPrices();
         setLocalPrices(prices);
         
-        // Get data for this specific symbol
         const data = getCryptoDataBySymbol(symbol, prices);
         if (data) {
           console.log("Detail view: Using fresh price data for", symbol, data);
           setCryptoData(data);
+          
+          updateChartDataForTimeframe('1T', data.price);
         } else {
           console.error("Could not find data for symbol:", symbol);
           const fallback = getCryptoDataBySymbol(symbol, fallbackCryptoData);
-          if (fallback) setCryptoData(fallback);
+          if (fallback) {
+            setCryptoData(fallback);
+            updateChartDataForTimeframe('1T', fallback.price);
+          }
         }
       } catch (error) {
         console.error("Failed to load crypto prices:", error);
@@ -86,9 +128,11 @@ const CryptoDetailView: React.FC = () => {
           description: "Kryptowährungs-Daten konnten nicht geladen werden."
         });
         
-        // Use fallback if fetch fails
         const fallback = getCryptoDataBySymbol(symbol, fallbackCryptoData);
-        if (fallback) setCryptoData(fallback);
+        if (fallback) {
+          setCryptoData(fallback);
+          updateChartDataForTimeframe('1T', fallback.price);
+        }
       } finally {
         setIsLoading(false);
       }
@@ -97,20 +141,56 @@ const CryptoDetailView: React.FC = () => {
     loadData();
   }, [symbol]);
   
-  // Also update when context prices change
   useEffect(() => {
     if (!symbol) return;
     
-    // Update local prices from context
     setLocalPrices(contextCryptoPrices);
     
-    // Get data for this specific symbol from updated prices
     const data = getCryptoDataBySymbol(symbol, contextCryptoPrices);
     if (data) {
       console.log("Detail view: Updated from context for", symbol, data);
       setCryptoData(data);
+      
+      updateChartDataForTimeframe(selectedTimeframe, data.price);
     }
   }, [contextCryptoPrices, symbol]);
+  
+  useEffect(() => {
+    if (cryptoData) {
+      updateChartDataForTimeframe(selectedTimeframe, cryptoData.price);
+    }
+  }, [selectedTimeframe]);
+  
+  const updateChartDataForTimeframe = (timeframe: string, price: number) => {
+    let days = 1;
+    let volatility = 0.03;
+    
+    switch(timeframe) {
+      case '1T':
+        days = 1;
+        volatility = 0.02;
+        break;
+      case '1W':
+        days = 7;
+        volatility = 0.04;
+        break;
+      case '1M':
+        days = 30;
+        volatility = 0.06;
+        break;
+      case '3M':
+        days = 90;
+        volatility = 0.08;
+        break;
+      case 'Alle':
+        days = 365;
+        volatility = 0.1;
+        break;
+    }
+    
+    const newChartData = generateChartData(price, days, volatility);
+    setChartData(newChartData);
+  };
   
   const getCryptoBalance = () => {
     if (!symbol) return 0;
@@ -135,22 +215,19 @@ const CryptoDetailView: React.FC = () => {
     setIsLoading(true);
     
     try {
-      // Clear the cache to force a fresh fetch
       clearCryptoCache();
       
-      // Fetch fresh prices
       const prices = await fetchCryptoPrices();
       setLocalPrices(prices);
       
-      // Also update the context
       await contextRefreshPrices();
       
-      // Get data for this specific symbol
       if (symbol) {
         const data = getCryptoDataBySymbol(symbol, prices);
         if (data) {
           console.log("Detail view: Manually refreshed data for", symbol, data);
           setCryptoData(data);
+          updateChartDataForTimeframe(selectedTimeframe, data.price);
         }
       }
       
@@ -202,7 +279,6 @@ const CryptoDetailView: React.FC = () => {
     );
   }
 
-  // Show price with loading state if we're refreshing but have data
   const price = cryptoData.price;
   const changeAmount = (cryptoData.change_percentage_24h / 100) * price;
   const changeFormatted = changeAmount >= 0 ? 
@@ -218,8 +294,7 @@ const CryptoDetailView: React.FC = () => {
   const balance = getCryptoBalance();
   const balanceValue = balance * price;
 
-  const highPrice = price * 1.05;
-  const lowPrice = price * 0.95;
+  const chartColor = cryptoData.change_percentage_24h >= 0 ? "#10B981" : "#EF4444";
 
   return (
     <div className="min-h-screen bg-wallet-darkBg text-white flex flex-col">
@@ -252,20 +327,40 @@ const CryptoDetailView: React.FC = () => {
       </div>
       
       <div className="p-4 relative">
-        <div className="h-40 w-full relative mb-2 overflow-hidden rounded-lg">
-          <img 
-            src={getChartImagePath(symbol)} 
-            alt="Chart" 
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ objectPosition: "center center" }}
-          />
-          
-          <div className="absolute top-2 right-2 text-xs bg-black/50 px-1 rounded">
-            ${highPrice.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-          </div>
-          <div className="absolute bottom-2 left-2 text-xs bg-black/50 px-1 rounded">
-            ${lowPrice.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-          </div>
+        <div className="h-40 w-full relative mb-2 overflow-hidden rounded-lg bg-gray-800">
+          {chartData.length > 0 && (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={chartColor} stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor={chartColor} stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <XAxis 
+                  dataKey="formattedTime" 
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: '#9CA3AF', fontSize: 10 }}
+                  minTickGap={30}
+                />
+                <YAxis 
+                  hide={true}
+                  domain={['dataMin', 'dataMax']}
+                />
+                <Tooltip content={<CustomTooltip />} />
+                <Line 
+                  type="monotone" 
+                  dataKey="price" 
+                  stroke={chartColor} 
+                  dot={false}
+                  strokeWidth={2}
+                  fillOpacity={1}
+                  fill="url(#colorPrice)"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
         </div>
         
         <Tabs 
