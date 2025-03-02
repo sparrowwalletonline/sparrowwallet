@@ -23,6 +23,50 @@ const WalletViewContent: React.FC = () => {
   // Calculate USD values
   const btcValue = (btcBalance * btcPrice).toFixed(2);
   const ethValue = (ethBalance * ethPrice).toFixed(2);
+  
+  // Mock data for BNB and other currencies
+  const cryptoData = [
+    {
+      symbol: "BTC",
+      name: "Bitcoin",
+      amount: btcBalance.toString(),
+      price: btcPrice,
+      value: parseFloat(btcValue),
+      change: "+1.52%",
+      iconColor: "bg-[#F7931A]",
+      changeColor: "text-green-500"
+    },
+    {
+      symbol: "ETH",
+      name: "Ethereum",
+      amount: ethBalance.toString(),
+      price: ethPrice,
+      value: parseFloat(ethValue),
+      change: "-0.12%",
+      iconColor: "bg-[#627EEA]",
+      changeColor: "text-red-500"
+    },
+    {
+      symbol: "BNB",
+      name: "BNB Smart Chain",
+      amount: "0.05",
+      price: 610.26,
+      value: 30.51,
+      change: "+2.55%",
+      iconColor: "bg-[#F3BA2F]",
+      changeColor: "text-green-500"
+    },
+    {
+      symbol: "POL",
+      name: "Polygon",
+      amount: "20",
+      price: 0.27,
+      value: 5.40,
+      change: "+3.37%",
+      iconColor: "bg-[#8247E5]",
+      changeColor: "text-green-500"
+    }
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-wallet-darkBg text-wallet-text">
@@ -70,23 +114,20 @@ const WalletViewContent: React.FC = () => {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="crypto" className="pt-4">
-              <div className="space-y-3">
-                <CryptoItem 
-                  symbol="BTC" 
-                  name="Bitcoin" 
-                  amount={btcBalance.toString()} 
-                  value={`$${btcValue}`} 
-                  change="+2.43%" 
-                  iconColor="bg-[#F7931A]" 
-                />
-                <CryptoItem 
-                  symbol="ETH" 
-                  name="Ethereum" 
-                  amount={ethBalance.toString()} 
-                  value={`$${ethValue}`} 
-                  change="+1.75%" 
-                  iconColor="bg-[#627EEA]" 
-                />
+              <div className="space-y-4">
+                {cryptoData.map((crypto, index) => (
+                  <CryptoItem 
+                    key={index}
+                    symbol={crypto.symbol} 
+                    name={crypto.name} 
+                    amount={crypto.amount} 
+                    price={crypto.price}
+                    value={crypto.value} 
+                    change={crypto.change} 
+                    iconColor={crypto.iconColor}
+                    changeColor={crypto.changeColor}
+                  />
+                ))}
               </div>
             </TabsContent>
             <TabsContent value="nfts" className="pt-4">
@@ -137,18 +178,28 @@ const CryptoItem = ({
   symbol, 
   name, 
   amount, 
+  price,
   value, 
   change, 
-  iconColor 
+  iconColor,
+  changeColor
 }: { 
   symbol: string, 
   name: string, 
   amount: string, 
-  value: string, 
+  price: number,
+  value: number, 
   change: string, 
-  iconColor: string 
+  iconColor: string,
+  changeColor: string
 }) => {
-  const isPositive = change.startsWith('+');
+  // Format price with commas
+  const formattedPrice = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(price);
   
   return (
     <div className="flex items-center justify-between">
@@ -157,15 +208,20 @@ const CryptoItem = ({
           <span className="text-xs font-bold text-white">{symbol.charAt(0)}</span>
         </div>
         <div>
-          <div className="font-medium">{symbol}</div>
-          <div className="text-xs text-gray-400">${name}</div>
+          <div className="flex items-center">
+            <span className="font-medium mr-2">{symbol}</span>
+            <span className="text-xs py-0.5 px-2 bg-[#2C3140] text-gray-400 rounded">{name}</span>
+          </div>
+          <div className="flex items-center mt-1">
+            <span className="text-xs text-gray-400">{formattedPrice}</span>
+            <span className={`text-xs ${changeColor} ml-2`}>{change}</span>
+          </div>
         </div>
       </div>
       <div className="text-right">
         <div>{amount}</div>
-        <div className="flex items-center gap-1 justify-end">
-          <span className="text-xs text-gray-400">{value}</span>
-          <span className={`text-xs ${isPositive ? 'text-green-500' : 'text-red-500'}`}>{change}</span>
+        <div className="text-xs text-gray-400 mt-1">
+          ${value.toFixed(2)}
         </div>
       </div>
     </div>

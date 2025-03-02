@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useWallet } from '@/contexts/WalletContext';
 import { Bitcoin } from 'lucide-react';
@@ -90,7 +89,7 @@ const CryptoAction = ({ icon, label }: { icon: string, label: string }) => {
         return <Bitcoin className="h-5 w-5" />;
     }
   };
-
+  
   return (
     <button className="flex flex-col items-center">
       <div className="w-10 h-10 rounded-full bg-wallet-card flex items-center justify-center mb-1">
