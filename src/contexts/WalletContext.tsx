@@ -145,10 +145,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     try {
       const prices = await fetchCryptoPrices();
       setCryptoPrices(prices);
-      toast({
-        title: "Prices updated",
-        description: "Cryptocurrency prices have been refreshed.",
-      });
     } catch (error) {
       console.error("Error refreshing prices:", error);
     } finally {
