@@ -1,6 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { WalletProvider, useWallet } from '@/contexts/WalletContext';
+import { MenuProvider } from '@/contexts/MenuContext';
 import Header from '@/components/Header';
 import WalletBalance from '@/components/WalletBalance';
 import WalletActions from '@/components/WalletActions';
@@ -367,9 +369,11 @@ const WalletView: React.FC = () => {
   return (
     <div className="min-h-screen bg-wallet-darkBg flex justify-center w-full">
       <div className="w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg">
-        <WalletProvider>
-          <WalletViewContent />
-        </WalletProvider>
+        <MenuProvider>
+          <WalletProvider>
+            <WalletViewContent />
+          </WalletProvider>
+        </MenuProvider>
       </div>
     </div>
   );
