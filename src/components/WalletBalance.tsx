@@ -27,6 +27,7 @@ const WalletBalance: React.FC = () => {
   const [isTokenSelectionOpen, setIsTokenSelectionOpen] = useState(false);
   const [isSendDialogOpen, setIsSendDialogOpen] = useState(false);
   const [isReceiveDialogOpen, setIsReceiveDialogOpen] = useState(false);
+  const [isBuyDialogOpen, setIsBuyDialogOpen] = useState(false);
   const [selectedToken, setSelectedToken] = useState<Token | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [recipientAddress, setRecipientAddress] = useState('');
@@ -93,69 +94,6 @@ const WalletBalance: React.FC = () => {
     }
   }
 
-  const handleTokenSelect = (token: Token, action: 'send' | 'receive') => {
-    setSelectedToken(token);
-    setIsTokenSelectionOpen(false);
-    
-    if (action === 'send') {
-      setIsSendDialogOpen(true);
-    } else {
-      setIsReceiveDialogOpen(true);
-    }
-  };
-
-  const handleSend = () => {
-    if (!selectedToken || !recipientAddress || !amount) {
-      toast({
-        title: "Fehler",
-        description: "Bitte fülle alle Felder aus.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const amountValue = parseFloat(amount);
-    if (isNaN(amountValue) || amountValue <= 0) {
-      toast({
-        title: "Fehler",
-        description: "Bitte gib einen gültigen Betrag ein.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (amountValue > selectedToken.balance) {
-      toast({
-        title: "Nicht genügend Guthaben",
-        description: `Du hast nicht genügend ${selectedToken.symbol} auf deiner Wallet. Verfügbares Guthaben: ${selectedToken.balance} ${selectedToken.symbol}`,
-        variant: "destructive",
-      });
-      return;
-    }
-
-    toast({
-      title: "Transaktion initiiert",
-      description: `Dies ist eine Demo. ${amount} ${selectedToken.symbol} würden an ${recipientAddress} gesendet werden.`,
-    });
-
-    setRecipientAddress('');
-    setAmount('');
-    setIsSendDialogOpen(false);
-    setSelectedToken(null);
-  };
-
-  const handleSetMaxAmount = () => {
-    if (selectedToken) {
-      setAmount(selectedToken.balance.toString());
-    }
-  };
-
-  const filteredTokens = searchTerm 
-    ? tokens.filter(token => 
-        token.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        token.symbol.toLowerCase().includes(searchTerm.toLowerCase()))
-    : tokens;
-
   const handleSendClick = () => {
     setSelectedToken(null);
     setIsTokenSelectionOpen(true);
@@ -168,6 +106,10 @@ const WalletBalance: React.FC = () => {
     setSearchTerm('');
     console.log("Wallet address when receive clicked:", walletAddress);
     console.log("Active wallet when receive clicked:", activeWallet);
+  };
+
+  const handleBuyClick = () => {
+    setIsBuyDialogOpen(true);
   };
 
   const handleCopyAddress = () => {
@@ -203,7 +145,7 @@ const WalletBalance: React.FC = () => {
       <div className="flex justify-between mt-6">
         <CryptoAction icon="send" label="Send" onClick={handleSendClick} />
         <CryptoAction icon="receive" label="Receive" onClick={handleReceiveClick} />
-        <CryptoAction icon="buy" label="Buy" />
+        <CryptoAction icon="buy" label="Buy" onClick={handleBuyClick} />
         <CryptoAction icon="earn" label="Earn" />
       </div>
       
@@ -466,6 +408,26 @@ const WalletBalance: React.FC = () => {
               onClick={handleCopyAddress}
             >
               Adresse kopieren
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isBuyDialogOpen} onOpenChange={setIsBuyDialogOpen}>
+        <DialogContent className="bg-gray-900 border border-gray-800 text-white sm:max-w-md">
+          <DialogHeader className="flex flex-col space-y-1.5 text-center sm:text-left">
+            <DialogTitle className="text-xl">Kauf nicht verfügbar</DialogTitle>
+          </DialogHeader>
+          <DialogDescription className="text-gray-300">
+            Der direkte Kauf von Kryptowährungen ist in Ihrer Region leider noch nicht verfügbar. Wir arbeiten daran, diesen Service bald anzubieten.
+          </DialogDescription>
+          <div className="flex justify-end mt-4">
+            <Button 
+              variant="wallet" 
+              onClick={() => setIsBuyDialogOpen(false)}
+              className="px-4 py-2"
+            >
+              Verstanden
             </Button>
           </div>
         </DialogContent>
