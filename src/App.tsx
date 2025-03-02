@@ -1,5 +1,5 @@
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { Toaster } from "./components/ui/toaster";
 import Index from "./pages/Index";
@@ -21,6 +21,19 @@ import SideMenu from "./components/SideMenu";
 
 import "./App.css";
 
+// Authentication guard component
+const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+  // This will get the session status from the Wallet context
+  const { session } = WalletProvider();
+
+  if (!session) {
+    // Redirect to auth page if not authenticated
+    return <Navigate to="/auth" replace />;
+  }
+
+  return <>{children}</>;
+};
+
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -35,8 +48,16 @@ function App() {
             } />
             <Route path="/auth" element={<Auth />} />
             <Route path="/app" element={<Index />} />
-            <Route path="/wallet" element={<WalletView />} />
-            <Route path="/wallet/crypto/:symbol" element={<CryptoDetailView />} />
+            <Route path="/wallet" element={
+              <WalletProvider>
+                <WalletView />
+              </WalletProvider>
+            } />
+            <Route path="/wallet/crypto/:symbol" element={
+              <WalletProvider>
+                <CryptoDetailView />
+              </WalletProvider>
+            } />
             <Route path="/terms" element={<Terms />} />
             <Route path="/wallet-choice" element={
               <WalletProvider>

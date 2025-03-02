@@ -7,10 +7,12 @@ import { Home, CreditCard, Settings, X, User, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
+import { useWallet } from '@/contexts/WalletContext';
 
 const SideMenu: React.FC = () => {
   const { isMenuOpen, closeMenu } = useMenu();
   const navigate = useNavigate();
+  const { session } = useWallet();
   
   // Close menu when clicking outside or pressing escape
   useEffect(() => {
@@ -60,7 +62,17 @@ const SideMenu: React.FC = () => {
   };
 
   const handleNavigation = (path: string) => {
-    navigate(path);
+    // For wallet route, check if the user is authenticated first
+    if (path === '/wallet' && !session) {
+      toast({
+        title: "Anmeldung erforderlich",
+        description: "Du musst angemeldet sein, um auf deine Wallet zuzugreifen",
+        variant: "default"
+      });
+      navigate('/auth');
+    } else {
+      navigate(path);
+    }
     closeMenu();
   };
 
@@ -136,14 +148,25 @@ const SideMenu: React.FC = () => {
           
           {/* Sign Out Button */}
           <div className="p-6 border-t border-gray-800">
-            <Button 
-              variant="destructive" 
-              className="w-full justify-start" 
-              onClick={handleSignOut}
-            >
-              <LogOut className="h-5 w-5 mr-3" />
-              <span>Abmelden</span>
-            </Button>
+            {session ? (
+              <Button 
+                variant="destructive" 
+                className="w-full justify-start" 
+                onClick={handleSignOut}
+              >
+                <LogOut className="h-5 w-5 mr-3" />
+                <span>Abmelden</span>
+              </Button>
+            ) : (
+              <Button 
+                variant="outline" 
+                className="w-full justify-start" 
+                onClick={() => handleNavigation('/auth')}
+              >
+                <User className="h-5 w-5 mr-3" />
+                <span>Anmelden</span>
+              </Button>
+            )}
           </div>
         </div>
       </div>
