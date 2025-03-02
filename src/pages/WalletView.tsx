@@ -292,18 +292,12 @@ const WalletViewContent: React.FC = () => {
         <div className="mt-6">
           <Tabs defaultValue="crypto" className="w-full">
             <div className="flex justify-between items-center">
-              <TabsList className="grid w-60 grid-cols-3 bg-transparent border-b border-gray-800">
+              <TabsList className="grid w-40 grid-cols-2 bg-transparent border-b border-gray-800">
                 <TabsTrigger 
                   value="crypto" 
                   className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none rounded-none bg-transparent text-gray-400"
                 >
                   Crypto
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="nfts" 
-                  className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none rounded-none bg-transparent text-gray-400"
-                >
-                  NFTs
                 </TabsTrigger>
                 <TabsTrigger 
                   value="transactions" 
@@ -353,11 +347,6 @@ const WalletViewContent: React.FC = () => {
                     Kryptos verwalten
                   </Button>
                 </div>
-              </div>
-            </TabsContent>
-            <TabsContent value="nfts" className="pt-4">
-              <div className="text-center py-8 text-gray-400">
-                <p>No NFTs found</p>
               </div>
             </TabsContent>
             <TabsContent value="transactions" className="pt-4">
