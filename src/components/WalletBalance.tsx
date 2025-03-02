@@ -426,7 +426,7 @@ const WalletBalance: React.FC = () => {
             <div className="w-full max-w-md mb-6">
               <div className="text-center mb-2 text-sm text-gray-400">Deine {selectedToken?.symbol || 'Wallet'} Adresse</div>
               <div className="bg-[#2A2F3D] py-3 px-4 rounded-lg text-sm text-center break-all relative">
-                {walletAddress}
+                <span className="text-white">{walletAddress || "No wallet address available"}</span>
                 <Button 
                   variant="ghost" 
                   size="icon" 
