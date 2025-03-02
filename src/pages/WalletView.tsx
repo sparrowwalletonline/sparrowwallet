@@ -40,7 +40,6 @@ import {
 } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
 
-// Type definitions for transactions
 interface Transaction {
   id: string;
   date: Date;
@@ -153,7 +152,6 @@ const WalletViewContent: React.FC = () => {
     navigate(`/wallet/crypto/${symbol}`);
   };
 
-  // Add to Home function for iOS
   const handleAddToHomeScreen = () => {
     setIsAddToHomeDialogOpen(true);
   };
@@ -291,17 +289,17 @@ const WalletViewContent: React.FC = () => {
         
         <div className="mt-6">
           <Tabs defaultValue="crypto" className="w-full">
-            <div className="flex justify-between items-center">
-              <TabsList className="grid w-40 grid-cols-2 bg-transparent border-b border-gray-800">
+            <div className="flex justify-between items-center border-b border-gray-800">
+              <TabsList className="flex gap-8 bg-transparent">
                 <TabsTrigger 
                   value="crypto" 
-                  className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none rounded-none bg-transparent text-gray-400"
+                  className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none rounded-none bg-transparent text-gray-400 px-2"
                 >
                   Crypto
                 </TabsTrigger>
                 <TabsTrigger 
                   value="transactions" 
-                  className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none rounded-none bg-transparent text-gray-400"
+                  className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none rounded-none bg-transparent text-gray-400 px-2"
                 >
                   Transaktionen
                 </TabsTrigger>
@@ -405,7 +403,6 @@ const WalletViewContent: React.FC = () => {
         onClose={handleManageWalletsClose}
       />
 
-      {/* Add to Home Screen Dialog */}
       <Dialog open={isAddToHomeDialogOpen} onOpenChange={setIsAddToHomeDialogOpen}>
         <DialogContent className="bg-gray-900 border border-gray-800 text-white">
           <DialogHeader>
@@ -440,14 +437,7 @@ const WalletViewContent: React.FC = () => {
   );
 };
 
-// Transaction Item Component
-interface TransactionItemProps {
-  transaction: Transaction;
-  formatDate: (date: Date) => string;
-}
-
 const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, formatDate }) => {
-  // Determine icon and styles based on transaction type
   const getTransactionDetails = () => {
     switch(transaction.type) {
       case 'receive':
