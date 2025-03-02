@@ -8,7 +8,13 @@ const ThemeToggle: React.FC = () => {
   const { theme, setTheme } = useTheme();
   
   const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
+    // Check if theme is defined before toggling
+    if (theme) {
+      setTheme(theme === 'dark' ? 'light' : 'dark');
+    } else {
+      // Default to toggling to light if theme is undefined
+      setTheme('light');
+    }
   };
 
   return (
