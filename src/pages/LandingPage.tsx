@@ -121,7 +121,7 @@ const SuccessModal = ({ isOpen, onClose }) => {
   );
 };
 
-const LandingPage: React.FC = () => {
+const LandingPage = () => {
   const { generateWallet } = useWallet();
   const { toggleMenu } = useMenu();
   const [searchQuery, setSearchQuery] = useState('');
@@ -129,6 +129,9 @@ const LandingPage: React.FC = () => {
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [session, setSession] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -538,7 +541,7 @@ const LandingPage: React.FC = () => {
         <div className="py-16 my-12 -mx-6 px-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl">
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl font-bold mb-4">One Platform, Millions of Assets</h2>
-            <p className="text-blue-50 max-w-2xl mx-auto">
+            <p className="text-gray-600 max-w-2xl mx-auto">
               Trust Wallet is your gateway to the blockchain ecosystem. Store, trade, and discover over 8 million digital assets across 100+ blockchains.
             </p>
           </div>
