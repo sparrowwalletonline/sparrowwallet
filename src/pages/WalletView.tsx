@@ -4,6 +4,7 @@ import { WalletProvider, useWallet } from '@/contexts/WalletContext';
 import Header from '@/components/Header';
 import WalletBalance from '@/components/WalletBalance';
 import WalletActions from '@/components/WalletActions';
+import ManageCryptoDialog from '@/components/ManageCryptoDialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, Home, RefreshCcw, Compass, Globe, Shield, Plus, ChevronDown, Check, Bus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -30,11 +31,13 @@ const WalletViewContent: React.FC = () => {
     wallets,
     activeWallet,
     setActiveWallet,
-    addNewWallet
+    addNewWallet,
+    enabledCryptos
   } = useWallet();
   const navigate = useNavigate();
   const [newWalletName, setNewWalletName] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isManageCryptoOpen, setIsManageCryptoOpen] = useState(false);
 
   React.useEffect(() => {
     if (!hasWallet) {
@@ -55,6 +58,7 @@ const WalletViewContent: React.FC = () => {
 
   const cryptoData = [
     {
+      id: 'bitcoin',
       symbol: "BTC",
       name: "Bitcoin",
       amount: btcBalance.toString(),
@@ -69,6 +73,7 @@ const WalletViewContent: React.FC = () => {
       logoUrl: "/lovable-uploads/7e1fa6ef-c45f-4ce0-af71-fa865a931600.png"
     },
     {
+      id: 'ethereum',
       symbol: "ETH",
       name: "Ethereum",
       amount: ethBalance.toString(),
@@ -83,6 +88,7 @@ const WalletViewContent: React.FC = () => {
       logoUrl: "/lovable-uploads/14bf916a-665e-4e15-b4c5-631d8d5ff633.png"
     },
     {
+      id: 'binancecoin',
       symbol: "BNB",
       name: "BNB Smart Chain",
       amount: "0.05",
@@ -97,6 +103,7 @@ const WalletViewContent: React.FC = () => {
       logoUrl: "/lovable-uploads/dc54f948-8605-4e6b-a659-7f492598ea5c.png"
     },
     {
+      id: 'matic-network',
       symbol: "POL",
       name: "Polygon",
       amount: "20",
@@ -110,7 +117,7 @@ const WalletViewContent: React.FC = () => {
       changeColor: cryptoPrices.POL?.change_percentage_24h >= 0 ? "text-green-500" : "text-red-500",
       logoUrl: "/lovable-uploads/9c181aad-4d83-4b09-957f-11721da14747.png"
     }
-  ];
+  ].filter(crypto => enabledCryptos.includes(crypto.id));
 
   return (
     <div className="min-h-screen flex flex-col bg-wallet-darkBg text-wallet-text">
@@ -239,6 +246,7 @@ const WalletViewContent: React.FC = () => {
                   <Button 
                     variant="ghost" 
                     className="text-green-500 hover:text-green-400 hover:bg-gray-800"
+                    onClick={() => setIsManageCryptoOpen(true)}
                   >
                     Kryptos verwalten
                   </Button>
@@ -262,6 +270,11 @@ const WalletViewContent: React.FC = () => {
           <NavItem icon={<Globe className="h-5 w-5" />} label="Browser" />
         </div>
       </div>
+      
+      <ManageCryptoDialog 
+        isOpen={isManageCryptoOpen} 
+        onClose={() => setIsManageCryptoOpen(false)} 
+      />
     </div>
   );
 };

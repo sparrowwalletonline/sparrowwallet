@@ -26,6 +26,7 @@ const WalletContext = createContext<WalletContextType>({
   cryptoPrices: {},
   wallets: [],
   activeWallet: null,
+  enabledCryptos: ['bitcoin', 'ethereum', 'binancecoin', 'matic-network'],
   refreshPrices: async () => {},
   generateWallet: () => {},
   createWallet: () => {},
@@ -37,6 +38,7 @@ const WalletContext = createContext<WalletContextType>({
   loadFromSupabase: async () => false,
   addNewWallet: () => {},
   setActiveWallet: () => {},
+  updateEnabledCryptos: () => {},
 });
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -57,6 +59,14 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [session, setSession] = useState<Session | null>(null);
   const [isRefreshingPrices, setIsRefreshingPrices] = useState(false);
   const [cryptoPrices, setCryptoPrices] = useState<Record<string, CryptoPrice>>({});
+  
+  // Add state for enabled cryptocurrencies
+  const [enabledCryptos, setEnabledCryptos] = useState<string[]>(() => {
+    const savedEnabledCryptos = localStorage.getItem('enabledCryptos');
+    return savedEnabledCryptos 
+      ? JSON.parse(savedEnabledCryptos) 
+      : ['bitcoin', 'ethereum', 'binancecoin', 'matic-network'];
+  });
 
   // Add new state for multiple wallets
   const [wallets, setWallets] = useState<Wallet[]>(() => {
@@ -93,6 +103,11 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       localStorage.setItem('wallets', JSON.stringify(wallets));
     }
   }, [wallets]);
+
+  // Save enabled cryptos to localStorage when they change
+  useEffect(() => {
+    localStorage.setItem('enabledCryptos', JSON.stringify(enabledCryptos));
+  }, [enabledCryptos]);
 
   // Initialize session
   useEffect(() => {
@@ -150,6 +165,11 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     } finally {
       setIsRefreshingPrices(false);
     }
+  };
+
+  // Function to update enabled cryptocurrencies
+  const updateEnabledCryptos = (cryptoIds: string[]) => {
+    setEnabledCryptos(cryptoIds);
   };
 
   // Save wallet to Supabase
@@ -371,6 +391,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       cryptoPrices,
       wallets,
       activeWallet,
+      enabledCryptos,
       refreshPrices,
       generateWallet,
       createWallet,
@@ -381,7 +402,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       saveToSupabase,
       loadFromSupabase,
       addNewWallet,
-      setActiveWallet
+      setActiveWallet,
+      updateEnabledCryptos
     }}>
       {children}
     </WalletContext.Provider>

@@ -28,6 +28,7 @@ export interface WalletContextType {
   cryptoPrices: Record<string, CryptoPrice>;
   wallets: Wallet[];
   activeWallet: Wallet | null;
+  enabledCryptos: string[];
   refreshPrices: () => Promise<void>;
   generateWallet: (stage?: string) => void;
   createWallet: () => void;
@@ -39,4 +40,5 @@ export interface WalletContextType {
   loadFromSupabase: () => Promise<boolean>;
   addNewWallet: (name: string) => void;
   setActiveWallet: (walletId: string) => void;
+  updateEnabledCryptos: (cryptoIds: string[]) => void;
 }
