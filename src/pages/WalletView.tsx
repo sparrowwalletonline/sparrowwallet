@@ -51,6 +51,11 @@ interface Transaction {
   fee?: number;
 }
 
+interface TransactionItemProps {
+  transaction: Transaction;
+  formatDate: (date: Date) => string;
+}
+
 const WalletViewContent: React.FC = () => {
   const { 
     hasWallet, 
