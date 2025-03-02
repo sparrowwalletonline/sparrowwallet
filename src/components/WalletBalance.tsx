@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useWallet } from '@/contexts/WalletContext';
 import { QRCodeSVG } from 'qrcode.react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -23,7 +23,7 @@ interface Token {
 }
 
 const WalletBalance: React.FC = () => {
-  const { btcBalance, btcPrice, ethBalance, ethPrice, usdBalance, walletAddress, cryptoPrices, enabledCryptos } = useWallet();
+  const { btcBalance, btcPrice, ethBalance, ethPrice, usdBalance, walletAddress, cryptoPrices, enabledCryptos, activeWallet } = useWallet();
   const [isTokenSelectionOpen, setIsTokenSelectionOpen] = useState(false);
   const [isSendDialogOpen, setIsSendDialogOpen] = useState(false);
   const [isReceiveDialogOpen, setIsReceiveDialogOpen] = useState(false);
@@ -166,13 +166,33 @@ const WalletBalance: React.FC = () => {
     setSelectedToken(null);
     setIsTokenSelectionOpen(true);
     setSearchTerm('');
+    console.log("Wallet address when receive clicked:", walletAddress);
+    console.log("Active wallet when receive clicked:", activeWallet);
   };
 
   const handleCopyAddress = () => {
-    if (walletAddress) {
-      copyToClipboard(walletAddress);
+    const addressToCopy = activeWallet?.walletAddress || walletAddress;
+    if (addressToCopy) {
+      copyToClipboard(addressToCopy);
+    } else {
+      toast({
+        title: "Fehler",
+        description: "Keine Wallet-Adresse verfügbar zum Kopieren",
+        variant: "destructive",
+      });
     }
   };
+
+  const getDisplayAddress = () => {
+    return activeWallet?.walletAddress || walletAddress || "";
+  };
+
+  useEffect(() => {
+    if (isReceiveDialogOpen) {
+      console.log("Receive dialog opened, wallet address:", walletAddress);
+      console.log("Active wallet:", activeWallet);
+    }
+  }, [isReceiveDialogOpen, walletAddress, activeWallet]);
 
   return (
     <div className="animate-fade-in w-full">
@@ -406,7 +426,7 @@ const WalletBalance: React.FC = () => {
             
             <div className="border-4 border-white p-2 rounded-lg bg-white mb-6">
               <QRCodeSVG 
-                value={getQrCodeValue(walletAddress, selectedToken?.symbol || 'BTC')} 
+                value={getQrCodeValue(getDisplayAddress(), selectedToken?.symbol || 'BTC')} 
                 size={220} 
                 bgColor={"#ffffff"} 
                 fgColor={"#000000"} 
@@ -426,7 +446,7 @@ const WalletBalance: React.FC = () => {
             <div className="w-full max-w-md mb-6">
               <div className="text-center mb-2 text-sm text-gray-400">Deine {selectedToken?.symbol || 'Wallet'} Adresse</div>
               <div className="bg-[#2A2F3D] py-3 px-4 rounded-lg text-sm text-center break-all relative">
-                <span className="text-white">{walletAddress || "No wallet address available"}</span>
+                <span className="text-white">{getDisplayAddress() || "Keine Wallet-Adresse verfügbar"}</span>
                 <Button 
                   variant="ghost" 
                   size="icon" 
