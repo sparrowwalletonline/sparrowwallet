@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X, Trash2, Shield, Check } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -26,14 +26,19 @@ const ManageWalletsDialog: React.FC<ManageWalletsDialogProps> = ({ isOpen, onClo
     return name === 'Main Wallet';
   };
 
+  // Ensure clean close without triggering additional state changes
+  const handleDialogClose = () => {
+    onClose();
+  };
+
   return (
     <Dialog 
       open={isOpen} 
       onOpenChange={(open) => {
-        if (!open) onClose();
+        if (!open) handleDialogClose();
       }}
     >
-      <DialogContent className="bg-gray-900 border border-gray-800 text-white p-0 max-w-md max-h-[85vh] overflow-hidden flex flex-col">
+      <DialogContent className="bg-gray-900 border border-gray-800 text-white p-0 max-w-md max-h-[85vh] overflow-hidden flex flex-col" onInteractOutside={handleDialogClose} onEscapeKeyDown={handleDialogClose}>
         {/* Header */}
         <DialogHeader className="px-4 py-3 border-b border-gray-800">
           <div className="flex items-center justify-between">
@@ -42,7 +47,7 @@ const ManageWalletsDialog: React.FC<ManageWalletsDialogProps> = ({ isOpen, onClo
               variant="ghost" 
               size="icon" 
               className="text-gray-400 hover:text-white"
-              onClick={onClose}
+              onClick={handleDialogClose}
             >
               <X className="h-5 w-5" />
             </Button>
