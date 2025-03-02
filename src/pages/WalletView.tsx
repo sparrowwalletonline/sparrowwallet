@@ -214,46 +214,46 @@ const WalletViewContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-wallet-darkBg text-wallet-text">
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Header title="Home" />
       
       <div className="px-4 mb-4">
         <div className="flex items-center">
           <DropdownMenu open={isDropdownOpen} onOpenChange={handleDropdownOpenChange}>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-2 bg-transparent hover:bg-wallet-card rounded-lg px-2 py-1 transition-colors">
-                <Shield className="h-4 w-4 text-green-500" />
-                <span className="text-xs text-gray-400">{activeWallet?.name || "Main wallet"}</span>
-                <ChevronDown className="h-3 w-3 text-gray-400" />
+              <button className="flex items-center gap-2 bg-transparent hover:bg-secondary rounded-lg px-2 py-1 transition-colors">
+                <Shield className="h-4 w-4 text-primary" />
+                <span className="text-xs text-muted-foreground">{activeWallet?.name || "Main wallet"}</span>
+                <ChevronDown className="h-3 w-3 text-muted-foreground" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-gray-900 border border-gray-800 text-white z-50 min-w-[200px]">
+            <DropdownMenuContent className="bg-popover border border-border text-popover-foreground z-50 min-w-[200px]">
               {wallets.map((wallet) => (
                 <DropdownMenuItem 
                   key={wallet.id} 
-                  className="flex items-center justify-between cursor-pointer hover:bg-gray-800 text-sm py-2"
+                  className="flex items-center justify-between cursor-pointer hover:bg-secondary text-sm py-2"
                   onClick={() => {
                     setActiveWallet(wallet.id);
                     setIsDropdownOpen(false);
                   }}
                 >
                   <div className="flex items-center gap-2">
-                    <Shield className="h-4 w-4 text-green-500" />
+                    <Shield className="h-4 w-4 text-primary" />
                     <span>{wallet.name}</span>
                   </div>
-                  {wallet.isActive && <Check className="h-4 w-4 text-green-500" />}
+                  {wallet.isActive && <Check className="h-4 w-4 text-primary" />}
                 </DropdownMenuItem>
               ))}
-              <DropdownMenuSeparator className="bg-gray-800" />
+              <DropdownMenuSeparator className="bg-border" />
               <div className="p-2 gap-2 flex flex-col">
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button variant="outline" size="sm" className="w-full bg-gray-800 hover:bg-gray-700 border-gray-700 flex gap-2 text-white">
+                    <Button variant="outline" size="sm" className="w-full bg-secondary hover:bg-secondary/80 border-border flex gap-2 text-foreground">
                       <Plus className="h-4 w-4" />
                       <span className="text-sm">Neue Wallet hinzufügen</span>
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="bg-gray-900 border border-gray-800 text-white">
+                  <DialogContent className="bg-popover border border-border text-popover-foreground">
                     <DialogHeader>
                       <DialogTitle>Neue Wallet hinzufügen</DialogTitle>
                     </DialogHeader>
@@ -261,7 +261,7 @@ const WalletViewContent: React.FC = () => {
                       placeholder="Wallet Name"
                       value={newWalletName}
                       onChange={(e) => setNewWalletName(e.target.value)}
-                      className="bg-gray-800 border-gray-700 text-white"
+                      className="bg-input border-input text-foreground"
                     />
                     <DialogFooter>
                       <Button variant="wallet" onClick={handleAddWallet}>
@@ -273,7 +273,7 @@ const WalletViewContent: React.FC = () => {
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="w-full bg-gray-800 hover:bg-gray-700 border-gray-700 flex gap-2 text-white"
+                  className="w-full bg-secondary hover:bg-secondary/80 border-border flex gap-2 text-foreground"
                   onClick={() => {
                     setIsManageWalletsOpen(true);
                     setIsDropdownOpen(false);
@@ -294,17 +294,17 @@ const WalletViewContent: React.FC = () => {
         
         <div className="mt-6">
           <Tabs defaultValue="crypto" className="w-full">
-            <div className="flex justify-between items-center border-b border-gray-800">
+            <div className="flex justify-between items-center border-b border-border">
               <TabsList className="flex bg-transparent">
                 <TabsTrigger 
                   value="crypto" 
-                  className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none data-[state=active]:rounded-md data-[state=active]:bg-[#1A1F2C] rounded-md bg-transparent text-gray-400 mx-1 px-3"
+                  className="data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:rounded-md data-[state=active]:bg-[#1A1F2C] dark:data-[state=active]:bg-[#1A1F2C] light:data-[state=active]:bg-[#F1F1F1] rounded-md bg-transparent text-muted-foreground mx-1 px-3"
                 >
                   Crypto
                 </TabsTrigger>
                 <TabsTrigger 
                   value="transactions" 
-                  className="data-[state=active]:border-b-2 data-[state=active]:border-wallet-green data-[state=active]:text-white data-[state=active]:shadow-none data-[state=active]:rounded-md data-[state=active]:bg-[#1A1F2C] rounded-md bg-transparent text-gray-400 mx-1 px-3"
+                  className="data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:rounded-md data-[state=active]:bg-[#1A1F2C] dark:data-[state=active]:bg-[#1A1F2C] light:data-[state=active]:bg-[#F1F1F1] rounded-md bg-transparent text-muted-foreground mx-1 px-3"
                 >
                   Transaktionen
                 </TabsTrigger>
@@ -313,7 +313,7 @@ const WalletViewContent: React.FC = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-gray-400 hover:text-white"
+                className="text-muted-foreground hover:text-foreground"
                 onClick={refreshPrices}
                 disabled={isRefreshingPrices}
               >
@@ -344,7 +344,7 @@ const WalletViewContent: React.FC = () => {
                 <div className="pt-4 text-center">
                   <Button 
                     variant="ghost" 
-                    className="text-green-500 hover:text-green-400 hover:bg-gray-800"
+                    className="text-primary hover:text-primary hover:bg-secondary"
                     onClick={() => setIsManageCryptoOpen(true)}
                   >
                     Kryptos verwalten
@@ -362,7 +362,7 @@ const WalletViewContent: React.FC = () => {
                   />
                 ))}
                 {transactions.length === 0 && (
-                  <div className="text-center py-8 text-gray-400">
+                  <div className="text-center py-8 text-muted-foreground">
                     <p>Keine Transaktionen gefunden</p>
                   </div>
                 )}
@@ -372,7 +372,7 @@ const WalletViewContent: React.FC = () => {
         </div>
       </div>
       
-      <div className="mt-auto border-t border-gray-800">
+      <div className="mt-auto border-t border-border">
         <div className="grid grid-cols-4 py-3">
           <NavItem 
             icon={<Home className="h-5 w-5" />} 
@@ -409,21 +409,21 @@ const WalletViewContent: React.FC = () => {
       />
 
       <Dialog open={isAddToHomeDialogOpen} onOpenChange={setIsAddToHomeDialogOpen}>
-        <DialogContent className="bg-gray-900 border border-gray-800 text-white">
+        <DialogContent className="bg-popover border border-border text-popover-foreground">
           <DialogHeader>
             <DialogTitle>Zur Startseite hinzufügen</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-muted-foreground">
               So fügen Sie diese App zu Ihrem iOS-Startbildschirm hinzu:
             </p>
-            <ol className="list-decimal list-inside space-y-2 text-sm text-gray-300">
-              <li>Tippen Sie auf das Teilen-Symbol <span className="bg-gray-700 px-2 py-1 rounded">Teilen</span> unten im Browser</li>
+            <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
+              <li>Tippen Sie auf das Teilen-Symbol <span className="bg-secondary px-2 py-1 rounded">Teilen</span> unten im Browser</li>
               <li>Scrollen Sie nach unten und tippen Sie auf "Zum Home-Bildschirm"</li>
               <li>Tippen Sie oben rechts auf "Hinzufügen"</li>
             </ol>
             <div className="pt-4">
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-muted-foreground">
                 So haben Sie schnellen Zugriff auf Ihre Wallet direkt vom Home-Bildschirm.
               </p>
             </div>
@@ -468,10 +468,10 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, formatDa
         };
       default:
         return {
-          icon: <Clock className="h-4 w-4 text-gray-500" />,
+          icon: <Clock className="h-4 w-4 text-muted-foreground" />,
           label: 'Unbekannt',
           amountPrefix: '',
-          amountColor: 'text-gray-400'
+          amountColor: 'text-muted-foreground'
         };
     }
   };
@@ -479,30 +479,30 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, formatDa
   const details = getTransactionDetails();
 
   return (
-    <div className="p-3 bg-gray-800/50 rounded-lg">
+    <div className="p-3 bg-secondary/50 rounded-lg">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-gray-700 rounded-full">
+          <div className="p-2 bg-secondary rounded-full">
             {details.icon}
           </div>
           <div>
             <div className="font-medium">{details.label}</div>
-            <div className="text-xs text-gray-400">{formatDate(transaction.date)}</div>
+            <div className="text-xs text-muted-foreground">{formatDate(transaction.date)}</div>
           </div>
         </div>
         <div className="text-right">
           <div className={details.amountColor}>
             {details.amountPrefix}{transaction.amount} {transaction.currency}
           </div>
-          <div className="text-xs text-gray-400">
+          <div className="text-xs text-muted-foreground">
             {transaction.status === 'completed' ? 'Abgeschlossen' : 
              transaction.status === 'pending' ? 'Ausstehend' : 'Fehlgeschlagen'}
           </div>
         </div>
       </div>
       {transaction.address && (
-        <div className="mt-2 pt-2 border-t border-gray-700">
-          <div className="text-xs text-gray-400 flex justify-between">
+        <div className="mt-2 pt-2 border-t border-border">
+          <div className="text-xs text-muted-foreground flex justify-between">
             <span>Adresse:</span>
             <span className="truncate max-w-[200px]">{transaction.address}</span>
           </div>
@@ -510,7 +510,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, formatDa
       )}
       {transaction.fee !== undefined && (
         <div className="mt-1">
-          <div className="text-xs text-gray-400 flex justify-between">
+          <div className="text-xs text-muted-foreground flex justify-between">
             <span>Gebühr:</span>
             <span>{transaction.fee} {transaction.currency}</span>
           </div>
@@ -612,8 +612,8 @@ const CryptoItem = ({
 
 const WalletView: React.FC = () => {
   return (
-    <div className="min-h-screen bg-wallet-darkBg flex justify-center w-full">
-      <div className="w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg">
+    <div className="min-h-screen bg-background flex justify-center w-full">
+      <div className="w-full max-w-md mx-auto min-h-screen shadow-lg bg-background">
         <MenuProvider>
           <WalletProvider>
             <WalletViewContent />

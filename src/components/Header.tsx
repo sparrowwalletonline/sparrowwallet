@@ -6,6 +6,7 @@ import { toast } from '@/components/ui/use-toast';
 import { useMenu } from '@/contexts/MenuContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
+import ThemeToggle from '@/components/ThemeToggle';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -96,10 +97,10 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
   return (
     <header className="flex justify-between items-center h-16 px-4 w-full">
       <div className="w-9 h-9 flex items-center justify-center">
-        {/* Empty div maintained for layout balance */}
+        <ThemeToggle />
       </div>
       
-      <h1 className="text-lg font-semibold text-white flex-1 text-center">{title}</h1>
+      <h1 className="text-lg font-semibold text-foreground flex-1 text-center">{title}</h1>
       
       {session ? (
         <DropdownMenu>
@@ -109,15 +110,15 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
               size="icon" 
               className="rounded-full p-0 h-9 w-9 bg-wallet-card"
             >
-              <User className="h-5 w-5 text-gray-400" />
+              <User className="h-5 w-5 text-muted-foreground" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56 bg-wallet-darkBg border-gray-700 text-white">
+          <DropdownMenuContent align="end" className="w-56 bg-popover border-border text-popover-foreground">
             <DropdownMenuLabel>Mein Konto</DropdownMenuLabel>
-            {username && <DropdownMenuLabel className="font-normal text-sm text-gray-400">{username}</DropdownMenuLabel>}
-            <DropdownMenuSeparator className="bg-gray-700" />
+            {username && <DropdownMenuLabel className="font-normal text-sm text-muted-foreground">{username}</DropdownMenuLabel>}
+            <DropdownMenuSeparator className="bg-border" />
             <DropdownMenuItem 
-              className="text-red-500 cursor-pointer focus:text-red-500 focus:bg-gray-800"
+              className="text-destructive cursor-pointer focus:text-destructive focus:bg-secondary"
               onClick={handleSignOut}
             >
               <LogOut className="mr-2 h-4 w-4" />
@@ -132,7 +133,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
           className="rounded-full p-0 h-9 w-9 bg-wallet-card"
           onClick={handleMenuClick}
         >
-          <Menu className="h-5 w-5 text-gray-400" />
+          <Menu className="h-5 w-5 text-muted-foreground" />
         </Button>
       )}
     </header>

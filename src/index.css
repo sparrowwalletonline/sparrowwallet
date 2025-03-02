@@ -37,6 +37,36 @@
 
     --radius: 0.75rem;
   }
+
+  .light {
+    --background: 0 0% 98%;
+    --foreground: 220 13% 10%;
+    
+    --card: 0 0% 95%;
+    --card-foreground: 215 14% 15%;
+    
+    --popover: 0 0% 95%;
+    --popover-foreground: 215 14% 15%;
+    
+    --primary: 140 100% 40%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 210 10% 94%;
+    --secondary-foreground: 215 14% 15%;
+    
+    --muted: 210 10% 90%;
+    --muted-foreground: 215 14% 35%;
+    
+    --accent: 140 100% 40%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 220 13% 85%;
+    --input: 220 13% 90%;
+    --ring: 140 100% 40%;
+  }
 }
 
 @layer base {
@@ -45,14 +75,19 @@
   }
 
   body {
-    @apply bg-wallet-darkBg text-white font-sans antialiased;
+    @apply bg-background text-foreground font-sans antialiased;
     -webkit-tap-highlight-color: transparent;
   }
 }
 
-.wallet-card {
+.dark .wallet-card {
   background: #232733;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.light .wallet-card {
+  background: #FFFFFF;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .clipboard-animation {
@@ -70,11 +105,18 @@
   transition: transform 0.4s ease-out, opacity 0.4s ease-out;
 }
 
-.glass-morph {
+.dark .glass-morph {
   background: rgba(35, 39, 51, 0.8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(55, 59, 71, 0.2);
+}
+
+.light .glass-morph {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(200, 200, 200, 0.4);
 }
 
 @keyframes pulse {

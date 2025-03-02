@@ -35,8 +35,12 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
+  // Get the user's preferred color scheme
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const defaultTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
+
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme={defaultTheme} storageKey="wallet-theme" attribute="class">
       <MenuProvider>
         <WalletProvider>
           <Router>
