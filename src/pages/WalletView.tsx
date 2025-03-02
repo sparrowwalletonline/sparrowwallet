@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { WalletProvider, useWallet } from '@/contexts/WalletContext';
 import Header from '@/components/Header';
 import WalletBalance from '@/components/WalletBalance';
 import WalletActions from '@/components/WalletActions';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Home, RefreshCcw, Compass, Globe } from 'lucide-react';
+import { Search, Home, RefreshCcw, Compass, Globe, Shield, Plus, ChevronDown, Check, Bus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
-// Inner component that uses the wallet context
 const WalletViewContent: React.FC = () => {
   const { 
     hasWallet, 
@@ -18,22 +26,33 @@ const WalletViewContent: React.FC = () => {
     ethPrice, 
     cryptoPrices, 
     refreshPrices,
-    isRefreshingPrices 
+    isRefreshingPrices,
+    wallets,
+    activeWallet,
+    setActiveWallet,
+    addNewWallet
   } = useWallet();
   const navigate = useNavigate();
+  const [newWalletName, setNewWalletName] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  // Redirect if no wallet exists
   React.useEffect(() => {
     if (!hasWallet) {
       navigate('/');
     }
   }, [hasWallet, navigate]);
 
-  // Calculate USD values
   const btcValue = (btcBalance * btcPrice).toFixed(2);
   const ethValue = (ethBalance * ethPrice).toFixed(2);
   
-  // Updated cryptocurrency data that uses real-time prices
+  const handleAddWallet = () => {
+    if (newWalletName.trim()) {
+      addNewWallet(newWalletName.trim());
+      setNewWalletName('');
+      setIsDialogOpen(false);
+    }
+  };
+
   const cryptoData = [
     {
       symbol: "BTC",
@@ -97,7 +116,6 @@ const WalletViewContent: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-wallet-darkBg text-wallet-text">
       <Header title="Home" />
       
-      {/* Search Bar */}
       <div className="px-4 mb-4">
         <div className="flex items-center bg-wallet-card rounded-full px-4 py-2">
           <Search className="h-4 w-4 text-gray-400 mr-2" />
@@ -105,15 +123,63 @@ const WalletViewContent: React.FC = () => {
         </div>
       </div>
       
-      {/* Wallet Selector */}
       <div className="px-4 mb-4">
         <div className="flex items-center">
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-400">Main wallet</span>
-            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1 1L5 5L9 1" stroke="#8A8D97" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-2 bg-transparent hover:bg-wallet-card rounded-lg px-2 py-1 transition-colors">
+                <Shield className="h-4 w-4 text-green-500" />
+                <span className="text-xs text-gray-400">{activeWallet?.name || "Main wallet"}</span>
+                <ChevronDown className="h-3 w-3 text-gray-400" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="bg-gray-900 border border-gray-800 text-white z-50 min-w-[200px]">
+              {wallets.map((wallet) => (
+                <DropdownMenuItem 
+                  key={wallet.id} 
+                  className="flex items-center justify-between cursor-pointer hover:bg-gray-800 text-sm py-2"
+                  onClick={() => setActiveWallet(wallet.id)}
+                >
+                  <div className="flex items-center gap-2">
+                    <Shield className="h-4 w-4 text-green-500" />
+                    <span>{wallet.name}</span>
+                  </div>
+                  {wallet.isActive && <Check className="h-4 w-4 text-green-500" />}
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuSeparator className="bg-gray-800" />
+              <div className="p-2 gap-2 flex flex-col">
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" size="sm" className="w-full bg-gray-800 hover:bg-gray-700 border-gray-700 flex gap-2 text-white">
+                      <Plus className="h-4 w-4" />
+                      <span className="text-sm">Neue Wallet hinzufügen</span>
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-gray-900 border border-gray-800 text-white">
+                    <DialogHeader>
+                      <DialogTitle>Neue Wallet hinzufügen</DialogTitle>
+                    </DialogHeader>
+                    <Input
+                      placeholder="Wallet Name"
+                      value={newWalletName}
+                      onChange={(e) => setNewWalletName(e.target.value)}
+                      className="bg-gray-800 border-gray-700 text-white"
+                    />
+                    <DialogFooter>
+                      <Button variant="wallet" onClick={handleAddWallet}>
+                        Hinzufügen
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+                <Button variant="outline" size="sm" className="w-full bg-gray-800 hover:bg-gray-700 border-gray-700 flex gap-2 text-white">
+                  <Bus className="h-4 w-4" />
+                  <span className="text-sm">Wallets verwalten</span>
+                </Button>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
       
@@ -121,7 +187,6 @@ const WalletViewContent: React.FC = () => {
         <WalletBalance />
         <WalletActions />
         
-        {/* Tabs for Crypto/NFTs */}
         <div className="mt-6">
           <Tabs defaultValue="crypto" className="w-full">
             <div className="flex justify-between items-center">
@@ -140,7 +205,6 @@ const WalletViewContent: React.FC = () => {
                 </TabsTrigger>
               </TabsList>
               
-              {/* Refresh Button */}
               <Button
                 variant="ghost"
                 size="sm"
@@ -182,7 +246,6 @@ const WalletViewContent: React.FC = () => {
         </div>
       </div>
       
-      {/* Bottom Navigation */}
       <div className="mt-auto border-t border-gray-800">
         <div className="grid grid-cols-4 py-3">
           <NavItem icon={<Home className="h-5 w-5" />} label="Home" active />
@@ -225,7 +288,6 @@ const CryptoItem = ({
   changeColor: string,
   logoUrl: string
 }) => {
-  // Format price with commas
   const formattedPrice = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',

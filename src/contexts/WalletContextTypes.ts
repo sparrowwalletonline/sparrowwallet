@@ -2,6 +2,16 @@
 import { Session } from '@supabase/supabase-js';
 import { CryptoPrice } from '../utils/cryptoPriceUtils';
 
+export interface Wallet {
+  id: string;
+  name: string;
+  seedPhrase: string[];
+  walletAddress: string;
+  btcBalance: number;
+  ethBalance: number;
+  isActive: boolean;
+}
+
 export interface WalletContextType {
   hasWallet: boolean;
   seedPhrase: string[];
@@ -16,6 +26,8 @@ export interface WalletContextType {
   session: Session | null;
   isRefreshingPrices: boolean;
   cryptoPrices: Record<string, CryptoPrice>;
+  wallets: Wallet[];
+  activeWallet: Wallet | null;
   refreshPrices: () => Promise<void>;
   generateWallet: (stage?: string) => void;
   createWallet: () => void;
@@ -25,4 +37,6 @@ export interface WalletContextType {
   copyToClipboard: (text: string) => void;
   saveToSupabase: () => Promise<boolean>;
   loadFromSupabase: () => Promise<boolean>;
+  addNewWallet: (name: string) => void;
+  setActiveWallet: (walletId: string) => void;
 }
