@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useWallet } from '@/contexts/WalletContext';
 import { QRCodeSVG } from 'qrcode.react';
@@ -9,6 +8,7 @@ import { ArrowLeft, Search, Copy, AlertTriangle, X } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { copyToClipboard } from '@/utils/clipboardUtils';
 import { getQrCodeValue } from '@/utils/encryptionUtils';
+import { useTheme } from '@/components/ui/theme-provider';
 
 interface Token {
   id: string;
@@ -33,6 +33,7 @@ const WalletBalance: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [recipientAddress, setRecipientAddress] = useState('');
   const [amount, setAmount] = useState('');
+  const { theme } = useTheme();
   
   const formatAddress = (address: string) => {
     if (!address) return '';
@@ -82,7 +83,6 @@ const WalletBalance: React.FC = () => {
       };
     });
 
-  // Add the missing filteredTokens implementation
   const filteredTokens = tokens.filter(token => 
     token.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
     token.symbol.toLowerCase().includes(searchTerm.toLowerCase())
@@ -101,7 +101,6 @@ const WalletBalance: React.FC = () => {
     }
   }
 
-  // Add missing handleTokenSelect function
   const handleTokenSelect = (token: Token, action: 'send' | 'receive') => {
     setSelectedToken(token);
     setIsTokenSelectionOpen(false);
@@ -131,16 +130,13 @@ const WalletBalance: React.FC = () => {
     setIsBuyDialogOpen(true);
   };
 
-  // Add missing handleSetMaxAmount function
   const handleSetMaxAmount = () => {
     if (selectedToken) {
       setAmount(selectedToken.balance.toString());
     }
   };
 
-  // Add missing handleSend function
   const handleSend = () => {
-    // Implementation for sending tokens would go here
     toast({
       title: "Transaktion in Bearbeitung",
       description: `${amount} ${selectedToken?.symbol} werden an ${recipientAddress} gesendet.`,
@@ -173,7 +169,7 @@ const WalletBalance: React.FC = () => {
   }, [isReceiveDialogOpen, walletAddress, activeWallet]);
 
   return (
-    <div className="animate-fade-in w-full">
+    <div className="animate-fade-in w-full wallet-balance-wrapper">
       <div className="mb-1 px-1">
         <h2 className="text-3xl font-bold">{formatUSD(usdBalance)}</h2>
       </div>
@@ -185,7 +181,7 @@ const WalletBalance: React.FC = () => {
         <CryptoAction icon="earn" label="Earn" />
       </div>
       
-      <div className="mt-4 bg-[#232733] rounded-xl p-4 border border-gray-800">
+      <div className={`mt-4 rounded-xl p-4 border ${theme === 'dark' ? 'bg-[#232733] border-gray-800' : 'bg-white border-gray-200'}`}>
         <div className="flex items-center gap-3">
           <div className="flex-shrink-0">
             <img 
@@ -205,7 +201,7 @@ const WalletBalance: React.FC = () => {
       </div>
 
       <Dialog open={isTokenSelectionOpen} onOpenChange={setIsTokenSelectionOpen}>
-        <DialogContent fullScreen className="bg-gray-900 border border-gray-800 text-white p-0 max-w-full md:max-w-3xl overflow-hidden flex flex-col">
+        <DialogContent fullScreen className={`dialog-content max-w-full md:max-w-3xl overflow-hidden flex flex-col`}>
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800">
             <div className="flex items-center gap-3">
               <Button 
@@ -277,7 +273,7 @@ const WalletBalance: React.FC = () => {
       </Dialog>
 
       <Dialog open={isSendDialogOpen} onOpenChange={setIsSendDialogOpen}>
-        <DialogContent fullScreen className="bg-gray-900 border border-gray-800 text-white p-0 max-w-full md:max-w-3xl overflow-hidden flex flex-col">
+        <DialogContent fullScreen className={`dialog-content max-w-full md:max-w-3xl overflow-hidden flex flex-col`}>
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800">
             <div className="flex items-center gap-3">
               <Button 
@@ -354,7 +350,7 @@ const WalletBalance: React.FC = () => {
       </Dialog>
 
       <Dialog open={isReceiveDialogOpen} onOpenChange={setIsReceiveDialogOpen}>
-        <DialogContent fullScreen className="bg-gray-900 border border-gray-800 text-white p-0 max-w-full md:max-w-3xl overflow-hidden flex flex-col">
+        <DialogContent fullScreen className={`dialog-content max-w-full md:max-w-3xl overflow-hidden flex flex-col`}>
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800">
             <div className="flex items-center gap-3">
               <Button 
@@ -450,7 +446,7 @@ const WalletBalance: React.FC = () => {
       </Dialog>
 
       <Dialog open={isBuyDialogOpen} onOpenChange={setIsBuyDialogOpen}>
-        <DialogContent className="bg-gray-900 border border-gray-800 text-white sm:max-w-md">
+        <DialogContent className={`dialog-content sm:max-w-md`}>
           <DialogHeader>
             <DialogTitle className="text-xl">Kauf nicht verfügbar</DialogTitle>
           </DialogHeader>
@@ -479,6 +475,8 @@ interface CryptoActionProps {
 }
 
 const CryptoAction = ({ icon, label, onClick }: CryptoActionProps) => {
+  const { theme } = useTheme();
+  
   const getIcon = () => {
     switch(icon) {
       case 'send':
@@ -513,7 +511,7 @@ const CryptoAction = ({ icon, label, onClick }: CryptoActionProps) => {
   
   return (
     <button className="flex flex-col items-center" onClick={onClick}>
-      <div className="w-10 h-10 rounded-full bg-wallet-card flex items-center justify-center mb-1">
+      <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-1 crypto-action-button`}>
         {getIcon()}
       </div>
       <span className="text-xs">{label}</span>
