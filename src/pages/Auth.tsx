@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 
 const Auth: React.FC = () => {
@@ -17,39 +16,30 @@ const Auth: React.FC = () => {
   const navigate = useNavigate();
   const { hasWallet, loadFromSupabase, session, loadWalletFromUserAccount } = useWallet();
   
-  // Check if the user is already authenticated
   useEffect(() => {
     if (session) {
       checkUserWallet();
     }
   }, [session]);
   
-  // Function to check if the user has a wallet and redirect accordingly
   const checkUserWallet = async () => {
-    // Versuche zuerst, die Wallet-Adresse aus user_wallets zu laden
     const walletLoaded = await loadWalletFromUserAccount();
     
     if (walletLoaded) {
-      // Wallet-Adresse wurde erfolgreich geladen
       navigate('/wallet');
       return;
     }
     
-    // Wenn keine Wallet-Adresse gefunden wurde, versuche die Seed-Phrase zu laden
     if (hasWallet) {
-      // Benutzer hat bereits eine Wallet, leite zur Wallet-Ansicht weiter
       navigate('/wallet');
       return;
     }
     
-    // Versuche, Wallet aus Supabase zu laden
     const seedPhraseLoaded = await loadFromSupabase();
     
     if (seedPhraseLoaded) {
-      // Wallet wurde erfolgreich geladen, leite zur Wallet-Ansicht weiter
       navigate('/wallet');
     } else {
-      // Keine Wallet gefunden, leite zur Wallet-Erstellung weiter
       navigate('/wallet-choice');
     }
   };
@@ -60,7 +50,6 @@ const Auth: React.FC = () => {
     
     try {
       if (isLogin) {
-        // Login
         const { error } = await supabase.auth.signInWithPassword({
           email,
           password,
@@ -73,10 +62,8 @@ const Auth: React.FC = () => {
           description: "Du wurdest erfolgreich angemeldet",
         });
         
-        // After successful login, check if user has a wallet
         await checkUserWallet();
       } else {
-        // Signup
         const { error } = await supabase.auth.signUp({
           email,
           password,
@@ -89,8 +76,7 @@ const Auth: React.FC = () => {
           description: "Bitte überprüfe deine E-Mail, um die Registrierung abzuschließen",
         });
         
-        // For new users, we'll redirect them to wallet creation after they verify their email
-        // and log in for the first time
+        navigate('/wallet-choice');
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -109,8 +95,20 @@ const Auth: React.FC = () => {
     setIsLogin(!isLogin);
   };
   
+  const handleBackClick = () => {
+    navigate('/');
+  };
+  
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-wallet-darkBg p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-wallet-darkBg p-4 relative">
+      <button 
+        onClick={handleBackClick}
+        className="absolute left-6 top-6 text-white hover:text-gray-300 transition-colors"
+        aria-label="Zurück"
+      >
+        <ArrowLeft size={24} />
+      </button>
+      
       <div className="w-full max-w-md bg-wallet-card p-8 rounded-xl shadow-lg border border-gray-800">
         <h1 className="text-2xl font-bold text-center text-white mb-6">
           {isLogin ? 'Anmelden' : 'Registrieren'}
