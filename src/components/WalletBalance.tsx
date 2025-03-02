@@ -106,6 +106,25 @@ const WalletBalance: React.FC = () => {
       return;
     }
 
+    const amountValue = parseFloat(amount);
+    if (isNaN(amountValue) || amountValue <= 0) {
+      toast({
+        title: "Fehler",
+        description: "Bitte gib einen gültigen Betrag ein.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (amountValue > selectedToken.balance) {
+      toast({
+        title: "Nicht genügend Guthaben",
+        description: `Du hast nicht genügend ${selectedToken.symbol} auf deiner Wallet. Verfügbares Guthaben: ${selectedToken.balance} ${selectedToken.symbol}`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     toast({
       title: "Transaktion initiiert",
       description: `Dies ist eine Demo. ${amount} ${selectedToken.symbol} würden an ${recipientAddress} gesendet werden.`,
