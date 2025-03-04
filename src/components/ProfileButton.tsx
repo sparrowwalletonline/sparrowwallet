@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { UserRound } from 'lucide-react';
+import { UserRound, Shield, CreditCard, Settings, HelpCircle, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -37,10 +37,41 @@ const ProfileButton = () => {
           </p>
         </div>
         <DropdownMenuSeparator />
+        
+        <DropdownMenuItem onClick={() => navigate('/profile-settings')}>
+          <UserRound className="mr-2 h-4 w-4" />
+          Profil Einstellungen
+        </DropdownMenuItem>
+        
+        <DropdownMenuItem onClick={() => navigate('/payment-methods')}>
+          <CreditCard className="mr-2 h-4 w-4" />
+          Zahlungsmethoden
+        </DropdownMenuItem>
+        
         <DropdownMenuItem onClick={() => navigate('/security-settings')}>
+          <Shield className="mr-2 h-4 w-4" />
           Sicherheitseinstellungen
         </DropdownMenuItem>
+        
+        <DropdownMenuItem onClick={() => navigate('/app-settings')}>
+          <Settings className="mr-2 h-4 w-4" />
+          App-Einstellungen
+        </DropdownMenuItem>
+        
         <DropdownMenuSeparator />
+        
+        <DropdownMenuItem onClick={() => navigate('/help-center')}>
+          <HelpCircle className="mr-2 h-4 w-4" />
+          Hilfe & Support
+        </DropdownMenuItem>
+        
+        <DropdownMenuItem onClick={() => navigate('/about')}>
+          <Info className="mr-2 h-4 w-4" />
+          Über die App
+        </DropdownMenuItem>
+        
+        <DropdownMenuSeparator />
+        
         <DropdownMenuItem onClick={handleLogout}>
           Abmelden
         </DropdownMenuItem>
