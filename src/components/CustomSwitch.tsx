@@ -18,7 +18,11 @@ const CustomSwitch = React.forwardRef<HTMLButtonElement, CustomSwitchProps>(
         data-state={checked ? "checked" : "unchecked"}
         disabled={disabled}
         ref={ref}
-        onClick={() => onCheckedChange(!checked)}
+        onClick={() => {
+          if (!disabled) {
+            onCheckedChange(!checked);
+          }
+        }}
         className={cn(
           "relative inline-flex h-8 px-3 shrink-0 cursor-pointer rounded-md border font-medium text-sm items-center justify-center transition-colors duration-200",
           "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500",

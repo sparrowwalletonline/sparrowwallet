@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Copy, Eye, EyeOff, Lock, Timer, Smartphone, KeyRound, Fingerprint } from 'lucide-react';
@@ -20,26 +19,21 @@ const SecuritySettings = () => {
   const [timeLeft, setTimeLeft] = useState(5);
   const [buttonPressed, setButtonPressed] = useState(false);
   
-  // Pin settings
   const [pinEnabled, setPinEnabled] = useState(false);
   const [pin, setPin] = useState('');
   const [confirmPin, setConfirmPin] = useState('');
   const [showPinFields, setShowPinFields] = useState(false);
   
-  // Password settings
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   
-  // Auto-logout timer
   const [autoLogoutEnabled, setAutoLogoutEnabled] = useState(false);
   const [logoutTime, setLogoutTime] = useState(15);
   
-  // Biometric authentication
   const [biometricEnabled, setBiometricEnabled] = useState(false);
   const [biometricAvailable, setBiometricAvailable] = useState(true);
   
-  // Device management
   const [devices, setDevices] = useState([
     { id: '1', name: 'Aktuelles Gerät', lastActive: 'Jetzt', isCurrent: true },
     { id: '2', name: 'iPhone 13', lastActive: 'Vor 2 Tagen', isCurrent: false },
@@ -63,10 +57,7 @@ const SecuritySettings = () => {
     };
   }, [timeLeft, buttonPressed]);
 
-  // Check if biometric auth is available
   useEffect(() => {
-    // In a real app, this would check device capabilities
-    // For now, we'll just simulate it's available
     setBiometricAvailable(true);
   }, []);
 
@@ -93,13 +84,17 @@ const SecuritySettings = () => {
     setTimeLeft(5);
   };
   
-  const handlePinToggle = () => {
-    if (pinEnabled) {
+  const handlePinToggle = (checked: boolean) => {
+    if (pinEnabled && !checked) {
       setPinEnabled(false);
       setShowPinFields(false);
       setPin('');
       setConfirmPin('');
-    } else {
+      toast({
+        title: "PIN deaktiviert",
+        description: "Ihre Sicherheits-PIN wurde erfolgreich deaktiviert.",
+      });
+    } else if (!pinEnabled && checked) {
       setShowPinFields(true);
     }
   };
@@ -144,7 +139,6 @@ const SecuritySettings = () => {
     setBiometricEnabled(!biometricEnabled);
     
     if (!biometricEnabled) {
-      // In a real app, this would request permission and set up biometric auth
       toast({
         title: "Biometrische Authentifizierung aktiviert",
         description: "Sie können nun Ihr Gesicht oder Ihren Fingerabdruck verwenden, um Ihre Wallet zu öffnen.",
@@ -292,7 +286,10 @@ const SecuritySettings = () => {
                     <h2 className="text-lg font-medium">Sicherheits-PIN einrichten</h2>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <CustomSwitch checked={pinEnabled} onCheckedChange={handlePinToggle} />
+                    <CustomSwitch 
+                      checked={pinEnabled} 
+                      onCheckedChange={handlePinToggle} 
+                    />
                   </div>
                 </div>
                 
@@ -304,18 +301,35 @@ const SecuritySettings = () => {
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="pin">PIN eingeben (min. 4 Ziffern)</Label>
-                      <Input id="pin" type="password" value={pin} onChange={(e) => setPin(e.target.value)} maxLength={8} placeholder="PIN eingeben" />
+                      <Input 
+                        id="pin" 
+                        type="password" 
+                        value={pin} 
+                        onChange={(e) => setPin(e.target.value)} 
+                        maxLength={8} 
+                        placeholder="PIN eingeben"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="confirmPin">PIN bestätigen</Label>
-                      <Input id="confirmPin" type="password" value={confirmPin} onChange={(e) => setConfirmPin(e.target.value)} maxLength={8} placeholder="PIN bestätigen" />
+                      <Input 
+                        id="confirmPin" 
+                        type="password" 
+                        value={confirmPin} 
+                        onChange={(e) => setConfirmPin(e.target.value)} 
+                        maxLength={8} 
+                        placeholder="PIN bestätigen"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                      />
                     </div>
                     <Button onClick={savePin} className="w-full">PIN speichern</Button>
                   </div>
                 )}
               </div>
               
-              {/* New Biometric Authentication Section */}
               <div className="pt-4 border-t">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
