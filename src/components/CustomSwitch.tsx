@@ -1,7 +1,6 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { Check } from "lucide-react";
 
 interface CustomSwitchProps extends React.HTMLAttributes<HTMLButtonElement> {
   checked: boolean;
@@ -21,11 +20,11 @@ const CustomSwitch = React.forwardRef<HTMLButtonElement, CustomSwitchProps>(
         ref={ref}
         onClick={() => onCheckedChange(!checked)}
         className={cn(
-          "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-md transition-colors",
-          "border-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500",
+          "relative inline-flex h-[30px] w-[60px] shrink-0 cursor-pointer rounded-full transition-colors duration-200",
+          "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500",
           checked 
-            ? "bg-blue-600 border-blue-600" 
-            : "bg-gray-200 border-gray-200 dark:bg-gray-700 dark:border-gray-700",
+            ? "bg-[#007AFF]" 
+            : "bg-gray-200 dark:bg-gray-600",
           disabled && "opacity-50 cursor-not-allowed",
           className
         )}
@@ -33,13 +32,11 @@ const CustomSwitch = React.forwardRef<HTMLButtonElement, CustomSwitchProps>(
       >
         <span
           className={cn(
-            "pointer-events-none flex items-center justify-center rounded-full bg-white shadow-lg ring-0 transition-transform",
-            "h-5 w-5 transform",
-            checked ? "translate-x-5" : "translate-x-0"
+            "pointer-events-none flex items-center justify-center rounded-full bg-white shadow-[0_2px_5px_rgba(0,0,0,0.1)]",
+            "h-[26px] w-[26px] transform transition-transform duration-200",
+            checked ? "translate-x-[32px]" : "translate-x-[2px]"
           )}
-        >
-          {checked && <Check className="h-3 w-3 text-blue-600" />}
-        </span>
+        />
       </button>
     );
   }
