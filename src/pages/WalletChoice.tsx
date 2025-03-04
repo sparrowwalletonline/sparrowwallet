@@ -67,12 +67,12 @@ const WalletChoice: React.FC = () => {
   }
   
   return (
-    <div className="min-h-screen flex flex-col items-center justify-between bg-wallet-darkBg text-white p-6 relative">
+    <div className="min-h-screen flex flex-col items-center justify-between bg-wallet-darkBg text-white p-4 sm:p-6 relative">
       <div className="w-full relative">
         <Header title="Wallet auswählen" />
         <button 
           onClick={handleBackClick}
-          className="absolute left-4 top-0 bottom-0 my-auto text-white hover:text-gray-300 transition-colors h-9 w-9 flex items-center justify-center"
+          className="absolute left-2 sm:left-4 top-0 bottom-0 my-auto text-white hover:text-gray-300 transition-colors h-9 w-9 flex items-center justify-center"
           aria-label="Back to landing page"
         >
           <ArrowLeft size={24} />
@@ -81,17 +81,17 @@ const WalletChoice: React.FC = () => {
       
       <div className="flex-1"></div>
       
-      <div className="flex flex-col items-center justify-center gap-6 w-full max-w-md mb-auto">
-        <WalletLogo className="w-28 h-28 mb-6" color="green" />
-        <h1 className="font-heading text-3xl font-bold text-center">Trust Wallet</h1>
+      <div className="flex flex-col items-center justify-center gap-4 sm:gap-6 w-full max-w-md mb-auto pt-4">
+        <WalletLogo className="w-20 h-20 sm:w-28 sm:h-28 mb-4 sm:mb-6" color="green" />
+        <h1 className="font-heading text-2xl sm:text-3xl font-bold text-center">Trust Wallet</h1>
       </div>
       
       <div className="flex-1"></div>
       
-      <div className="flex flex-col w-full max-w-md gap-4 mb-10">
+      <div className="flex flex-col w-full max-w-md gap-3 sm:gap-4 mb-6 sm:mb-10">
         <Button 
           onClick={handleCreateWallet}
-          className="w-full py-6 text-base bg-wallet-blue hover:bg-wallet-darkBlue text-white font-medium"
+          className="w-full py-4 sm:py-6 text-sm sm:text-base bg-wallet-blue hover:bg-wallet-darkBlue text-white font-medium"
           disabled={isLoading}
         >
           {isLoading ? (
@@ -107,7 +107,7 @@ const WalletChoice: React.FC = () => {
         <Button 
           onClick={handleImportWallet}
           variant="ghost" 
-          className="w-full py-2 text-base text-white hover:bg-gray-800/30"
+          className="w-full py-1 sm:py-2 text-sm sm:text-base text-white hover:bg-gray-800/30"
           disabled={isLoading || isImportLoading}
         >
           {isImportLoading ? (
@@ -121,7 +121,7 @@ const WalletChoice: React.FC = () => {
         </Button>
       </div>
       
-      <div className="text-center text-xs text-gray-500 mt-4">
+      <div className="text-center text-xs text-gray-500 mt-2 sm:mt-4">
         © 2025 Trust Wallet
       </div>
     </div>

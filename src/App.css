@@ -336,3 +336,51 @@ button:hover {
   transform: scale(0.9);
   transition: opacity 200ms, transform 200ms;
 }
+
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+  .transition-effect {
+    transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1), opacity 600ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  button.trust-button {
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .step-number {
+    height: 1.75rem;
+    width: 1.75rem;
+    font-size: 0.75rem;
+  }
+  
+  .wallet-card {
+    padding: 1rem;
+    border-radius: 0.75rem;
+  }
+  
+  .feature-card {
+    padding: 1rem;
+  }
+  
+  .tutorial-popover {
+    max-width: 90vw;
+  }
+}
+
+/* Fix for iOS safari viewport height issues */
+@supports (-webkit-touch-callout: none) {
+  .min-h-screen {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Fix tap highlight on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Improve button tap area on mobile */
+button, a {
+  touch-action: manipulation;
+}

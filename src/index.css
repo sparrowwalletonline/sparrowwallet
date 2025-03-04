@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -74,9 +73,37 @@
     @apply border-border;
   }
 
+  html {
+    -webkit-text-size-adjust: 100%;
+    height: 100%;
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
     -webkit-tap-highlight-color: transparent;
+    min-height: 100vh;
+    /* Mobile viewport fix */
+    min-height: -webkit-fill-available;
+  }
+  
+  /* Safari mobile viewport height fix */
+  @supports (-webkit-touch-callout: none) {
+    body, .min-h-screen {
+      min-height: -webkit-fill-available;
+    }
+  }
+
+  /* Improve form elements on mobile */
+  input, select, textarea, button {
+    font-size: 16px; /* Prevents iOS zooming on input focus */
+    appearance: none;
+    border-radius: 0; /* Removes iOS default styling */
+  }
+
+  /* Better touch targets for mobile */
+  button, a, [role="button"] {
+    cursor: pointer;
+    touch-action: manipulation;
   }
 }
 
@@ -162,4 +189,22 @@
 
 .dark [data-state="active"].tabs-trigger {
   @apply bg-[#1A1F2C] text-white;
+}
+
+@media (max-width: 640px) {
+  .wallet-card {
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+  }
+  
+  .dark .glass-morph, .light .glass-morph {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  
+  /* Improve button tap targets on mobile */
+  button, [role="button"], a {
+    min-height: 44px;
+    min-width: 44px;
+  }
 }

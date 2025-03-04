@@ -133,40 +133,40 @@ const SeedPhrasePage: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col bg-wallet-darkBg text-white p-6 animate-fade-in">
+    <div className="min-h-screen flex flex-col bg-wallet-darkBg text-white p-4 sm:p-6 animate-fade-in">
       <div className="w-full relative">
         <Header title="Wallet erstellen" />
         <button 
           onClick={handleBackClick}
-          className="absolute left-4 top-0 bottom-0 my-auto text-white hover:text-gray-300 transition-colors h-9 w-9 flex items-center justify-center"
+          className="absolute left-2 sm:left-4 top-0 bottom-0 my-auto text-white hover:text-gray-300 transition-colors h-9 w-9 flex items-center justify-center"
           aria-label="Back"
         >
           <ArrowLeft size={24} />
         </button>
       </div>
       
-      <div className="flex-1 flex flex-col items-center justify-center py-6">
+      <div className="flex-1 flex flex-col items-center justify-center py-4 sm:py-6">
         <img 
           src="/lovable-uploads/592e4215-1f4a-4c0d-a1e9-504a24191442.png" 
           alt="Wallet Logo" 
-          className="w-24 h-24 mb-6"
+          className="w-16 h-16 sm:w-24 sm:h-24 mb-4 sm:mb-6"
         />
         
-        <div className="w-full max-w-sm space-y-6">
+        <div className="w-full max-w-sm space-y-4 sm:space-y-6">
           <div className="text-left">
-            <h2 className="text-xl font-bold mb-2">Deine Seed Phrase</h2>
-            <p className="text-wallet-gray text-sm mb-4">
+            <h2 className="text-lg sm:text-xl font-bold mb-2">Deine Seed Phrase</h2>
+            <p className="text-wallet-gray text-xs sm:text-sm mb-3 sm:mb-4">
               Schreibe diese Wörter in der richtigen Reihenfolge auf. Bewahre sie sicher auf und teile sie mit niemandem.
             </p>
           </div>
           
           <SeedPhraseGenerator />
           
-          <div className="bg-wallet-card rounded-lg p-4 border border-gray-700 shadow-sm">
-            <div className="flex items-start gap-3">
-              <Shield className="h-5 w-5 text-wallet-green mt-0.5 flex-shrink-0" />
+          <div className="bg-wallet-card rounded-lg p-3 sm:p-4 border border-gray-700 shadow-sm">
+            <div className="flex items-start gap-2 sm:gap-3">
+              <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-wallet-green mt-0.5 flex-shrink-0" />
               <div>
-                <h3 className="font-medium text-sm mb-1">Bewahre deine Phrase sicher auf</h3>
+                <h3 className="font-medium text-xs sm:text-sm mb-1">Bewahre deine Phrase sicher auf</h3>
                 <p className="text-xs text-wallet-gray">
                   Deine Seed Phrase ist der einzige Weg, um deine Wallet wiederherzustellen, falls du den Zugriff verlierst. 
                   Schreibe sie auf und bewahre sie an einem sicheren Ort auf.
@@ -175,7 +175,7 @@ const SeedPhrasePage: React.FC = () => {
             </div>
           </div>
           
-          <div className="space-y-3 mt-4">
+          <div className="space-y-3 mt-3 sm:mt-4">
             <label className="flex items-start gap-2 cursor-pointer">
               <div className="flex items-center h-5 mt-0.5">
                 <input
@@ -185,7 +185,7 @@ const SeedPhrasePage: React.FC = () => {
                   className="h-4 w-4 rounded border-gray-600 text-wallet-blue focus:ring-wallet-blue"
                 />
               </div>
-              <span className="text-sm text-wallet-gray">
+              <span className="text-xs sm:text-sm text-wallet-gray">
                 Ich habe die Seed Phrase an einem sicheren Ort gespeichert
               </span>
             </label>
@@ -199,7 +199,7 @@ const SeedPhrasePage: React.FC = () => {
                   className="h-4 w-4 rounded border-gray-600 text-wallet-blue focus:ring-wallet-blue"
                 />
               </div>
-              <span className="text-sm text-wallet-gray">
+              <span className="text-xs sm:text-sm text-wallet-gray">
                 Ich stimme den <Link to="/terms" className="text-wallet-blue underline">Nutzungsbedingungen</Link> zu
               </span>
             </label>
@@ -207,7 +207,7 @@ const SeedPhrasePage: React.FC = () => {
           
           <Button 
             onClick={handleConfirm}
-            className="w-full py-6 bg-wallet-blue hover:bg-wallet-darkBlue text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-4 sm:py-6 bg-wallet-blue hover:bg-wallet-darkBlue text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={!savedPhrase || !agreedToTerms || isConfirming}
           >
             {isConfirming ? (

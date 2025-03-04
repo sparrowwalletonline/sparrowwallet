@@ -170,38 +170,38 @@ const SeedPhraseValidation: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col bg-wallet-darkBg text-white p-6 animate-fade-in">
+    <div className="min-h-screen flex flex-col bg-wallet-darkBg text-white p-4 sm:p-6 animate-fade-in">
       <div className="w-full relative">
         <Header title="Wallet erstellen" />
         <button 
           onClick={handleBackClick}
-          className="absolute left-4 top-0 bottom-0 my-auto text-white hover:text-gray-300 transition-colors h-9 w-9 flex items-center justify-center"
+          className="absolute left-2 sm:left-4 top-0 bottom-0 my-auto text-white hover:text-gray-300 transition-colors h-9 w-9 flex items-center justify-center"
           aria-label="Back"
         >
           <ArrowLeft size={24} />
         </button>
       </div>
       
-      <div className="flex-1 flex flex-col items-center justify-center py-6">
+      <div className="flex-1 flex flex-col items-center justify-center py-4 sm:py-6">
         <img 
           src="/lovable-uploads/592e4215-1f4a-4c0d-a1e9-504a24191442.png" 
           alt="Wallet Logo" 
-          className="w-24 h-24 mb-6"
+          className="w-16 h-16 sm:w-24 sm:h-24 mb-4 sm:mb-6"
         />
         
-        <div className="w-full max-w-sm space-y-6">
+        <div className="w-full max-w-sm space-y-4 sm:space-y-6">
           <div className="text-left">
-            <h2 className="text-xl font-bold mb-2">Bestätige deine Seed Phrase</h2>
-            <p className="text-wallet-gray text-sm mb-4">
+            <h2 className="text-lg sm:text-xl font-bold mb-2">Bestätige deine Seed Phrase</h2>
+            <p className="text-wallet-gray text-xs sm:text-sm mb-3 sm:mb-4">
               Um sicherzustellen, dass du deine Seed Phrase korrekt aufgeschrieben hast, 
               gib bitte die folgenden Wörter ein:
             </p>
           </div>
           
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {selectedWords.map((item, index) => (
-              <div key={index} className="space-y-2">
-                <label className="block text-sm text-wallet-gray font-medium">
+              <div key={index} className="space-y-1 sm:space-y-2">
+                <label className="block text-xs sm:text-sm text-wallet-gray font-medium">
                   Wort #{item.index + 1}:
                 </label>
                 <Input
@@ -210,17 +210,17 @@ const SeedPhraseValidation: React.FC = () => {
                   onChange={(e) => handleInputChange(index, e.target.value)}
                   placeholder={`Gib das ${item.index + 1}. Wort ein`}
                   disabled={validationStatus !== 'idle'}
-                  className="bg-wallet-card border-gray-700 text-white"
+                  className="bg-wallet-card border-gray-700 text-white text-sm h-10 sm:h-12"
                 />
               </div>
             ))}
           </div>
           
-          <div className="bg-wallet-card rounded-lg p-4 border border-gray-700 shadow-sm">
-            <div className="flex items-start gap-3">
-              <Shield className="h-5 w-5 text-wallet-green mt-0.5 flex-shrink-0" />
+          <div className="bg-wallet-card rounded-lg p-3 sm:p-4 border border-gray-700 shadow-sm">
+            <div className="flex items-start gap-2 sm:gap-3">
+              <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-wallet-green mt-0.5 flex-shrink-0" />
               <div>
-                <h3 className="font-medium text-sm mb-1">Wichtiger Hinweis</h3>
+                <h3 className="font-medium text-xs sm:text-sm mb-1">Wichtiger Hinweis</h3>
                 <p className="text-xs text-wallet-gray">
                   Dies ist der letzte Schritt zur Erstellung deiner Wallet. 
                   Nach erfolgreicher Validierung wird deine Wallet aktiviert.
@@ -231,7 +231,7 @@ const SeedPhraseValidation: React.FC = () => {
           
           <Button 
             onClick={validateInputs}
-            className="w-full py-6 bg-wallet-blue hover:bg-wallet-darkBlue text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-4 sm:py-6 bg-wallet-blue hover:bg-wallet-darkBlue text-white text-sm sm:text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={userInputs.some(input => !input.trim()) || validationStatus !== 'idle'}
           >
             {getButtonIcon()}
