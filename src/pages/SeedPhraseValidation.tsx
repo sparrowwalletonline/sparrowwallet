@@ -170,12 +170,12 @@ const SeedPhraseValidation: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col bg-wallet-darkBg text-white p-4 sm:p-6 animate-fade-in">
+    <div className="min-h-screen flex flex-col bg-wallet-darkBg text-white p-4 sm:p-6 animate-fade-in page-enter safe-area-inset-bottom">
       <div className="w-full relative">
         <Header title="Wallet erstellen" />
         <button 
           onClick={handleBackClick}
-          className="absolute left-2 sm:left-4 top-0 bottom-0 my-auto text-white hover:text-gray-300 transition-colors h-9 w-9 flex items-center justify-center"
+          className="absolute left-2 sm:left-4 top-0 bottom-0 my-auto text-white hover:text-gray-300 transition-colors h-10 w-10 flex items-center justify-center touch-manipulation"
           aria-label="Back"
         >
           <ArrowLeft size={24} />
@@ -189,7 +189,7 @@ const SeedPhraseValidation: React.FC = () => {
           className="w-16 h-16 sm:w-24 sm:h-24 mb-4 sm:mb-6"
         />
         
-        <div className="w-full max-w-sm space-y-4 sm:space-y-6">
+        <div className="w-full max-w-sm space-y-4 sm:space-y-6 px-1">
           <div className="text-left">
             <h2 className="text-lg sm:text-xl font-bold mb-2">Bestätige deine Seed Phrase</h2>
             <p className="text-wallet-gray text-xs sm:text-sm mb-3 sm:mb-4">
@@ -210,7 +210,7 @@ const SeedPhraseValidation: React.FC = () => {
                   onChange={(e) => handleInputChange(index, e.target.value)}
                   placeholder={`Gib das ${item.index + 1}. Wort ein`}
                   disabled={validationStatus !== 'idle'}
-                  className="bg-wallet-card border-gray-700 text-white text-sm h-10 sm:h-12"
+                  className="bg-wallet-card border-gray-700 text-white text-sm h-10 sm:h-12 touch-manipulation"
                 />
               </div>
             ))}
@@ -231,7 +231,7 @@ const SeedPhraseValidation: React.FC = () => {
           
           <Button 
             onClick={validateInputs}
-            className="w-full py-4 sm:py-6 bg-wallet-blue hover:bg-wallet-darkBlue text-white text-sm sm:text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 sm:py-6 bg-wallet-blue hover:bg-wallet-darkBlue text-white text-sm sm:text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed min-h-[50px] touch-manipulation"
             disabled={userInputs.some(input => !input.trim()) || validationStatus !== 'idle'}
           >
             {getButtonIcon()}

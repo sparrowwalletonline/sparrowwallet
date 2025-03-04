@@ -92,6 +92,10 @@
     body, .min-h-screen {
       min-height: -webkit-fill-available;
     }
+    
+    .safe-area-inset-bottom {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
   }
 
   /* Improve form elements on mobile */
@@ -104,6 +108,12 @@
   /* Better touch targets for mobile */
   button, a, [role="button"] {
     cursor: pointer;
+    touch-action: manipulation;
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .touch-manipulation {
     touch-action: manipulation;
   }
 }
@@ -233,11 +243,5 @@
   .dark .glass-morph, .light .glass-morph {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-  }
-  
-  /* Improve button tap targets on mobile */
-  button, [role="button"], a {
-    min-height: 44px;
-    min-width: 44px;
   }
 }

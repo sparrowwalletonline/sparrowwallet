@@ -41,9 +41,9 @@ const GenerateWallet: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col px-4 page-enter">
-      <div className="flex-1 flex flex-col items-center justify-center gap-6 sm:gap-8 py-6 sm:py-8">
-        <WalletLogo className="animate-scale-in w-20 h-20 sm:w-24 sm:h-24" />
+    <div className="min-h-screen flex flex-col px-4 page-enter safe-area-inset-bottom">
+      <div className="flex-1 flex flex-col items-center justify-center gap-5 sm:gap-8 py-6 sm:py-8">
+        <WalletLogo className="animate-scale-in w-16 h-16 sm:w-24 sm:h-24" />
         
         <div className="w-full max-w-md">
           <SeedPhraseGenerator />
@@ -51,7 +51,7 @@ const GenerateWallet: React.FC = () => {
         
         <div className="bg-blue-50 rounded-lg p-3 sm:p-4 border border-blue-100 max-w-md w-full">
           <div className="flex items-start gap-2 sm:gap-3">
-            <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-wallet-blue mt-0.5" />
+            <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-wallet-blue mt-0.5 flex-shrink-0" />
             <div>
               <h3 className="font-medium text-xs sm:text-sm mb-1">Keep your phrase safe</h3>
               <p className="text-xs text-wallet-gray">
@@ -65,7 +65,7 @@ const GenerateWallet: React.FC = () => {
         <div className="flex w-full max-w-md gap-3 sm:gap-4">
           <Button 
             onClick={handleCancel}
-            className="flex-1 h-10 sm:h-12 bg-gray-200 hover:bg-gray-300 text-gray-800 shadow-sm text-sm sm:text-base"
+            className="flex-1 h-10 sm:h-12 bg-gray-200 hover:bg-gray-300 text-gray-800 shadow-sm text-sm sm:text-base min-h-[44px] touch-manipulation"
             variant="outline"
           >
             <X size={16} className="mr-1 sm:mr-2" /> Cancel
@@ -73,7 +73,7 @@ const GenerateWallet: React.FC = () => {
           
           <Button 
             onClick={handleCreateWallet}
-            className="flex-1 h-10 sm:h-12 bg-wallet-blue hover:bg-wallet-darkBlue shadow-sm text-sm sm:text-base"
+            className="flex-1 h-10 sm:h-12 bg-wallet-blue hover:bg-wallet-darkBlue shadow-sm text-sm sm:text-base min-h-[44px] touch-manipulation"
             disabled={seedPhrase.length === 0}
           >
             Create Wallet

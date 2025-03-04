@@ -32,11 +32,11 @@ const CongratsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-wallet-darkBg text-white p-4 sm:p-6 page-enter">
-      <div className="w-full max-w-md mx-auto flex flex-col items-center justify-center text-center">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-wallet-darkBg text-white p-4 sm:p-6 page-enter safe-area-inset-bottom">
+      <div className="w-full max-w-md mx-auto flex flex-col items-center justify-center text-center px-4">
         <div className={`transform transition-all duration-700 ${iconVisible ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}>
           <CheckCircle 
-            className="h-20 w-20 sm:h-24 sm:w-24 text-wallet-green mb-4 sm:mb-6 animate-pulse" 
+            className="h-16 w-16 sm:h-24 sm:w-24 text-wallet-green mb-4 sm:mb-6 animate-pulse" 
             strokeWidth={1.5}
             style={{
               filter: "drop-shadow(0 0 10px rgba(0, 255, 95, 0.7))",
@@ -46,9 +46,9 @@ const CongratsPage: React.FC = () => {
         </div>
         
         <div className={`transform transition-all duration-500 ${textVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Herzlichen Glückwunsch!</h1>
+          <h1 className="text-xl sm:text-3xl font-bold mb-2">Herzlichen Glückwunsch!</h1>
           
-          <p className="text-base sm:text-lg text-wallet-gray mb-6 sm:mb-8">
+          <p className="text-sm sm:text-lg text-wallet-gray mb-5 sm:mb-8">
             Deine Wallet wurde erstellt!
           </p>
         </div>
@@ -57,7 +57,7 @@ const CongratsPage: React.FC = () => {
           <Button 
             onClick={handleOpenWallet}
             variant="wallet"
-            className="w-full px-4 sm:px-6 py-4 sm:py-6 text-base sm:text-lg"
+            className="w-full px-4 py-3 sm:px-6 sm:py-6 text-base sm:text-lg min-h-[50px] touch-manipulation"
           >
             Wallet öffnen!
           </Button>
