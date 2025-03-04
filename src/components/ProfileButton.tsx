@@ -26,23 +26,23 @@ const ProfileButton = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 h-10 w-10 touch-manipulation">
           <UserRound className="h-5 w-5" />
-          <span className="sr-only">Profile</span>
+          <span className="sr-only">Profil</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <div className="px-2 py-1.5">
-          <p className="text-sm font-medium">Account</p>
+          <p className="text-sm font-medium">Konto</p>
           <p className="text-xs text-muted-foreground truncate max-w-[200px]">
-            {session?.user?.email || 'User'}
+            {session?.user?.email || 'Benutzer'}
           </p>
         </div>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => navigate('/seed-phrase')}>
-          Security Settings
+        <DropdownMenuItem onClick={() => navigate('/security-settings')}>
+          Sicherheitseinstellungen
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout}>
-          Logout
+          Abmelden
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

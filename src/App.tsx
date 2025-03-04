@@ -16,6 +16,7 @@ import BrowserView from "./pages/BrowserView";
 import Terms from "./pages/Terms";
 import Auth from "./pages/Auth";
 import CryptoDetailView from "./pages/CryptoDetailView";
+import SecuritySettings from "./pages/SecuritySettings";
 import { MenuProvider } from "./contexts/MenuContext";
 import { WalletProvider, useWallet } from "./contexts/WalletContext";
 import { TutorialProvider } from "./contexts/TutorialContext";
@@ -97,6 +98,11 @@ function App() {
                 <Route path="/congrats" element={
                   <PrivateRoute>
                     <CongratsPage />
+                  </PrivateRoute>
+                } />
+                <Route path="/security-settings" element={
+                  <PrivateRoute>
+                    <SecuritySettings />
                   </PrivateRoute>
                 } />
                 <Route path="*" element={<NotFound />} />
