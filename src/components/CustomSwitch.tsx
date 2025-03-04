@@ -29,15 +29,7 @@ const CustomSwitch = React.forwardRef<HTMLButtonElement, CustomSwitchProps>(
           className
         )}
         {...props}
-      >
-        <span
-          className={cn(
-            "pointer-events-none absolute top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full bg-white shadow-[0_1px_4px_rgba(0,0,0,0.2)]",
-            "h-[14px] w-[14px] transform transition-transform duration-200",
-            checked ? "translate-x-[20px]" : "translate-x-[2px]"
-          )}
-        />
-      </button>
+      />
     );
   }
 );
