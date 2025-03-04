@@ -9,14 +9,23 @@ export const saveWalletToSupabase = async (
   session: Session | null, 
   seedPhrase: string[]
 ): Promise<boolean> => {
-  if (!session?.user || seedPhrase.length < 12) {
-    console.log("Cannot save to Supabase: No user session or invalid seed phrase");
-    console.log("Session:", !!session);
-    console.log("Seed phrase length:", seedPhrase.length);
+  if (!session?.user) {
+    console.log("Cannot save to Supabase: No user session");
+    toast({
+      title: "Fehler",
+      description: "Du musst angemeldet sein, um zu speichern",
+      variant: "destructive",
+    });
+    return false;
+  }
+  
+  if (!seedPhrase || seedPhrase.length < 12) {
+    console.log("Cannot save to Supabase: Invalid seed phrase");
+    console.log("Seed phrase length:", seedPhrase ? seedPhrase.length : 0);
     
     toast({
       title: "Fehler",
-      description: session ? "Ungültige Seed Phrase" : "Du musst angemeldet sein, um zu speichern",
+      description: "Ungültige Seed Phrase",
       variant: "destructive",
     });
     return false;
@@ -25,6 +34,16 @@ export const saveWalletToSupabase = async (
   try {
     console.log("Encrypting and saving seed phrase to Supabase");
     const encryptedPhrase = encryptSeedPhrase(seedPhrase);
+    
+    if (!encryptedPhrase) {
+      console.error("Error: Failed to encrypt seed phrase");
+      toast({
+        title: "Fehler beim Speichern",
+        description: "Die Seed Phrase konnte nicht verschlüsselt werden",
+        variant: "destructive",
+      });
+      return false;
+    }
     
     // First check if there's already an entry for this user
     const { data: existingData, error: checkError } = await supabase
@@ -35,7 +54,12 @@ export const saveWalletToSupabase = async (
       
     if (checkError) {
       console.error("Error checking existing seed phrase:", checkError);
-      // Continue with insert anyway
+      toast({
+        title: "Fehler beim Speichern",
+        description: checkError.message,
+        variant: "destructive",
+      });
+      return false;
     }
     
     let saveResult;
@@ -77,10 +101,11 @@ export const saveWalletToSupabase = async (
     });
     return true;
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Ein unerwarteter Fehler ist aufgetreten';
     console.error("Exception saving seed phrase to Supabase:", error);
     toast({
       title: "Fehler beim Speichern",
-      description: "Ein unerwarteter Fehler ist aufgetreten",
+      description: errorMessage,
       variant: "destructive",
     });
     return false;

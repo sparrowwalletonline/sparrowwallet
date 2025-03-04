@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from "@/integrations/supabase/client";
@@ -163,34 +162,48 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   }, [seedPhrase]);
 
-  // Neue Funktion: Speichern der Wallet-Adresse in der Supabase-Datenbank für den angemeldeten Benutzer
+  // Fixed function: Saving the wallet address to the user account with improved error handling
   const saveWalletAddressToUserAccount = async (): Promise<boolean> => {
-    if (!session?.user || !walletAddress) {
-      console.error('Kein Benutzer angemeldet oder keine Wallet-Adresse vorhanden');
+    if (!session?.user) {
+      console.log('No user logged in to save wallet data');
+      return false;
+    }
+    
+    if (!walletAddress) {
+      console.log('No wallet address available to save');
       return false;
     }
 
     try {
-      // Prüfe zuerst, ob bereits eine Wallet für diesen Benutzer existiert
+      console.log('Attempting to save wallet data to user account:', {
+        user_id: session.user.id,
+        wallet_address: walletAddress,
+        btc_balance: btcBalance,
+        eth_balance: ethBalance
+      });
+
+      // Check if entry already exists for this user
       const { data: existingWallet, error: checkError } = await supabase
         .from('user_wallets')
         .select('id')
         .eq('user_id', session.user.id)
-        .maybeSingle();
+        .maybeSingle();  // Using maybeSingle instead of single to avoid error
 
       if (checkError) {
-        console.error('Fehler beim Prüfen der vorhandenen Wallet:', checkError);
+        console.error('Error checking existing wallet:', checkError);
         toast({
           title: "Fehler",
-          description: "Wallet-Daten konnten nicht überprüft werden",
+          description: "Wallet-Daten konnten nicht überprüft werden: " + checkError.message,
           variant: "destructive",
         });
         return false;
       }
 
+      let result;
       if (existingWallet) {
-        // Aktualisiere vorhandene Wallet
-        const { error: updateError } = await supabase
+        // Update existing wallet
+        console.log('Updating existing wallet for user:', session.user.id);
+        result = await supabase
           .from('user_wallets')
           .update({
             wallet_address: walletAddress,
@@ -198,19 +211,10 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             eth_balance: ethBalance
           })
           .eq('user_id', session.user.id);
-
-        if (updateError) {
-          console.error('Fehler beim Aktualisieren der Wallet:', updateError);
-          toast({
-            title: "Fehler",
-            description: "Wallet-Daten konnten nicht aktualisiert werden",
-            variant: "destructive",
-          });
-          return false;
-        }
       } else {
-        // Erstelle neue Wallet für Benutzer
-        const { error: insertError } = await supabase
+        // Insert new wallet for user
+        console.log('Creating new wallet for user:', session.user.id);
+        result = await supabase
           .from('user_wallets')
           .insert({
             user_id: session.user.id,
@@ -218,60 +222,69 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             btc_balance: btcBalance,
             eth_balance: ethBalance
           });
-
-        if (insertError) {
-          console.error('Fehler beim Erstellen der Wallet:', insertError);
-          toast({
-            title: "Fehler",
-            description: "Wallet-Daten konnten nicht gespeichert werden",
-            variant: "destructive",
-          });
-          return false;
-        }
       }
 
+      if (result.error) {
+        console.error('Error saving wallet data:', result.error);
+        toast({
+          title: "Fehler beim Speichern der Wallet",
+          description: result.error.message || "Ein unerwarteter Fehler ist aufgetreten",
+          variant: "destructive",
+        });
+        return false;
+      }
+
+      console.log('Wallet data saved successfully');
       toast({
         title: "Erfolg",
         description: "Wallet-Daten erfolgreich gespeichert",
       });
       return true;
     } catch (error) {
-      console.error('Unerwarteter Fehler beim Speichern der Wallet:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Ein unerwarteter Fehler ist aufgetreten';
+      console.error('Unexpected error saving wallet data:', error);
       toast({
-        title: "Fehler",
-        description: "Ein unerwarteter Fehler ist aufgetreten",
+        title: "Fehler beim Speichern der Wallet",
+        description: errorMessage,
         variant: "destructive",
       });
       return false;
     }
   };
 
-  // Neue Funktion: Laden der Wallet-Adresse aus der Supabase-Datenbank für den angemeldeten Benutzer
+  // Fixed function: Loading the wallet from the user account with improved error handling
   const loadWalletFromUserAccount = async (): Promise<boolean> => {
     if (!session?.user) {
-      console.log('Kein Benutzer angemeldet für das Laden der Wallet-Daten');
+      console.log('No user logged in for loading wallet data');
       return false;
     }
 
     try {
+      console.log('Attempting to load wallet data for user:', session.user.id);
+      
       const { data, error } = await supabase
         .from('user_wallets')
         .select('*')
         .eq('user_id', session.user.id)
-        .maybeSingle();
+        .maybeSingle();  // Using maybeSingle instead of single to avoid error
 
       if (error) {
-        console.error('Fehler beim Laden der Wallet-Daten:', error);
+        console.error('Error loading wallet data:', error);
+        toast({
+          title: "Fehler beim Laden der Wallet",
+          description: error.message,
+          variant: "destructive",
+        });
         return false;
       }
 
       if (data) {
-        console.log('Wallet-Daten erfolgreich geladen:', data);
+        console.log('Wallet data loaded successfully:', data);
         setWalletAddress(data.wallet_address);
         setBtcBalance(Number(data.btc_balance));
         setEthBalance(Number(data.eth_balance));
         
-        // Aktualisieren der aktiven Wallet im Wallets-Array
+        // Update active wallet in the wallets array
         if (activeWallet) {
           const updatedWallets = wallets.map(wallet => {
             if (wallet.isActive) {
@@ -286,7 +299,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           });
           setWallets(updatedWallets);
           
-          // Aktualisieren des activeWallet-Status
+          // Update activeWallet state
           const newActiveWallet = updatedWallets.find(w => w.isActive);
           if (newActiveWallet) {
             setActiveWalletState(newActiveWallet);
@@ -294,15 +307,22 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         }
         
         const calculatedUsdBalance = (Number(data.btc_balance) * btcPrice) + 
-                                    (Number(data.eth_balance) * ethPrice);
+                                  (Number(data.eth_balance) * ethPrice);
         setUsdBalance(calculatedUsdBalance);
         
         return true;
       }
       
+      console.log('No wallet data found for user');
       return false;
     } catch (error) {
-      console.error('Unerwarteter Fehler beim Laden der Wallet-Daten:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Ein unerwarteter Fehler ist aufgetreten';
+      console.error('Unexpected error loading wallet data:', error);
+      toast({
+        title: "Fehler beim Laden der Wallet",
+        description: errorMessage,
+        variant: "destructive",
+      });
       return false;
     }
   };
