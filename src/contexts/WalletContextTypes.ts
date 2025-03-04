@@ -56,4 +56,5 @@ export interface WalletContextType {
   deleteWallet: (walletId: string) => void;
   saveWalletAddressToUserAccount: () => Promise<boolean>;
   loadWalletFromUserAccount: () => Promise<boolean>;
+  logout: () => void;
 }

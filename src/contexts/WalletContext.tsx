@@ -42,6 +42,7 @@ const WalletContext = createContext<WalletContextType>({
   deleteWallet: () => {},
   saveWalletAddressToUserAccount: async () => false,
   loadWalletFromUserAccount: async () => false,
+  logout: async () => {}
 });
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -162,7 +163,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   }, [seedPhrase]);
 
-  // Fixed function: Saving the wallet address to the user account with improved error handling
   const saveWalletAddressToUserAccount = async (): Promise<boolean> => {
     if (!session?.user) {
       console.log('No user logged in to save wallet data');
@@ -182,12 +182,11 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         eth_balance: ethBalance
       });
 
-      // Check if entry already exists for this user
       const { data: existingWallet, error: checkError } = await supabase
         .from('user_wallets')
         .select('id')
         .eq('user_id', session.user.id)
-        .maybeSingle();  // Using maybeSingle instead of single to avoid error
+        .maybeSingle();
 
       if (checkError) {
         console.error('Error checking existing wallet:', checkError);
@@ -201,7 +200,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
       let result;
       if (existingWallet) {
-        // Update existing wallet
         console.log('Updating existing wallet for user:', session.user.id);
         result = await supabase
           .from('user_wallets')
@@ -212,7 +210,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           })
           .eq('user_id', session.user.id);
       } else {
-        // Insert new wallet for user
         console.log('Creating new wallet for user:', session.user.id);
         result = await supabase
           .from('user_wallets')
@@ -252,7 +249,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
-  // Fixed function: Loading the wallet from the user account with improved error handling
   const loadWalletFromUserAccount = async (): Promise<boolean> => {
     if (!session?.user) {
       console.log('No user logged in for loading wallet data');
@@ -266,7 +262,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         .from('user_wallets')
         .select('*')
         .eq('user_id', session.user.id)
-        .maybeSingle();  // Using maybeSingle instead of single to avoid error
+        .maybeSingle();
 
       if (error) {
         console.error('Error loading wallet data:', error);
@@ -284,7 +280,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setBtcBalance(Number(data.btc_balance));
         setEthBalance(Number(data.eth_balance));
         
-        // Update active wallet in the wallets array
         if (activeWallet) {
           const updatedWallets = wallets.map(wallet => {
             if (wallet.isActive) {
@@ -299,7 +294,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           });
           setWallets(updatedWallets);
           
-          // Update activeWallet state
           const newActiveWallet = updatedWallets.find(w => w.isActive);
           if (newActiveWallet) {
             setActiveWalletState(newActiveWallet);
@@ -349,7 +343,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const seedPhraseSaved = await saveWalletToSupabase(session, seedPhrase);
     
     if (seedPhraseSaved && walletAddress) {
-      // Auch die Wallet-Adresse in der user_wallets Tabelle speichern
       const walletSaved = await saveWalletAddressToUserAccount();
       return seedPhraseSaved && walletSaved;
     }
@@ -371,7 +364,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setSeedPhrase(loadedSeedPhrase);
       setHasWallet(true);
       
-      // Auch die Wallet-Adresse aus der user_wallets Tabelle laden
       await loadWalletFromUserAccount();
       
       return true;
@@ -410,7 +402,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       description: `${name} wurde erfolgreich erstellt.`,
     });
     
-    // Falls der Benutzer angemeldet ist und dies die erste Wallet ist, speichere sie in Supabase
     if (session && wallets.length === 0) {
       setWalletAddress(newAddress);
       saveWalletAddressToUserAccount();
@@ -443,7 +434,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         description: `${newActiveWallet.name} ist jetzt aktiv.`,
       });
       
-      // Wenn der Benutzer angemeldet ist, aktualisiere die Wallet-Daten in Supabase
       if (session) {
         saveWalletAddressToUserAccount();
       }
@@ -463,7 +453,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             localStorage.setItem('walletSeedPhrase', JSON.stringify(newSeedPhrase));
             console.log("Seed phrase set:", newSeedPhrase.join(' '));
             setHasWallet(true);
-            const simulatedBtcBalance = 0;  // Beginne mit 0 Guthaben
+            const simulatedBtcBalance = 0;
             setBtcBalance(simulatedBtcBalance);
             setEthBalance(0);
             const calculatedUsdBalance = (simulatedBtcBalance * btcPrice) + (0 * ethPrice);
@@ -471,7 +461,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             const newAddress = generateBtcAddress();
             setWalletAddress(newAddress);
             localStorage.setItem('walletAddress', newAddress);
-            setBalance(0);  // Auch hier 0 Guthaben
+            setBalance(0);
             
             if (wallets.length === 0) {
               const defaultWallet: Wallet = {
@@ -487,7 +477,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
               setActiveWalletState(defaultWallet);
             }
             
-            // Wenn der Benutzer angemeldet ist, speichere Wallet-Daten in Supabase
             if (session) {
               setTimeout(() => {
                 saveWalletAddressToUserAccount();
@@ -500,7 +489,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           console.log("Using existing seed phrase in createWallet:", seedPhrase.join(' '));
           setHasWallet(true);
           
-          // Wenn der Benutzer angemeldet ist, speichere Wallet-Daten in Supabase
           if (session && walletAddress) {
             saveWalletAddressToUserAccount();
           }
@@ -529,16 +517,15 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         
         if (words.length >= 12) {
           setHasWallet(true);
-          const simulatedBtcBalance = 0;  // Beginne mit 0 Guthaben
+          const simulatedBtcBalance = 0;
           setBtcBalance(simulatedBtcBalance);
           setEthBalance(0);
           const calculatedUsdBalance = (simulatedBtcBalance * btcPrice) + (0 * ethPrice);
           setUsdBalance(calculatedUsdBalance);
           const newAddress = generateBtcAddress();
           setWalletAddress(newAddress);
-          setBalance(0);  // Auch hier 0 Guthaben
+          setBalance(0);
           
-          // Wenn der Benutzer angemeldet ist, speichere Wallet-Daten in Supabase
           if (session) {
             setTimeout(() => {
               saveWalletAddressToUserAccount();
@@ -565,7 +552,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     localStorage.removeItem('wallets');
     localStorage.removeItem('walletAddress');
     
-    // Falls der Benutzer angemeldet ist, Wallet-Daten in Supabase auf 0 zurücksetzen, aber nicht löschen
     if (session) {
       saveWalletAddressToUserAccount();
     }
@@ -615,7 +601,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       
       setActiveWalletState(updatedWallets[0]);
       
-      // Wenn der Benutzer angemeldet ist, aktualisiere die Wallet-Daten in Supabase
       if (session) {
         saveWalletAddressToUserAccount();
       }
@@ -627,6 +612,24 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       title: "Wallet gelöscht",
       description: "Die Wallet wurde erfolgreich gelöscht.",
     });
+  };
+
+  const logout = async () => {
+    try {
+      await supabase.auth.signOut();
+      resetWallet();
+      toast({
+        title: "Logged out successfully",
+        description: "You have been logged out of your account.",
+      });
+    } catch (error) {
+      console.error("Error logging out:", error);
+      toast({
+        title: "Error logging out",
+        description: "There was a problem logging out. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -661,7 +664,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       updateEnabledCryptos,
       deleteWallet,
       saveWalletAddressToUserAccount,
-      loadWalletFromUserAccount
+      loadWalletFromUserAccount,
+      logout
     }}>
       {children}
     </WalletContext.Provider>
