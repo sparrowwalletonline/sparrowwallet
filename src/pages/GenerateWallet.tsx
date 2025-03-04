@@ -5,20 +5,43 @@ import SeedPhraseGenerator from '@/components/SeedPhraseGenerator';
 import WalletLogo from '@/components/WalletLogo';
 import { useWallet } from '@/contexts/WalletContext';
 import { Shield, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const GenerateWallet: React.FC = () => {
   const { seedPhrase, createWallet, cancelWalletCreation } = useWallet();
+  const navigate = useNavigate();
   
   const handleCreateWallet = () => {
-    createWallet();
+    // Add exit animation
+    document.body.classList.add('page-exit');
+    
+    setTimeout(() => {
+      createWallet();
+      
+      // Remove class after navigation
+      setTimeout(() => {
+        document.body.classList.remove('page-exit');
+      }, 50);
+    }, 300);
   };
 
   const handleCancel = () => {
-    cancelWalletCreation();
+    // Add exit animation
+    document.body.classList.add('page-exit');
+    
+    setTimeout(() => {
+      cancelWalletCreation();
+      navigate('/wallet-choice');
+      
+      // Remove class after navigation
+      setTimeout(() => {
+        document.body.classList.remove('page-exit');
+      }, 50);
+    }, 300);
   };
 
   return (
-    <div className="min-h-screen flex flex-col px-4">
+    <div className="min-h-screen flex flex-col px-4 page-enter">
       <div className="flex-1 flex flex-col items-center justify-center gap-6 sm:gap-8 py-6 sm:py-8">
         <WalletLogo className="animate-scale-in w-20 h-20 sm:w-24 sm:h-24" />
         

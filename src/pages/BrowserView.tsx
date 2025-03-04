@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { MenuProvider } from '@/contexts/MenuContext';
@@ -39,7 +38,6 @@ const BrowserView: React.FC = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const loadTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Get URL from state if available
   useEffect(() => {
     if (location.state && location.state.url) {
       setUrl(location.state.url);
@@ -47,17 +45,13 @@ const BrowserView: React.FC = () => {
     }
   }, [location]);
 
-  // Set up load timeout to detect CSP/X-Frame-Options blocks
   useEffect(() => {
     if (isLoading) {
-      // Clear any existing timeout
       if (loadTimeoutRef.current) {
         clearTimeout(loadTimeoutRef.current);
       }
       
-      // Set a timeout to check if the iframe loaded within 5 seconds
       loadTimeoutRef.current = setTimeout(() => {
-        // If we're still loading after 5 seconds, it's likely blocked
         if (isLoading) {
           setIsLoading(false);
           handleFrameBlocked();
@@ -91,18 +85,33 @@ const BrowserView: React.FC = () => {
   };
 
   const handleGoBack = () => {
-    navigate(-1);
+    document.body.classList.add('page-exit');
+    
+    setTimeout(() => {
+      navigate(-1);
+      
+      setTimeout(() => {
+        document.body.classList.remove('page-exit');
+      }, 50);
+    }, 300);
   };
 
   const handleGoForward = () => {
-    navigate(1);
+    document.body.classList.add('page-exit');
+    
+    setTimeout(() => {
+      navigate(1);
+      
+      setTimeout(() => {
+        document.body.classList.remove('page-exit');
+      }, 50);
+    }, 300);
   };
 
   const handleNavigate = () => {
     setIsLoading(true);
     setError(null);
     setShowBlockedDialog(false);
-    // Format URL with https:// if not present
     const formattedUrl = inputUrl.startsWith('http') ? inputUrl : `https://${inputUrl}`;
     setUrl(formattedUrl);
   };
@@ -111,18 +120,24 @@ const BrowserView: React.FC = () => {
     setIsLoading(true);
     setError(null);
     setShowBlockedDialog(false);
-    // Force refresh by setting to blank and then back
     const currentUrl = url;
     setUrl('about:blank');
     setTimeout(() => setUrl(currentUrl), 100);
   };
 
   const handleGoHome = () => {
-    navigate('/wallet');
+    document.body.classList.add('page-exit');
+    
+    setTimeout(() => {
+      navigate('/wallet');
+      
+      setTimeout(() => {
+        document.body.classList.remove('page-exit');
+      }, 50);
+    }, 300);
   };
 
   const handleOpenInExternalBrowser = () => {
-    // Open the URL in the user's default browser
     window.open(url, '_blank');
     setShowBlockedDialog(false);
     toast({
@@ -138,8 +153,6 @@ const BrowserView: React.FC = () => {
 
   const handleUseProxy = () => {
     if (blockedSite) {
-      // Use a web proxy service to load the blocked site
-      // For example: https://allorigins.win/ or cors-anywhere
       const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
       setUrl(proxyUrl);
       setShowProxyDialog(false);
@@ -152,7 +165,6 @@ const BrowserView: React.FC = () => {
   };
 
   const handleLoad = () => {
-    // Clear any loading timeout
     if (loadTimeoutRef.current) {
       clearTimeout(loadTimeoutRef.current);
     }
@@ -160,19 +172,14 @@ const BrowserView: React.FC = () => {
     setIsLoading(false);
     setError(null);
     
-    // Check if iframe actually loaded content or was blocked
     try {
       if (iframeRef.current) {
-        // This will throw an error if the iframe is blocked by CSP
         const iframeDoc = iframeRef.current.contentDocument || iframeRef.current.contentWindow?.document;
-        
-        // If we can't access the document, it was likely blocked
         if (!iframeDoc) {
           handleFrameBlocked();
         }
       }
     } catch (e) {
-      // If we get an error trying to access the iframe content, it was blocked
       handleFrameBlocked();
     }
   };
@@ -192,7 +199,6 @@ const BrowserView: React.FC = () => {
     });
   };
 
-  // Safe crypto websites that are known to work in iframes
   const recommendedSites = [
     { name: "DeFiLlama", url: "https://defillama.com/" },
     { name: "CryptoSlate", url: "https://cryptoslate.com/" },
@@ -215,7 +221,7 @@ const BrowserView: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-wallet-darkBg flex justify-center w-full">
+    <div className="min-h-screen bg-wallet-darkBg flex justify-center w-full page-enter">
       <div className="w-full max-w-md mx-auto min-h-screen shadow-lg bg-wallet-darkBg flex flex-col">
         <MenuProvider>
           <WalletProvider>

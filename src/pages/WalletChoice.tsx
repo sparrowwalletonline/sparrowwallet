@@ -21,19 +21,39 @@ const WalletChoice: React.FC = () => {
       setSession(session);
       
       if (!session) {
-        navigate('/');
-        toast({
-          title: "Anmeldung erforderlich",
-          description: "Bitte melde dich an, um fortzufahren",
-          variant: "destructive",
-        });
+        // Add exit animation
+        document.body.classList.add('page-exit');
+        
+        setTimeout(() => {
+          navigate('/');
+          toast({
+            title: "Anmeldung erforderlich",
+            description: "Bitte melde dich an, um fortzufahren",
+            variant: "destructive",
+          });
+          
+          // Remove class after navigation
+          setTimeout(() => {
+            document.body.classList.remove('page-exit');
+          }, 50);
+        }, 300);
       }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       if (!session) {
-        navigate('/');
+        // Add exit animation
+        document.body.classList.add('page-exit');
+        
+        setTimeout(() => {
+          navigate('/');
+          
+          // Remove class after navigation
+          setTimeout(() => {
+            document.body.classList.remove('page-exit');
+          }, 50);
+        }, 300);
       }
     });
 
@@ -43,23 +63,49 @@ const WalletChoice: React.FC = () => {
   const handleCreateWallet = () => {
     setIsLoading(true);
     
+    // Add exit animation
+    document.body.classList.add('page-exit');
+    
     setTimeout(() => {
       navigate('/passphrase');
       setIsLoading(false);
-    }, 3000);
+      
+      // Remove class after navigation
+      setTimeout(() => {
+        document.body.classList.remove('page-exit');
+      }, 50);
+    }, 300);
   };
   
   const handleImportWallet = () => {
     setIsImportLoading(true);
     
+    // Add exit animation
+    document.body.classList.add('page-exit');
+    
     setTimeout(() => {
       importWallet("dummy phrase to trigger import UI");
       setIsImportLoading(false);
-    }, 3000);
+      
+      // Remove class after navigation
+      setTimeout(() => {
+        document.body.classList.remove('page-exit');
+      }, 50);
+    }, 300);
   };
 
   const handleBackClick = () => {
-    cancelWalletCreation();
+    // Add exit animation
+    document.body.classList.add('page-exit');
+    
+    setTimeout(() => {
+      cancelWalletCreation();
+      
+      // Remove class after navigation
+      setTimeout(() => {
+        document.body.classList.remove('page-exit');
+      }, 50);
+    }, 300);
   };
   
   if (!session) {
@@ -67,7 +113,7 @@ const WalletChoice: React.FC = () => {
   }
   
   return (
-    <div className="min-h-screen flex flex-col items-center justify-between bg-wallet-darkBg text-white p-4 sm:p-6 relative">
+    <div className="min-h-screen flex flex-col items-center justify-between bg-wallet-darkBg text-white p-4 sm:p-6 relative page-enter">
       <div className="w-full relative">
         <Header title="Wallet auswählen" />
         <button 

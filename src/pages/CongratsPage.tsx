@@ -18,11 +18,21 @@ const CongratsPage: React.FC = () => {
   }, []);
 
   const handleOpenWallet = () => {
-    navigate('/wallet');
+    // Add a className for exit animation
+    document.body.classList.add('page-exit');
+    
+    // Wait for animation to complete before navigating
+    setTimeout(() => {
+      navigate('/wallet');
+      // Remove the class after navigation
+      setTimeout(() => {
+        document.body.classList.remove('page-exit');
+      }, 50);
+    }, 300);
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-wallet-darkBg text-white p-4 sm:p-6">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-wallet-darkBg text-white p-4 sm:p-6 page-enter">
       <div className="w-full max-w-md mx-auto flex flex-col items-center justify-center text-center">
         <div className={`transform transition-all duration-700 ${iconVisible ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}>
           <CheckCircle 

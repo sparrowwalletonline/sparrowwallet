@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -107,6 +108,38 @@
   }
 }
 
+/* Page transition animations */
+.page-enter {
+  animation: page-enter 0.5s ease forwards;
+}
+
+.page-exit {
+  animation: page-exit 0.3s ease forwards;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes page-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+}
+
+/* Theme-specific styles */
 .dark .wallet-card {
   background: #232733;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);

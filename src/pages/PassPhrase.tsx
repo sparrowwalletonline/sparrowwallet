@@ -11,19 +11,37 @@ const PassPhrase: React.FC = () => {
   const navigate = useNavigate();
   
   const handleBackClick = () => {
-    cancelWalletCreation();
-    navigate('/wallet-choice');
+    // Add exit animation
+    document.body.classList.add('page-exit');
+    
+    setTimeout(() => {
+      cancelWalletCreation();
+      navigate('/wallet-choice');
+      // Remove class after navigation
+      setTimeout(() => {
+        document.body.classList.remove('page-exit');
+      }, 50);
+    }, 300);
   };
   
   const handleCreatePassphrase = () => {
-    // Call createWallet to generate a seed phrase, but navigate directly
-    // without relying on state change to trigger navigation
-    createWallet();
-    navigate('/seed-phrase');
+    // Add exit animation
+    document.body.classList.add('page-exit');
+    
+    setTimeout(() => {
+      // Call createWallet to generate a seed phrase, but navigate directly
+      // without relying on state change to trigger navigation
+      createWallet();
+      navigate('/seed-phrase');
+      // Remove class after navigation
+      setTimeout(() => {
+        document.body.classList.remove('page-exit');
+      }, 50);
+    }, 300);
   };
   
   return (
-    <div className="min-h-screen flex flex-col items-center bg-wallet-darkBg text-white p-4 sm:p-6 relative">
+    <div className="min-h-screen flex flex-col items-center bg-wallet-darkBg text-white p-4 sm:p-6 relative page-enter">
       <div className="w-full relative">
         <Header title="Neue Wallet" />
         <button 
