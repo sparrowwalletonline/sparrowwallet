@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Copy, Eye, EyeOff, Lock, Timer, Smartphone, KeyRound } from 'lucide-react';
+import { Shield, Copy, Eye, EyeOff, Lock, Timer, Smartphone, KeyRound, Fingerprint } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { useWallet } from '@/contexts/WalletContext';
@@ -34,6 +35,10 @@ const SecuritySettings = () => {
   const [autoLogoutEnabled, setAutoLogoutEnabled] = useState(false);
   const [logoutTime, setLogoutTime] = useState(15);
   
+  // Biometric authentication
+  const [biometricEnabled, setBiometricEnabled] = useState(false);
+  const [biometricAvailable, setBiometricAvailable] = useState(true);
+  
   // Device management
   const [devices, setDevices] = useState([
     { id: '1', name: 'Aktuelles Gerät', lastActive: 'Jetzt', isCurrent: true },
@@ -57,6 +62,13 @@ const SecuritySettings = () => {
       if (timer) clearTimeout(timer);
     };
   }, [timeLeft, buttonPressed]);
+
+  // Check if biometric auth is available
+  useEffect(() => {
+    // In a real app, this would check device capabilities
+    // For now, we'll just simulate it's available
+    setBiometricAvailable(true);
+  }, []);
 
   const handleRevealClick = () => {
     if (!buttonPressed) {
@@ -117,6 +129,32 @@ const SecuritySettings = () => {
       title: "PIN gespeichert",
       description: "Ihre Sicherheits-PIN wurde erfolgreich gespeichert.",
     });
+  };
+  
+  const handleBiometricToggle = () => {
+    if (!biometricAvailable && !biometricEnabled) {
+      toast({
+        title: "Nicht verfügbar",
+        description: "Biometrische Authentifizierung ist auf diesem Gerät nicht verfügbar.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setBiometricEnabled(!biometricEnabled);
+    
+    if (!biometricEnabled) {
+      // In a real app, this would request permission and set up biometric auth
+      toast({
+        title: "Biometrische Authentifizierung aktiviert",
+        description: "Sie können nun Ihr Gesicht oder Ihren Fingerabdruck verwenden, um Ihre Wallet zu öffnen.",
+      });
+    } else {
+      toast({
+        title: "Biometrische Authentifizierung deaktiviert",
+        description: "Biometrische Authentifizierung wurde deaktiviert.",
+      });
+    }
   };
   
   const changePassword = () => {
@@ -274,6 +312,34 @@ const SecuritySettings = () => {
                     </div>
                     <Button onClick={savePin} className="w-full">PIN speichern</Button>
                   </div>
+                )}
+              </div>
+              
+              {/* New Biometric Authentication Section */}
+              <div className="pt-4 border-t">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <Fingerprint className="w-5 h-5 text-blue-600" />
+                    <h2 className="text-lg font-medium">Face ID / Touch ID</h2>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CustomSwitch 
+                      checked={biometricEnabled} 
+                      onCheckedChange={handleBiometricToggle} 
+                      disabled={!biometricAvailable} 
+                    />
+                  </div>
+                </div>
+                
+                <p className="text-sm text-muted-foreground mb-4">
+                  Verwenden Sie Gesichtserkennung oder Fingerabdruck, um Ihre Wallet schnell und sicher zu öffnen.
+                </p>
+                
+                {!biometricAvailable && (
+                  <p className="text-xs text-amber-500 bg-amber-50 p-3 rounded-md">
+                    Biometrische Authentifizierung ist auf diesem Gerät nicht verfügbar. 
+                    Diese Funktion ist für iOS (Face ID/Touch ID) und Android (Fingerabdruck/Gesichtserkennung) optimiert.
+                  </p>
                 )}
               </div>
               
