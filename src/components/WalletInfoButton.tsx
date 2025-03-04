@@ -17,8 +17,8 @@ const WalletInfoButton = () => {
   const { activeWallet } = useWallet();
 
   const handleCopyAddress = () => {
-    if (activeWallet?.address) {
-      copyToClipboard(activeWallet.address);
+    if (activeWallet?.walletAddress) {
+      copyToClipboard(activeWallet.walletAddress);
       toast({
         title: "Address copied",
         description: "Wallet address copied to clipboard",
@@ -42,7 +42,7 @@ const WalletInfoButton = () => {
         <DropdownMenuSeparator />
         <div className="px-2 py-1.5">
           <p className="text-xs text-muted-foreground truncate max-w-[200px]">
-            {activeWallet?.address}
+            {activeWallet?.walletAddress}
           </p>
         </div>
         <DropdownMenuItem onClick={handleCopyAddress}>
