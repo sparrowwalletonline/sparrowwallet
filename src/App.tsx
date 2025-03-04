@@ -17,6 +17,11 @@ import Terms from "./pages/Terms";
 import Auth from "./pages/Auth";
 import CryptoDetailView from "./pages/CryptoDetailView";
 import SecuritySettings from "./pages/SecuritySettings";
+import ProfileSettings from "./pages/ProfileSettings";
+import PaymentMethods from "./pages/PaymentMethods";
+import AppSettings from "./pages/AppSettings";
+import HelpCenter from "./pages/HelpCenter";
+import About from "./pages/About";
 import { MenuProvider } from "./contexts/MenuContext";
 import { WalletProvider, useWallet } from "./contexts/WalletContext";
 import { TutorialProvider } from "./contexts/TutorialContext";
@@ -103,6 +108,31 @@ function App() {
                 <Route path="/security-settings" element={
                   <PrivateRoute>
                     <SecuritySettings />
+                  </PrivateRoute>
+                } />
+                <Route path="/profile-settings" element={
+                  <PrivateRoute>
+                    <ProfileSettings />
+                  </PrivateRoute>
+                } />
+                <Route path="/payment-methods" element={
+                  <PrivateRoute>
+                    <PaymentMethods />
+                  </PrivateRoute>
+                } />
+                <Route path="/app-settings" element={
+                  <PrivateRoute>
+                    <AppSettings />
+                  </PrivateRoute>
+                } />
+                <Route path="/help-center" element={
+                  <PrivateRoute>
+                    <HelpCenter />
+                  </PrivateRoute>
+                } />
+                <Route path="/about" element={
+                  <PrivateRoute>
+                    <About />
                   </PrivateRoute>
                 } />
                 <Route path="*" element={<NotFound />} />
