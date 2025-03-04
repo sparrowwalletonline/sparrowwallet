@@ -20,23 +20,17 @@ const CustomSwitch = React.forwardRef<HTMLButtonElement, CustomSwitchProps>(
         ref={ref}
         onClick={() => onCheckedChange(!checked)}
         className={cn(
-          "relative inline-flex h-[16px] w-[40px] shrink-0 cursor-pointer rounded-full transition-colors duration-200",
+          "relative inline-flex h-8 px-3 shrink-0 cursor-pointer rounded-md border font-medium text-sm items-center justify-center transition-colors duration-200",
           "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500",
           checked 
-            ? "bg-[#007AFF]" 
-            : "bg-gray-200 dark:bg-gray-600",
+            ? "bg-[#007AFF] text-white border-[#007AFF]" 
+            : "bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600",
           disabled && "opacity-50 cursor-not-allowed",
           className
         )}
         {...props}
       >
-        <span
-          className={cn(
-            "pointer-events-none absolute top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full bg-white shadow-[0_1px_4px_rgba(0,0,0,0.2)]",
-            "h-[16px] w-[16px] transform transition-transform duration-200",
-            checked ? "translate-x-[22px]" : "translate-x-[2px]"
-          )}
-        />
+        {checked ? "An" : "Aus"}
       </button>
     );
   }
