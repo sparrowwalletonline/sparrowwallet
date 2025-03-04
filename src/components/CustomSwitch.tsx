@@ -32,9 +32,9 @@ const CustomSwitch = React.forwardRef<HTMLButtonElement, CustomSwitchProps>(
       >
         <span
           className={cn(
-            "pointer-events-none absolute top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full bg-white shadow-[0_2px_5px_rgba(0,0,0,0.1)]",
-            "h-[26px] w-[26px] transform transition-transform duration-200",
-            checked ? "translate-x-[32px]" : "translate-x-[2px]"
+            "pointer-events-none absolute top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full bg-white shadow-[0_2px_5px_rgba(0,0,0,0.15)]",
+            "h-[30px] w-[30px] transform transition-transform duration-200",
+            checked ? "translate-x-[30px]" : "translate-x-[0px]"
           )}
         />
       </button>
