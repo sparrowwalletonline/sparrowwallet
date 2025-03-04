@@ -7,6 +7,7 @@ import { useMenu } from '@/contexts/MenuContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
+import Footer from '@/components/Footer';
 
 const RegistrationModal = ({ isOpen, onClose, onRegister, isLoading }) => {
   const [email, setEmail] = useState('');
@@ -586,6 +587,8 @@ const LandingPage = () => {
         isOpen={showSuccessModal}
         onClose={handleSuccessModalClose}
       />
+      
+      <Footer />
     </div>
   );
 };
