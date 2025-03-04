@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Copy, Eye, EyeOff, Lock, Timer, Smartphone, KeyRound } from 'lucide-react';
@@ -179,9 +178,11 @@ const SecuritySettings = () => {
       <Header title="Sicherheitseinstellungen" showBack={true} />
       
       <Tabs defaultValue="seed" className="mt-8">
-        <TabsList className="grid grid-cols-4 w-full">
+        <TabsList className="grid grid-cols-2 gap-1 w-full mb-2">
           <TabsTrigger value="seed">Seed-Phrase</TabsTrigger>
           <TabsTrigger value="pin">PIN & Passwort</TabsTrigger>
+        </TabsList>
+        <TabsList className="grid grid-cols-2 gap-1 w-full">
           <TabsTrigger value="logout">Auto-Logout</TabsTrigger>
           <TabsTrigger value="devices">Geräte</TabsTrigger>
         </TabsList>
