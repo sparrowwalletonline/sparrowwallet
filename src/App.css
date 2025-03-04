@@ -1,3 +1,4 @@
+
 /* Remove default styles */
 #root {
   max-width: 100%;
@@ -293,6 +294,7 @@ button:hover {
 .tutorial-highlight {
   position: relative;
   z-index: 50;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
 }
 
 .pulse-animation {
@@ -363,8 +365,21 @@ button:hover {
     padding: 1rem;
   }
   
+  /* Improved mobile tutorial styles */
+  .tutorial-highlight {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.7);
+  }
+  
+  .pulse-animation {
+    stroke-width: 3px;
+  }
+  
+  /* Make the tutorial content take most of the screen width on mobile */
   .tutorial-popover {
-    max-width: 90vw;
+    max-width: calc(100vw - 32px) !important;
+    left: 16px !important;
+    right: 16px !important;
+    transform: none !important;
   }
 }
 

@@ -14,20 +14,26 @@ const TutorialOverlay: React.FC = () => {
     const targetElement = document.querySelector(currentStep.targetElement);
 
     if (targetElement) {
+      // Function to update highlight position based on the target element
       const updateHighlight = () => {
         const rect = targetElement.getBoundingClientRect();
         setHighlightBox(rect);
       };
 
+      // Initialize highlight
       updateHighlight();
       
-      // Update on resize or scroll
+      // Update on resize or scroll to ensure highlight stays aligned with element
       window.addEventListener('resize', updateHighlight);
       window.addEventListener('scroll', updateHighlight);
+      
+      // Special case for mobile - also update on orientation change
+      window.addEventListener('orientationchange', updateHighlight);
 
       return () => {
         window.removeEventListener('resize', updateHighlight);
         window.removeEventListener('scroll', updateHighlight);
+        window.removeEventListener('orientationchange', updateHighlight);
       };
     } else {
       setHighlightBox(null);
@@ -73,7 +79,7 @@ const TutorialOverlay: React.FC = () => {
             height={highlightBox.height + 4} 
             fill="none"
             stroke="#3B82F6"
-            strokeWidth="2"
+            strokeWidth="3" // Increased for better visibility on mobile
             rx="4"
             ry="4"
             className="pulse-animation"
