@@ -46,8 +46,8 @@ function App() {
     <ThemeProvider defaultTheme={defaultTheme} storageKey="wallet-theme" attribute="class">
       <MenuProvider>
         <WalletProvider>
-          <TutorialProvider>
-            <Router>
+          <Router>
+            <TutorialProvider>
               <SideMenu />
               <Routes>
                 <Route path="/" element={<LandingPage />} />
@@ -103,8 +103,8 @@ function App() {
               </Routes>
               <TutorialPopover />
               <TutorialOverlay />
-            </Router>
-          </TutorialProvider>
+            </TutorialProvider>
+          </Router>
           <Toaster />
         </WalletProvider>
       </MenuProvider>
