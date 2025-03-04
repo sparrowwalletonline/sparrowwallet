@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ArrowLeft, Menu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +8,7 @@ import ThemeToggle from './ThemeToggle';
 import ManageAssetsButton from './ManageAssetsButton';
 import WalletInfoButton from './WalletInfoButton';
 import TutorialMenu from './TutorialMenu';
+import ProfileButton from './ProfileButton';
 import { useTutorial } from '@/contexts/TutorialContext';
 
 const Header = ({ 
@@ -68,6 +70,7 @@ const Header = ({
         )}
         
         <ThemeToggle />
+        <ProfileButton />
       </div>
     </header>
   );
