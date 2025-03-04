@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { Switch } from '@/components/ui/switch';
+import { SecuritySwitch } from '@/components/SecuritySwitch';
 import Header from '@/components/Header';
 
 const SecuritySettings = () => {
@@ -254,7 +254,7 @@ const SecuritySettings = () => {
                     <h2 className="text-lg font-medium">Sicherheits-PIN einrichten</h2>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Switch id="pin-mode" checked={pinEnabled} onCheckedChange={handlePinToggle} />
+                    <SecuritySwitch id="pin-mode" checked={pinEnabled} onCheckedChange={handlePinToggle} />
                   </div>
                 </div>
                 
@@ -316,7 +316,7 @@ const SecuritySettings = () => {
                   <h2 className="text-lg font-medium">Auto-Logout Timer</h2>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Switch id="auto-logout" checked={autoLogoutEnabled} onCheckedChange={handleAutoLogoutToggle} />
+                  <SecuritySwitch id="auto-logout" checked={autoLogoutEnabled} onCheckedChange={handleAutoLogoutToggle} />
                 </div>
               </div>
               
