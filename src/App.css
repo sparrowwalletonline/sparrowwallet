@@ -288,3 +288,51 @@ button:hover {
     transform: translateX(-100%);
   }
 }
+
+/* Tutorial styles */
+.tutorial-highlight {
+  position: relative;
+  z-index: 50;
+}
+
+.pulse-animation {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    stroke: #3B82F6;
+  }
+  50% {
+    opacity: 0.6;
+    stroke: #60A5FA;
+  }
+  100% {
+    opacity: 1;
+    stroke: #3B82F6;
+  }
+}
+
+/* Animation for tutorial popover */
+.tutorial-popover-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.tutorial-popover-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 200ms, transform 200ms;
+}
+
+.tutorial-popover-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.tutorial-popover-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 200ms, transform 200ms;
+}

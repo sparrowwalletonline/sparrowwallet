@@ -18,6 +18,9 @@ import Auth from "./pages/Auth";
 import CryptoDetailView from "./pages/CryptoDetailView";
 import { MenuProvider } from "./contexts/MenuContext";
 import { WalletProvider, useWallet } from "./contexts/WalletContext";
+import { TutorialProvider } from "./contexts/TutorialContext";
+import TutorialPopover from "./components/TutorialPopover";
+import TutorialOverlay from "./components/TutorialOverlay";
 import SideMenu from "./components/SideMenu";
 
 import "./App.css";
@@ -43,63 +46,67 @@ function App() {
     <ThemeProvider defaultTheme={defaultTheme} storageKey="wallet-theme" attribute="class">
       <MenuProvider>
         <WalletProvider>
-          <Router>
-            <SideMenu />
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/app" element={<Index />} />
-              <Route path="/wallet" element={
-                <PrivateRoute>
-                  <WalletView />
-                </PrivateRoute>
-              } />
-              <Route path="/wallet/crypto/:symbol" element={
-                <PrivateRoute>
-                  <CryptoDetailView />
-                </PrivateRoute>
-              } />
-              <Route path="/browser" element={
-                <PrivateRoute>
-                  <BrowserView />
-                </PrivateRoute>
-              } />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/wallet-choice" element={
-                <PrivateRoute>
-                  <WalletChoice />
-                </PrivateRoute>
-              } />
-              <Route path="/generate-wallet" element={
-                <PrivateRoute>
-                  <GenerateWallet />
-                </PrivateRoute>
-              } />
-              <Route path="/seed-phrase" element={
-                <PrivateRoute>
-                  <SeedPhrasePage />
-                </PrivateRoute>
-              } />
-              <Route path="/passphrase" element={
-                <PrivateRoute>
-                  <PassPhrase />
-                </PrivateRoute>
-              } />
-              <Route path="/seed-phrase-validation" element={
-                <PrivateRoute>
-                  <SeedPhraseValidation />
-                </PrivateRoute>
-              } />
-              <Route path="/congrats" element={
-                <PrivateRoute>
-                  <CongratsPage />
-                </PrivateRoute>
-              } />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Router>
+          <TutorialProvider>
+            <Router>
+              <SideMenu />
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/app" element={<Index />} />
+                <Route path="/wallet" element={
+                  <PrivateRoute>
+                    <WalletView />
+                  </PrivateRoute>
+                } />
+                <Route path="/wallet/crypto/:symbol" element={
+                  <PrivateRoute>
+                    <CryptoDetailView />
+                  </PrivateRoute>
+                } />
+                <Route path="/browser" element={
+                  <PrivateRoute>
+                    <BrowserView />
+                  </PrivateRoute>
+                } />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/wallet-choice" element={
+                  <PrivateRoute>
+                    <WalletChoice />
+                  </PrivateRoute>
+                } />
+                <Route path="/generate-wallet" element={
+                  <PrivateRoute>
+                    <GenerateWallet />
+                  </PrivateRoute>
+                } />
+                <Route path="/seed-phrase" element={
+                  <PrivateRoute>
+                    <SeedPhrasePage />
+                  </PrivateRoute>
+                } />
+                <Route path="/passphrase" element={
+                  <PrivateRoute>
+                    <PassPhrase />
+                  </PrivateRoute>
+                } />
+                <Route path="/seed-phrase-validation" element={
+                  <PrivateRoute>
+                    <SeedPhraseValidation />
+                  </PrivateRoute>
+                } />
+                <Route path="/congrats" element={
+                  <PrivateRoute>
+                    <CongratsPage />
+                  </PrivateRoute>
+                } />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              <TutorialPopover />
+              <TutorialOverlay />
+            </Router>
+          </TutorialProvider>
+          <Toaster />
         </WalletProvider>
-        <Toaster />
       </MenuProvider>
     </ThemeProvider>
   );
