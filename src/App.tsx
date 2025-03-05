@@ -22,6 +22,7 @@ import PaymentMethods from "./pages/PaymentMethods";
 import AppSettings from "./pages/AppSettings";
 import HelpCenter from "./pages/HelpCenter";
 import About from "./pages/About";
+import PinVerification from "./components/PinVerification";
 import { MenuProvider } from "./contexts/MenuContext";
 import { WalletProvider, useWallet } from "./contexts/WalletContext";
 import { TutorialProvider } from "./contexts/TutorialContext";
@@ -33,11 +34,16 @@ import "./App.css";
 
 // Authentication guard component
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-  const { session } = useWallet();
+  const { session, requirePinVerification, pinVerified } = useWallet();
 
   if (!session) {
     // Redirect to auth page if not authenticated
     return <Navigate to="/auth" replace />;
+  }
+
+  // If PIN verification is required and not yet verified, show PIN screen
+  if (requirePinVerification && !pinVerified) {
+    return <PinVerification onSuccess={() => {}} />;
   }
 
   return <>{children}</>;
@@ -47,7 +53,7 @@ function App() {
   // Get the user's preferred color scheme
   const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   const defaultTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
-
+  
   return (
     <ThemeProvider defaultTheme={defaultTheme} storageKey="wallet-theme" attribute="class">
       <MenuProvider>

@@ -14,13 +14,21 @@ import Header from '@/components/Header';
 
 const SecuritySettings = () => {
   const navigate = useNavigate();
-  const { seedPhrase, copyToClipboard } = useWallet();
+  const { 
+    seedPhrase, 
+    copyToClipboard, 
+    pinProtectionEnabled,
+    setPinProtectionEnabled,
+    setPin,
+    pinVerified
+  } = useWallet();
+  
   const [showSeedPhrase, setShowSeedPhrase] = useState(false);
   const [timeLeft, setTimeLeft] = useState(5);
   const [buttonPressed, setButtonPressed] = useState(false);
   
-  const [pinEnabled, setPinEnabled] = useState(false);
-  const [pin, setPin] = useState('');
+  const [pinEnabled, setPinEnabled] = useState(pinProtectionEnabled);
+  const [pinInput, setPinInput] = useState('');
   const [confirmPin, setConfirmPin] = useState('');
   const [showPinFields, setShowPinFields] = useState(false);
   
@@ -39,6 +47,10 @@ const SecuritySettings = () => {
     { id: '2', name: 'iPhone 13', lastActive: 'Vor 2 Tagen', isCurrent: false },
     { id: '3', name: 'MacBook Pro', lastActive: 'Vor 5 Tagen', isCurrent: false },
   ]);
+
+  useEffect(() => {
+    setPinEnabled(pinProtectionEnabled);
+  }, [pinProtectionEnabled]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -87,9 +99,11 @@ const SecuritySettings = () => {
   const handlePinToggle = (checked: boolean) => {
     if (pinEnabled && !checked) {
       setPinEnabled(false);
+      setPinProtectionEnabled(false);
       setShowPinFields(false);
-      setPin('');
+      setPinInput('');
       setConfirmPin('');
+      setPin('');
       toast({
         title: "PIN deaktiviert",
         description: "Ihre Sicherheits-PIN wurde erfolgreich deaktiviert.",
@@ -100,7 +114,7 @@ const SecuritySettings = () => {
   };
   
   const savePin = () => {
-    if (pin.length < 4) {
+    if (pinInput.length < 4) {
       toast({
         title: "Fehler",
         description: "PIN muss mindestens 4 Ziffern lang sein.",
@@ -109,7 +123,7 @@ const SecuritySettings = () => {
       return;
     }
     
-    if (pin !== confirmPin) {
+    if (pinInput !== confirmPin) {
       toast({
         title: "Fehler",
         description: "PINs stimmen nicht überein.",
@@ -119,6 +133,8 @@ const SecuritySettings = () => {
     }
     
     setPinEnabled(true);
+    setPinProtectionEnabled(true);
+    setPin(pinInput);
     setShowPinFields(false);
     toast({
       title: "PIN gespeichert",
@@ -294,7 +310,7 @@ const SecuritySettings = () => {
                 </div>
                 
                 <p className="text-sm text-muted-foreground mb-4">
-                  Eine PIN bietet zusätzlichen Schutz für sensible Aktionen wie Transaktionen und Wallet-Zugriff.
+                  Eine PIN bietet zusätzlichen Schutz bei der Rückkehr zur Wallet nach Inaktivität oder Schließen des Browsers.
                 </p>
                 
                 {showPinFields && (
@@ -304,8 +320,8 @@ const SecuritySettings = () => {
                       <Input 
                         id="pin" 
                         type="password" 
-                        value={pin} 
-                        onChange={(e) => setPin(e.target.value)} 
+                        value={pinInput} 
+                        onChange={(e) => setPinInput(e.target.value)} 
                         maxLength={8} 
                         placeholder="PIN eingeben"
                         inputMode="numeric"

@@ -42,7 +42,15 @@ const WalletContext = createContext<WalletContextType>({
   deleteWallet: () => {},
   saveWalletAddressToUserAccount: async () => false,
   loadWalletFromUserAccount: async () => false,
-  logout: async () => {}
+  logout: async () => {},
+  pinProtectionEnabled: false,
+  requirePinVerification: false,
+  setRequirePinVerification: () => {},
+  verifyPin: () => false,
+  setPinProtectionEnabled: () => {},
+  setPin: () => {},
+  pinVerified: false,
+  setPinVerified: () => {}
 });
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -62,6 +70,15 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [session, setSession] = useState<Session | null>(null);
   const [isRefreshingPrices, setIsRefreshingPrices] = useState(false);
   const [cryptoPrices, setCryptoPrices] = useState<Record<string, CryptoPrice>>(fallbackCryptoData);
+  
+  const [pin, setPin] = useState<string>(() => {
+    return localStorage.getItem('walletPin') || '';
+  });
+  const [pinProtectionEnabled, setPinProtectionEnabled] = useState<boolean>(() => {
+    return localStorage.getItem('pinProtectionEnabled') === 'true';
+  });
+  const [requirePinVerification, setRequirePinVerification] = useState<boolean>(false);
+  const [pinVerified, setPinVerified] = useState<boolean>(false);
   
   const [enabledCryptos, setEnabledCryptos] = useState<string[]>(() => {
     const savedEnabledCryptos = localStorage.getItem('enabledCryptos');
@@ -102,6 +119,59 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   });
 
   useEffect(() => {
+    if (pinProtectionEnabled && pin) {
+      localStorage.setItem('walletPin', pin);
+      localStorage.setItem('pinProtectionEnabled', 'true');
+    } else if (!pinProtectionEnabled) {
+      localStorage.setItem('pinProtectionEnabled', 'false');
+    }
+  }, [pinProtectionEnabled, pin]);
+
+  useEffect(() => {
+    const checkForReturningSessions = () => {
+      if (pinProtectionEnabled && session && !pinVerified && pin) {
+        const lastActivity = localStorage.getItem('lastActivity');
+        if (!lastActivity || (Date.now() - parseInt(lastActivity)) > 30 * 60 * 1000) {
+          setRequirePinVerification(true);
+        }
+      }
+    };
+
+    checkForReturningSessions();
+    
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        checkForReturningSessions();
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [session, pinProtectionEnabled, pinVerified, pin]);
+
+  useEffect(() => {
+    const updateActivity = () => {
+      localStorage.setItem('lastActivity', Date.now().toString());
+    };
+    
+    updateActivity();
+    
+    const activityEvents = ['mousedown', 'keydown', 'touchstart', 'scroll'];
+    activityEvents.forEach(event => {
+      window.addEventListener(event, updateActivity);
+    });
+    
+    return () => {
+      activityEvents.forEach(event => {
+        window.removeEventListener(event, updateActivity);
+      });
+    };
+  }, []);
+
+  useEffect(() => {
     if (wallets.length > 0) {
       if (!wallets.some(w => w.isActive)) {
         const updatedWallets = [...wallets];
@@ -121,7 +191,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       if (session) {
-        loadWalletFromUserAccount(); // Versuche, die Wallet-Daten zu laden, wenn der Benutzer angemeldet ist
+        loadWalletFromUserAccount();
       }
     });
 
@@ -130,7 +200,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       if (session) {
-        loadWalletFromUserAccount(); // Auch bei Statusänderungen versuchen zu laden
+        loadWalletFromUserAccount();
       }
     });
 
@@ -162,6 +232,15 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       localStorage.setItem('walletSeedPhrase', JSON.stringify(seedPhrase));
     }
   }, [seedPhrase]);
+
+  const verifyPin = (inputPin: string): boolean => {
+    if (pin && inputPin === pin) {
+      setPinVerified(true);
+      setRequirePinVerification(false);
+      return true;
+    }
+    return false;
+  };
 
   const saveWalletAddressToUserAccount = async (): Promise<boolean> => {
     if (!session?.user) {
@@ -460,7 +539,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             setUsdBalance(calculatedUsdBalance);
             const newAddress = generateBtcAddress();
             setWalletAddress(newAddress);
-            localStorage.setItem('walletAddress', newAddress);
             setBalance(0);
             
             if (wallets.length === 0) {
@@ -616,6 +694,9 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const logout = async () => {
     try {
+      localStorage.removeItem('lastActivity');
+      setPinVerified(false);
+      
       await supabase.auth.signOut();
       resetWallet();
       toast({
@@ -665,7 +746,15 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       deleteWallet,
       saveWalletAddressToUserAccount,
       loadWalletFromUserAccount,
-      logout
+      logout,
+      pinProtectionEnabled,
+      requirePinVerification,
+      setRequirePinVerification,
+      verifyPin,
+      setPinProtectionEnabled,
+      setPin,
+      pinVerified,
+      setPinVerified
     }}>
       {children}
     </WalletContext.Provider>
