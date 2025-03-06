@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Loader2, ArrowLeft } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -21,9 +21,6 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [postalCode, setPostalCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
 
@@ -67,12 +64,9 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
         id: user.id,
         first_name: firstName,
         last_name: lastName,
-        date_of_birth: dateOfBirth,
-        email: email,
-        phone: phone,
-        address: address,
-        city: city,
-        postal_code: postalCode,
+        username: firstName.toLowerCase() + "." + lastName.toLowerCase(),
+        avatar_url: null,
+        is_admin: false
       });
       
       if (error) throw error;
@@ -179,38 +173,6 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+49 123 4567890"
               />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="address">Adresse</Label>
-              <Input
-                id="address"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                placeholder="Musterstraße 123"
-              />
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="city">Stadt</Label>
-                <Input
-                  id="city"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  placeholder="Musterstadt"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="postalCode">Postleitzahl</Label>
-                <Input
-                  id="postalCode"
-                  value={postalCode}
-                  onChange={(e) => setPostalCode(e.target.value)}
-                  placeholder="12345"
-                />
-              </div>
             </div>
             
             <div className="flex items-center space-x-2 mt-4">
