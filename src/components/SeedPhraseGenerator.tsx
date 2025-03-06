@@ -37,7 +37,11 @@ const wordlist = [
   "calm", "camera", "camp", "can", "canal", "cancel", "candy", "cannon", "canoe", "canvas"
 ];
 
-const SeedPhraseGenerator: React.FC = () => {
+interface SeedPhraseGeneratorProps {
+  onSeedPhraseChange?: (seedPhrase: string[]) => void;
+}
+
+const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseChange }) => {
   const { 
     seedPhrase, 
     copyToClipboard, 
@@ -75,6 +79,11 @@ const SeedPhraseGenerator: React.FC = () => {
         importWallet(words);
         console.log("Updated wallet context with new seed phrase");
         
+        // Notify parent component about the seed phrase change
+        if (onSeedPhraseChange) {
+          onSeedPhraseChange(words);
+        }
+        
         // Save to localStorage as a fallback
         localStorage.setItem('walletSeedPhrase', JSON.stringify(words));
         
@@ -94,8 +103,14 @@ const SeedPhraseGenerator: React.FC = () => {
       // Fallback to hardcoded phrase on error
       const fallbackPhrase = ["ability", "dinner", "canvas", "trash", "paper", "volcano", "energy", "horse", "author", "basket", "melody", "vintage"];
       setLocalSeedPhrase(fallbackPhrase);
+      
       // Save the fallback phrase to the wallet context
       importWallet(fallbackPhrase);
+      
+      // Notify parent component about the seed phrase change
+      if (onSeedPhraseChange) {
+        onSeedPhraseChange(fallbackPhrase);
+      }
       
       toast({
         title: "Fehler",
@@ -113,6 +128,11 @@ const SeedPhraseGenerator: React.FC = () => {
     if (seedPhrase && seedPhrase.length >= 12) {
       console.log("Using existing seed phrase from context:", seedPhrase);
       setLocalSeedPhrase(seedPhrase);
+      
+      // Notify parent component about the seed phrase
+      if (onSeedPhraseChange) {
+        onSeedPhraseChange(seedPhrase);
+      }
     } else {
       // Check localStorage as fallback
       const savedPhrase = localStorage.getItem('walletSeedPhrase');
@@ -122,16 +142,29 @@ const SeedPhraseGenerator: React.FC = () => {
           if (Array.isArray(parsedPhrase) && parsedPhrase.length >= 12) {
             console.log("Using seed phrase from localStorage");
             setLocalSeedPhrase(parsedPhrase);
+            
             // Update the wallet context
             importWallet(parsedPhrase);
+            
+            // Notify parent component about the seed phrase
+            if (onSeedPhraseChange) {
+              onSeedPhraseChange(parsedPhrase);
+            }
+          } else {
+            // Generate a new seed phrase if the parsed phrase is invalid
+            generateSeedPhrase();
           }
         } catch (error) {
           console.error("Error parsing seed phrase from localStorage:", error);
+          // Generate a new seed phrase on error
+          generateSeedPhrase();
         }
+      } else {
+        // Generate a new seed phrase if none exists
+        generateSeedPhrase();
       }
     }
-    // Don't auto-generate a new seed phrase
-  }, [seedPhrase, importWallet]); 
+  }, [seedPhrase, importWallet, onSeedPhraseChange]); 
   
   const handleCopy = () => {
     if (localSeedPhrase && localSeedPhrase.length >= 12) {
@@ -242,6 +275,11 @@ const SeedPhraseGenerator: React.FC = () => {
       if (success) {
         // Update local state with the loaded seed phrase
         setLocalSeedPhrase(seedPhrase);
+        
+        // Notify parent component about the seed phrase change
+        if (onSeedPhraseChange) {
+          onSeedPhraseChange(seedPhrase);
+        }
       }
     } finally {
       setIsLoading(false);
@@ -251,7 +289,12 @@ const SeedPhraseGenerator: React.FC = () => {
   useEffect(() => {
     console.log("SeedPhraseGenerator rendered with local seedPhrase:", 
       localSeedPhrase ? localSeedPhrase.join(' ') : 'undefined');
-  }, [localSeedPhrase]);
+      
+    // Ensure parent component is notified about any changes to localSeedPhrase
+    if (localSeedPhrase && localSeedPhrase.length >= 12 && onSeedPhraseChange) {
+      onSeedPhraseChange(localSeedPhrase);
+    }
+  }, [localSeedPhrase, onSeedPhraseChange]);
 
   return (
     <div className="flex flex-col gap-6 w-full animate-fade-in">

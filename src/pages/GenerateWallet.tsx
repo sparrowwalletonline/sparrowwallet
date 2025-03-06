@@ -10,15 +10,32 @@ import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 
 const GenerateWallet: React.FC = () => {
-  const { seedPhrase, createWallet, cancelWalletCreation } = useWallet();
+  const { seedPhrase, createWallet, cancelWalletCreation, importWallet } = useWallet();
   const navigate = useNavigate();
   const [hasConfirmedSeedPhrase, setHasConfirmedSeedPhrase] = useState(false);
+  const [localSeedPhrase, setLocalSeedPhrase] = useState<string[]>([]);
+  
+  // Function to handle seed phrase changes from the SeedPhraseGenerator
+  const handleSeedPhraseChange = (newSeedPhrase: string[]) => {
+    console.log("Seed phrase updated in GenerateWallet:", newSeedPhrase);
+    setLocalSeedPhrase(newSeedPhrase);
+    
+    // Make sure to update the wallet context
+    if (newSeedPhrase.length >= 12) {
+      importWallet(newSeedPhrase);
+    }
+  };
   
   const handleCreateWallet = () => {
     // Add exit animation
     document.body.classList.add('page-exit');
     
     setTimeout(() => {
+      // Ensure we're using the current seed phrase
+      if (localSeedPhrase.length >= 12) {
+        importWallet(localSeedPhrase);
+      }
+      
       createWallet();
       
       // Remove class after navigation
@@ -46,9 +63,10 @@ const GenerateWallet: React.FC = () => {
   // Adding console logs to help debug the button enablement issue
   useEffect(() => {
     console.log("Seed phrase length:", seedPhrase.length);
+    console.log("Local seed phrase length:", localSeedPhrase.length);
     console.log("Has confirmed seed phrase:", hasConfirmedSeedPhrase);
-    console.log("Button should be enabled:", seedPhrase.length > 0 && hasConfirmedSeedPhrase);
-  }, [seedPhrase, hasConfirmedSeedPhrase]);
+    console.log("Button should be enabled:", (localSeedPhrase.length >= 12 || seedPhrase.length > 0) && hasConfirmedSeedPhrase);
+  }, [seedPhrase, localSeedPhrase, hasConfirmedSeedPhrase]);
 
   return (
     <div className="min-h-screen flex flex-col px-4 page-enter safe-area-inset-bottom bg-gradient-to-b from-white to-blue-50">
@@ -65,7 +83,7 @@ const GenerateWallet: React.FC = () => {
         </h1>
         
         <Card className="w-full max-w-md shadow-lg border border-blue-100 p-6 bg-white rounded-2xl animate-fade-in">
-          <SeedPhraseGenerator />
+          <SeedPhraseGenerator onSeedPhraseChange={handleSeedPhraseChange} />
         </Card>
         
         <div className="bg-red-50 rounded-lg p-4 sm:p-5 border border-red-100 max-w-md w-full shadow-sm animate-fade-in">
@@ -111,7 +129,7 @@ const GenerateWallet: React.FC = () => {
           <Button 
             onClick={handleCreateWallet}
             className="flex-1 h-11 sm:h-12 bg-wallet-blue hover:bg-wallet-darkBlue text-white shadow-md hover:shadow-lg text-sm sm:text-base min-h-[44px] touch-manipulation"
-            disabled={!seedPhrase.length || !hasConfirmedSeedPhrase}
+            disabled={!(localSeedPhrase.length >= 12 || seedPhrase.length > 0) || !hasConfirmedSeedPhrase}
           >
             <Check size={18} className="mr-1.5 sm:mr-2" /> Wallet erstellen
           </Button>
