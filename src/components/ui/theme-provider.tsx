@@ -17,11 +17,10 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   React.useEffect(() => {
     // Force light theme application on initial load
     const applyTheme = () => {
-      const storedTheme = localStorage.getItem('theme') || 'light';
-      document.documentElement.setAttribute('data-theme', storedTheme);
+      document.documentElement.setAttribute('data-theme', 'light');
       // Ensure class is also set for Tailwind
-      document.documentElement.classList.remove('light', 'dark');
-      document.documentElement.classList.add(storedTheme);
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
     };
     
     applyTheme();
@@ -40,9 +39,8 @@ export const useTheme = () => {
   const themeContext = useNextTheme();
   
   React.useEffect(() => {
-    // Ensure theme changes are applied immediately on mobile
+    // Ensure theme changes are applied immediately
     if (themeContext.theme) {
-      localStorage.setItem('theme', themeContext.theme);
       document.documentElement.setAttribute('data-theme', themeContext.theme);
       // Ensure class is also set for Tailwind
       document.documentElement.classList.remove('light', 'dark');

@@ -109,17 +109,17 @@ const WalletChoice: React.FC = () => {
   }
   
   return (
-    <div className="min-h-screen flex flex-col items-center justify-between bg-gradient-to-b from-wallet-darkBg to-[#151a25] text-white p-4 sm:p-6 relative page-enter safe-area-inset-bottom">
+    <div className="min-h-screen flex flex-col items-center justify-between bg-gradient-to-b from-[#f8fafc] to-[#e2e8f0] text-gray-800 p-4 sm:p-6 relative page-enter safe-area-inset-bottom">
       <div className="w-full relative flex items-center justify-center">
         <button 
           onClick={handleBackClick}
-          className="absolute left-2 sm:left-4 top-0 bottom-0 my-auto text-white hover:text-gray-300 transition-colors h-10 w-10 flex items-center justify-center touch-manipulation z-10"
+          className="absolute left-2 sm:left-4 top-0 bottom-0 my-auto text-gray-700 hover:text-gray-900 transition-colors h-10 w-10 flex items-center justify-center touch-manipulation z-10"
           aria-label="Back to landing page"
         >
           <ArrowLeft size={24} />
         </button>
         <div className="text-center">
-          <h1 className="text-xl font-medium ml-10">Wallet auswählen</h1>
+          <h1 className="text-xl font-medium ml-10 text-gray-800">Wallet auswählen</h1>
         </div>
       </div>
       
@@ -129,8 +129,8 @@ const WalletChoice: React.FC = () => {
         <div className="h-24 sm:h-32 w-24 sm:w-32 relative mb-4 sm:mb-6 animate-bounce-slow">
           <WalletLogo className="w-full h-full" color="sparrow" useSparrowLogo={true} scale={2.5} />
         </div>
-        <h1 className="font-heading text-xl sm:text-3xl font-bold text-center">Sparrow Wallet</h1>
-        <p className="text-center text-gray-300 max-w-xs mx-auto">
+        <h1 className="font-heading text-xl sm:text-3xl font-bold text-center text-gray-900">Sparrow Wallet</h1>
+        <p className="text-center text-gray-600 max-w-xs mx-auto">
           Speichere und verwalte deine digitalen Assets sicher und einfach mit der Sparrow Wallet.
         </p>
       </div>
@@ -138,11 +138,11 @@ const WalletChoice: React.FC = () => {
       <div className="flex-1"></div>
       
       <div className="w-full max-w-md px-4">
-        <div className="bg-wallet-card/30 backdrop-blur-sm rounded-xl p-5 sm:p-6 border border-white/5 shadow-lg">
+        <div className="bg-white/90 backdrop-blur-sm rounded-xl p-5 sm:p-6 border border-gray-200 shadow-lg">
           <div className="flex flex-col gap-3 sm:gap-4 mb-2">
             <Button 
               onClick={handleCreateWallet}
-              className="w-full py-3 sm:py-6 text-sm sm:text-base bg-wallet-blue hover:bg-wallet-darkBlue text-white font-medium min-h-[50px] touch-manipulation hover:translate-y-[-2px] transition-all duration-300 shadow-md hover:shadow-lg"
+              className="w-full py-3 sm:py-6 text-sm sm:text-base bg-[#0500ff] hover:bg-[#0400cf] text-white font-medium min-h-[50px] touch-manipulation hover:translate-y-[-2px] transition-all duration-300 shadow-md hover:shadow-lg"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -157,8 +157,8 @@ const WalletChoice: React.FC = () => {
             
             <Button 
               onClick={handleImportWallet}
-              variant="ghost" 
-              className="w-full py-2 sm:py-2 text-sm sm:text-base text-white hover:bg-gray-800/50 min-h-[44px] touch-manipulation hover:translate-y-[-2px] transition-all duration-300"
+              variant="outline" 
+              className="w-full py-2 sm:py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100 min-h-[44px] touch-manipulation hover:translate-y-[-2px] transition-all duration-300"
               disabled={isLoading || isImportLoading}
             >
               {isImportLoading ? (

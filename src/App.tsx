@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { Toaster } from "./components/ui/toaster";
@@ -42,11 +41,9 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   const { session, requirePinVerification, pinVerified } = useWallet();
 
   if (!session) {
-    // Redirect to auth page if not authenticated
     return <Navigate to="/auth" replace />;
   }
 
-  // If PIN verification is required and not yet verified, show PIN screen
   if (requirePinVerification && !pinVerified) {
     return <PinVerification onSuccess={() => {}} />;
   }
@@ -55,9 +52,7 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
-  // Get the user's preferred color scheme but default to light
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const defaultTheme = localStorage.getItem('theme') || 'light'; // Changed to default to light
+  const defaultTheme = 'light';
   
   return (
     <ThemeProvider defaultTheme={defaultTheme} storageKey="wallet-theme" attribute="class">
