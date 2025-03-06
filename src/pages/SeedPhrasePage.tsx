@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Shield, Check, ArrowLeft } from 'lucide-react';
@@ -9,6 +8,7 @@ import SeedPhraseGenerator from '@/components/SeedPhraseGenerator';
 import Header from '@/components/Header';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { checkExistingWallet } from '@/utils/supabaseWalletUtils';
 
 const SeedPhrasePage: React.FC = () => {
   const { seedPhrase, cancelWalletCreation, session, saveToSupabase, saveWalletAddressToUserAccount, createWallet } = useWallet();
@@ -41,19 +41,33 @@ const SeedPhrasePage: React.FC = () => {
     const autoSaveToCloud = async () => {
       if (session && seedPhrase && seedPhrase.length >= 12 && !autoSaved) {
         try {
-          // Seed-Phrase in Supabase speichern
+          // First save the seed phrase
           const savedSeedPhrase = await saveToSupabase();
           
-          // Wallet-Adresse in Supabase speichern
-          const savedWalletAddress = await saveWalletAddressToUserAccount();
-          
-          if (savedSeedPhrase && savedWalletAddress) {
-            setAutoSaved(true);
-            toast({
-              title: "Automatisch gespeichert",
-              description: "Deine Seed Phrase und Wallet-Adresse wurden automatisch in der Cloud gesichert",
-              duration: 3000,
-            });
+          if (savedSeedPhrase) {
+            // Check if user already has a wallet
+            const hasExistingWallet = await checkExistingWallet(session.user.id);
+            
+            if (!hasExistingWallet) {
+              // Only save wallet address if user doesn't already have one
+              const savedWalletAddress = await saveWalletAddressToUserAccount();
+              
+              if (savedWalletAddress) {
+                setAutoSaved(true);
+                toast({
+                  title: "Automatisch gespeichert",
+                  description: "Deine Seed Phrase und Wallet-Adresse wurden automatisch in der Cloud gesichert",
+                  duration: 3000,
+                });
+              }
+            } else {
+              setAutoSaved(true);
+              toast({
+                title: "Automatisch gespeichert",
+                description: "Deine Seed Phrase wurde automatisch in der Cloud gesichert",
+                duration: 3000,
+              });
+            }
           }
         } catch (error) {
           console.error("Error auto-saving to Supabase:", error);
@@ -103,11 +117,11 @@ const SeedPhrasePage: React.FC = () => {
         // Store the seedPhrase in localStorage as a fallback
         localStorage.setItem('walletSeedPhrase', JSON.stringify(phraseToUse));
         
-        // Ensure the seed phrase is saved to Supabase before proceeding
+        // Save to Supabase if user is logged in
         let allSuccess = true;
         
         if (session) {
-          console.log("Saving seed phrase and wallet address to user account before validation");
+          console.log("Saving seed phrase before validation");
           const savedSeedPhrase = await saveToSupabase();
           
           if (!savedSeedPhrase) {
@@ -115,8 +129,15 @@ const SeedPhrasePage: React.FC = () => {
             throw new Error("Fehler beim Speichern der Seed Phrase");
           }
           
-          // Skip wallet address saving if it would fail due to missing wallet address
-          // This is just to prevent the error, we'll continue with validation
+          // Check if user already has a wallet before trying to save a new one
+          const hasExistingWallet = await checkExistingWallet(session.user.id);
+          
+          if (!hasExistingWallet) {
+            console.log("User doesn't have a wallet yet, saving wallet address");
+            await saveWalletAddressToUserAccount();
+          } else {
+            console.log("User already has a wallet, skipping wallet address saving");
+          }
         }
         
         if (allSuccess) {

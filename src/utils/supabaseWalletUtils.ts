@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from '@supabase/supabase-js';
 import { toast } from '@/components/ui/use-toast';
@@ -205,5 +204,25 @@ export const loadWalletFromSupabase = async (
       duration: 3000,
     });
     return null;
+  }
+};
+
+export const checkExistingWallet = async (userId: string): Promise<boolean> => {
+  try {
+    const { data, error } = await supabase
+      .from('user_wallets')
+      .select('id')
+      .eq('user_id', userId)
+      .maybeSingle();
+    
+    if (error) {
+      console.error("Error checking existing wallet:", error);
+      return false;
+    }
+    
+    return !!data;
+  } catch (error) {
+    console.error("Exception checking existing wallet:", error);
+    return false;
   }
 };
