@@ -89,10 +89,13 @@ const WalletViewContent: React.FC = () => {
 
   React.useEffect(() => {
     const loadWalletData = async () => {
+      console.log("Auto-refreshing wallet data");
       setIsRefreshingBalance(true);
       try {
         await refreshWalletBalance();
         await refreshPrices();
+      } catch (error) {
+        console.error("Error auto-refreshing wallet data:", error);
       } finally {
         setIsRefreshingBalance(false);
       }
@@ -100,10 +103,20 @@ const WalletViewContent: React.FC = () => {
     
     loadWalletData();
     
-    const autoRefreshInterval = setInterval(loadWalletData, 60000); // Refresh every minute
+    const autoRefreshInterval = setInterval(loadWalletData, 30000); // Refresh every 30 seconds
+    
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        console.log("App became visible - refreshing wallet data");
+        loadWalletData();
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     
     return () => {
       clearInterval(autoRefreshInterval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

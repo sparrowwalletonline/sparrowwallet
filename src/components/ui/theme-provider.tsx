@@ -10,11 +10,41 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   const updatedProps = {
     ...props,
     defaultTheme: props.defaultTheme || "light",
+    enableSystem: true, // Enable system theme detection
+    disableTransitionOnChange: false, // Smoother transitions
   };
+  
+  React.useEffect(() => {
+    // Force theme application on mobile by setting a data attribute
+    const applyTheme = () => {
+      const storedTheme = localStorage.getItem('theme');
+      if (storedTheme) {
+        document.documentElement.setAttribute('data-theme', storedTheme);
+      }
+    };
+    
+    applyTheme();
+    window.addEventListener('storage', applyTheme);
+    
+    return () => {
+      window.removeEventListener('storage', applyTheme);
+    };
+  }, []);
+  
   return <NextThemesProvider {...updatedProps}>{children}</NextThemesProvider>
 }
 
 export const useTheme = () => {
   // Use the useTheme hook directly from next-themes package
-  return useNextTheme();
+  const themeContext = useNextTheme();
+  
+  React.useEffect(() => {
+    // Ensure theme changes are applied immediately on mobile
+    if (themeContext.theme) {
+      localStorage.setItem('theme', themeContext.theme);
+      document.documentElement.setAttribute('data-theme', themeContext.theme);
+    }
+  }, [themeContext.theme]);
+  
+  return themeContext;
 }
