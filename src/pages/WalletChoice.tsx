@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -18,7 +17,6 @@ const WalletChoice: React.FC = () => {
   const [showPersonalDataForm, setShowPersonalDataForm] = useState(false);
   
   useEffect(() => {
-    // Check for session but don't redirect to auth
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
     });
@@ -36,24 +34,25 @@ const WalletChoice: React.FC = () => {
   
   const handlePersonalDataComplete = () => {
     setIsLoading(true);
-    // Add a slight delay for better user experience
     setTimeout(() => {
       generateWallet();
-      navigate('/generate-wallet'); // Directly navigate to generate wallet page
+      navigate('/seed-phrase');
+      toast({
+        title: "Wallet wird erstellt",
+        description: "Sie werden zur Seed-Phrase-Bestätigung weitergeleitet."
+      });
     }, 500);
   };
   
   const handleImportWallet = () => {
     setIsImportLoading(true);
     
-    // Add exit animation
     document.body.classList.add('page-exit');
     
     setTimeout(() => {
       importWallet("dummy phrase to trigger import UI");
       setIsImportLoading(false);
       
-      // Remove class after navigation
       setTimeout(() => {
         document.body.classList.remove('page-exit');
       }, 50);
@@ -61,14 +60,12 @@ const WalletChoice: React.FC = () => {
   };
 
   const handleBackClick = () => {
-    // Add exit animation
     document.body.classList.add('page-exit');
     
     setTimeout(() => {
       cancelWalletCreation();
       navigate('/');
       
-      // Remove class after navigation
       setTimeout(() => {
         document.body.classList.remove('page-exit');
       }, 50);

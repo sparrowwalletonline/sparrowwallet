@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Shield, Check, ArrowLeft } from 'lucide-react';
@@ -9,13 +8,22 @@ import SeedPhraseGenerator from '@/components/SeedPhraseGenerator';
 import Header from '@/components/Header';
 
 const SeedPhrasePage: React.FC = () => {
-  const { seedPhrase, cancelWalletCreation, session, saveToSupabase, saveWalletAddressToUserAccount } = useWallet();
+  const { seedPhrase, cancelWalletCreation, session, saveToSupabase, saveWalletAddressToUserAccount, createWallet } = useWallet();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [savedPhrase, setSavedPhrase] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [autoSaved, setAutoSaved] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
+  
+  // Ensure wallet is created when page loads directly
+  useEffect(() => {
+    // If we don't have a seed phrase yet, create it
+    if (!seedPhrase || seedPhrase.length < 12) {
+      console.log("No seed phrase found, creating wallet");
+      createWallet();
+    }
+  }, [seedPhrase, createWallet]);
   
   // Pre-fill checkboxes if coming back from validation page
   useEffect(() => {
