@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Dialog, 
@@ -127,118 +126,110 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ isOpen, onClose, on
   
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto bg-wallet-darkBg border-white/10 dialog-content">
+      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto dialog-content">
         <DialogHeader className="flex-row justify-between items-center">
-          <DialogTitle className="text-2xl font-bold text-white">Persönliche Daten</DialogTitle>
+          <DialogTitle className="text-2xl font-bold">Persönliche Daten</DialogTitle>
           <Button
             onClick={scrollToTop}
             size="icon"
-            className="h-8 w-8 rounded-full bg-wallet-blue hover:bg-wallet-darkBlue"
+            className="h-8 w-8 rounded-full bg-primary hover:bg-primary/90"
             aria-label="Zum Anfang scrollen"
             type="button"
           >
             <ArrowUp size={16} />
           </Button>
         </DialogHeader>
-        <DialogDescription className="text-gray-400">
+        <DialogDescription>
           Bitte gib deine persönlichen Daten ein, um deine Wallet zu erstellen.
         </DialogDescription>
         
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="firstName" className="text-white">Vorname <span className="text-red-500">*</span></Label>
+              <Label htmlFor="firstName">Vorname <span className="text-red-500">*</span></Label>
               <Input
                 id="firstName"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Max"
-                className="bg-gray-800 border-gray-700 text-white"
                 required
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="lastName" className="text-white">Nachname <span className="text-red-500">*</span></Label>
+              <Label htmlFor="lastName">Nachname <span className="text-red-500">*</span></Label>
               <Input
                 id="lastName"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Mustermann"
-                className="bg-gray-800 border-gray-700 text-white"
                 required
               />
             </div>
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="dateOfBirth" className="text-white">Geburtsdatum <span className="text-red-500">*</span></Label>
+            <Label htmlFor="dateOfBirth">Geburtsdatum <span className="text-red-500">*</span></Label>
             <Input
               id="dateOfBirth"
               type="date"
               value={dateOfBirth}
               onChange={(e) => setDateOfBirth(e.target.value)}
-              className="bg-gray-800 border-gray-700 text-white"
               required
             />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-white">E-Mail <span className="text-red-500">*</span></Label>
+            <Label htmlFor="email">E-Mail <span className="text-red-500">*</span></Label>
             <Input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="max.mustermann@example.com"
-              className="bg-gray-800 border-gray-700 text-white"
               required
             />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="phone" className="text-white">Telefonnummer</Label>
+            <Label htmlFor="phone">Telefonnummer</Label>
             <Input
               id="phone"
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="+49 123 4567890"
-              className="bg-gray-800 border-gray-700 text-white"
             />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="address" className="text-white">Adresse</Label>
+            <Label htmlFor="address">Adresse</Label>
             <Input
               id="address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               placeholder="Musterstraße 123"
-              className="bg-gray-800 border-gray-700 text-white"
             />
           </div>
           
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="city" className="text-white">Stadt</Label>
+              <Label htmlFor="city">Stadt</Label>
               <Input
                 id="city"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 placeholder="Musterstadt"
-                className="bg-gray-800 border-gray-700 text-white"
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="postalCode" className="text-white">Postleitzahl</Label>
+              <Label htmlFor="postalCode">Postleitzahl</Label>
               <Input
                 id="postalCode"
                 value={postalCode}
                 onChange={(e) => setPostalCode(e.target.value)}
                 placeholder="12345"
-                className="bg-gray-800 border-gray-700 text-white"
               />
             </div>
           </div>
@@ -248,13 +239,12 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ isOpen, onClose, on
               id="terms" 
               checked={acceptTerms}
               onCheckedChange={(checked) => setAcceptTerms(checked as boolean)}
-              className="border-gray-600 data-[state=checked]:bg-wallet-blue"
             />
             <label
               htmlFor="terms"
-              className="text-sm text-gray-300 font-medium leading-none cursor-pointer"
+              className="text-sm font-medium leading-none cursor-pointer"
             >
-              Ich akzeptiere die <a href="/terms" target="_blank" className="text-wallet-blue hover:underline">Nutzungsbedingungen</a>
+              Ich akzeptiere die <a href="/terms" target="_blank" className="text-primary hover:underline">Nutzungsbedingungen</a>
             </label>
           </div>
           
@@ -263,14 +253,13 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ isOpen, onClose, on
               type="button"
               onClick={onClose}
               variant="ghost"
-              className="text-gray-300 hover:text-white"
               disabled={isLoading}
             >
               Abbrechen
             </Button>
             <Button 
               type="submit"
-              className="bg-wallet-blue hover:bg-wallet-darkBlue text-white shadow-md hover:shadow-lg w-full md:w-auto"
+              className="text-white shadow-md hover:shadow-lg w-full md:w-auto"
               disabled={isLoading}
             >
               {isLoading ? (

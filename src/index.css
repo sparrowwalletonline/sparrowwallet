@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -218,6 +217,7 @@
   @apply bg-gray-800 text-white;
 }
 
+/* Dialog content theme-specific styles */
 .light .dialog-content {
   @apply bg-white border-gray-200 text-gray-800;
 }
