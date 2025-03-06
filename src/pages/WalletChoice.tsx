@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -62,7 +61,7 @@ const WalletChoice: React.FC = () => {
   }, [navigate]);
   
   const handleCreateWallet = () => {
-    setShowPersonalDataForm(true);
+    navigate('/personal-data');
   };
   
   const handlePersonalDataComplete = () => {
@@ -103,6 +102,10 @@ const WalletChoice: React.FC = () => {
   
   if (!session) {
     return null;
+  }
+  
+  if (showPersonalDataForm) {
+    return <PersonalDataForm onComplete={handlePersonalDataComplete} />;
   }
   
   return (
@@ -174,13 +177,6 @@ const WalletChoice: React.FC = () => {
       <div className="text-center text-xs text-gray-500 mt-4 sm:mt-6">
         © 2025 Sparrow Wallet · v1.0.0
       </div>
-      
-      {/* Personal Data Form */}
-      <PersonalDataForm 
-        isOpen={showPersonalDataForm} 
-        onClose={() => setShowPersonalDataForm(false)}
-        onComplete={handlePersonalDataComplete}
-      />
     </div>
   );
 };

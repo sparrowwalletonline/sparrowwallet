@@ -149,6 +149,15 @@
   }
 }
 
+/* Light/dark theme-specific styles for components */
+.light .personal-data-form {
+  @apply bg-white text-gray-800 border-gray-200;
+}
+
+.dark .personal-data-form {
+  @apply bg-gray-900 text-white border-gray-800;
+}
+
 /* Theme-specific styles */
 .dark .wallet-card {
   background: #232733;

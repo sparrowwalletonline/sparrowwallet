@@ -1,28 +1,20 @@
+
 import React, { useState } from 'react';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle,
-  DialogFooter,
-  DialogDescription,
-} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Loader2, ArrowUp } from 'lucide-react';
+import { Loader2, ArrowLeft } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import Header from '@/components/Header';
 
 interface PersonalDataFormProps {
-  isOpen: boolean;
-  onClose: () => void;
   onComplete: () => void;
 }
 
-const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ isOpen, onClose, onComplete }) => {
+const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -35,14 +27,8 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ isOpen, onClose, on
   const [isLoading, setIsLoading] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
 
-  const scrollToTop = () => {
-    const dialogContent = document.querySelector('.dialog-content');
-    if (dialogContent) {
-      dialogContent.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    }
+  const handleBack = () => {
+    navigate('/app');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -120,161 +106,155 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ isOpen, onClose, on
       });
     } finally {
       setIsLoading(false);
-      onClose();
     }
   };
   
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto dialog-content">
-        <DialogHeader className="flex-row justify-between items-center">
-          <DialogTitle className="text-2xl font-bold">Persönliche Daten</DialogTitle>
-          <Button
-            onClick={scrollToTop}
-            size="icon"
-            className="h-8 w-8 rounded-full bg-primary hover:bg-primary/90"
-            aria-label="Zum Anfang scrollen"
-            type="button"
-          >
-            <ArrowUp size={16} />
-          </Button>
-        </DialogHeader>
-        <DialogDescription>
-          Bitte gib deine persönlichen Daten ein, um deine Wallet zu erstellen.
-        </DialogDescription>
-        
-        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-          <div className="grid grid-cols-2 gap-4">
+    <div className="min-h-screen flex flex-col bg-background text-foreground page-enter">
+      <Header title="Persönliche Daten" showBack={true} />
+      
+      <div className="flex-1 container max-w-md mx-auto px-4 py-6 overflow-y-auto">
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-2xl font-bold">Persönliche Daten</h1>
+            <p className="text-muted-foreground mt-2">
+              Bitte gib deine persönlichen Daten ein, um deine Wallet zu erstellen.
+            </p>
+          </div>
+          
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="firstName">Vorname <span className="text-red-500">*</span></Label>
+                <Input
+                  id="firstName"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="Max"
+                  required
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="lastName">Nachname <span className="text-red-500">*</span></Label>
+                <Input
+                  id="lastName"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Mustermann"
+                  required
+                />
+              </div>
+            </div>
+            
             <div className="space-y-2">
-              <Label htmlFor="firstName">Vorname <span className="text-red-500">*</span></Label>
+              <Label htmlFor="dateOfBirth">Geburtsdatum <span className="text-red-500">*</span></Label>
               <Input
-                id="firstName"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                placeholder="Max"
+                id="dateOfBirth"
+                type="date"
+                value={dateOfBirth}
+                onChange={(e) => setDateOfBirth(e.target.value)}
                 required
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="lastName">Nachname <span className="text-red-500">*</span></Label>
+              <Label htmlFor="email">E-Mail <span className="text-red-500">*</span></Label>
               <Input
-                id="lastName"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                placeholder="Mustermann"
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="max.mustermann@example.com"
                 required
-              />
-            </div>
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="dateOfBirth">Geburtsdatum <span className="text-red-500">*</span></Label>
-            <Input
-              id="dateOfBirth"
-              type="date"
-              value={dateOfBirth}
-              onChange={(e) => setDateOfBirth(e.target.value)}
-              required
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="email">E-Mail <span className="text-red-500">*</span></Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="max.mustermann@example.com"
-              required
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="phone">Telefonnummer</Label>
-            <Input
-              id="phone"
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="+49 123 4567890"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="address">Adresse</Label>
-            <Input
-              id="address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              placeholder="Musterstraße 123"
-            />
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="city">Stadt</Label>
-              <Input
-                id="city"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                placeholder="Musterstadt"
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="postalCode">Postleitzahl</Label>
+              <Label htmlFor="phone">Telefonnummer</Label>
               <Input
-                id="postalCode"
-                value={postalCode}
-                onChange={(e) => setPostalCode(e.target.value)}
-                placeholder="12345"
+                id="phone"
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="+49 123 4567890"
               />
             </div>
-          </div>
-          
-          <div className="flex items-center space-x-2 mt-4">
-            <Checkbox 
-              id="terms" 
-              checked={acceptTerms}
-              onCheckedChange={(checked) => setAcceptTerms(checked as boolean)}
-            />
-            <label
-              htmlFor="terms"
-              className="text-sm font-medium leading-none cursor-pointer"
-            >
-              Ich akzeptiere die <a href="/terms" target="_blank" className="text-primary hover:underline">Nutzungsbedingungen</a>
-            </label>
-          </div>
-          
-          <DialogFooter className="mt-6">
-            <Button 
-              type="button"
-              onClick={onClose}
-              variant="ghost"
-              disabled={isLoading}
-            >
-              Abbrechen
-            </Button>
-            <Button 
-              type="submit"
-              className="text-white shadow-md hover:shadow-lg w-full md:w-auto"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 
-                  Speichern...
-                </>
-              ) : (
-                "Wallet erstellen"
-              )}
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+            
+            <div className="space-y-2">
+              <Label htmlFor="address">Adresse</Label>
+              <Input
+                id="address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Musterstraße 123"
+              />
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="city">Stadt</Label>
+                <Input
+                  id="city"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  placeholder="Musterstadt"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="postalCode">Postleitzahl</Label>
+                <Input
+                  id="postalCode"
+                  value={postalCode}
+                  onChange={(e) => setPostalCode(e.target.value)}
+                  placeholder="12345"
+                />
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-2 mt-4">
+              <Checkbox 
+                id="terms" 
+                checked={acceptTerms}
+                onCheckedChange={(checked) => setAcceptTerms(checked as boolean)}
+              />
+              <label
+                htmlFor="terms"
+                className="text-sm font-medium leading-none cursor-pointer"
+              >
+                Ich akzeptiere die <a href="/terms" target="_blank" className="text-primary hover:underline">Nutzungsbedingungen</a>
+              </label>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6">
+              <Button 
+                type="button"
+                onClick={handleBack}
+                variant="outline"
+                disabled={isLoading}
+              >
+                Abbrechen
+              </Button>
+              <Button 
+                type="submit"
+                className="shadow-md hover:shadow-lg"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 
+                    Speichern...
+                  </>
+                ) : (
+                  "Wallet erstellen"
+                )}
+              </Button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 };
 

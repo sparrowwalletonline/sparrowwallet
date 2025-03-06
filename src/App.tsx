@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { Toaster } from "./components/ui/toaster";
@@ -32,6 +33,7 @@ import { TutorialProvider } from "./contexts/TutorialContext";
 import TutorialPopover from "./components/TutorialPopover";
 import TutorialOverlay from "./components/TutorialOverlay";
 import SideMenu from "./components/SideMenu";
+import PersonalDataForm from "./components/PersonalDataForm";
 
 import "./App.css";
 
@@ -68,6 +70,11 @@ function App() {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/app" element={<WalletChoice />} />
+                <Route path="/personal-data" element={
+                  <PrivateRoute>
+                    <PersonalDataForm onComplete={() => {}} />
+                  </PrivateRoute>
+                } />
                 <Route path="/wallet" element={
                   <PrivateRoute>
                     <WalletView />
