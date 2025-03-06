@@ -104,7 +104,6 @@
     font-size: 16px; /* Prevents iOS zooming on input focus */
     appearance: none;
     border-radius: 0; /* Removes iOS default styling */
-    opacity: 1 !important; /* Ensure elements are visible */
   }
 
   /* Better touch targets for mobile */
@@ -113,7 +112,6 @@
     touch-action: manipulation;
     min-height: 44px;
     min-width: 44px;
-    opacity: 1 !important; /* Ensure elements are visible */
   }
   
   .touch-manipulation {
@@ -251,46 +249,6 @@
 
 /* Fix for visibility issues */
 .landing-page-content * {
-  opacity: 1 !important;
-  visibility: visible !important;
+  opacity: 1;
+  visibility: visible;
 }
-
-.trust-button, .feature-card, .asset-card, button {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-/* Fix for text visibility */
-h1, h2, h3, p, span, div {
-  opacity: 1 !important;
-  visibility: visible !important;
-  color: inherit !important;
-  display: block !important;
-  text-shadow: 0 0 1px rgba(0,0,0,0.1) !important;
-}
-
-/* Enhanced headline visibility */
-h1, .text-4xl, .text-5xl, .text-6xl {
-  position: relative !important;
-  z-index: 10 !important;
-  text-shadow: 0 0 2px rgba(0,0,0,0.2) !important;
-}
-
-/* Add contrast backgrounds to text on gradient sections */
-.bg-gradient-to-b h1, 
-.bg-gradient-to-b p,
-.bg-gradient-to-r h1,
-.bg-gradient-to-r p {
-  background-color: rgba(255, 255, 255, 0.9) !important;
-  padding: 0.5rem !important;
-  border-radius: 0.5rem !important;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
-}
-
-.dark .bg-gradient-to-b h1,
-.dark .bg-gradient-to-b p,
-.dark .bg-gradient-to-r h1,
-.dark .bg-gradient-to-r p {
-  background-color: rgba(26, 31, 44, 0.9) !important;
-}
-
