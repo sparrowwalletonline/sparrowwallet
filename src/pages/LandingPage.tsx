@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -13,24 +12,11 @@ import CreateWalletButton from '@/components/CreateWalletButton';
 import FeaturesSection from '@/components/FeaturesSection';
 
 const LandingPage = () => {
-  const { generateWallet } = useWallet();
+  const { generateWallet, hasWallet, session } = useWallet();
   const { toggleMenu } = useMenu();
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [session, setSession] = useState(null);
   const navigate = useNavigate();
-  
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-    
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-    
-    return () => subscription.unsubscribe();
-  }, []);
   
   const handleRegisterClick = () => {
     setIsLoading(true);
@@ -38,6 +24,22 @@ const LandingPage = () => {
       setIsLoading(false);
       navigate('/register');
     }, 1000);
+  };
+  
+  const handleLoginClick = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      navigate('/auth');
+    }, 1000);
+  };
+  
+  const handleWalletAccess = () => {
+    if (hasWallet) {
+      navigate('/wallet');
+    } else {
+      navigate('/generate-wallet');
+    }
   };
   
   const handleMenuClick = () => {
@@ -259,22 +261,41 @@ const LandingPage = () => {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4 pt-4 z-10 relative justify-center lg:justify-start">
-                  <Button 
-                    onClick={handleRegisterClick} 
-                    disabled={isLoading} 
-                    className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        Loading...
-                      </>
-                    ) : (
-                      <>
-                        Registrieren <ArrowRight className="h-4 w-4" />
-                      </>
-                    )}
-                  </Button>
+                  {session ? (
+                    <Button 
+                      onClick={handleWalletAccess} 
+                      className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
+                    >
+                      {hasWallet ? "Auf Wallet Zugreifen" : "Wallet Erstellen"} <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  ) : (
+                    <>
+                      <Button 
+                        onClick={handleRegisterClick} 
+                        disabled={isLoading} 
+                        className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
+                      >
+                        {isLoading ? (
+                          <>
+                            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                            Loading...
+                          </>
+                        ) : (
+                          <>
+                            Registrieren <ArrowRight className="h-4 w-4" />
+                          </>
+                        )}
+                      </Button>
+                      
+                      <Button 
+                        variant="outline" 
+                        className="w-full sm:w-auto py-6 text-base"
+                        onClick={handleLoginClick}
+                      >
+                        Anmelden
+                      </Button>
+                    </>
+                  )}
                   
                   <Button variant="outline" className="w-full sm:w-auto py-6 text-base" onClick={() => window.open('https://sparrowwallet.com/download/', '_blank')}>
                     <ExternalLink className="mr-2 h-4 w-4" />
@@ -444,20 +465,29 @@ const LandingPage = () => {
             </div>
             
             <div className="mt-16 text-center">
-              <Button 
-                onClick={handleRegisterClick} 
-                disabled={isLoading} 
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-lg font-medium px-[15px]"
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Loading...
-                  </>
-                ) : (
-                  <>Jetzt registrieren</>
-                )}
-              </Button>
+              {session ? (
+                <Button 
+                  onClick={handleWalletAccess}
+                  className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-lg font-medium px-[15px]"
+                >
+                  {hasWallet ? "Auf Wallet Zugreifen" : "Wallet Erstellen"}
+                </Button>
+              ) : (
+                <Button 
+                  onClick={handleRegisterClick} 
+                  disabled={isLoading} 
+                  className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-lg font-medium px-[15px]"
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Loading...
+                    </>
+                  ) : (
+                    <>Jetzt registrieren</>
+                  )}
+                </Button>
+              )}
             </div>
           </div>
         </section>
@@ -508,20 +538,29 @@ const LandingPage = () => {
                 </div>
                 
                 <div className="mt-12 text-center">
-                  <Button 
-                    onClick={handleRegisterClick} 
-                    disabled={isLoading} 
-                    className="bg-wallet-blue hover:bg-wallet-darkBlue text-white py-3 px-8"
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Loading...
-                      </>
-                    ) : (
-                      <>Start Using Sparrow</>
-                    )}
-                  </Button>
+                  {session ? (
+                    <Button 
+                      onClick={handleWalletAccess}
+                      className="bg-wallet-blue hover:bg-wallet-darkBlue text-white py-3 px-8"
+                    >
+                      {hasWallet ? "Auf Wallet Zugreifen" : "Wallet Erstellen"}
+                    </Button>
+                  ) : (
+                    <Button 
+                      onClick={handleRegisterClick} 
+                      disabled={isLoading} 
+                      className="bg-wallet-blue hover:bg-wallet-darkBlue text-white py-3 px-8"
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Loading...
+                        </>
+                      ) : (
+                        <>Start Using Sparrow</>
+                      )}
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
