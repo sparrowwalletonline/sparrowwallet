@@ -17,6 +17,8 @@ import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { Loader2, Check } from 'lucide-react';
+import ThemeToggle from '@/components/ThemeToggle';
+import { Link } from 'react-router-dom';
 
 const CreateWalletButton = () => {
   const navigate = useNavigate();
@@ -28,10 +30,12 @@ const CreateWalletButton = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordFeedback, setPasswordFeedback] = useState('');
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [errors, setErrors] = useState({
     email: '',
     password: '',
     confirmPassword: '',
+    terms: ''
   });
 
   const validateEmail = (email: string) => {
@@ -85,6 +89,7 @@ const CreateWalletButton = () => {
       email: '',
       password: '',
       confirmPassword: '',
+      terms: ''
     };
     let isValid = true;
 
@@ -106,6 +111,11 @@ const CreateWalletButton = () => {
 
     if (password !== confirmPassword) {
       newErrors.confirmPassword = 'Passwörter stimmen nicht überein';
+      isValid = false;
+    }
+
+    if (!acceptedTerms) {
+      newErrors.terms = 'Sie müssen die Nutzungsbedingungen akzeptieren';
       isValid = false;
     }
 
@@ -185,24 +195,27 @@ const CreateWalletButton = () => {
 
       {/* Registration Dialog */}
       <Dialog open={isRegisterOpen} onOpenChange={setIsRegisterOpen}>
-        <DialogContent className="bg-wallet-card border-gray-800 text-white max-w-md p-0 overflow-hidden">
+        <DialogContent className="bg-white border-gray-200 text-gray-800 dark:bg-wallet-card dark:border-gray-800 dark:text-white max-w-md p-0 overflow-hidden">
           <div className="flex flex-col">
-            <div className="bg-wallet-blue/10 p-6">
-              <DialogTitle className="text-xl font-bold">Registrieren</DialogTitle>
-              <DialogDescription className="text-gray-400 mt-2">
-                Erstelle ein Konto, um deine Wallet zu sichern und auf allen Geräten nutzen zu können
-              </DialogDescription>
+            <div className="bg-blue-50 dark:bg-wallet-blue/10 p-6 flex justify-between items-center">
+              <div>
+                <DialogTitle className="text-xl font-bold">Registrieren</DialogTitle>
+                <DialogDescription className="text-gray-600 dark:text-gray-400 mt-2">
+                  Erstelle ein Konto, um deine Wallet zu sichern und auf allen Geräten nutzen zu können
+                </DialogDescription>
+              </div>
+              <ThemeToggle />
             </div>
             
             <form onSubmit={handleRegister} className="p-6 space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-300">E-Mail</Label>
+                <Label htmlFor="email" className="text-gray-700 dark:text-gray-300">E-Mail</Label>
                 <Input 
                   id="email"
                   type="email" 
                   value={email} 
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-wallet-darkBg border-gray-700 text-white" 
+                  className="bg-gray-50 border-gray-200 text-gray-800 dark:bg-wallet-darkBg dark:border-gray-700 dark:text-white" 
                   placeholder="name@example.com"
                   required 
                 />
@@ -210,47 +223,68 @@ const CreateWalletButton = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-gray-300">Passwort</Label>
+                <Label htmlFor="password" className="text-gray-700 dark:text-gray-300">Passwort</Label>
                 <Input 
                   id="password"
                   type="password" 
                   value={password} 
                   onChange={(e) => handlePasswordChange(e.target.value)}
-                  className="bg-wallet-darkBg border-gray-700 text-white" 
+                  className="bg-gray-50 border-gray-200 text-gray-800 dark:bg-wallet-darkBg dark:border-gray-700 dark:text-white" 
                   placeholder="••••••••"
                   required 
                 />
                 {password && (
                   <div className="mt-2 space-y-1">
-                    <div className="h-1 w-full bg-gray-700 rounded-full overflow-hidden">
+                    <div className="h-1 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                       <div 
                         className={`h-full ${getStrengthColor()}`} 
                         style={{ width: `${(passwordStrength / 4) * 100}%` }}
                       />
                     </div>
-                    <p className="text-xs text-gray-400">{passwordFeedback}</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">{passwordFeedback}</p>
                   </div>
                 )}
                 {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="confirm-password" className="text-gray-300">Passwort bestätigen</Label>
+                <Label htmlFor="confirm-password" className="text-gray-700 dark:text-gray-300">Passwort bestätigen</Label>
                 <Input 
                   id="confirm-password"
                   type="password" 
                   value={confirmPassword} 
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="bg-wallet-darkBg border-gray-700 text-white" 
+                  className="bg-gray-50 border-gray-200 text-gray-800 dark:bg-wallet-darkBg dark:border-gray-700 dark:text-white" 
                   placeholder="••••••••"
                   required 
                 />
                 {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
               </div>
               
+              <div className="space-y-2 pt-2">
+                <div className="flex items-start">
+                  <div className="flex items-center h-5">
+                    <input
+                      id="terms"
+                      type="checkbox"
+                      checked={acceptedTerms}
+                      onChange={() => setAcceptedTerms(!acceptedTerms)}
+                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600"
+                      required
+                    />
+                  </div>
+                  <div className="ml-3 text-sm">
+                    <label htmlFor="terms" className="text-gray-700 dark:text-gray-300">
+                      Ich akzeptiere die <Link to="/terms" className="text-blue-600 dark:text-blue-400 hover:underline">Nutzungsbedingungen</Link> und <Link to="/terms" className="text-blue-600 dark:text-blue-400 hover:underline">Datenschutzrichtlinien</Link>
+                    </label>
+                  </div>
+                </div>
+                {errors.terms && <p className="text-red-500 text-xs mt-1">{errors.terms}</p>}
+              </div>
+              
               <div className="mt-6 flex justify-end space-x-3">
                 <DialogClose asChild>
-                  <Button type="button" variant="ghost" className="text-gray-400 hover:text-white">
+                  <Button type="button" variant="ghost" className="text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                     Abbrechen
                   </Button>
                 </DialogClose>
@@ -274,13 +308,13 @@ const CreateWalletButton = () => {
 
       {/* Success Dialog */}
       <Dialog open={isSuccessOpen} onOpenChange={setIsSuccessOpen}>
-        <DialogContent className="bg-wallet-card border-gray-800 text-white max-w-md text-center">
+        <DialogContent className="bg-white border-gray-200 text-gray-800 dark:bg-wallet-card dark:border-gray-800 dark:text-white max-w-md text-center">
           <div className="flex flex-col items-center justify-center p-6">
             <div className="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center mb-4">
               <Check className="h-8 w-8 text-white" />
             </div>
             <DialogTitle className="text-xl font-bold mb-2">Konto erfolgreich erstellt!</DialogTitle>
-            <DialogDescription className="text-gray-400 mb-6">
+            <DialogDescription className="text-gray-600 dark:text-gray-400 mb-6">
               Du wirst jetzt zur Wallet-Auswahl weitergeleitet.
             </DialogDescription>
             
