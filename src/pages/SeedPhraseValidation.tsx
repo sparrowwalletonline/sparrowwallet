@@ -170,12 +170,12 @@ const SeedPhraseValidation: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col bg-wallet-darkBg text-white p-4 sm:p-6 animate-fade-in page-enter safe-area-inset-bottom">
+    <div className="min-h-screen flex flex-col bg-white text-gray-800 p-4 sm:p-6 animate-fade-in page-enter safe-area-inset-bottom">
       <div className="w-full relative">
         <Header title="Wallet erstellen" />
         <button 
           onClick={handleBackClick}
-          className="absolute left-2 sm:left-4 top-0 bottom-0 my-auto text-white hover:text-gray-300 transition-colors h-10 w-10 flex items-center justify-center touch-manipulation"
+          className="absolute left-2 sm:left-4 top-0 bottom-0 my-auto text-gray-600 hover:text-gray-800 transition-colors h-10 w-10 flex items-center justify-center touch-manipulation"
           aria-label="Back"
         >
           <ArrowLeft size={24} />
@@ -192,7 +192,7 @@ const SeedPhraseValidation: React.FC = () => {
         <div className="w-full max-w-sm space-y-4 sm:space-y-6 px-1">
           <div className="text-left">
             <h2 className="text-lg sm:text-xl font-bold mb-2">Bestätige deine Seed Phrase</h2>
-            <p className="text-wallet-gray text-xs sm:text-sm mb-3 sm:mb-4">
+            <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4">
               Um sicherzustellen, dass du deine Seed Phrase korrekt aufgeschrieben hast, 
               gib bitte die folgenden Wörter ein:
             </p>
@@ -201,7 +201,7 @@ const SeedPhraseValidation: React.FC = () => {
           <div className="space-y-3 sm:space-y-4">
             {selectedWords.map((item, index) => (
               <div key={index} className="space-y-1 sm:space-y-2">
-                <label className="block text-xs sm:text-sm text-wallet-gray font-medium">
+                <label className="block text-xs sm:text-sm text-gray-600 font-medium">
                   Wort #{item.index + 1}:
                 </label>
                 <Input
@@ -210,18 +210,18 @@ const SeedPhraseValidation: React.FC = () => {
                   onChange={(e) => handleInputChange(index, e.target.value)}
                   placeholder={`Gib das ${item.index + 1}. Wort ein`}
                   disabled={validationStatus !== 'idle'}
-                  className="bg-wallet-card border-gray-700 text-white text-sm h-10 sm:h-12 touch-manipulation"
+                  className="bg-gray-50 border-gray-200 text-gray-800 text-sm h-10 sm:h-12 touch-manipulation"
                 />
               </div>
             ))}
           </div>
           
-          <div className="bg-wallet-card rounded-lg p-3 sm:p-4 border border-gray-700 shadow-sm">
+          <div className="bg-blue-50 rounded-lg p-3 sm:p-4 border border-blue-100 shadow-sm">
             <div className="flex items-start gap-2 sm:gap-3">
-              <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-wallet-green mt-0.5 flex-shrink-0" />
+              <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 mt-0.5 flex-shrink-0" />
               <div>
-                <h3 className="font-medium text-xs sm:text-sm mb-1">Wichtiger Hinweis</h3>
-                <p className="text-xs text-wallet-gray">
+                <h3 className="font-medium text-xs sm:text-sm mb-1 text-gray-800">Wichtiger Hinweis</h3>
+                <p className="text-xs text-gray-600">
                   Dies ist der letzte Schritt zur Erstellung deiner Wallet. 
                   Nach erfolgreicher Validierung wird deine Wallet aktiviert.
                 </p>
@@ -231,7 +231,7 @@ const SeedPhraseValidation: React.FC = () => {
           
           <Button 
             onClick={validateInputs}
-            className="w-full py-3 sm:py-6 bg-wallet-blue hover:bg-wallet-darkBlue text-white text-sm sm:text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed min-h-[50px] touch-manipulation"
+            className="w-full py-3 sm:py-6 bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed min-h-[50px] touch-manipulation"
             disabled={userInputs.some(input => !input.trim()) || validationStatus !== 'idle'}
           >
             {getButtonIcon()}
