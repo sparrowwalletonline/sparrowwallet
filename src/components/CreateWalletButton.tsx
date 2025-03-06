@@ -18,8 +18,7 @@ const CreateWalletButton = () => {
         onClick={handleClick}
         className={cn(
           "rounded-md shadow-lg px-3 py-1 text-xs flex items-center justify-center gap-1",
-          "transition-all hover:scale-105 hover:shadow-xl bg-wallet-blue",
-          "animate-bounce-slow"
+          "transition-all hover:scale-105 hover:shadow-xl bg-wallet-blue"
         )}
       >
         <Wallet className="h-3 w-3" />
