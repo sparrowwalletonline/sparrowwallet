@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import { Mail, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowLeft, CheckCircle } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import Header from '@/components/Header';
 
@@ -92,6 +93,38 @@ const Auth: React.FC = () => {
   const handleBackClick = () => {
     navigate('/');
   };
+
+  const handleGoToWallet = () => {
+    if (hasWallet) {
+      navigate('/wallet');
+    } else {
+      navigate('/generate-wallet');
+    }
+  };
+  
+  // If user is already logged in, show a different UI
+  if (session) {
+    return (
+      <div className="min-h-screen flex flex-col bg-white">
+        <Header title="Sparrow" showBack={true} className="bg-white border-b" />
+        
+        <div className="flex-1 flex flex-col items-center justify-center p-4">
+          <div className="w-full max-w-md text-center">
+            <CheckCircle className="h-16 w-16 mx-auto mb-4 text-wallet-green" />
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Du bist bereits angemeldet</h1>
+            <p className="text-gray-600 mb-8">Möchtest du auf deine Wallet zugreifen?</p>
+            
+            <Button
+              onClick={handleGoToWallet}
+              className="w-full bg-wallet-blue hover:bg-wallet-darkBlue text-white py-6"
+            >
+              {hasWallet ? "Auf Wallet Zugreifen" : "Wallet Erstellen"}
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className="min-h-screen flex flex-col bg-white">
