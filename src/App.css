@@ -384,6 +384,16 @@ button:hover {
   transition: opacity 200ms, transform 200ms;
 }
 
+/* Stats card hover effect */
+.stats-card {
+  transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
 /* Mobile responsive adjustments */
 @media (max-width: 640px) {
   .transition-effect {
@@ -427,4 +437,3 @@ button:hover {
 button, a {
   touch-action: manipulation;
 }
-

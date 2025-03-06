@@ -290,20 +290,26 @@ const LandingPage = () => {
           </div>
         </section>
         
-        <section className="px-6 py-12 bg-white dark:bg-wallet-card">
+        <section className="px-6 py-12 bg-white dark:bg-wallet-card/40 backdrop-blur-md relative">
           <div className="max-w-screen-xl mx-auto">
-            <div className="grid grid-cols-3 gap-4">
-              <div className="text-center">
-                <div className="text-wallet-blue font-heading font-bold text-3xl bg-transparent">100%</div>
-                <div className="text-gray-600 dark:text-gray-400 text-sm">Open Source</div>
+            <div className="grid grid-cols-3 gap-8">
+              <div className="text-center transform transition-all duration-300 hover:scale-105 group">
+                <div className="mb-2 inline-flex items-center justify-center">
+                  <div className="text-purple-600 dark:text-purple-400 font-heading font-bold text-4xl bg-purple-100 dark:bg-purple-900/30 rounded-xl px-4 py-3 group-hover:shadow-md transition-all">100%</div>
+                </div>
+                <div className="text-gray-600 dark:text-gray-400 text-sm font-medium">Open Source</div>
               </div>
-              <div className="text-center">
-                <div className="text-wallet-blue font-heading font-bold text-3xl">24/7</div>
-                <div className="text-gray-600 dark:text-gray-400 text-sm">Access</div>
+              <div className="text-center transform transition-all duration-300 hover:scale-105 group">
+                <div className="mb-2 inline-flex items-center justify-center">
+                  <div className="text-blue-600 dark:text-blue-400 font-heading font-bold text-4xl bg-blue-100 dark:bg-blue-900/30 rounded-xl px-4 py-3 group-hover:shadow-md transition-all">24/7</div>
+                </div>
+                <div className="text-gray-600 dark:text-gray-400 text-sm font-medium">Access</div>
               </div>
-              <div className="text-center">
-                <div className="text-wallet-blue font-heading font-bold text-3xl">100+</div>
-                <div className="text-gray-600 dark:text-gray-400 text-sm">Hardware Wallets</div>
+              <div className="text-center transform transition-all duration-300 hover:scale-105 group">
+                <div className="mb-2 inline-flex items-center justify-center">
+                  <div className="text-teal-600 dark:text-teal-400 font-heading font-bold text-4xl bg-teal-100 dark:bg-teal-900/30 rounded-xl px-4 py-3 group-hover:shadow-md transition-all">100+</div>
+                </div>
+                <div className="text-gray-600 dark:text-gray-400 text-sm font-medium">Hardware Wallets</div>
               </div>
             </div>
           </div>
