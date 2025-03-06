@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Shield, Check, ArrowLeft } from 'lucide-react';
@@ -141,12 +142,12 @@ const SeedPhrasePage: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col bg-wallet-darkBg text-white p-4 sm:p-6 animate-fade-in page-enter safe-area-inset-bottom">
+    <div className="min-h-screen flex flex-col bg-white text-gray-800 p-4 sm:p-6 animate-fade-in page-enter safe-area-inset-bottom">
       <div className="w-full relative">
         <Header title="Wallet erstellen" />
         <button 
           onClick={handleBackClick}
-          className="absolute left-2 sm:left-4 top-0 bottom-0 my-auto text-white hover:text-gray-300 transition-colors h-10 w-10 flex items-center justify-center touch-manipulation"
+          className="absolute left-2 sm:left-4 top-0 bottom-0 my-auto text-gray-600 hover:text-gray-800 transition-colors h-10 w-10 flex items-center justify-center touch-manipulation"
           aria-label="Back"
         >
           <ArrowLeft size={24} />
@@ -162,20 +163,20 @@ const SeedPhrasePage: React.FC = () => {
         
         <div className="w-full max-w-sm space-y-4 sm:space-y-6 px-1">
           <div className="text-left">
-            <h2 className="text-lg sm:text-xl font-bold mb-2">Deine Seed Phrase</h2>
-            <p className="text-wallet-gray text-xs sm:text-sm mb-3 sm:mb-4">
+            <h2 className="text-lg sm:text-xl font-bold mb-2 text-gray-800">Deine Seed Phrase</h2>
+            <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4">
               Schreibe diese Wörter in der richtigen Reihenfolge auf. Bewahre sie sicher auf und teile sie mit niemandem.
             </p>
           </div>
           
           <SeedPhraseGenerator />
           
-          <div className="bg-wallet-card rounded-lg p-3 sm:p-4 border border-gray-700 shadow-sm">
+          <div className="bg-blue-50 rounded-lg p-3 sm:p-4 border border-blue-100 shadow-sm">
             <div className="flex items-start gap-2 sm:gap-3">
-              <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-wallet-green mt-0.5 flex-shrink-0" />
+              <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 mt-0.5 flex-shrink-0" />
               <div>
-                <h3 className="font-medium text-xs sm:text-sm mb-1">Bewahre deine Phrase sicher auf</h3>
-                <p className="text-xs text-wallet-gray">
+                <h3 className="font-medium text-xs sm:text-sm mb-1 text-gray-800">Bewahre deine Phrase sicher auf</h3>
+                <p className="text-xs text-gray-600">
                   Deine Seed Phrase ist der einzige Weg, um deine Wallet wiederherzustellen, falls du den Zugriff verlierst. 
                   Schreibe sie auf und bewahre sie an einem sicheren Ort auf.
                 </p>
@@ -190,10 +191,10 @@ const SeedPhrasePage: React.FC = () => {
                   type="checkbox"
                   checked={savedPhrase}
                   onChange={(e) => setSavedPhrase(e.target.checked)}
-                  className="h-4 w-4 rounded border-gray-600 text-wallet-blue focus:ring-wallet-blue"
+                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                 />
               </div>
-              <span className="text-xs sm:text-sm text-wallet-gray">
+              <span className="text-xs sm:text-sm text-gray-600">
                 Ich habe die Seed Phrase an einem sicheren Ort gespeichert
               </span>
             </label>
@@ -204,18 +205,18 @@ const SeedPhrasePage: React.FC = () => {
                   type="checkbox"
                   checked={agreedToTerms}
                   onChange={(e) => setAgreedToTerms(e.target.checked)}
-                  className="h-4 w-4 rounded border-gray-600 text-wallet-blue focus:ring-wallet-blue"
+                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                 />
               </div>
-              <span className="text-xs sm:text-sm text-wallet-gray">
-                Ich stimme den <Link to="/terms" className="text-wallet-blue underline">Nutzungsbedingungen</Link> zu
+              <span className="text-xs sm:text-sm text-gray-600">
+                Ich stimme den <Link to="/terms" className="text-blue-600 underline">Nutzungsbedingungen</Link> zu
               </span>
             </label>
           </div>
           
           <Button 
             onClick={handleConfirm}
-            className="w-full py-3 sm:py-6 bg-wallet-blue hover:bg-wallet-darkBlue text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed min-h-[50px] touch-manipulation"
+            className="w-full py-3 sm:py-6 bg-blue-600 hover:bg-blue-700 text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed min-h-[50px] touch-manipulation"
             disabled={!savedPhrase || !agreedToTerms || isConfirming}
           >
             {isConfirming ? (
