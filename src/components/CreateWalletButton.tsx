@@ -158,7 +158,7 @@ const CreateWalletButton = () => {
 
   const handleSuccessModalClose = () => {
     setIsSuccessOpen(false);
-    navigate('/wallet-choice');
+    navigate('/app');
   };
 
   const getStrengthColor = () => {
@@ -267,7 +267,7 @@ const CreateWalletButton = () => {
                   <Checkbox 
                     id="terms" 
                     checked={acceptedTerms}
-                    onCheckedChange={() => setAcceptedTerms(!acceptedTerms)}
+                    onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
                     className="data-[state=checked]:bg-wallet-blue border-gray-300 dark:border-gray-600"
                   />
                   <div className="grid gap-1.5 leading-none">
