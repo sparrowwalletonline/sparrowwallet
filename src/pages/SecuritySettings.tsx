@@ -251,7 +251,7 @@ const SecuritySettings = () => {
                 <div className="text-center py-4">
                   <Button 
                     onClick={handleRevealClick}
-                    className="mb-2 w-full"
+                    className="mb-2 w-full py-1.5 sm:py-2 text-sm min-h-[40px] sm:min-h-[44px]"
                     variant={buttonPressed ? "destructive" : "default"}
                   >
                     {buttonPressed ? `Halte für ${timeLeft}s gedrückt` : "Seed-Phrase anzeigen"}
@@ -273,10 +273,18 @@ const SecuritySettings = () => {
                     ))}
                   </div>
                   <div className="flex gap-2 mt-4">
-                    <Button onClick={handleCopySeedPhrase} variant="outline" className="w-1/2">
+                    <Button 
+                      onClick={handleCopySeedPhrase} 
+                      variant="outline" 
+                      className="w-1/2 py-1 sm:py-1.5 text-sm min-h-[36px] sm:min-h-[40px]"
+                    >
                       <Copy className="mr-2 h-4 w-4" /> Kopieren
                     </Button>
-                    <Button onClick={resetView} variant="outline" className="w-1/2">
+                    <Button 
+                      onClick={resetView} 
+                      variant="outline" 
+                      className="w-1/2 py-1 sm:py-1.5 text-sm min-h-[36px] sm:min-h-[40px]"
+                    >
                       <EyeOff className="mr-2 h-4 w-4" /> Verbergen
                     </Button>
                   </div>
@@ -339,7 +347,12 @@ const SecuritySettings = () => {
                         pattern="[0-9]*"
                       />
                     </div>
-                    <Button onClick={savePin} className="w-full">PIN speichern</Button>
+                    <Button 
+                      onClick={savePin} 
+                      className="w-full py-1.5 sm:py-2 text-sm min-h-[40px] sm:min-h-[44px]"
+                    >
+                      PIN speichern
+                    </Button>
                   </div>
                 )}
               </div>
@@ -394,7 +407,12 @@ const SecuritySettings = () => {
                     <Label htmlFor="confirm-password">Passwort bestätigen</Label>
                     <Input id="confirm-password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Passwort bestätigen" />
                   </div>
-                  <Button onClick={changePassword} className="w-full">Passwort ändern</Button>
+                  <Button 
+                    onClick={changePassword} 
+                    className="w-full py-1.5 sm:py-2 text-sm min-h-[40px] sm:min-h-[44px]"
+                  >
+                    Passwort ändern
+                  </Button>
                 </div>
               </div>
             </CardContent>
