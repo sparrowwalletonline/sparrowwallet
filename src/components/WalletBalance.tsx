@@ -9,6 +9,7 @@ import { toast } from '@/components/ui/use-toast';
 import { copyToClipboard } from '@/utils/clipboardUtils';
 import { getQrCodeValue } from '@/utils/encryptionUtils';
 import { useTheme } from '@/components/ui/theme-provider';
+import AnalyticsChart from './AnalyticsChart';
 
 interface Token {
   id: string;
@@ -173,6 +174,8 @@ const WalletBalance: React.FC = () => {
       <div className="mb-1 px-1">
         <h2 className="text-3xl font-bold">{formatUSD(usdBalance)}</h2>
       </div>
+      
+      <AnalyticsChart tokens={tokens} />
       
       <div className="flex justify-between mt-6">
         <CryptoAction icon="send" label="Send" onClick={handleSendClick} />

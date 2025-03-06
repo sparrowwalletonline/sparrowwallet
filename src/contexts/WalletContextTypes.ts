@@ -12,6 +12,11 @@ export interface Wallet {
   isActive: boolean;
 }
 
+export interface PriceHistory {
+  timestamp: number;
+  price: number;
+}
+
 export interface WalletContextType {
   hasWallet: boolean;
   seedPhrase: string[];
