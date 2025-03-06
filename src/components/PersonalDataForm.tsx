@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -60,21 +59,8 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
         duration: 1500,
       });
       
-      // Proceed to the next step
+      // Call the onComplete callback from parent component
       onComplete();
-      
-      // Add exit animation
-      document.body.classList.add('page-exit');
-      
-      // Small delay before navigation
-      setTimeout(() => {
-        navigate('/passphrase');
-        
-        // Remove class after navigation
-        setTimeout(() => {
-          document.body.classList.remove('page-exit');
-        }, 50);
-      }, 1000);
       
     } catch (error) {
       console.error("Error:", error);
@@ -84,7 +70,6 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
         variant: "destructive",
         duration: 1500,
       });
-    } finally {
       setIsLoading(false);
     }
   };

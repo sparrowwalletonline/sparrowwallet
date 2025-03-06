@@ -71,6 +71,7 @@ const WalletChoice: React.FC = () => {
     // Add a slight delay for better user experience
     setTimeout(() => {
       generateWallet();
+      navigate('/generate-wallet'); // Directly navigate to generate wallet page
     }, 500);
   };
   
