@@ -16,16 +16,26 @@ const ManageAssetsButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="text-gray-400 hover:text-white transition-all duration-200 rounded-full bg-gray-800/50 hover:bg-gray-700/70 backdrop-blur-sm"
+        >
           <Settings className="h-5 w-5" />
           <span className="sr-only">Settings</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => navigate('/wallet-choice')}>
+      <DropdownMenuContent align="end" className="bg-gray-900/95 backdrop-blur-md border border-gray-700">
+        <DropdownMenuItem 
+          onClick={() => navigate('/wallet-choice')}
+          className="text-gray-200 hover:text-white focus:text-white hover:bg-gray-800"
+        >
           Add New Wallet
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => navigate('/seed-phrase')}>
+        <DropdownMenuItem 
+          onClick={() => navigate('/seed-phrase')}
+          className="text-gray-200 hover:text-white focus:text-white hover:bg-gray-800"
+        >
           Export Seed Phrase
         </DropdownMenuItem>
       </DropdownMenuContent>

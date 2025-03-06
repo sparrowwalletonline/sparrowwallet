@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -66,6 +67,7 @@ export default {
 					gray: '#8A8D97',
 					darkGray: '#403E43',
 					green: '#00FF5F',
+					darkGreen: '#00D651',
 					accent: '#00FF5F',
 					text: '#FFFFFF'
 				}
