@@ -20,9 +20,11 @@ import ThemeToggle from '@/components/ThemeToggle';
 import { Link } from 'react-router-dom';
 import { Switch } from '@/components/ui/switch';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useWallet } from '@/contexts/WalletContext';
 
 const CreateWalletButton = () => {
   const navigate = useNavigate();
+  const { session, hasWallet } = useWallet();
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -82,7 +84,15 @@ const CreateWalletButton = () => {
   };
 
   const handleClick = () => {
-    setIsRegisterOpen(true);
+    if (session) {
+      if (hasWallet) {
+        navigate('/wallet');
+      } else {
+        navigate('/generate-wallet');
+      }
+    } else {
+      setIsRegisterOpen(true);
+    }
   };
 
   const validateForm = () => {
@@ -158,7 +168,7 @@ const CreateWalletButton = () => {
 
   const handleSuccessModalClose = () => {
     setIsSuccessOpen(false);
-    navigate('/app');
+    navigate('/generate-wallet');
   };
 
   const getStrengthColor = () => {
@@ -190,11 +200,12 @@ const CreateWalletButton = () => {
           )}
         >
           <Wallet className="h-3 w-3" />
-          <span className="text-xs">Create Wallet</span>
+          <span className="text-xs">
+            {session ? (hasWallet ? "Auf Wallet Zugreifen" : "Wallet Erstellen") : "Create Wallet"}
+          </span>
         </Button>
       </div>
 
-      {/* Registration Dialog */}
       <Dialog open={isRegisterOpen} onOpenChange={setIsRegisterOpen}>
         <DialogContent className="bg-white border-gray-200 text-gray-800 dark:bg-wallet-card dark:border-gray-800 dark:text-white max-w-md p-0 overflow-hidden">
           <div className="flex flex-col">
@@ -306,7 +317,6 @@ const CreateWalletButton = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Success Dialog */}
       <Dialog open={isSuccessOpen} onOpenChange={setIsSuccessOpen}>
         <DialogContent className="bg-white border-gray-200 text-gray-800 dark:bg-wallet-card dark:border-gray-800 dark:text-white max-w-md text-center">
           <div className="flex flex-col items-center justify-center p-6">
@@ -315,11 +325,11 @@ const CreateWalletButton = () => {
             </div>
             <DialogTitle className="text-xl font-bold mb-2">Konto erfolgreich erstellt!</DialogTitle>
             <DialogDescription className="text-gray-600 dark:text-gray-400 mb-6">
-              Du wirst jetzt zur Wallet-Auswahl weitergeleitet.
+              Jetzt kannst du deine Wallet erstellen.
             </DialogDescription>
             
             <Button onClick={handleSuccessModalClose} className="bg-wallet-blue hover:bg-wallet-darkBlue">
-              Auf Wallet Zugreifen
+              Wallet Erstellen
             </Button>
           </div>
         </DialogContent>

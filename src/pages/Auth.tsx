@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -41,7 +40,7 @@ const Auth: React.FC = () => {
     if (seedPhraseLoaded) {
       navigate('/wallet');
     } else {
-      navigate('/app');
+      navigate('/generate-wallet');
     }
   };
   
@@ -49,14 +48,12 @@ const Auth: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     
-    // Add a notification toast for the delay
     toast({
       title: "Anmeldung wird verarbeitet",
       description: "Bitte warte einen Moment...",
       duration: 3000,
     });
     
-    // Add a 3-second delay for login
     await new Promise(resolve => setTimeout(resolve, 3000));
     
     try {

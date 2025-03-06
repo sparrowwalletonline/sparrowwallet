@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { CheckCircle } from 'lucide-react';
+import { useWallet } from '@/contexts/WalletContext';
 
 const CongratsPage: React.FC = () => {
   const navigate = useNavigate();
+  const { session } = useWallet();
   const [iconVisible, setIconVisible] = useState(false);
   const [textVisible, setTextVisible] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(false);
