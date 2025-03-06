@@ -40,6 +40,8 @@ const WalletBalance: React.FC = () => {
   const prevBalanceRef = useRef(0);
   const initialLoadRef = useRef(true);
   
+  const [selectedAction, setSelectedAction] = useState<'send' | 'receive' | null>(null);
+  
   useEffect(() => {
     const prevBalance = prevBalanceRef.current;
     prevBalanceRef.current = usdBalance;
@@ -168,25 +170,27 @@ const WalletBalance: React.FC = () => {
     }
   }
 
-  const handleTokenSelect = (token: Token, action: 'send' | 'receive') => {
+  const handleTokenSelect = (token: Token) => {
     setSelectedToken(token);
     setIsTokenSelectionOpen(false);
     
-    if (action === 'send') {
+    if (selectedAction === 'send') {
       setIsSendDialogOpen(true);
-    } else if (action === 'receive') {
+    } else if (selectedAction === 'receive') {
       setIsReceiveDialogOpen(true);
     }
   };
 
   const handleSendClick = () => {
     setSelectedToken(null);
+    setSelectedAction('send');
     setIsTokenSelectionOpen(true);
     setSearchTerm('');
   };
 
   const handleReceiveClick = () => {
     setSelectedToken(null);
+    setSelectedAction('receive');
     setIsTokenSelectionOpen(true);
     setSearchTerm('');
     console.log("Wallet address when receive clicked:", walletAddress);
@@ -252,12 +256,12 @@ const WalletBalance: React.FC = () => {
       
       <Dialog open={isTokenSelectionOpen} onOpenChange={setIsTokenSelectionOpen}>
         <DialogContent fullScreen className={`dialog-content max-w-full md:max-w-3xl overflow-hidden flex flex-col`}>
-          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-border">
             <div className="flex items-center gap-3">
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="text-gray-400 hover:text-white"
+                className="text-muted-foreground hover:text-foreground"
                 onClick={() => setIsTokenSelectionOpen(false)}
               >
                 <ArrowLeft className="h-5 w-5" />
@@ -268,12 +272,12 @@ const WalletBalance: React.FC = () => {
           
           <div className="px-4 py-3">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Token-Name oder Kontraktadresse"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-gray-800 border-gray-700"
+                className="pl-10 bg-secondary border-input"
               />
             </div>
           </div>
@@ -283,8 +287,8 @@ const WalletBalance: React.FC = () => {
               {filteredTokens.map((token) => (
                 <div 
                   key={token.id} 
-                  className="flex items-center justify-between py-3 px-4 hover:bg-gray-800 cursor-pointer"
-                  onClick={() => handleTokenSelect(token, selectedToken ? (isReceiveDialogOpen ? 'receive' : 'send') : (isSendDialogOpen ? 'send' : 'receive'))}
+                  className="flex items-center justify-between py-3 px-4 hover:bg-secondary/70 cursor-pointer"
+                  onClick={() => handleTokenSelect(token)}
                 >
                   <div className="flex items-center gap-3">
                     <div className={`w-8 h-8 rounded-full ${token.iconColor} flex items-center justify-center overflow-hidden`}>
@@ -297,11 +301,11 @@ const WalletBalance: React.FC = () => {
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="font-medium">{token.symbol}</span>
-                        <span className="text-xs py-0.5 px-2 bg-[#2C3140] text-gray-400 rounded">
+                        <span className="text-xs py-0.5 px-2 bg-secondary text-muted-foreground rounded">
                           {token.network}
                         </span>
                       </div>
-                      <div className="flex items-center text-sm text-gray-400">
+                      <div className="flex items-center text-sm text-muted-foreground">
                         <span>{token.price.toLocaleString('en-US', {style: 'currency', currency: 'USD', minimumFractionDigits: 2})}</span>
                         <span className={`ml-2 ${token.change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
                           {token.change >= 0 ? '+' : ''}{token.change.toFixed(2)}%
@@ -311,7 +315,7 @@ const WalletBalance: React.FC = () => {
                   </div>
                   <div className="text-right">
                     <div>{token.balance}</div>
-                    <div className="text-xs text-gray-400">
+                    <div className="text-xs text-muted-foreground">
                       {token.value.toLocaleString('en-US', {style: 'currency', currency: 'USD', minimumFractionDigits: 2})}
                     </div>
                   </div>
@@ -324,12 +328,12 @@ const WalletBalance: React.FC = () => {
 
       <Dialog open={isSendDialogOpen} onOpenChange={setIsSendDialogOpen}>
         <DialogContent fullScreen className={`dialog-content max-w-full md:max-w-3xl overflow-hidden flex flex-col`}>
-          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-border">
             <div className="flex items-center gap-3">
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="text-gray-400 hover:text-white"
+                className="text-muted-foreground hover:text-foreground"
                 onClick={() => setIsSendDialogOpen(false)}
               >
                 <ArrowLeft className="h-5 w-5" />
@@ -348,7 +352,7 @@ const WalletBalance: React.FC = () => {
                     <span className="text-lg text-white font-bold">{selectedToken.symbol.substring(0, 2)}</span>
                   )}
                 </div>
-                <div className="text-sm text-gray-400">auf {selectedToken.network}</div>
+                <div className="text-sm text-muted-foreground">auf {selectedToken.network}</div>
               </>
             )}
           </div>
@@ -360,7 +364,7 @@ const WalletBalance: React.FC = () => {
                 placeholder="Gib eine gültige Adresse ein"
                 value={recipientAddress}
                 onChange={(e) => setRecipientAddress(e.target.value)}
-                className="bg-gray-800 border-gray-700"
+                className="bg-secondary border-input"
               />
             </div>
             
@@ -372,7 +376,7 @@ const WalletBalance: React.FC = () => {
                   type="number"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="bg-gray-800 border-gray-700 pr-16"
+                  className="bg-secondary border-input pr-16"
                 />
                 <button 
                   className="absolute right-2 top-1/2 transform -translate-y-1/2 text-green-500 text-sm font-medium"
@@ -381,13 +385,13 @@ const WalletBalance: React.FC = () => {
                   MAX
                 </button>
               </div>
-              <div className="mt-2 text-sm text-gray-400">
+              <div className="mt-2 text-sm text-muted-foreground">
                 Guthaben: {selectedToken?.balance || 0} {selectedToken?.symbol}
               </div>
             </div>
           </div>
           
-          <div className="border-t border-gray-800 p-4">
+          <div className="border-t border-border p-4">
             <Button 
               variant="wallet" 
               className="w-full"
@@ -401,27 +405,27 @@ const WalletBalance: React.FC = () => {
 
       <Dialog open={isReceiveDialogOpen} onOpenChange={setIsReceiveDialogOpen}>
         <DialogContent fullScreen className={`dialog-content max-w-full md:max-w-3xl overflow-hidden flex flex-col`}>
-          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800">
+          <DialogHeader className="px-4 py-3 border-b border-border flex justify-between items-center">
             <div className="flex items-center gap-3">
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="text-gray-400 hover:text-white"
+                className="text-muted-foreground hover:text-foreground"
                 onClick={() => setIsReceiveDialogOpen(false)}
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
-              <h2 className="text-lg font-medium">{selectedToken?.symbol} erhalten</h2>
+              <DialogTitle className="text-lg font-medium">{selectedToken?.symbol} erhalten</DialogTitle>
             </div>
             <Button 
               variant="ghost" 
               size="icon" 
-              className="text-gray-400 hover:text-white"
+              className="text-muted-foreground hover:text-foreground"
               onClick={() => setIsReceiveDialogOpen(false)}
             >
               <X className="h-5 w-5" />
             </Button>
-          </div>
+          </DialogHeader>
           
           <div className="flex flex-col items-center py-4">
             {selectedToken && (
@@ -433,13 +437,13 @@ const WalletBalance: React.FC = () => {
                     <span className="text-lg text-white font-bold">{selectedToken.symbol.substring(0, 2)}</span>
                   )}
                 </div>
-                <div className="text-sm text-gray-400">auf {selectedToken.network}</div>
+                <div className="text-sm text-muted-foreground">auf {selectedToken.network}</div>
               </>
             )}
           </div>
           
           <div className="flex-1 flex flex-col items-center px-4 py-2">
-            <div className="bg-[#232733] p-4 rounded-lg mb-4 max-w-md w-full">
+            <div className="bg-secondary p-4 rounded-lg mb-4 max-w-md w-full">
               <div className="flex items-start gap-3 text-yellow-500">
                 <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" />
                 <p className="text-sm">
@@ -468,13 +472,13 @@ const WalletBalance: React.FC = () => {
             </div>
             
             <div className="w-full max-w-md mb-6">
-              <div className="text-center mb-2 text-sm text-gray-400">Deine {selectedToken?.symbol || 'Wallet'} Adresse</div>
-              <div className="bg-[#2A2F3D] py-3 px-4 rounded-lg text-sm text-center break-all relative">
-                <span className="text-white">{getDisplayAddress() || "Keine Wallet-Adresse verfügbar"}</span>
+              <div className="text-center mb-2 text-sm text-muted-foreground">Deine {selectedToken?.symbol || 'Wallet'} Adresse</div>
+              <div className="bg-secondary py-3 px-4 rounded-lg text-sm text-center break-all relative">
+                <span className="text-foreground">{getDisplayAddress() || "Keine Wallet-Adresse verfügbar"}</span>
                 <Button 
                   variant="ghost" 
                   size="icon" 
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   onClick={handleCopyAddress}
                 >
                   <Copy className="h-4 w-4" />
@@ -483,7 +487,7 @@ const WalletBalance: React.FC = () => {
             </div>
           </div>
           
-          <div className="border-t border-gray-800 p-4">
+          <div className="border-t border-border p-4">
             <Button 
               variant="wallet" 
               className="w-full"
@@ -500,7 +504,7 @@ const WalletBalance: React.FC = () => {
           <DialogHeader>
             <DialogTitle className="text-xl">Kauf nicht verfügbar</DialogTitle>
           </DialogHeader>
-          <DialogDescription className="text-gray-300">
+          <DialogDescription className="text-muted-foreground">
             Der direkte Kauf von Kryptowährungen ist in Ihrer Region leider noch nicht verfügbar. Wir arbeiten daran, diesen Service bald anzubieten.
           </DialogDescription>
           <div className="flex justify-end mt-4">

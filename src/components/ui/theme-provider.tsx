@@ -20,6 +20,9 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
       const storedTheme = localStorage.getItem('theme');
       if (storedTheme) {
         document.documentElement.setAttribute('data-theme', storedTheme);
+        // Ensure class is also set for Tailwind
+        document.documentElement.classList.remove('light', 'dark');
+        document.documentElement.classList.add(storedTheme);
       }
     };
     
@@ -43,6 +46,9 @@ export const useTheme = () => {
     if (themeContext.theme) {
       localStorage.setItem('theme', themeContext.theme);
       document.documentElement.setAttribute('data-theme', themeContext.theme);
+      // Ensure class is also set for Tailwind
+      document.documentElement.classList.remove('light', 'dark');
+      document.documentElement.classList.add(themeContext.theme);
     }
   }, [themeContext.theme]);
   

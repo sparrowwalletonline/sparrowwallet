@@ -10,19 +10,19 @@
     --background: 0 0% 98%;
     --foreground: 220 13% 10%;
     
-    --card: 0 0% 95%;
+    --card: 0 0% 100%;
     --card-foreground: 215 14% 15%;
     
-    --popover: 0 0% 95%;
+    --popover: 0 0% 100%;
     --popover-foreground: 215 14% 15%;
     
     --primary: 140 100% 40%;
     --primary-foreground: 0 0% 100%;
     
-    --secondary: 210 10% 94%;
+    --secondary: 210 10% 96%;
     --secondary-foreground: 215 14% 15%;
     
-    --muted: 210 10% 90%;
+    --muted: 210 10% 92%;
     --muted-foreground: 215 14% 35%;
     
     --accent: 140 100% 40%;
@@ -31,8 +31,8 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
     
-    --border: 220 13% 85%;
-    --input: 220 13% 90%;
+    --border: 220 13% 88%;
+    --input: 220 13% 88%;
     --ring: 140 100% 40%;
 
     --radius: 0.75rem;
@@ -210,7 +210,7 @@
 }
 
 .light .crypto-action-button {
-  @apply bg-gray-100 text-gray-800;
+  @apply bg-gray-100 text-gray-700;
 }
 
 .dark .crypto-action-button {
