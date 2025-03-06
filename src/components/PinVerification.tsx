@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
-import { Lock } from 'lucide-react';
+import { Lock, KeyRound, ArrowLeft } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
+import { Card } from '@/components/ui/card';
 
 interface PinVerificationProps {
   onSuccess: () => void;
@@ -53,19 +54,30 @@ const PinVerification: React.FC<PinVerificationProps> = ({ onSuccess }) => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-wallet-darkBg p-4 relative">
-      <div className="w-full max-w-md bg-wallet-card p-8 rounded-xl shadow-lg border border-gray-800">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-white to-blue-50 p-4 relative">
+      <Card className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg border border-blue-100">
+        <button 
+          onClick={() => navigate('/app')} 
+          className="absolute top-4 left-4 text-gray-500 hover:text-gray-700"
+          aria-label="Back"
+        >
+          <ArrowLeft size={20} />
+        </button>
+        
         <div className="flex justify-center mb-6">
-          <div className="bg-blue-500/10 p-3 rounded-full">
-            <Lock className="h-8 w-8 text-blue-500" />
+          <div className="relative">
+            <div className="absolute inset-0 bg-blue-100 rounded-full blur-lg opacity-60"></div>
+            <div className="bg-blue-500/10 p-4 rounded-full relative z-10">
+              <KeyRound className="h-8 w-8 text-wallet-blue" />
+            </div>
           </div>
         </div>
         
-        <h1 className="text-2xl font-bold text-center text-white mb-6">
+        <h1 className="text-2xl font-bold text-center text-gray-800 mb-4">
           PIN-Eingabe erforderlich
         </h1>
         
-        <p className="text-center text-gray-300 mb-6">
+        <p className="text-center text-gray-600 mb-6">
           Bitte geben Sie Ihre PIN ein, um auf Ihre Wallet zuzugreifen
         </p>
         
@@ -80,13 +92,13 @@ const PinVerification: React.FC<PinVerificationProps> = ({ onSuccess }) => {
               inputMode="numeric"
               pattern="[0-9]*"
               autoFocus
-              className="text-center text-xl h-14"
+              className="text-center text-xl h-14 bg-white border-gray-300 focus:border-wallet-blue"
             />
           </div>
           
           <Button
             type="submit"
-            className="w-full bg-wallet-blue hover:bg-wallet-darkBlue text-white py-6"
+            className="w-full bg-wallet-blue hover:bg-wallet-darkBlue text-white py-6 h-12"
             disabled={!pin}
           >
             Bestätigen
@@ -102,7 +114,7 @@ const PinVerification: React.FC<PinVerificationProps> = ({ onSuccess }) => {
             </button>
           </div>
         </form>
-      </div>
+      </Card>
     </div>
   );
 };
