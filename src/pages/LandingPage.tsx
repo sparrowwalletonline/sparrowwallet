@@ -64,7 +64,7 @@ const LandingPage = () => {
     description: string;
   }) => {
     return <div className="p-6 rounded-xl border border-gray-100 bg-white shadow-sm transition-all hover:shadow-md hover:translate-y-[-4px] dark:bg-wallet-card dark:border-gray-800">
-        <div className="mb-4 text-wallet-blue">{icon}</div>
+        <div className="mb-4 text-[#403E43]">{icon}</div>
         <h3 className="font-heading font-semibold text-lg mb-2">{title}</h3>
         <p className="text-gray-600 text-sm dark:text-gray-400">{description}</p>
       </div>;
@@ -97,22 +97,22 @@ const LandingPage = () => {
     const getGradient = () => {
       switch (color) {
         case 'indigo':
-          return 'from-indigo-500 to-indigo-600';
+          return 'from-[#8E9196] to-[#6A6B6F]';
         case 'purple':
-          return 'from-purple-500 to-purple-600';
+          return 'from-[#6A6B6F] to-[#403E43]';
         case 'blue':
-          return 'from-blue-500 to-blue-600';
+          return 'from-[#8E9196] to-[#403E43]';
         case 'teal':
-          return 'from-teal-500 to-teal-600';
+          return 'from-[#6A6B6F] to-[#403E43]';
         default:
-          return 'from-blue-500 to-blue-600';
+          return 'from-[#8E9196] to-[#403E43]';
       }
     };
     return <div className="p-6 rounded-xl transition-all bg-white shadow-md hover:shadow-lg dark:bg-wallet-card dark:border-gray-800 hover:translate-y-[-4px]">
         <div className={`bg-gradient-to-r ${getGradient()} inline-flex p-3 rounded-lg text-white mb-4`}>
           {icon}
         </div>
-        <h3 className="font-heading font-semibold text-lg mb-2 bg-gradient-to-r from-indigo-500 to-blue-600 bg-clip-text text-transparent">{title}</h3>
+        <h3 className="font-heading font-semibold text-lg mb-2 bg-gradient-to-r from-[#8E9196] to-[#403E43] bg-clip-text text-transparent">{title}</h3>
         <p className="text-gray-600 text-sm dark:text-gray-400">{description}</p>
       </div>;
   };
@@ -218,11 +218,11 @@ const LandingPage = () => {
       <div className="flex-1 flex flex-col">
         <section className="relative px-6 sm:py-28 overflow-hidden py-[40px]">
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute inset-0 bg-blue-50 dark:bg-blue-900/10" />
+            <div className="absolute inset-0 bg-gray-50 dark:bg-gray-900/10" />
             <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white dark:from-wallet-darkBg to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white dark:from-wallet-darkBg to-transparent" />
-            <div className="absolute opacity-30 -top-24 -right-24 w-96 h-96 rounded-full bg-blue-200 dark:bg-blue-800/20 blur-3xl" />
-            <div className="absolute opacity-30 -bottom-24 -left-24 w-96 h-96 rounded-full bg-purple-200 dark:bg-purple-800/20 blur-3xl" />
+            <div className="absolute opacity-30 -top-24 -right-24 w-96 h-96 rounded-full bg-gray-200 dark:bg-gray-800/20 blur-3xl" />
+            <div className="absolute opacity-30 -bottom-24 -left-24 w-96 h-96 rounded-full bg-gray-200 dark:bg-gray-800/20 blur-3xl" />
           </div>
           
           <div className="max-w-screen-xl mx-auto">
@@ -234,7 +234,7 @@ const LandingPage = () => {
                   </div>
                   <h1 className="font-heading tracking-tight text-gray-900 dark:text-white leading-[1.1] font-bold text-4xl md:text-5xl lg:text-6xl max-w-xl z-10 relative">
                     Powerful Bitcoin
-                    <span className="text-wallet-blue"> Wallet </span>
+                    <span className="text-[#403E43]"> Wallet </span>
                     for Power Users
                   </h1>
                 </div>
@@ -246,20 +246,20 @@ const LandingPage = () => {
                 
                 <div className="flex flex-col space-y-3 pt-2 z-10 relative">
                   <div className="flex items-center gap-2">
-                    <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
-                      <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                    <div className="rounded-full bg-gray-100 dark:bg-gray-900/30 p-1">
+                      <Check className="h-4 w-4 text-[#403E43] dark:text-gray-400" />
                     </div>
                     <span className="text-gray-700 dark:text-gray-300">Privacy-focused and open source</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
-                      <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                    <div className="rounded-full bg-gray-100 dark:bg-gray-900/30 p-1">
+                      <Check className="h-4 w-4 text-[#403E43] dark:text-gray-400" />
                     </div>
                     <span className="text-gray-700 dark:text-gray-300">Complete transaction control with coin selection</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
-                      <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                    <div className="rounded-full bg-gray-100 dark:bg-gray-900/30 p-1">
+                      <Check className="h-4 w-4 text-[#403E43] dark:text-gray-400" />
                     </div>
                     <span className="text-gray-700 dark:text-gray-300">Self-custodial & secure</span>
                   </div>
@@ -269,7 +269,7 @@ const LandingPage = () => {
                   <Button 
                     onClick={handleCreateWallet} 
                     disabled={isLoading} 
-                    className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
+                    className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-[#8E9196] to-[#403E43]"
                   >
                     {isLoading ? (
                       <>
@@ -291,7 +291,7 @@ const LandingPage = () => {
               </div>
               
               <div className="relative lg:w-1/2 z-10">
-                <div className="absolute inset-0 rounded-3xl bg-blue-500/10 dark:bg-blue-500/5 blur-xl -z-10"></div>
+                <div className="absolute inset-0 rounded-3xl bg-[#8E9196]/10 dark:bg-[#8E9196]/5 blur-xl -z-10"></div>
                 <div className="relative rounded-3xl overflow-hidden">
                   <img src="/lovable-uploads/1b77eb0f-8d23-4584-b764-6202a16c8247.png" alt="Bitcoin Wallet App" className="w-full max-w-md mx-auto" />
                 </div>
@@ -305,19 +305,19 @@ const LandingPage = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
               <div className="text-center transform transition-all duration-300 hover:scale-105 group">
                 <div className="mb-2 inline-flex items-center justify-center">
-                  <div className="text-purple-600 dark:text-purple-400 font-heading font-bold text-3xl sm:text-4xl bg-purple-100 dark:bg-purple-900/30 rounded-xl px-3 py-2 sm:px-4 sm:py-3 group-hover:shadow-md transition-all">100%</div>
+                  <div className="text-[#403E43] dark:text-gray-400 font-heading font-bold text-3xl sm:text-4xl bg-gray-100 dark:bg-gray-900/30 rounded-xl px-3 py-2 sm:px-4 sm:py-3 group-hover:shadow-md transition-all">100%</div>
                 </div>
                 <div className="text-gray-600 dark:text-gray-400 text-sm font-medium">Open Source</div>
               </div>
               <div className="text-center transform transition-all duration-300 hover:scale-105 group">
                 <div className="mb-2 inline-flex items-center justify-center">
-                  <div className="text-blue-600 dark:text-blue-400 font-heading font-bold text-3xl sm:text-4xl bg-blue-100 dark:bg-blue-900/30 rounded-xl px-3 py-2 sm:px-4 sm:py-3 group-hover:shadow-md transition-all">24/7</div>
+                  <div className="text-[#403E43] dark:text-gray-400 font-heading font-bold text-3xl sm:text-4xl bg-gray-100 dark:bg-gray-900/30 rounded-xl px-3 py-2 sm:px-4 sm:py-3 group-hover:shadow-md transition-all">24/7</div>
                 </div>
                 <div className="text-gray-600 dark:text-gray-400 text-sm font-medium">Access</div>
               </div>
               <div className="text-center transform transition-all duration-300 hover:scale-105 group">
                 <div className="mb-2 inline-flex items-center justify-center">
-                  <div className="text-teal-600 dark:text-teal-400 font-heading font-bold text-3xl sm:text-4xl bg-teal-100 dark:bg-teal-900/30 rounded-xl px-3 py-2 sm:px-4 sm:py-3 group-hover:shadow-md transition-all">100+</div>
+                  <div className="text-[#403E43] dark:text-gray-400 font-heading font-bold text-3xl sm:text-4xl bg-gray-100 dark:bg-gray-900/30 rounded-xl px-3 py-2 sm:px-4 sm:py-3 group-hover:shadow-md transition-all">100+</div>
                 </div>
                 <div className="text-gray-600 dark:text-gray-400 text-sm font-medium">Hardware Wallets</div>
               </div>
@@ -328,11 +328,11 @@ const LandingPage = () => {
         <FeaturesSection />
         
         <section className="py-20 px-6 my-12">
-          <div className="max-w-screen-xl mx-auto rounded-3xl overflow-hidden bg-gradient-to-r from-indigo-500/5 to-purple-500/5 dark:from-indigo-900/20 dark:to-purple-900/20 backdrop-blur-sm border border-gray-100 dark:border-gray-800 shadow-lg">
+          <div className="max-w-screen-xl mx-auto rounded-3xl overflow-hidden bg-gradient-to-r from-[#8E9196]/5 to-[#403E43]/5 dark:from-[#8E9196]/20 dark:to-[#403E43]/20 backdrop-blur-sm border border-gray-100 dark:border-gray-800 shadow-lg">
             <div className="py-16 px-6">
               <div className="max-w-3xl mx-auto">
                 <div className="text-center mb-12">
-                  <h2 className="font-heading text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-wallet-blue to-indigo-600 bg-clip-text text-transparent">Bitcoin Everywhere</h2>
+                  <h2 className="font-heading text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-[#8E9196] to-[#403E43] bg-clip-text text-transparent">Bitcoin Everywhere</h2>
                   <p className="text-gray-600 dark:text-gray-300 text-lg">
                     Take control of your bitcoin with a powerful wallet built for both beginners and experts.
                   </p>
@@ -340,7 +340,7 @@ const LandingPage = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="p-6 rounded-xl bg-white/80 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col items-center text-center transition-all hover:shadow-md hover:-translate-y-1">
-                    <div className="w-12 h-12 mb-4 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-wallet-blue">
+                    <div className="w-12 h-12 mb-4 rounded-full bg-gray-100 dark:bg-gray-900/30 flex items-center justify-center text-[#403E43]">
                       <Globe className="w-6 h-6" />
                     </div>
                     <h3 className="font-semibold text-lg mb-2">Global Access</h3>
@@ -350,7 +350,7 @@ const LandingPage = () => {
                   </div>
                   
                   <div className="p-6 rounded-xl bg-white/80 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col items-center text-center transition-all hover:shadow-md hover:-translate-y-1">
-                    <div className="w-12 h-12 mb-4 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                    <div className="w-12 h-12 mb-4 rounded-full bg-gray-100 dark:bg-gray-900/30 flex items-center justify-center text-[#403E43]">
                       <Lock className="w-6 h-6" />
                     </div>
                     <h3 className="font-semibold text-lg mb-2">Self-Custody</h3>
@@ -360,7 +360,7 @@ const LandingPage = () => {
                   </div>
                   
                   <div className="p-6 rounded-xl bg-white/80 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col items-center text-center transition-all hover:shadow-md hover:-translate-y-1">
-                    <div className="w-12 h-12 mb-4 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                    <div className="w-12 h-12 mb-4 rounded-full bg-gray-100 dark:bg-gray-900/30 flex items-center justify-center text-[#403E43]">
                       <Zap className="w-6 h-6" />
                     </div>
                     <h3 className="font-semibold text-lg mb-2">Full Control</h3>
@@ -371,7 +371,7 @@ const LandingPage = () => {
                 </div>
                 
                 <div className="mt-12 text-center">
-                  <Button onClick={handleCreateWallet} disabled={isLoading} className="bg-wallet-blue hover:bg-wallet-darkBlue text-white py-3 px-8">
+                  <Button onClick={handleCreateWallet} disabled={isLoading} className="bg-gradient-to-r from-[#8E9196] to-[#403E43] hover:from-[#7C7F84] hover:to-[#35343A] text-white py-3 px-8">
                     {isLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />

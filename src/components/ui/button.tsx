@@ -10,7 +10,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-[#0500ff] text-primary-foreground hover:bg-[#0500ff]/90 shadow-md hover:shadow-lg hover:-translate-y-0.5",
+        default: "bg-[#8E9196] text-primary-foreground hover:bg-[#8E9196]/90 shadow-md hover:shadow-lg hover:-translate-y-0.5",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-md hover:shadow-lg hover:-translate-y-0.5",
         outline:
@@ -18,8 +18,8 @@ const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-md hover:shadow-lg hover:-translate-y-0.5",
         ghost: "hover:bg-accent hover:text-accent-foreground hover:shadow-sm hover:-translate-y-0.5",
-        link: "text-[#0500ff] underline-offset-4 hover:underline",
-        wallet: "bg-gradient-to-br from-[#0500ff] to-[#0400cf] text-white font-medium shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-200 border border-[#0500ff]/20",
+        link: "text-[#403E43] underline-offset-4 hover:underline",
+        wallet: "bg-gradient-to-br from-[#8E9196] to-[#403E43] text-white font-medium shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-200 border border-[#8E9196]/20",
       },
       size: {
         default: "h-10 px-4 py-2",
