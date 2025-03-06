@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from './ui/button';
@@ -22,7 +22,24 @@ interface AnalyticsChartProps {
 
 const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ tokens }) => {
   const [currentTokenIndex, setCurrentTokenIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const { theme } = useTheme();
+  
+  // Check if device is mobile on mount and window resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    
+    // Initial check
+    checkMobile();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkMobile);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   const currentToken = tokens[currentTokenIndex];
   
@@ -35,7 +52,10 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ tokens }) => {
     const data: ChartDataPoint[] = [];
     const now = new Date();
     
-    for (let i = 30; i >= 0; i--) {
+    // Adjust number of data points based on screen size
+    const dataPoints = isMobile ? 15 : 30;
+    
+    for (let i = dataPoints; i >= 0; i--) {
       const date = new Date(now);
       date.setDate(date.getDate() - i);
       
@@ -67,6 +87,30 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ tokens }) => {
     );
   };
   
+  // Swipe handling for mobile
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+  
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+  
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > 70) {
+      // Swipe left, go to next token
+      handleNextToken();
+    }
+    
+    if (touchEnd - touchStart > 70) {
+      // Swipe right, go to previous token
+      handlePrevToken();
+    }
+  };
+  
   const formatPrice = (value: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -85,31 +129,33 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ tokens }) => {
   if (!currentToken || tokens.length === 0) return null;
   
   return (
-    <div className="mt-6 animate-fade-in">
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-medium">Kursverlauf: {currentToken.name}</h3>
+    <div className="mt-4 md:mt-6 animate-fade-in">
+      <div className="flex items-center justify-between mb-2 md:mb-3">
+        <h3 className="text-xs sm:text-sm font-medium">Kursverlauf: {currentToken.name}</h3>
         <div className="flex gap-1">
           <Button 
             variant="ghost" 
             size="sm" 
-            className="h-8 w-8 p-0"
+            className="h-7 w-7 md:h-8 md:w-8 p-0"
             onClick={handlePrevToken}
+            aria-label="Previous token"
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className="h-3 w-3 md:h-4 md:w-4" />
           </Button>
           <Button 
             variant="ghost" 
             size="sm" 
-            className="h-8 w-8 p-0"
+            className="h-7 w-7 md:h-8 md:w-8 p-0"
             onClick={handleNextToken}
+            aria-label="Next token"
           >
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-3 w-3 md:h-4 md:w-4" />
           </Button>
         </div>
       </div>
       
-      <div className="flex items-center gap-3 mb-4">
-        <div className={`w-8 h-8 rounded-full flex items-center justify-center overflow-hidden`}>
+      <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+        <div className="w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center overflow-hidden">
           {currentToken.logoUrl ? (
             <img src={currentToken.logoUrl} alt={currentToken.symbol} className="w-full h-full object-cover" />
           ) : (
@@ -119,16 +165,26 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ tokens }) => {
           )}
         </div>
         <div>
-          <div className="text-lg font-medium">{formatPrice(currentToken.price)}</div>
+          <div className="text-base md:text-lg font-medium">{formatPrice(currentToken.price)}</div>
           <div className="text-xs text-gray-400">30 Tage</div>
         </div>
       </div>
       
-      <div className="h-[180px] w-full">
+      <div 
+        className="h-[150px] sm:h-[180px] w-full"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={chartData}
-            margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
+            margin={{ 
+              top: 5, 
+              right: isMobile ? 0 : 5, 
+              left: isMobile ? 0 : 5, 
+              bottom: 5 
+            }}
           >
             <defs>
               <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
@@ -138,11 +194,15 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ tokens }) => {
             </defs>
             <XAxis 
               dataKey="date" 
-              tick={{ fontSize: 10, fill: theme === 'dark' ? '#9ca3af' : '#6b7280' }}
+              tick={{ 
+                fontSize: isMobile ? 8 : 10, 
+                fill: theme === 'dark' ? '#9ca3af' : '#6b7280' 
+              }}
               axisLine={false}
               tickLine={false}
-              interval="preserveStartEnd"
-              minTickGap={30}
+              interval={isMobile ? 'preserveStartEnd' : "preserveStartEnd"}
+              minTickGap={isMobile ? 15 : 30}
+              height={isMobile ? 20 : 30}
             />
             <YAxis 
               hide 
@@ -154,7 +214,9 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ tokens }) => {
               contentStyle={{ 
                 backgroundColor: theme === 'dark' ? '#1f2937' : '#ffffff',
                 borderColor: theme === 'dark' ? '#374151' : '#e5e7eb',
-                color: theme === 'dark' ? '#f9fafb' : '#111827'
+                color: theme === 'dark' ? '#f9fafb' : '#111827',
+                fontSize: isMobile ? '12px' : '14px',
+                padding: isMobile ? '8px' : '10px'
               }}
             />
             <Area 
@@ -168,6 +230,12 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ tokens }) => {
           </AreaChart>
         </ResponsiveContainer>
       </div>
+      
+      {isMobile && (
+        <div className="text-xs text-center text-muted-foreground mt-2">
+          Wische nach links oder rechts, um zwischen Tokens zu wechseln
+        </div>
+      )}
     </div>
   );
 };
