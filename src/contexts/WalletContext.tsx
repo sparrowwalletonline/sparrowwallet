@@ -50,8 +50,7 @@ const WalletContext = createContext<WalletContextType>({
   setPinProtectionEnabled: () => {},
   setPin: () => {},
   pinVerified: false,
-  setPinVerified: () => {},
-  updateWalletBtcBalance: () => {}
+  setPinVerified: () => {}
 });
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -118,39 +117,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const active = wallets.find(w => w.isActive);
     return active || (wallets.length > 0 ? wallets[0] : null);
   });
-
-  const updateWalletBtcBalance = (walletId: string, amount: number) => {
-    setWallets(prevWallets => 
-      prevWallets.map(wallet => {
-        if (wallet.id === walletId) {
-          const updatedWallet = {
-            ...wallet,
-            btcBalance: amount
-          };
-          
-          // Update active wallet state if this is the active wallet
-          if (wallet.isActive) {
-            setActiveWalletState(updatedWallet);
-            setBtcBalance(amount);
-            
-            // Update USD balance
-            const calculatedUsdBalance = (amount * btcPrice) + (wallet.ethBalance * ethPrice);
-            setUsdBalance(calculatedUsdBalance);
-          }
-          
-          return updatedWallet;
-        }
-        return wallet;
-      })
-    );
-    
-    // If user is logged in, save changes to Supabase
-    if (session) {
-      setTimeout(() => {
-        saveWalletAddressToUserAccount();
-      }, 500);
-    }
-  };
 
   useEffect(() => {
     if (pinProtectionEnabled && pin) {
@@ -788,8 +754,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setPinProtectionEnabled,
       setPin,
       pinVerified,
-      setPinVerified,
-      updateWalletBtcBalance
+      setPinVerified
     }}>
       {children}
     </WalletContext.Provider>
