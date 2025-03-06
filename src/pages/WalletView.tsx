@@ -626,7 +626,7 @@ const CryptoItem = ({
         <div>
           <div className="flex items-center">
             <span className="font-medium mr-2">{symbol}</span>
-            <span className="text-xs py-0.5 px-2 bg-[#2C3140] text-gray-400 rounded">{name}</span>
+            <span className="text-xs py-0.5 px-2 bg-gray-100 dark:bg-[#2C3140] text-gray-500 dark:text-gray-400 rounded">{name}</span>
           </div>
           <div className="flex items-center mt-1">
             <span className="text-xs text-gray-400">{formattedPrice}</span>
