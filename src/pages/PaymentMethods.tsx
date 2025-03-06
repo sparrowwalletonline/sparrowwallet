@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Header from '@/components/Header';
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { MapPin } from 'lucide-react';
+import { MapPin, Calendar } from 'lucide-react';
 
 const PaymentMethods = () => {
   return (
@@ -18,10 +18,14 @@ const PaymentMethods = () => {
             </CardTitle>
             <CardTitle>Nicht verfügbar in Ihrer Region</CardTitle>
             <CardDescription className="text-center max-w-md mx-auto">
-              Zahlungsmethoden sind in Ihrer Region derzeit nicht verfügbar. Wir arbeiten daran, diesen Service bald in Ihrer Region anzubieten.
+              Zahlungsmethoden sind in Ihrer Region derzeit nicht verfügbar. Wir arbeiten daran, diesen Service ab Juni 2025 in Ihrer Region anzubieten.
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center pb-6">
+            <div className="flex items-center justify-center gap-2 mb-4 p-2 bg-secondary rounded-md inline-block">
+              <Calendar className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium">Geplanter Start: Juni 2025</span>
+            </div>
             <p className="text-sm text-muted-foreground mb-6">
               Sobald dieser Service in Ihrer Region verfügbar ist, können Sie hier Kreditkarten, Bankkonto und andere Zahlungsmethoden hinzufügen.
             </p>
@@ -38,7 +42,7 @@ const PaymentMethods = () => {
                     <li>Australien</li>
                   </ul>
                   <p className="mt-4">
-                    Wir planen, in den kommenden Monaten weitere Regionen hinzuzufügen. Danke für Ihre Geduld!
+                    Wir planen, in den kommenden Monaten weitere Regionen hinzuzufügen, mit einer vollständigen Abdeckung bis Juni 2025. Danke für Ihre Geduld!
                   </p>
                 </AlertDialogDescription>
               </AlertDialogHeader>
@@ -70,7 +74,7 @@ const PaymentMethods = () => {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Wir werden Sie benachrichtigen, sobald Zahlungsmethoden in Ihrer Region verfügbar sind.
+                Wir werden Sie benachrichtigen, sobald Zahlungsmethoden in Ihrer Region verfügbar sind (voraussichtlich Juni 2025).
               </p>
             </CardContent>
           </Card>
