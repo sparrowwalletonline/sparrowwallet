@@ -4,7 +4,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Search, Copy, AlertTriangle, X } from 'lucide-react';
+import { ArrowLeft, Search, Copy, AlertTriangle, X, ArrowUpRight, TrendingUp, Wallet, SendHorizonal, Download } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { copyToClipboard } from '@/utils/clipboardUtils';
 import { getQrCodeValue } from '@/utils/encryptionUtils';
@@ -328,11 +328,30 @@ const WalletBalance: React.FC = () => {
       
       <AnalyticsChart tokens={tokens} />
       
-      <div className="flex justify-between mt-6">
-        <CryptoAction icon="send" label="Send" onClick={handleSendClick} />
-        <CryptoAction icon="receive" label="Receive" onClick={handleReceiveClick} />
-        <CryptoAction icon="buy" label="Buy" onClick={handleBuyClick} />
-        <CryptoAction icon="earn" label="Earn" />
+      <div className="grid grid-cols-4 gap-3 mt-6">
+        <CryptoAction 
+          icon="send" 
+          label="Send" 
+          onClick={handleSendClick}
+          variant="primary" 
+        />
+        <CryptoAction 
+          icon="receive" 
+          label="Receive" 
+          onClick={handleReceiveClick}
+          variant="secondary"
+        />
+        <CryptoAction 
+          icon="buy" 
+          label="Buy" 
+          onClick={handleBuyClick}
+          variant="tertiary"
+        />
+        <CryptoAction 
+          icon="earn" 
+          label="Earn"
+          variant="quaternary" 
+        />
       </div>
       
       <Dialog open={isTokenSelectionOpen} onOpenChange={setIsTokenSelectionOpen}>
@@ -699,35 +718,35 @@ interface CryptoActionProps {
   icon: 'send' | 'receive' | 'buy' | 'earn';
   label: string;
   onClick?: () => void;
+  variant: 'primary' | 'secondary' | 'tertiary' | 'quaternary';
 }
 
-const CryptoAction: React.FC<CryptoActionProps> = ({ icon, label, onClick }) => {
+const CryptoAction: React.FC<CryptoActionProps> = ({ icon, label, onClick, variant }) => {
+  const getVariantStyles = () => {
+    switch (variant) {
+      case 'primary':
+        return "from-[#0500ff] to-[#6366f1] text-white";
+      case 'secondary':
+        return "from-[#8b5cf6] to-[#d946ef] text-white";
+      case 'tertiary':
+        return "from-[#f97316] to-[#fb923c] text-white";
+      case 'quaternary':
+        return "from-[#0ea5e9] to-[#38bdf8] text-white";
+      default:
+        return "from-[#0500ff] to-[#6366f1] text-white";
+    }
+  };
+
   const getIcon = () => {
     switch (icon) {
       case 'send':
-        return (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2v15m0-15 4 4m-4-4-4 4M7 9H4.2c-.2 0-.3 0-.38.02a1 1 0 0 0-.8.8C3 9.9 3 10 3 10.2v6.6c0 .2 0 .3.02.38a1 1 0 0 0 .8.8c.08.02.18.02.38.02h15.6c.2 0 .3 0 .38-.02a1 1 0 0 0 .8-.8c.02-.08.02-.18.02-.38v-6.6c0-.2 0-.3-.02-.38a1 1 0 0 0-.8-.8C19.9 9 19.8 9 19.6 9H17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        );
+        return <SendHorizonal className="h-5 w-5" />;
       case 'receive':
-        return (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 22V7m0 15-4-4m4 4 4-4M7 15H4.2c-.2 0-.3 0-.38-.02a1 1 0 0 1-.8-.8C3 14.1 3 14 3 13.8V7.2c0-.2 0-.3.02-.38a1 1 0 0 1 .8-.8C3.9 6 4 6 4.2 6h15.6c.2 0 .3 0 .38.02a1 1 0 0 1 .8.8c.02.08.02.18.02.38v6.6c0 .2 0 .3-.02.38a1 1 0 0 1-.8.8c-.08.02-.18.02-.38.02H17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        );
+        return <Download className="h-5 w-5" />;
       case 'buy':
-        return (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 6v12m-6-6h12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        );
+        return <ArrowUpRight className="h-5 w-5" />;
       case 'earn':
-        return (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="m16 8-3.7 2.8a1 1 0 0 1-1.5-.26L8 6M13 7a1 1 0 1 0 2 0 1 1 0 0 0-2 0ZM9 18a1 1 0 1 0 2 0 1 1 0 0 0-2 0ZM20 8a5 5 0 1 0-10 0 5 5 0 0 0 10 0ZM14 18a5 5 0 1 0-10 0 5 5 0 0 0 10 0Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        );
+        return <TrendingUp className="h-5 w-5" />;
       default:
         return null;
     }
@@ -735,10 +754,10 @@ const CryptoAction: React.FC<CryptoActionProps> = ({ icon, label, onClick }) => 
 
   return (
     <button 
-      className="flex flex-col items-center gap-2 bg-gradient-to-br from-[#00FF5F] to-[#00D651] rounded-lg p-3 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 text-black border border-[#00FF5F]/20 overflow-hidden btn-modern"
+      className={`flex flex-col items-center justify-center gap-2 bg-gradient-to-br ${getVariantStyles()} rounded-xl p-3 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 overflow-hidden btn-modern border border-white/10`}
       onClick={onClick}
     >
-      <div className="w-6 h-6 flex items-center justify-center">
+      <div className="w-8 h-8 flex items-center justify-center bg-white/20 rounded-full p-1.5">
         {getIcon()}
       </div>
       <span className="text-xs font-medium">{label}</span>

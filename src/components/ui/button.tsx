@@ -19,7 +19,7 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-md hover:shadow-lg hover:-translate-y-0.5",
         ghost: "hover:bg-accent hover:text-accent-foreground hover:shadow-sm hover:-translate-y-0.5",
         link: "text-[#0500ff] underline-offset-4 hover:underline",
-        wallet: "bg-gradient-to-br from-[#00FF5F] to-[#00D651] text-black font-medium shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-200 border border-[#00FF5F]/20",
+        wallet: "bg-gradient-to-br from-[#0500ff] to-[#0400cf] text-white font-medium shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-200 border border-[#0500ff]/20",
       },
       size: {
         default: "h-10 px-4 py-2",
