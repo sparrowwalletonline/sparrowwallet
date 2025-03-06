@@ -140,35 +140,7 @@ const WalletViewContent: React.FC = () => {
   const btcValue = (btcBalance * btcPrice).toFixed(2);
   const ethValue = (ethBalance * ethPrice).toFixed(2);
   
-  const [transactions, setTransactions] = useState<Transaction[]>([
-    {
-      id: '1',
-      date: new Date(Date.now() - 86400000), // yesterday
-      type: 'receive',
-      amount: 0.005,
-      currency: 'BTC',
-      status: 'completed',
-      address: '3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5'
-    },
-    {
-      id: '2',
-      date: new Date(Date.now() - 172800000), // 2 days ago
-      type: 'send',
-      amount: 0.001,
-      currency: 'BTC',
-      status: 'completed',
-      address: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
-      fee: 0.00005
-    },
-    {
-      id: '3',
-      date: new Date(Date.now() - 345600000), // 4 days ago
-      type: 'swap',
-      amount: 0.01,
-      currency: 'ETH',
-      status: 'completed'
-    }
-  ]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   
   const [isAddToHomeDialogOpen, setIsAddToHomeDialogOpen] = useState(false);
 
@@ -429,6 +401,13 @@ const WalletViewContent: React.FC = () => {
             </TabsContent>
             <TabsContent value="transactions" className="pt-4">
               <div className="space-y-4">
+                {transactions.length === 0 && (
+                  <div className="text-center py-12 text-muted-foreground flex flex-col items-center gap-2">
+                    <Clock className="h-10 w-10 text-muted-foreground/50" />
+                    <p className="text-lg">Keine Transaktionen gefunden</p>
+                    <p className="text-sm max-w-xs">Deine Transaktionshistorie wird hier angezeigt, sobald du Krypto sendest oder empfängst.</p>
+                  </div>
+                )}
                 {transactions.map((transaction) => (
                   <TransactionItem 
                     key={transaction.id}
@@ -436,11 +415,6 @@ const WalletViewContent: React.FC = () => {
                     formatDate={formatDate}
                   />
                 ))}
-                {transactions.length === 0 && (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <p>Keine Transaktionen gefunden</p>
-                  </div>
-                )}
               </div>
             </TabsContent>
           </Tabs>
