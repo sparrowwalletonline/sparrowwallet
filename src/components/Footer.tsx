@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import WalletLogo from '@/components/WalletLogo';
@@ -17,9 +16,9 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-300 py-12 mt-12">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+    <footer className="bg-gray-900 text-gray-300 py-8 mt-8">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           {/* Logo and company info */}
           <div className="col-span-1">
             <div className="flex items-center gap-2 mb-4">
@@ -115,7 +114,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center">
+        <div className="pt-6 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm">© {new Date().getFullYear()} Sparrow Wallet. MIT Licensed. Open Source Software.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="https://sparrowwallet.com/" className="text-sm hover:text-blue-400 transition-colors flex items-center gap-1">
