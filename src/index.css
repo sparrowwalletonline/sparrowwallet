@@ -37,6 +37,12 @@
     --radius: 0.75rem;
   }
 
+  html {
+    -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape on iOS */
+    touch-action: manipulation; /* Prevent double-tap to zoom on iOS */
+    height: 100%;
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
     -webkit-tap-highlight-color: transparent;
@@ -44,6 +50,10 @@
     /* Mobile viewport fix */
     min-height: -webkit-fill-available;
     color-scheme: light;  /* Force light color scheme */
+    height: 100%;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    width: 100%;
+    position: relative;
   }
   
   /* Safari mobile viewport height fix */
@@ -60,6 +70,7 @@
   /* Improve form elements on mobile */
   input, select, textarea, button {
     font-size: 16px; /* Prevents iOS zooming on input focus */
+    -webkit-appearance: none;
     appearance: none;
     border-radius: 0; /* Removes iOS default styling */
   }
@@ -68,12 +79,16 @@
   button, a, [role="button"] {
     cursor: pointer;
     touch-action: manipulation;
-    min-height: 44px;
-    min-width: 44px;
   }
   
   .touch-manipulation {
     touch-action: manipulation;
+  }
+  
+  /* Fix iOS Safari 100vh issue */
+  .min-h-screen {
+    height: 100vh; /* Fallback */
+    height: calc(var(--vh, 1vh) * 100);
   }
 }
 
@@ -191,4 +206,21 @@
 .landing-page-content * {
   opacity: 1;
   visibility: visible;
+}
+
+/* Additional iOS fixes */
+@media screen and (max-width: 844px) {
+  /* iPhone-specific adjustments */
+  .container {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  
+  .bottom-nav {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .ios-scroll-fix {
+    -webkit-overflow-scrolling: touch;
+  }
 }
