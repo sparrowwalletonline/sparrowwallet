@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import { Mail, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowLeft, Check, Shield } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import Header from '@/components/Header';
 import WalletLogo from '@/components/WalletLogo';
@@ -173,20 +172,26 @@ const Register: React.FC = () => {
                 </div>
               </div>
               
-              <div className="flex items-start space-x-3">
-                <Checkbox 
-                  id="terms" 
-                  checked={acceptTerms} 
-                  onCheckedChange={(checked) => setAcceptTerms(checked === true)}
-                  className="data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
-                />
+              <div className="flex items-start space-x-3 bg-blue-50/70 p-4 rounded-lg border border-blue-100">
+                <div className="mt-1">
+                  <Checkbox 
+                    id="terms" 
+                    checked={acceptTerms} 
+                    onCheckedChange={(checked) => setAcceptTerms(checked === true)}
+                    className="h-5 w-5 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600 border-2"
+                  />
+                </div>
                 <div className="grid gap-1.5 leading-none">
                   <Label 
                     htmlFor="terms" 
-                    className="text-sm text-gray-600 font-normal"
+                    className="text-sm text-gray-700 font-medium"
                   >
                     Ich akzeptiere die <a href="/terms" className="text-blue-600 hover:underline font-medium">AGB</a> und <a href="/privacy" className="text-blue-600 hover:underline font-medium">Datenschutzerklärung</a>
                   </Label>
+                  <p className="text-xs text-gray-500 mt-1 flex items-center">
+                    <Shield className="h-3 w-3 text-blue-500 mr-1 inline-flex" />
+                    Deine Daten sind bei uns sicher und werden nicht an Dritte weitergegeben
+                  </p>
                 </div>
               </div>
               
