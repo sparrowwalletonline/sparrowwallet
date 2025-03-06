@@ -19,6 +19,7 @@ const Donate: React.FC = () => {
     toast({
       title: "Copied!",
       description: `${type} has been copied to clipboard.`,
+      duration: 1500,
     });
   };
   

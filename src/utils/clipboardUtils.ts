@@ -8,7 +8,7 @@ export const copyToClipboard = (text: string): void => {
       toast({
         title: "Copied to clipboard",
         description: "The text has been copied to your clipboard.",
-        duration: 2000,
+        duration: 1500,
       });
     },
     (err) => {
@@ -17,7 +17,7 @@ export const copyToClipboard = (text: string): void => {
         title: "Failed to copy",
         description: "Could not copy text to clipboard.",
         variant: "destructive",
-        duration: 2000,
+        duration: 1500,
       });
     }
   );

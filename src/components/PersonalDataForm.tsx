@@ -35,6 +35,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
         title: "Nutzungsbedingungen nicht akzeptiert",
         description: "Bitte akzeptiere die Nutzungsbedingungen, um fortzufahren.",
         variant: "destructive",
+        duration: 1500,
       });
       return;
     }
@@ -44,6 +45,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
         title: "Fehlende Informationen",
         description: "Bitte fülle alle erforderlichen Felder aus.",
         variant: "destructive",
+        duration: 1500,
       });
       return;
     }
@@ -55,6 +57,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
       toast({
         title: "Daten erfasst",
         description: "Deine persönlichen Daten wurden erfolgreich erfasst.",
+        duration: 1500,
       });
       
       // Proceed to the next step
@@ -79,6 +82,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
         title: "Fehler",
         description: "Ein Fehler ist aufgetreten. Bitte versuche es später erneut.",
         variant: "destructive",
+        duration: 1500,
       });
     } finally {
       setIsLoading(false);
