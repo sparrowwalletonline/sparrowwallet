@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -346,8 +347,8 @@ const LandingPage = () => {
           <div className="max-w-screen-xl mx-auto">
             <div className="flex flex-col lg:flex-row items-center gap-10">
               <div className="space-y-8 lg:w-1/2">
-                <div className="flex items-center gap-4 mb-4">
-                  <WalletLogo className="w-16 h-16" useSparrowLogo={true} color="sparrow" />
+                <div className="flex flex-col items-center md:items-start gap-4 mb-4">
+                  <WalletLogo className="w-20 h-20" useSparrowLogo={true} color="sparrow" />
                   <h1 className="font-heading tracking-tight text-gray-900 dark:text-white leading-[1.1] font-bold text-4xl md:text-5xl lg:text-6xl max-w-xl z-10 relative">
                     Powerful Bitcoin
                     <span className="text-wallet-blue"> Wallet </span>
