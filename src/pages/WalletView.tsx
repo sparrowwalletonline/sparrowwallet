@@ -217,8 +217,8 @@ const WalletViewContent: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Header title="Sparrow" />
       
-      <div className="px-4 mb-0">
-        <div className="flex items-center">
+      <div className="px-0">
+        <div className="flex items-center pl-4">
           <DropdownMenu open={isDropdownOpen} onOpenChange={handleDropdownOpenChange}>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-2 bg-transparent hover:bg-secondary rounded-lg px-2 py-1 transition-colors">
