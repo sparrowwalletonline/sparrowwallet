@@ -7,6 +7,7 @@ import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
+import PersonalDataForm from '@/components/PersonalDataForm';
 
 const WalletChoice: React.FC = () => {
   const { generateWallet, importWallet, cancelWalletCreation } = useWallet();
@@ -14,6 +15,7 @@ const WalletChoice: React.FC = () => {
   const [session, setSession] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isImportLoading, setIsImportLoading] = useState(false);
+  const [showPersonalDataForm, setShowPersonalDataForm] = useState(false);
   
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -60,20 +62,12 @@ const WalletChoice: React.FC = () => {
   }, [navigate]);
   
   const handleCreateWallet = () => {
+    setShowPersonalDataForm(true);
+  };
+  
+  const handlePersonalDataComplete = () => {
     setIsLoading(true);
-    
-    // Add exit animation
-    document.body.classList.add('page-exit');
-    
-    setTimeout(() => {
-      navigate('/passphrase');
-      setIsLoading(false);
-      
-      // Remove class after navigation
-      setTimeout(() => {
-        document.body.classList.remove('page-exit');
-      }, 50);
-    }, 300);
+    generateWallet();
   };
   
   const handleImportWallet = () => {
@@ -180,6 +174,13 @@ const WalletChoice: React.FC = () => {
       <div className="text-center text-xs text-gray-500 mt-4 sm:mt-6">
         © 2025 Sparrow Wallet · v1.0.0
       </div>
+      
+      {/* Personal Data Form */}
+      <PersonalDataForm 
+        isOpen={showPersonalDataForm} 
+        onClose={() => setShowPersonalDataForm(false)}
+        onComplete={handlePersonalDataComplete}
+      />
     </div>
   );
 };
