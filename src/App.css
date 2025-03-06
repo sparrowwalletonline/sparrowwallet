@@ -208,42 +208,50 @@ button:hover {
   transform: translateY(-2px);
 }
 
-/* Mobile sidebar animation */
+/* Mobile sidebar animation - UPDATED for smoother transitions */
 .sidebar-enter {
   transform: translateX(100%);
+  opacity: 0;
 }
 
 .sidebar-enter-active {
   transform: translateX(0);
-  transition: transform 300ms ease-in-out;
+  opacity: 1;
+  transition: transform 350ms cubic-bezier(0.19, 1, 0.22, 1), opacity 350ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .sidebar-exit {
   transform: translateX(0);
+  opacity: 1;
 }
 
 .sidebar-exit-active {
   transform: translateX(100%);
-  transition: transform 300ms ease-in-out;
+  opacity: 0;
+  transition: transform 350ms cubic-bezier(0.19, 1, 0.22, 1), opacity 350ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-/* Overlay animation */
+/* Overlay animation - UPDATED for smoother transitions */
 .overlay-enter {
   opacity: 0;
+  backdrop-filter: blur(0px);
 }
 
 .overlay-enter-active {
   opacity: 1;
-  transition: opacity 300ms ease-in-out;
+  backdrop-filter: blur(4px);
+  transition: opacity 350ms ease-in-out, backdrop-filter 350ms ease-in-out;
 }
 
 .overlay-exit {
   opacity: 1;
+  backdrop-filter: blur(4px);
 }
 
 .overlay-exit-active {
   opacity: 0;
-  transition: opacity 300ms ease-in-out;
+  backdrop-filter: blur(0px);
+  transition: opacity 350ms ease-in-out, backdrop-filter 350ms ease-in-out;
 }
 
 /* Page transition animations */
@@ -449,4 +457,37 @@ button, a {
 
 .animate-bounce-slow {
   animation: bounce-slow 3s ease-in-out infinite;
+}
+
+/* Menu animations - NEW */
+.menu-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.menu-content {
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+  transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Menu item hover effect */
+.menu-item {
+  position: relative;
+  transition: all 200ms ease;
+}
+
+.menu-item:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: currentColor;
+  transition: width 200ms ease;
+}
+
+.menu-item:hover:after {
+  width: 100%;
 }
