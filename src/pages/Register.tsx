@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,6 +23,7 @@ const Register: React.FC = () => {
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordFeedback, setPasswordFeedback] = useState('');
   const [progress, setProgress] = useState(0);
+  const [countdownSeconds, setCountdownSeconds] = useState(0);
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -34,15 +34,28 @@ const Register: React.FC = () => {
             clearInterval(interval);
             return 100;
           }
-          return prevProgress + (100 / 5) / 10; // Divide by 10 for smoother animation (10 updates per second)
+          return prevProgress + (100 / 3) / 10; // 3 seconds delay - 10 updates per second
         });
       }, 100);
       
+      setCountdownSeconds(3);
+      const countdownInterval = setInterval(() => {
+        setCountdownSeconds((prevCount) => {
+          if (prevCount <= 1) {
+            clearInterval(countdownInterval);
+            return 0;
+          }
+          return prevCount - 1;
+        });
+      }, 1000);
+      
       return () => {
         clearInterval(interval);
+        clearInterval(countdownInterval);
       };
     } else {
       setProgress(0);
+      setCountdownSeconds(0);
     }
   }, [loading]);
   
@@ -125,7 +138,6 @@ const Register: React.FC = () => {
     
     setLoading(true);
     
-    // Add a 5-second delay
     setTimeout(async () => {
       try {
         const { error } = await supabase.auth.signUp({
@@ -141,7 +153,6 @@ const Register: React.FC = () => {
           duration: 3000,
         });
         
-        // Redirect to wallet-intro page directly after successful registration
         navigate('/wallet-intro');
       } catch (error) {
         if (error instanceof Error) {
@@ -155,7 +166,7 @@ const Register: React.FC = () => {
       } finally {
         setLoading(false);
       }
-    }, 5000); // 5 second delay
+    }, 3000); // 3 second delay
   };
   
   const handleLoginClick = () => {
@@ -361,7 +372,7 @@ const Register: React.FC = () => {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        <span>Registrieren...</span>
+                        <span>Registrieren... {countdownSeconds > 0 ? `(${countdownSeconds}s)` : ''}</span>
                       </div>
                       <div className="w-full bg-blue-400/30 h-1 rounded-full overflow-hidden mt-1">
                         <motion.div
