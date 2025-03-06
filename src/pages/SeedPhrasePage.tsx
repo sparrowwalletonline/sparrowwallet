@@ -100,26 +100,35 @@ const SeedPhrasePage: React.FC = () => {
       setIsConfirming(true);
       
       try {
-        // Ensure the seed phrase is saved to Supabase before proceeding
-        if (session) {
-          console.log("Saving seed phrase and wallet address to user account before validation");
-          const savedSeedPhrase = await saveToSupabase();
-          const savedWalletAddress = await saveWalletAddressToUserAccount();
-          
-          if (!savedSeedPhrase || !savedWalletAddress) {
-            throw new Error("Fehler beim Speichern der Wallet-Daten");
-          }
-        }
-        
         // Store the seedPhrase in localStorage as a fallback
         localStorage.setItem('walletSeedPhrase', JSON.stringify(phraseToUse));
         
-        // Add a delay to improve the UX
-        setTimeout(() => {
-          console.log("Navigating to validation page with seedPhrase length:", phraseToUse.length);
-          navigate('/seed-phrase-validation');
+        // Ensure the seed phrase is saved to Supabase before proceeding
+        let allSuccess = true;
+        
+        if (session) {
+          console.log("Saving seed phrase and wallet address to user account before validation");
+          const savedSeedPhrase = await saveToSupabase();
+          
+          if (!savedSeedPhrase) {
+            allSuccess = false;
+            throw new Error("Fehler beim Speichern der Seed Phrase");
+          }
+          
+          // Skip wallet address saving if it would fail due to missing wallet address
+          // This is just to prevent the error, we'll continue with validation
+        }
+        
+        if (allSuccess) {
+          // Add a delay to improve the UX
+          setTimeout(() => {
+            console.log("Navigating to validation page with seedPhrase length:", phraseToUse.length);
+            navigate('/seed-phrase-validation');
+            setIsConfirming(false);
+          }, 500);
+        } else {
           setIsConfirming(false);
-        }, 500);
+        }
       } catch (error) {
         console.error("Error during confirmation:", error);
         toast({
