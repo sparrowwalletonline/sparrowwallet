@@ -37,15 +37,23 @@ import PersonalDataForm from "./components/PersonalDataForm";
 
 import "./App.css";
 
-// Authentication guard component - modified to redirect to wallet choice
+// Authentication guard component - modified to check for hasWallet
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-  const { session, requirePinVerification, pinVerified } = useWallet();
+  const { session, requirePinVerification, pinVerified, hasWallet } = useWallet();
 
+  // First check if user has a session (logged in)
   if (!session) {
-    // Redirect to wallet choice instead of auth
+    // Redirect to auth page if no session
+    return <Navigate to="/auth" replace />;
+  }
+  
+  // Then check if user has a wallet
+  if (!hasWallet) {
+    // Redirect to wallet choice if logged in but no wallet
     return <Navigate to="/app" replace />;
   }
 
+  // Finally check if PIN verification is required
   if (requirePinVerification && !pinVerified) {
     return <PinVerification onSuccess={() => {}} />;
   }
