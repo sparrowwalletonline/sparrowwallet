@@ -1,13 +1,9 @@
 
 import * as React from "react"
-
-import type {
-  ToastActionElement,
-  ToastProps,
-} from "@/components/ui/toast"
+import type { ToastActionElement, ToastProps } from "@/components/ui/toast"
 
 const TOAST_LIMIT = 1
-const TOAST_REMOVE_DELAY = 3000 // Changed from 1500 to 3000 milliseconds (3 seconds)
+const TOAST_REMOVE_DELAY = 5000 // Increased to 5 seconds for better visibility
 
 type ToasterToast = ToastProps & {
   id: string
@@ -75,6 +71,13 @@ const addToRemoveQueue = (toastId: string) => {
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "ADD_TOAST":
+      // Clear existing toasts before adding a new one
+      state.toasts.forEach((toast) => {
+        if (toast.open) {
+          dispatch({ type: "DISMISS_TOAST", toastId: toast.id })
+        }
+      })
+      
       return {
         ...state,
         toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),
@@ -141,6 +144,9 @@ function dispatch(action: Action) {
 type Toast = Omit<ToasterToast, "id">
 
 function toast({ ...props }: Toast) {
+  // Dismiss all current toasts before adding a new one
+  dispatch({ type: "DISMISS_TOAST" })
+  
   const id = genId()
 
   const update = (props: ToasterToast) =>
@@ -155,7 +161,7 @@ function toast({ ...props }: Toast) {
     toast: {
       ...props,
       id,
-      duration: props.duration ?? 3000, // Set default duration to 3000ms (3 seconds) if not specified
+      duration: props.duration ?? 5000, // 5 seconds default
       open: true,
       onOpenChange: (open) => {
         if (!open) dismiss()

@@ -1,10 +1,30 @@
+
 import * as React from "react"
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 
-const AlertDialog = AlertDialogPrimitive.Root
+// Ensure only one alert dialog is open at a time
+let activeAlertDialog: string | null = null;
+
+const AlertDialog = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Root>
+>(({ open, onOpenChange, ...props }, ref) => {
+  const dialogId = React.useId();
+
+  React.useEffect(() => {
+    if (open && dialogId !== activeAlertDialog) {
+      activeAlertDialog = dialogId;
+    } else if (!open && dialogId === activeAlertDialog) {
+      activeAlertDialog = null;
+    }
+  }, [open, dialogId]);
+
+  return <AlertDialogPrimitive.Root ref={ref} open={open} onOpenChange={onOpenChange} {...props} />;
+});
+AlertDialog.displayName = "AlertDialog";
 
 const AlertDialogTrigger = AlertDialogPrimitive.Trigger
 

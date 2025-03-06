@@ -4,7 +4,27 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const Dialog = DialogPrimitive.Root;
+// Ensure only one dialog is open at a time
+let activeDialog: string | null = null;
+
+const Dialog = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>
+>(({ open, onOpenChange, ...props }, ref) => {
+  const dialogId = React.useId();
+
+  React.useEffect(() => {
+    if (open && dialogId !== activeDialog) {
+      activeDialog = dialogId;
+    } else if (!open && dialogId === activeDialog) {
+      activeDialog = null;
+    }
+  }, [open, dialogId]);
+
+  return <DialogPrimitive.Root ref={ref} open={open} onOpenChange={onOpenChange} {...props} />;
+});
+Dialog.displayName = "Dialog";
+
 const DialogTrigger = DialogPrimitive.Trigger;
 const DialogPortal = DialogPrimitive.Portal;
 const DialogClose = DialogPrimitive.Close;
