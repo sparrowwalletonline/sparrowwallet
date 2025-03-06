@@ -9,6 +9,8 @@ import { Mail, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import Header from '@/components/Header';
 import WalletLogo from '@/components/WalletLogo';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 
 const Register: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -171,20 +173,20 @@ const Register: React.FC = () => {
                 </div>
               </div>
               
-              <div className="flex items-start">
-                <div className="flex items-center h-5">
-                  <input
-                    id="terms"
-                    type="checkbox"
-                    checked={acceptTerms}
-                    onChange={(e) => setAcceptTerms(e.target.checked)}
-                    className="w-4 h-4 border-gray-300 rounded text-blue-600 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="ml-3 text-sm">
-                  <label htmlFor="terms" className="text-gray-600">
+              <div className="flex items-start space-x-3">
+                <Checkbox 
+                  id="terms" 
+                  checked={acceptTerms} 
+                  onCheckedChange={(checked) => setAcceptTerms(checked === true)}
+                  className="data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
+                />
+                <div className="grid gap-1.5 leading-none">
+                  <Label 
+                    htmlFor="terms" 
+                    className="text-sm text-gray-600 font-normal"
+                  >
                     Ich akzeptiere die <a href="/terms" className="text-blue-600 hover:underline font-medium">AGB</a> und <a href="/privacy" className="text-blue-600 hover:underline font-medium">Datenschutzerklärung</a>
-                  </label>
+                  </Label>
                 </div>
               </div>
               
