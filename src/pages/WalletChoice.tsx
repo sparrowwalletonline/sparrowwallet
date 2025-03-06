@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -110,7 +111,7 @@ const WalletChoice: React.FC = () => {
           <div className="flex flex-col gap-3 sm:gap-4 mb-2">
             <Button 
               onClick={handleCreateWallet}
-              className="w-full py-3 sm:py-6 text-sm sm:text-base bg-[#0500ff] hover:bg-[#0400cf] text-white font-medium min-h-[50px] touch-manipulation hover:translate-y-[-2px] transition-all duration-300 shadow-md hover:shadow-lg"
+              className="w-full py-2 sm:py-3 text-sm sm:text-base bg-[#0500ff] hover:bg-[#0400cf] text-white font-medium min-h-[44px] sm:min-h-[50px] touch-manipulation hover:translate-y-[-2px] transition-all duration-300 shadow-md hover:shadow-lg"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -126,7 +127,7 @@ const WalletChoice: React.FC = () => {
             <Button 
               onClick={handleImportWallet}
               variant="outline" 
-              className="w-full py-2 sm:py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100 min-h-[44px] touch-manipulation hover:translate-y-[-2px] transition-all duration-300"
+              className="w-full py-1.5 sm:py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100 min-h-[40px] sm:min-h-[44px] touch-manipulation hover:translate-y-[-2px] transition-all duration-300"
               disabled={isLoading || isImportLoading}
             >
               {isImportLoading ? (
