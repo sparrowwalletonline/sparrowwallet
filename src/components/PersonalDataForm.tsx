@@ -7,7 +7,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Loader2 } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 
 interface PersonalDataFormProps {
@@ -52,28 +51,10 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
     setIsLoading(true);
     
     try {
-      // Get current user
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        throw new Error("Benutzer nicht gefunden");
-      }
-      
-      // Update user profile
-      const { error } = await supabase.from('profiles').upsert({
-        id: user.id,
-        first_name: firstName,
-        last_name: lastName,
-        username: firstName.toLowerCase() + "." + lastName.toLowerCase(),
-        avatar_url: null,
-        is_admin: false
-      });
-      
-      if (error) throw error;
-      
+      // Show success message
       toast({
-        title: "Daten gespeichert",
-        description: "Deine persönlichen Daten wurden erfolgreich gespeichert.",
+        title: "Daten erfasst",
+        description: "Deine persönlichen Daten wurden erfolgreich erfasst.",
       });
       
       // Proceed to the next step
@@ -82,6 +63,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
       // Add exit animation
       document.body.classList.add('page-exit');
       
+      // Small delay before navigation
       setTimeout(() => {
         navigate('/passphrase');
         
@@ -89,13 +71,13 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
         setTimeout(() => {
           document.body.classList.remove('page-exit');
         }, 50);
-      }, 300);
+      }, 1000);
       
     } catch (error) {
-      console.error("Error saving profile data:", error);
+      console.error("Error:", error);
       toast({
         title: "Fehler",
-        description: "Deine Daten konnten nicht gespeichert werden. Bitte versuche es später erneut.",
+        description: "Ein Fehler ist aufgetreten. Bitte versuche es später erneut.",
         variant: "destructive",
       });
     } finally {
@@ -104,7 +86,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground page-enter">
+    <div className="min-h-screen flex flex-col bg-background text-foreground page-enter safe-area-inset-bottom">
       <Header title="Persönliche Daten" showBack={true} />
       
       <div className="flex-1 container max-w-md mx-auto px-4 py-6 overflow-y-auto">
@@ -206,7 +188,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 
-                    Speichern...
+                    Weiter...
                   </>
                 ) : (
                   "Wallet erstellen"
