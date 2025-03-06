@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -71,6 +72,8 @@
 @layer base {
   * {
     @apply border-border;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   html {
@@ -85,6 +88,8 @@
     /* Mobile viewport fix */
     min-height: -webkit-fill-available;
     color-scheme: light dark;  /* Ensure proper color handling */
+    opacity: 1 !important;
+    visibility: visible !important;
   }
   
   /* Safari mobile viewport height fix */
@@ -104,6 +109,8 @@
     appearance: none;
     border-radius: 0; /* Removes iOS default styling */
     opacity: 1 !important; /* Ensure elements are visible */
+    visibility: visible !important;
+    display: revert !important;
   }
 
   /* Better touch targets for mobile */
@@ -113,10 +120,27 @@
     min-height: 44px;
     min-width: 44px;
     opacity: 1 !important; /* Ensure elements are visible */
+    visibility: visible !important;
+    display: revert !important;
   }
   
   .touch-manipulation {
     touch-action: manipulation;
+  }
+  
+  /* Critical visibility fixes */
+  h1, h2, h3, h4, h5, h6, p, span, div, section, article, main, header, footer, aside, nav {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: revert !important;
+  }
+  
+  /* Force elements to be visible */
+  .force-visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: revert !important;
+    animation: force-visible 0.1s forwards;
   }
 }
 
@@ -151,116 +175,50 @@
   }
 }
 
-/* Theme-specific styles */
-.dark .wallet-card {
-  background: #232733;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
+/* ... keep existing code */
 
-.light .wallet-card {
-  background: #FFFFFF;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-}
-
-.clipboard-animation {
-  animation: clipboard-copy 1.5s ease;
-}
-
-@keyframes clipboard-copy {
-  0% { transform: translateY(0); opacity: 1; }
-  50% { transform: translateY(-10px); opacity: 0; }
-  51% { transform: translateY(10px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
-}
-
-.slide-transition {
-  transition: transform 0.4s ease-out, opacity 0.4s ease-out;
-}
-
-.dark .glass-morph {
-  background: rgba(35, 39, 51, 0.8);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(55, 59, 71, 0.2);
-}
-
-.light .glass-morph {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(200, 200, 200, 0.4);
-}
-
-@keyframes pulse {
-  0% {
-    filter: drop-shadow(0 0 5px rgba(0, 255, 95, 0.5));
-    transform: scale(1);
-  }
-  50% {
-    filter: drop-shadow(0 0 20px rgba(0, 255, 95, 0.9));
-    transform: scale(1.05);
-  }
-  100% {
-    filter: drop-shadow(0 0 5px rgba(0, 255, 95, 0.5));
-    transform: scale(1);
-  }
-}
-
-/* Modified to make wallet-balance-wrapper transparent in both light and dark theme */
-.wallet-balance-wrapper {
-  @apply bg-transparent text-card-foreground;
-}
-
-.light .crypto-action-button {
-  @apply bg-gray-100 text-gray-700;
-}
-
-.dark .crypto-action-button {
-  @apply bg-gray-800 text-white;
-}
-
-.light .dialog-content {
-  @apply bg-white border-gray-200 text-gray-800;
-}
-
-.dark .dialog-content {
-  @apply bg-gray-900 border-gray-800 text-white;
-}
-
-/* Add theme-specific styling for tabs */
-.light [data-state="active"].tabs-trigger {
-  @apply bg-white text-gray-800;
-}
-
-.dark [data-state="active"].tabs-trigger {
-  @apply bg-[#1A1F2C] text-white;
-}
-
-@media (max-width: 640px) {
-  .wallet-card {
-    padding: 0.75rem;
-    border-radius: 0.75rem;
-  }
-  
-  .dark .glass-morph, .light .glass-morph {
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-}
-
-/* Fix for visibility issues */
+/* Force visibility for all elements */
 .landing-page-content * {
   opacity: 1 !important;
   visibility: visible !important;
+  display: revert !important;
 }
 
 .trust-button, .feature-card, .asset-card, button {
   opacity: 1 !important;
   visibility: visible !important;
+  display: flex !important;
 }
 
 /* Fix for text visibility */
 h1, h2, h3, p, span, div {
   opacity: 1 !important;
   visibility: visible !important;
+  display: revert !important;
+}
+
+/* New z-index management to ensure proper stacking */
+.landing-page-content {
+  position: relative;
+  z-index: 1;
+}
+
+.landing-page-content > section {
+  position: relative;
+  z-index: 2;
+}
+
+/* Additional fixes for specific sections */
+.hero-section {
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: relative;
+  z-index: 10;
+}
+
+.stats-section, .features-section, .security-section {
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: relative;
+  z-index: 10;
 }

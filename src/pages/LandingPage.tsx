@@ -147,6 +147,24 @@ const LandingPage = () => {
     return () => subscription.unsubscribe();
   }, []);
   
+  useEffect(() => {
+    const elements = document.querySelectorAll('.landing-page-content *');
+    elements.forEach(el => {
+      if (el instanceof HTMLElement) {
+        el.style.opacity = '1';
+        el.style.visibility = 'visible';
+        el.style.display = el.style.display === 'none' ? 'block' : el.style.display;
+      }
+    });
+    
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => {
+      button.style.opacity = '1';
+      button.style.visibility = 'visible';
+      button.style.display = 'inline-flex';
+    });
+  }, []);
+
   const handleCreateWallet = () => {
     setIsLoading(true);
     
@@ -349,8 +367,11 @@ const LandingPage = () => {
   console.log("Rendering LandingPage component");
 
   return (
-    <div className="landing-page-content min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
-      <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm bg-white/70 dark:bg-black/20 sticky top-0 z-10">
+    <div 
+      className="landing-page-content min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white force-visible"
+      style={{ opacity: 1, visibility: 'visible' }}
+    >
+      <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm bg-white/70 dark:bg-black/20 sticky top-0 z-10 force-visible">
         <div className="flex items-center gap-2">
           <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" />
           <div>
@@ -369,9 +390,9 @@ const LandingPage = () => {
         </div>
       </header>
       
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col force-visible" style={{ opacity: 1, visibility: 'visible' }}>
         {/* Hero Section */}
-        <section className="relative px-6 py-20 sm:py-28 overflow-hidden opacity-100 visible">
+        <section className="relative px-6 py-20 sm:py-28 overflow-hidden force-visible hero-section" style={{ opacity: 1, visibility: 'visible' }}>
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute inset-0 bg-blue-50 dark:bg-blue-900/10" />
             <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white dark:from-wallet-darkBg to-transparent" />
@@ -383,43 +404,26 @@ const LandingPage = () => {
           <div className="max-w-screen-xl mx-auto">
             <div className="flex flex-col lg:flex-row items-center gap-10">
               <div className="space-y-8 lg:w-1/2">
-                <h1 className="font-heading tracking-tight text-gray-900 dark:text-white leading-[1.1] font-bold text-4xl md:text-5xl lg:text-6xl max-w-xl opacity-100 visible">
+                <h1 className="font-heading tracking-tight text-gray-900 dark:text-white leading-[1.1] font-bold text-4xl md:text-5xl lg:text-6xl max-w-xl force-visible"
+                    style={{ opacity: 1, visibility: 'visible' }}>
                   Powerful Bitcoin
                   <span className="text-wallet-blue"> Wallet </span>
                   for Power Users
                 </h1>
                 
-                <p className="font-sans text-gray-600 dark:text-gray-300 text-lg max-w-lg">
+                <p className="font-sans text-gray-600 dark:text-gray-300 text-lg max-w-lg force-visible"
+                   style={{ opacity: 1, visibility: 'visible' }}>
                   Sparrow is a Bitcoin wallet for those who value financial self sovereignty. 
                   Now available as a secure, full-featured web application.
                 </p>
                 
-                <div className="flex flex-col space-y-3 pt-2">
-                  <div className="flex items-center gap-2">
-                    <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
-                      <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
-                    </div>
-                    <span className="text-gray-700 dark:text-gray-300">Privacy-focused and open source</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
-                      <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
-                    </div>
-                    <span className="text-gray-700 dark:text-gray-300">Complete transaction control with coin selection</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
-                      <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
-                    </div>
-                    <span className="text-gray-700 dark:text-gray-300">Self-custodial & secure</span>
-                  </div>
-                </div>
-                
-                <div className="flex flex-col sm:flex-row gap-4 pt-4 opacity-100 visible">
+                <div className="flex flex-col sm:flex-row gap-4 pt-4 force-visible"
+                     style={{ opacity: 1, visibility: 'visible', display: 'flex' }}>
                   <Button 
                     onClick={handleCreateWallet} 
                     disabled={isLoading}
-                    className="opacity-100 visible w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
+                    className="force-visible w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
+                    style={{ opacity: 1, visibility: 'visible', display: 'flex' }}
                   >
                     {isLoading ? (
                       <>
@@ -435,7 +439,8 @@ const LandingPage = () => {
                   
                   <Button
                     variant="outline"
-                    className="opacity-100 visible w-full sm:w-auto py-6 text-base"
+                    className="force-visible w-full sm:w-auto py-6 text-base"
+                    style={{ opacity: 1, visibility: 'visible', display: 'flex' }}
                     onClick={() => window.open('https://sparrowwallet.com/download/', '_blank')}
                   >
                     <ExternalLink className="mr-2 h-4 w-4" />
@@ -444,13 +449,14 @@ const LandingPage = () => {
                 </div>
               </div>
               
-              <div className="relative lg:w-1/2">
+              <div className="relative lg:w-1/2 force-visible" style={{ opacity: 1, visibility: 'visible' }}>
                 <div className="absolute inset-0 rounded-3xl bg-blue-500/10 dark:bg-blue-500/5 blur-xl -z-10"></div>
                 <div className="relative bg-white dark:bg-wallet-card rounded-3xl shadow-lg p-6 border border-gray-200 dark:border-gray-800 overflow-hidden">
                   <img 
                     src="/lovable-uploads/1b77eb0f-8d23-4584-b764-6202a16c8247.png" 
                     alt="Bitcoin Wallet App" 
-                    className="w-full max-w-md mx-auto"
+                    className="w-full max-w-md mx-auto force-visible"
+                    style={{ opacity: 1, visibility: 'visible' }}
                   />
                 </div>
               </div>
