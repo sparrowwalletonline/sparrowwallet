@@ -6,18 +6,23 @@ interface WalletLogoProps {
   color?: 'blue' | 'green' | 'sparrow';
   useSparrowLogo?: boolean;
   scale?: number;
+  animate?: boolean;
 }
 
 const WalletLogo: React.FC<WalletLogoProps> = ({ 
   className, 
   color = 'sparrow', 
   useSparrowLogo = true,
-  scale = 1
+  scale = 1,
+  animate = false
 }) => {
   // If using the sparrow logo, return the image without background
   if (useSparrowLogo) {
     return (
-      <div className={`relative ${className}`} style={scale !== 1 ? { transform: `scale(${scale})` } : undefined}>
+      <div 
+        className={`relative ${className} ${animate ? 'animate-bounce-slow' : ''}`} 
+        style={scale !== 1 ? { transform: `scale(${scale})` } : undefined}
+      >
         <img 
           src="/lovable-uploads/b5ad3bc7-c93f-4658-9622-34dfaed25653.png" 
           alt="Sparrow Logo" 
@@ -41,7 +46,7 @@ const WalletLogo: React.FC<WalletLogoProps> = ({
       : 'from-green-500 to-green-400';
   
   return (
-    <div className={`flex items-center ${className}`}>
+    <div className={`flex items-center ${className} ${animate ? 'animate-bounce-slow' : ''}`}>
       <div className={`bg-gradient-to-br ${bgClass} rounded-md flex items-center justify-center shadow-lg relative overflow-hidden`}>
         <svg 
           viewBox="0 0 100 100" 

@@ -202,7 +202,7 @@ const LandingPage = () => {
   return <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
       <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm bg-white/70 dark:bg-black/20 sticky top-0 z-40">
         <div className="flex items-center gap-2">
-          <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" />
+          <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" animate={true} />
           <div>
             <span className="font-heading text-xl font-bold">Sparrow Wallet</span>
             <p className="text-xs text-gray-600 dark:text-gray-400 -mt-1">Bitcoin Wallet for Desktop & Web</p>
@@ -230,7 +230,7 @@ const LandingPage = () => {
               <div className="space-y-8 lg:w-1/2">
                 <div className="flex flex-col items-center md:items-start gap-4 mb-4">
                   <div className="w-32 h-32 mb-4 bg-white/5 rounded-lg p-2 flex items-center justify-center">
-                    <WalletLogo className="w-full h-full" useSparrowLogo={true} color="sparrow" />
+                    <WalletLogo className="w-full h-full" useSparrowLogo={true} color="sparrow" animate={true} />
                   </div>
                   <h1 className="font-heading tracking-tight text-gray-900 dark:text-white leading-[1.1] font-bold text-4xl md:text-5xl lg:text-6xl max-w-xl z-10 relative">
                     Powerful Bitcoin
@@ -417,4 +417,3 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
-
