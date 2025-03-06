@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import WalletLogo from '@/components/WalletLogo';
@@ -17,7 +18,7 @@ import {
 const Footer = () => {
   return (
     <footer className="bg-gray-900 text-gray-300 py-8 mt-8">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6 md:px-8 lg:px-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           {/* Logo and company info */}
           <div className="col-span-1">
