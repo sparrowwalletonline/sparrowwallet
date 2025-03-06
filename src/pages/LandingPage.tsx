@@ -8,7 +8,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import Footer from '@/components/Footer';
-
 const RegistrationModal = ({
   isOpen,
   onClose,
@@ -67,7 +66,6 @@ const RegistrationModal = ({
       </div>
     </div>;
 };
-
 const SuccessModal = ({
   isOpen,
   onClose
@@ -87,7 +85,6 @@ const SuccessModal = ({
       </div>
     </div>;
 };
-
 const LandingPage = () => {
   const {
     generateWallet
@@ -104,7 +101,6 @@ const LandingPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
-
   useEffect(() => {
     supabase.auth.getSession().then(({
       data: {
@@ -122,7 +118,6 @@ const LandingPage = () => {
     });
     return () => subscription.unsubscribe();
   }, []);
-
   const handleCreateWallet = () => {
     setIsLoading(true);
     setTimeout(() => {
@@ -134,7 +129,6 @@ const LandingPage = () => {
       }
     }, 3000);
   };
-
   const handleRegister = async (email, password) => {
     setIsLoading(true);
     try {
@@ -161,17 +155,14 @@ const LandingPage = () => {
       setIsLoading(false);
     }
   };
-
   const handleSuccessModalClose = () => {
     setShowSuccessModal(false);
     navigate('/wallet-choice');
   };
-
   const handleMenuClick = () => {
     console.log('Landing page menu button clicked');
     toggleMenu();
   };
-
   const FeatureCard = ({
     icon,
     title,
@@ -187,7 +178,6 @@ const LandingPage = () => {
         <p className="text-gray-600 text-sm dark:text-gray-400">{description}</p>
       </div>;
   };
-
   const SecurityCard = ({
     title,
     description
@@ -200,7 +190,6 @@ const LandingPage = () => {
         <p className="text-blue-100 text-sm">{description}</p>
       </div>;
   };
-
   const AssetCard = ({
     icon,
     title,
@@ -234,7 +223,6 @@ const LandingPage = () => {
         <p className="text-gray-600 text-sm dark:text-gray-400">{description}</p>
       </div>;
   };
-
   const StepCard = ({
     number,
     title,
@@ -252,7 +240,6 @@ const LandingPage = () => {
         <p className="text-gray-600 text-sm">{description}</p>
       </div>;
   };
-
   const TestimonialCard = ({
     quote,
     author,
@@ -273,7 +260,6 @@ const LandingPage = () => {
         </div>
       </div>;
   };
-
   const FAQItem = ({
     question,
     answer
@@ -298,7 +284,6 @@ const LandingPage = () => {
           </div>}
       </div>;
   };
-
   const SupportedFeature = ({
     label,
     supported
@@ -315,10 +300,9 @@ const LandingPage = () => {
           </div>}
       </div>;
   };
-
   console.log("Rendering LandingPage component");
   return <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
-      <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm bg-white/70 dark:bg-black/20 sticky top-0 z-50">
+      <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm bg-white/70 dark:bg-black/20 sticky top-0 z-10">
         <div className="flex items-center gap-2">
           <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" />
           <div>
@@ -334,8 +318,8 @@ const LandingPage = () => {
       </header>
       
       <div className="flex-1 flex flex-col">
-        <section className="relative px-6 py-20 sm:py-28 overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none z-0">
+        <section className="relative px-6 sm:py-28 overflow-hidden py-[40px]">
+          <div className="absolute inset-0 pointer-events-none">
             <div className="absolute inset-0 bg-blue-50 dark:bg-blue-900/10" />
             <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white dark:from-wallet-darkBg to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white dark:from-wallet-darkBg to-transparent" />
@@ -343,21 +327,21 @@ const LandingPage = () => {
             <div className="absolute opacity-30 -bottom-24 -left-24 w-96 h-96 rounded-full bg-purple-200 dark:bg-purple-800/20 blur-3xl" />
           </div>
           
-          <div className="max-w-screen-xl mx-auto relative z-10">
+          <div className="max-w-screen-xl mx-auto">
             <div className="flex flex-col lg:flex-row items-center gap-10">
               <div className="space-y-8 lg:w-1/2">
-                <h1 className="font-heading tracking-tight text-gray-900 dark:text-white leading-[1.1] font-bold text-4xl md:text-5xl lg:text-6xl max-w-xl">
+                <h1 className="font-heading tracking-tight text-gray-900 dark:text-white leading-[1.1] font-bold text-4xl md:text-5xl lg:text-6xl max-w-xl bg-white/90 dark:bg-wallet-darkBg/90 p-2 rounded-lg shadow-sm backdrop-blur-sm z-10 relative">
                   Powerful Bitcoin
                   <span className="text-wallet-blue"> Wallet </span>
                   for Power Users
                 </h1>
                 
-                <p className="font-sans text-gray-600 dark:text-gray-300 text-lg max-w-lg">
+                <p className="font-sans text-gray-600 dark:text-gray-300 text-lg max-w-lg bg-white/90 dark:bg-wallet-darkBg/90 p-2 rounded-lg shadow-sm backdrop-blur-sm z-10 relative">
                   Sparrow is a Bitcoin wallet for those who value financial self sovereignty. 
                   Now available as a secure, full-featured web application.
                 </p>
                 
-                <div className="flex flex-col space-y-3 pt-2">
+                <div className="flex flex-col space-y-3 pt-2 bg-white/90 dark:bg-wallet-darkBg/90 p-2 rounded-lg shadow-sm backdrop-blur-sm z-10 relative">
                   <div className="flex items-center gap-2">
                     <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
                       <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
@@ -378,7 +362,7 @@ const LandingPage = () => {
                   </div>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <div className="flex flex-col sm:flex-row gap-4 pt-4 z-10 relative">
                   <Button onClick={handleCreateWallet} disabled={isLoading} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue">
                     {isLoading ? <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -395,9 +379,9 @@ const LandingPage = () => {
                 </div>
               </div>
               
-              <div className="relative lg:w-1/2">
+              <div className="relative lg:w-1/2 z-10">
                 <div className="absolute inset-0 rounded-3xl bg-blue-500/10 dark:bg-blue-500/5 blur-xl -z-10"></div>
-                <div className="relative bg-transparent rounded-3xl shadow-lg p-6 border border-gray-200 dark:border-gray-800 overflow-hidden">
+                <div className="relative bg-white dark:bg-wallet-card rounded-3xl shadow-lg p-6 border border-gray-200 dark:border-gray-800 overflow-hidden">
                   <img src="/lovable-uploads/1b77eb0f-8d23-4584-b764-6202a16c8247.png" alt="Bitcoin Wallet App" className="w-full max-w-md mx-auto" />
                 </div>
               </div>
@@ -510,5 +494,4 @@ const LandingPage = () => {
       <Footer />
     </div>;
 };
-
 export default LandingPage;
