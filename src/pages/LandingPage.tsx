@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -227,8 +228,8 @@ const LandingPage = () => {
           
           <div className="max-w-screen-xl mx-auto">
             <div className="flex flex-col lg:flex-row items-center gap-10">
-              <div className="space-y-8 lg:w-1/2">
-                <div className="flex flex-col items-center md:items-start gap-4 mb-4">
+              <div className="space-y-8 lg:w-1/2 mx-auto text-center lg:text-left">
+                <div className="flex flex-col items-center lg:items-start gap-4 mb-4">
                   <div className="w-32 h-32 mb-4 bg-white/5 rounded-lg p-2 flex items-center justify-center">
                     <WalletLogo className="w-full h-full" useSparrowLogo={true} color="sparrow" animate={true} />
                   </div>
@@ -239,25 +240,25 @@ const LandingPage = () => {
                   </h1>
                 </div>
                 
-                <p className="font-sans text-gray-600 dark:text-gray-300 text-lg max-w-lg z-10 relative">
+                <p className="font-sans text-gray-600 dark:text-gray-300 text-lg max-w-lg z-10 relative mx-auto lg:mx-0">
                   Sparrow is a Bitcoin wallet for those who value financial self sovereignty. 
                   Now available as a secure, full-featured web application.
                 </p>
                 
-                <div className="flex flex-col space-y-3 pt-2 z-10 relative">
-                  <div className="flex items-center gap-2">
+                <div className="flex flex-col space-y-3 pt-2 z-10 relative mx-auto lg:mx-0">
+                  <div className="flex items-center gap-2 justify-center lg:justify-start">
                     <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
                       <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
                     </div>
                     <span className="text-gray-700 dark:text-gray-300">Privacy-focused and open source</span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 justify-center lg:justify-start">
                     <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
                       <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
                     </div>
                     <span className="text-gray-700 dark:text-gray-300">Complete transaction control with coin selection</span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 justify-center lg:justify-start">
                     <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
                       <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
                     </div>
@@ -265,7 +266,7 @@ const LandingPage = () => {
                   </div>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-4 pt-4 z-10 relative">
+                <div className="flex flex-col sm:flex-row gap-4 pt-4 z-10 relative justify-center lg:justify-start">
                   <Button 
                     onClick={handleCreateWallet} 
                     disabled={isLoading} 
