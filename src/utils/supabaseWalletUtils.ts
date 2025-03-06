@@ -1,6 +1,7 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from '@supabase/supabase-js';
-import { toast } from '@/hooks/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { encryptSeedPhrase, decryptSeedPhrase } from './encryptionUtils';
 import { generateBtcAddress } from './walletUtils';
 

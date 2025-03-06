@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Copy, RefreshCw, CloudUpload, CloudDownload } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
-import { toast } from '@/hooks/use-toast';
+import { toast } from '@/components/ui/use-toast';
 
 // BIP39 wordlist (English)
 const wordlist = [
