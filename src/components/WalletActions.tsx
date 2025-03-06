@@ -12,45 +12,45 @@ const WalletActions: React.FC = () => {
       <div className="flex flex-col items-center">
         <Button
           variant="wallet"
-          className="w-12 h-12 rounded-full"
+          className="w-14 h-14 rounded-full shadow-[0_4px_10px_rgba(5,0,255,0.3)] hover:shadow-[0_6px_14px_rgba(5,0,255,0.4)]"
           onClick={() => navigate('/wallet/send')}
         >
-          <ArrowUpRight className="h-5 w-5" />
+          <ArrowUpRight className="h-6 w-6" />
         </Button>
-        <span className="text-xs mt-2 text-muted-foreground">Senden</span>
+        <span className="text-xs mt-2 text-muted-foreground font-medium">Senden</span>
       </div>
 
       <div className="flex flex-col items-center">
         <Button
           variant="wallet"
-          className="w-12 h-12 rounded-full"
+          className="w-14 h-14 rounded-full shadow-[0_4px_10px_rgba(5,0,255,0.3)] hover:shadow-[0_6px_14px_rgba(5,0,255,0.4)]"
           onClick={() => navigate('/wallet/receive')}
         >
-          <ArrowDownLeft className="h-5 w-5" />
+          <ArrowDownLeft className="h-6 w-6" />
         </Button>
-        <span className="text-xs mt-2 text-muted-foreground">Empfangen</span>
+        <span className="text-xs mt-2 text-muted-foreground font-medium">Empfangen</span>
       </div>
 
       <div className="flex flex-col items-center">
         <Button
           variant="wallet"
-          className="w-12 h-12 rounded-full"
+          className="w-14 h-14 rounded-full shadow-[0_4px_10px_rgba(5,0,255,0.3)] hover:shadow-[0_6px_14px_rgba(5,0,255,0.4)]"
           onClick={() => navigate('/wallet/buy')}
         >
-          <ShoppingCart className="h-5 w-5" />
+          <ShoppingCart className="h-6 w-6" />
         </Button>
-        <span className="text-xs mt-2 text-muted-foreground">Kaufen</span>
+        <span className="text-xs mt-2 text-muted-foreground font-medium">Kaufen</span>
       </div>
 
       <div className="flex flex-col items-center">
         <Button
           variant="wallet"
-          className="w-12 h-12 rounded-full"
+          className="w-14 h-14 rounded-full shadow-[0_4px_10px_rgba(5,0,255,0.3)] hover:shadow-[0_6px_14px_rgba(5,0,255,0.4)]"
           onClick={() => navigate('/wallet/earn')}
         >
-          <Sparkles className="h-5 w-5" />
+          <Sparkles className="h-6 w-6" />
         </Button>
-        <span className="text-xs mt-2 text-muted-foreground">Verdienen</span>
+        <span className="text-xs mt-2 text-muted-foreground font-medium">Verdienen</span>
       </div>
     </div>
   );
