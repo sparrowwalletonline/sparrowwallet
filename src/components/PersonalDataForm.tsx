@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ArrowUp } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -35,6 +35,16 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ isOpen, onClose, on
   const [postalCode, setPostalCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
+
+  const scrollToTop = () => {
+    const dialogContent = document.querySelector('.dialog-content');
+    if (dialogContent) {
+      dialogContent.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -117,13 +127,22 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ isOpen, onClose, on
   
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto bg-wallet-darkBg border-white/10">
-        <DialogHeader>
+      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto bg-wallet-darkBg border-white/10 dialog-content">
+        <DialogHeader className="flex-row justify-between items-center">
           <DialogTitle className="text-2xl font-bold text-white">Persönliche Daten</DialogTitle>
-          <DialogDescription className="text-gray-400">
-            Bitte gib deine persönlichen Daten ein, um deine Wallet zu erstellen.
-          </DialogDescription>
+          <Button
+            onClick={scrollToTop}
+            size="icon"
+            className="h-8 w-8 rounded-full bg-wallet-blue hover:bg-wallet-darkBlue"
+            aria-label="Zum Anfang scrollen"
+            type="button"
+          >
+            <ArrowUp size={16} />
+          </Button>
         </DialogHeader>
+        <DialogDescription className="text-gray-400">
+          Bitte gib deine persönlichen Daten ein, um deine Wallet zu erstellen.
+        </DialogDescription>
         
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <div className="grid grid-cols-2 gap-4">
