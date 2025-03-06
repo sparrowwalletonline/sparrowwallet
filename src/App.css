@@ -428,6 +428,24 @@ button:hover {
   .feature-card {
     padding: 1rem;
   }
+  
+  /* Improved mobile button sizing */
+  .security-section button {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+    height: auto !important;
+    min-height: 40px !important;
+  }
+  
+  /* Make glassmorphism cards more compact on mobile */
+  .glass-morphism {
+    padding: 1rem !important;
+  }
+  
+  /* Reduce animation intensity on mobile for better performance */
+  .animate-float {
+    animation-duration: 4s;
+  }
 }
 
 /* Fix for iOS safari viewport height issues */
