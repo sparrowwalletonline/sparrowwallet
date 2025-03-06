@@ -51,7 +51,8 @@ const WalletContext = createContext<WalletContextType>({
   setPin: () => {},
   pinVerified: false,
   setPinVerified: () => {},
-  refreshWalletBalance: async () => false
+  refreshWalletBalance: async () => false,
+  sendBitcoin: async () => {},
 });
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -795,6 +796,153 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
+  const sendBitcoin = async (recipientAddress: string, amount: number): Promise<void> => {
+    if (!session?.user) {
+      toast({
+        title: "Fehler",
+        description: "Du musst angemeldet sein, um Transaktionen durchzuführen",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (!activeWallet) {
+      toast({
+        title: "Fehler",
+        description: "Keine aktive Wallet gefunden",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (amount <= 0) {
+      toast({
+        title: "Fehler",
+        description: "Der Betrag muss größer als 0 sein",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (amount > activeWallet.btcBalance) {
+      toast({
+        title: "Fehler",
+        description: "Nicht genügend Bitcoin in der Wallet",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    try {
+      console.log(`Sending ${amount} BTC to ${recipientAddress}`);
+      
+      // Get recipient user from the wallet address
+      const { data: recipientData, error: recipientError } = await supabase
+        .from('user_wallets')
+        .select('user_id')
+        .eq('wallet_address', recipientAddress)
+        .maybeSingle();
+      
+      if (recipientError || !recipientData) {
+        console.error("Error finding recipient:", recipientError);
+        toast({
+          title: "Fehler",
+          description: "Empfänger nicht gefunden",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Update sender's balance
+      const newSenderBalance = activeWallet.btcBalance - amount;
+      
+      const { error: senderError } = await supabase
+        .from('user_wallets')
+        .update({ btc_balance: newSenderBalance })
+        .eq('user_id', session.user.id);
+      
+      if (senderError) {
+        console.error("Error updating sender balance:", senderError);
+        toast({
+          title: "Fehler",
+          description: "Fehler beim Aktualisieren deines Kontostands",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Update recipient's balance
+      const { data: currentRecipientBalance, error: balanceError } = await supabase
+        .from('user_wallets')
+        .select('btc_balance')
+        .eq('user_id', recipientData.user_id)
+        .maybeSingle();
+      
+      if (balanceError) {
+        console.error("Error getting recipient balance:", balanceError);
+        toast({
+          title: "Fehler",
+          description: "Fehler beim Abrufen des Empfängerkontostands",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      const newRecipientBalance = (currentRecipientBalance?.btc_balance || 0) + amount;
+      
+      const { error: recipientUpdateError } = await supabase
+        .from('user_wallets')
+        .update({ btc_balance: newRecipientBalance })
+        .eq('user_id', recipientData.user_id);
+      
+      if (recipientUpdateError) {
+        console.error("Error updating recipient balance:", recipientUpdateError);
+        toast({
+          title: "Fehler",
+          description: "Fehler beim Aktualisieren des Empfängerkontostands",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Update local state
+      setBtcBalance(newSenderBalance);
+      const calculatedUsdBalance = (newSenderBalance * btcPrice) + (ethBalance * ethPrice);
+      setUsdBalance(calculatedUsdBalance);
+      
+      // Update the active wallet
+      const updatedWallets = wallets.map(wallet => {
+        if (wallet.isActive) {
+          return {
+            ...wallet,
+            btcBalance: newSenderBalance
+          };
+        }
+        return wallet;
+      });
+      
+      setWallets(updatedWallets);
+      
+      const newActiveWallet = updatedWallets.find(w => w.isActive);
+      if (newActiveWallet) {
+        setActiveWalletState(newActiveWallet);
+      }
+      
+      toast({
+        title: "Transaktion erfolgreich",
+        description: `${amount} BTC wurden erfolgreich an ${recipientAddress} gesendet.`,
+      });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Ein unerwarteter Fehler ist aufgetreten';
+      console.error("Error sending Bitcoin:", error);
+      toast({
+        title: "Fehler bei der Transaktion",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <WalletContext.Provider value={{ 
       hasWallet, 
@@ -837,7 +985,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setPin,
       pinVerified,
       setPinVerified,
-      refreshWalletBalance
+      refreshWalletBalance,
+      sendBitcoin
     }}>
       {children}
     </WalletContext.Provider>

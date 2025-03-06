@@ -31,19 +31,27 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       if (!recipientAddress) return;
       
       try {
-        const { data, error } = await supabase
+        // First find the user_id from the wallet address
+        const { data: walletData, error: walletError } = await supabase
           .from('user_wallets')
-          .select(`
-            wallet_address,
-            profiles!inner (
-              username
-            )
-          `)
+          .select('user_id')
           .eq('wallet_address', recipientAddress)
-          .single();
+          .maybeSingle();
         
-        if (!error && data && data.profiles && data.profiles.username) {
-          setRecipientUsername(data.profiles.username);
+        if (walletError || !walletData) {
+          console.error("Error fetching wallet:", walletError);
+          return;
+        }
+        
+        // Then find the username from the user_id
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select('username')
+          .eq('id', walletData.user_id)
+          .maybeSingle();
+        
+        if (!profileError && profileData && profileData.username) {
+          setRecipientUsername(profileData.username);
         }
       } catch (error) {
         console.error("Error fetching username:", error);

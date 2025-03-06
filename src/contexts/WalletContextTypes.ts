@@ -1,3 +1,4 @@
+
 import { Session } from '@supabase/supabase-js';
 import { CryptoPrice } from '../utils/cryptoPriceUtils';
 
@@ -5,7 +6,7 @@ export interface Wallet {
   id: string;
   name: string;
   seedPhrase: string[];
-  walletAddress: string;  // This was missing
+  walletAddress: string;
   btcBalance: number;
   ethBalance: number;
   isActive: boolean;
