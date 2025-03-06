@@ -129,7 +129,7 @@ const PersonalDataForm: React.FC = () => {
                     onChange={(e) => setFirstName(e.target.value)}
                     placeholder="Max"
                     required
-                    className="rounded-lg border-gray-200 focus:border-[#9b87f5] focus:ring-[#9b87f5]"
+                    className="rounded-lg border-gray-200 focus:border-[#0500ff] focus:ring-[#0500ff]"
                   />
                 </div>
                 
@@ -143,7 +143,7 @@ const PersonalDataForm: React.FC = () => {
                     onChange={(e) => setLastName(e.target.value)}
                     placeholder="Mustermann"
                     required
-                    className="rounded-lg border-gray-200 focus:border-[#9b87f5] focus:ring-[#9b87f5]"
+                    className="rounded-lg border-gray-200 focus:border-[#0500ff] focus:ring-[#0500ff]"
                   />
                 </div>
               </div>
@@ -158,7 +158,7 @@ const PersonalDataForm: React.FC = () => {
                   value={dateOfBirth}
                   onChange={(e) => setDateOfBirth(e.target.value)}
                   required
-                  className="rounded-lg border-gray-200 focus:border-[#9b87f5] focus:ring-[#9b87f5]"
+                  className="rounded-lg border-gray-200 focus:border-[#0500ff] focus:ring-[#0500ff]"
                 />
               </div>
               
@@ -173,7 +173,7 @@ const PersonalDataForm: React.FC = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="max.mustermann@example.com"
                   required
-                  className="rounded-lg border-gray-200 focus:border-[#9b87f5] focus:ring-[#9b87f5]"
+                  className="rounded-lg border-gray-200 focus:border-[#0500ff] focus:ring-[#0500ff]"
                 />
               </div>
               
@@ -187,22 +187,22 @@ const PersonalDataForm: React.FC = () => {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+49 123 4567890"
-                  className="rounded-lg border-gray-200 focus:border-[#9b87f5] focus:ring-[#9b87f5]"
+                  className="rounded-lg border-gray-200 focus:border-[#0500ff] focus:ring-[#0500ff]"
                 />
               </div>
               
-              <div className="flex items-start space-x-3 mt-6 p-4 bg-[#E5DEFF] rounded-lg">
+              <div className="flex items-start space-x-3 mt-6 p-4 bg-[#E5EDFF] rounded-lg">
                 <Checkbox 
                   id="terms" 
                   checked={acceptTerms}
                   onCheckedChange={(checked) => setAcceptTerms(checked as boolean)}
-                  className="mt-1 bg-white border-[#9b87f5] data-[state=checked]:bg-[#9b87f5]"
+                  className="mt-1 bg-white border-[#0500ff] data-[state=checked]:bg-[#0500ff]"
                 />
                 <label
                   htmlFor="terms"
                   className="text-sm text-gray-700 leading-relaxed cursor-pointer"
                 >
-                  Ich akzeptiere die <a href="/terms" target="_blank" className="text-[#9b87f5] hover:underline font-medium">Nutzungsbedingungen</a> und erkläre mich damit einverstanden, dass meine persönlichen Daten gemäß der Datenschutzerklärung verarbeitet werden.
+                  Ich akzeptiere die <a href="/terms" target="_blank" className="text-[#0500ff] hover:underline font-medium">Nutzungsbedingungen</a> und erkläre mich damit einverstanden, dass meine persönlichen Daten gemäß der Datenschutzerklärung verarbeitet werden.
                 </label>
               </div>
               
@@ -219,7 +219,7 @@ const PersonalDataForm: React.FC = () => {
                 <Button 
                   type="submit"
                   disabled={isLoading}
-                  className="bg-[#9b87f5] hover:bg-[#8670e1] text-white shadow-md hover:shadow-lg transition-all"
+                  className="bg-[#0500ff] hover:bg-[#0400cf] text-white shadow-md hover:shadow-lg transition-all"
                 >
                   {isLoading ? (
                     <>
