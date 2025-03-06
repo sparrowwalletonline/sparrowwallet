@@ -15,11 +15,9 @@ const CreateWalletButton = () => {
     <div className="fixed bottom-6 right-6 z-50">
       <Button 
         onClick={handleClick}
-        size="lg" 
-        className="rounded-full shadow-lg px-5 py-6 font-medium text-sm transition-all hover:scale-105 hover:shadow-xl bg-wallet-blue"
+        className="rounded-full shadow-lg w-12 h-12 p-0 flex items-center justify-center transition-all hover:scale-105 hover:shadow-xl bg-wallet-blue"
       >
-        <Wallet className="mr-2 h-4 w-4" />
-        Create Wallet Now
+        <Wallet className="h-5 w-5" />
       </Button>
     </div>
   );
