@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { Toaster } from "./components/ui/toaster";
@@ -68,7 +67,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/auth" element={<Auth />} />
-                <Route path="/app" element={<Index />} />
+                <Route path="/app" element={<WalletChoice />} />
                 <Route path="/wallet" element={
                   <PrivateRoute>
                     <WalletView />
@@ -85,11 +84,6 @@ function App() {
                   </PrivateRoute>
                 } />
                 <Route path="/terms" element={<Terms />} />
-                <Route path="/wallet-choice" element={
-                  <PrivateRoute>
-                    <WalletChoice />
-                  </PrivateRoute>
-                } />
                 <Route path="/generate-wallet" element={
                   <PrivateRoute>
                     <GenerateWallet />

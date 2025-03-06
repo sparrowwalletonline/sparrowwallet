@@ -48,8 +48,8 @@ const WalletApp: React.FC = () => {
     }
   }, [hasWallet, seedPhrase, currentView, session, navigate]);
 
-  // Determine which view to show - force landing page for now to debug
-  const showLandingPage = true; // Always show landing page for debugging
+  // Always show landing page - removed the forcing to true for debugging
+  const showLandingPage = !session || (session && !hasWallet); 
   const showWalletChoice = session && seedPhrase.length === 1; 
   const showPassPhrase = session && seedPhrase.length === 2;
   const showCreateWallet = session && !hasWallet && seedPhrase.length > 2;
@@ -135,16 +135,7 @@ const WalletApp: React.FC = () => {
 // Main component with provider
 const Index: React.FC = () => {
   return (
-    <div className="min-h-screen bg-wallet-darkBg flex flex-col justify-center items-center w-full">
-      <h1 className="text-3xl font-bold text-white mb-8 text-center z-10">
-        Welcome to Sparrow Wallet
-      </h1>
-      <MenuProvider>
-        <WalletProvider>
-          <WalletApp />
-        </WalletProvider>
-      </MenuProvider>
-    </div>
+    <LandingPage />
   );
 };
 
