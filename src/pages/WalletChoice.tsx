@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -8,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import Header from '@/components/Header';
-import TermsAgreementDialog from '@/components/TermsAgreementDialog';
 
 const WalletChoice: React.FC = () => {
   const { generateWallet, importWallet, cancelWalletCreation } = useWallet();
@@ -16,8 +14,6 @@ const WalletChoice: React.FC = () => {
   const [session, setSession] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isImportLoading, setIsImportLoading] = useState(false);
-  const [showTermsDialog, setShowTermsDialog] = useState(false);
-  const [pendingAction, setPendingAction] = useState<'create' | 'import' | null>(null);
   
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -64,51 +60,37 @@ const WalletChoice: React.FC = () => {
   }, [navigate]);
   
   const handleCreateWallet = () => {
-    setShowTermsDialog(true);
-    setPendingAction('create');
+    setIsLoading(true);
+    
+    // Add exit animation
+    document.body.classList.add('page-exit');
+    
+    setTimeout(() => {
+      navigate('/passphrase');
+      setIsLoading(false);
+      
+      // Remove class after navigation
+      setTimeout(() => {
+        document.body.classList.remove('page-exit');
+      }, 50);
+    }, 300);
   };
   
   const handleImportWallet = () => {
-    setShowTermsDialog(true);
-    setPendingAction('import');
-  };
-
-  const handleTermsAccepted = () => {
-    setShowTermsDialog(false);
+    setIsImportLoading(true);
     
-    if (pendingAction === 'create') {
-      setIsLoading(true);
-      
-      // Add exit animation
-      document.body.classList.add('page-exit');
-      
-      setTimeout(() => {
-        navigate('/passphrase');
-        setIsLoading(false);
-        
-        // Remove class after navigation
-        setTimeout(() => {
-          document.body.classList.remove('page-exit');
-        }, 50);
-      }, 300);
-    } else if (pendingAction === 'import') {
-      setIsImportLoading(true);
-      
-      // Add exit animation
-      document.body.classList.add('page-exit');
-      
-      setTimeout(() => {
-        importWallet("dummy phrase to trigger import UI");
-        setIsImportLoading(false);
-        
-        // Remove class after navigation
-        setTimeout(() => {
-          document.body.classList.remove('page-exit');
-        }, 50);
-      }, 300);
-    }
+    // Add exit animation
+    document.body.classList.add('page-exit');
     
-    setPendingAction(null);
+    setTimeout(() => {
+      importWallet("dummy phrase to trigger import UI");
+      setIsImportLoading(false);
+      
+      // Remove class after navigation
+      setTimeout(() => {
+        document.body.classList.remove('page-exit');
+      }, 50);
+    }, 300);
   };
 
   const handleBackClick = () => {
@@ -189,12 +171,6 @@ const WalletChoice: React.FC = () => {
       <div className="text-center text-xs text-gray-500 mt-2 sm:mt-4">
         © 2025 Sparrow Wallet
       </div>
-      
-      <TermsAgreementDialog 
-        isOpen={showTermsDialog} 
-        onClose={() => setShowTermsDialog(false)} 
-        onAccept={handleTermsAccepted} 
-      />
     </div>
   );
 };
