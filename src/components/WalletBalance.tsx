@@ -1,4 +1,4 @@
-<lov-code>
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useWallet } from '@/contexts/WalletContext';
 import { QRCodeSVG } from 'qrcode.react';
@@ -123,6 +123,21 @@ const WalletBalance: React.FC = () => {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     }).format(amount);
+  };
+  
+  const getDisplayAddress = () => {
+    return activeWallet?.address || walletAddress || '';
+  };
+  
+  const handleCopyAddress = () => {
+    const address = getDisplayAddress();
+    if (address) {
+      copyToClipboard(address);
+      toast({
+        title: "Adresse kopiert",
+        description: "Die Wallet-Adresse wurde in die Zwischenablage kopiert.",
+      });
+    }
   };
 
   const tokens: Token[] = Object.entries(cryptoPrices)
@@ -674,4 +689,62 @@ const WalletBalance: React.FC = () => {
             >
               Verstanden
             </Button>
-          
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
+interface CryptoActionProps {
+  icon: 'send' | 'receive' | 'buy' | 'earn';
+  label: string;
+  onClick?: () => void;
+}
+
+const CryptoAction: React.FC<CryptoActionProps> = ({ icon, label, onClick }) => {
+  const getIcon = () => {
+    switch (icon) {
+      case 'send':
+        return (
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2v15m0-15 4 4m-4-4-4 4M7 9H4.2c-.2 0-.3 0-.38.02a1 1 0 0 0-.8.8C3 9.9 3 10 3 10.2v6.6c0 .2 0 .3.02.38a1 1 0 0 0 .8.8c.08.02.18.02.38.02h15.6c.2 0 .3 0 .38-.02a1 1 0 0 0 .8-.8c.02-.08.02-.18.02-.38v-6.6c0-.2 0-.3-.02-.38a1 1 0 0 0-.8-.8C19.9 9 19.8 9 19.6 9H17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        );
+      case 'receive':
+        return (
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 22V7m0 15-4-4m4 4 4-4M7 15H4.2c-.2 0-.3 0-.38-.02a1 1 0 0 1-.8-.8C3 14.1 3 14 3 13.8V7.2c0-.2 0-.3.02-.38a1 1 0 0 1 .8-.8C3.9 6 4 6 4.2 6h15.6c.2 0 .3 0 .38.02a1 1 0 0 1 .8.8c.02.08.02.18.02.38v6.6c0 .2 0 .3-.02.38a1 1 0 0 1-.8.8c-.08.02-.18.02-.38.02H17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        );
+      case 'buy':
+        return (
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 6v12m-6-6h12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        );
+      case 'earn':
+        return (
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="m16 8-3.7 2.8a1 1 0 0 1-1.5-.26L8 6M13 7a1 1 0 1 0 2 0 1 1 0 0 0-2 0ZM9 18a1 1 0 1 0 2 0 1 1 0 0 0-2 0ZM20 8a5 5 0 1 0-10 0 5 5 0 0 0 10 0ZM14 18a5 5 0 1 0-10 0 5 5 0 0 0 10 0Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <button 
+      className="flex flex-col items-center gap-2 bg-primary rounded-lg p-3 transition-colors hover:bg-primary/90 active:bg-primary/80"
+      onClick={onClick}
+    >
+      <div className="w-6 h-6 flex items-center justify-center">
+        {getIcon()}
+      </div>
+      <span className="text-xs text-white">{label}</span>
+    </button>
+  );
+};
+
+export default WalletBalance;
