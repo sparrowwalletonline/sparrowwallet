@@ -10,6 +10,8 @@ export interface Wallet {
   btcBalance: number;
   ethBalance: number;
   isActive: boolean;
+  // Adding history for wallet balances
+  balanceHistory?: PriceHistory[];
 }
 
 export interface PriceHistory {
@@ -59,4 +61,6 @@ export interface WalletContextType {
   setPin: (pin: string) => void;
   pinVerified: boolean;
   setPinVerified: (value: boolean) => void;
+  // Adding functions for Bitcoin balance management
+  updateWalletBtcBalance: (walletId: string, amount: number) => void;
 }

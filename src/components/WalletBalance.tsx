@@ -25,7 +25,18 @@ interface Token {
 }
 
 const WalletBalance: React.FC = () => {
-  const { btcBalance, btcPrice, ethBalance, ethPrice, usdBalance, walletAddress, cryptoPrices, enabledCryptos, activeWallet } = useWallet();
+  const { 
+    btcBalance, 
+    btcPrice, 
+    ethBalance, 
+    ethPrice, 
+    usdBalance, 
+    walletAddress, 
+    cryptoPrices, 
+    enabledCryptos, 
+    activeWallet 
+  } = useWallet();
+  
   const [isTokenSelectionOpen, setIsTokenSelectionOpen] = useState(false);
   const [isSendDialogOpen, setIsSendDialogOpen] = useState(false);
   const [isReceiveDialogOpen, setIsReceiveDialogOpen] = useState(false);
@@ -162,6 +173,10 @@ const WalletBalance: React.FC = () => {
     return activeWallet?.walletAddress || walletAddress || "";
   };
 
+  const getWalletDisplayBtcBalance = () => {
+    return activeWallet ? activeWallet.btcBalance : btcBalance;
+  };
+
   useEffect(() => {
     if (isReceiveDialogOpen) {
       console.log("Receive dialog opened, wallet address:", walletAddress);
@@ -173,6 +188,11 @@ const WalletBalance: React.FC = () => {
     <div className="animate-fade-in w-full wallet-balance-wrapper">
       <div className="mb-1 px-1">
         <h2 className="text-3xl font-bold">{formatUSD(usdBalance)}</h2>
+        {activeWallet && (
+          <div className="text-sm text-gray-400">
+            BTC: {getWalletDisplayBtcBalance().toFixed(8)} (≈{formatUSD(getWalletDisplayBtcBalance() * btcPrice)})
+          </div>
+        )}
       </div>
       
       <AnalyticsChart tokens={tokens} />
