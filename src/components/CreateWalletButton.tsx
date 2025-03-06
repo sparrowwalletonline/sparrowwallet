@@ -174,7 +174,7 @@ const CreateWalletButton = () => {
           onClick={handleClick}
           size="sm"
           className={cn(
-            "rounded-md shadow-lg flex items-center justify-center gap-1",
+            "rounded-md shadow-lg flex items-center justify-center gap-1 create-wallet-trigger",
             "transition-all hover:scale-105 hover:shadow-xl bg-wallet-blue"
           )}
         >

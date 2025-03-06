@@ -10,100 +10,12 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '@/components/Footer';
 import CreateWalletButton from '@/components/CreateWalletButton';
 
-const RegistrationModal = ({
-  isOpen,
-  onClose,
-  onRegister,
-  isLoading
-}) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  if (!isOpen) return null;
-  const handleSubmit = e => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      toast({
-        title: "Fehler",
-        description: "Die Passwörter stimmen nicht überein",
-        variant: "destructive"
-      });
-      return;
-    }
-    onRegister(email, password);
-  };
-  return <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-      <div className="bg-wallet-card text-white p-6 rounded-xl w-full max-w-md shadow-xl">
-        <h2 className="text-xl font-bold mb-4">Registrieren</h2>
-        <p className="text-gray-400 mb-6">Erstelle ein Konto, um deine Wallet zu sichern</p>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">E-Mail</label>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} className="w-full p-2 rounded bg-wallet-darkBg border border-gray-700 text-white" required />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium mb-1">Passwort</label>
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="w-full p-2 rounded bg-wallet-darkBg border border-gray-700 text-white" required />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium mb-1">Passwort bestätigen</label>
-            <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="w-full p-2 rounded bg-wallet-darkBg border border-gray-700 text-white" required />
-          </div>
-          
-          <div className="flex justify-end space-x-3 mt-6">
-            <Button type="button" onClick={onClose} variant="ghost" className="text-gray-400 hover:text-white">
-              Abbrechen
-            </Button>
-            <Button type="submit" disabled={isLoading} className="bg-wallet-blue hover:bg-wallet-darkBlue">
-              {isLoading ? <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Registriere...
-                </> : "Registrieren"}
-            </Button>
-          </div>
-        </form>
-      </div>
-    </div>;
-};
-
-const SuccessModal = ({
-  isOpen,
-  onClose
-}) => {
-  if (!isOpen) return null;
-  return <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-      <div className="bg-wallet-card text-white p-6 rounded-xl w-full max-w-md shadow-xl text-center">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500 flex items-center justify-center">
-          <Check className="h-8 w-8 text-white" />
-        </div>
-        <h2 className="text-xl font-bold mb-2">Konto erfolgreich erstellt!</h2>
-        <p className="text-gray-400 mb-6">Du wirst jetzt zur Wallet-Auswahl weitergeleitet.</p>
-        
-        <Button onClick={onClose} className="bg-wallet-blue hover:bg-wallet-darkBlue">
-          Weiter
-        </Button>
-      </div>
-    </div>;
-};
-
 const LandingPage = () => {
-  const {
-    generateWallet
-  } = useWallet();
-  const {
-    toggleMenu
-  } = useMenu();
+  const { generateWallet } = useWallet();
+  const { toggleMenu } = useMenu();
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [showRegistrationModal, setShowRegistrationModal] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [session, setSession] = useState(null);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -125,47 +37,9 @@ const LandingPage = () => {
   }, []);
 
   const handleCreateWallet = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      if (session) {
-        generateWallet();
-      } else {
-        setIsLoading(false);
-        setShowRegistrationModal(true);
-      }
-    }, 3000);
-  };
-
-  const handleRegister = async (email, password) => {
-    setIsLoading(true);
-    try {
-      const {
-        data,
-        error
-      } = await supabase.auth.signUp({
-        email,
-        password
-      });
-      if (error) {
-        throw error;
-      }
-      setShowRegistrationModal(false);
-      setShowSuccessModal(true);
-    } catch (error) {
-      console.error("Registration error:", error);
-      toast({
-        title: "Registrierung fehlgeschlagen",
-        description: error.message || "Bitte versuche es mit einer anderen E-Mail-Adresse",
-        variant: "destructive"
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSuccessModalClose = () => {
-    setShowSuccessModal(false);
-    navigate('/wallet-choice');
+    document.querySelector('.create-wallet-trigger')?.dispatchEvent(
+      new MouseEvent('click', { bubbles: true })
+    );
   };
 
   const handleMenuClick = () => {
@@ -385,7 +259,11 @@ const LandingPage = () => {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4 pt-4 z-10 relative">
-                  <Button onClick={handleCreateWallet} disabled={isLoading} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue">
+                  <Button 
+                    onClick={handleCreateWallet} 
+                    disabled={isLoading} 
+                    className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
+                  >
                     {isLoading ? <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         Wird geladen...
@@ -511,13 +389,11 @@ const LandingPage = () => {
         </section>
       </div>
       
-      <RegistrationModal isOpen={showRegistrationModal} onClose={() => setShowRegistrationModal(false)} onRegister={handleRegister} isLoading={isLoading} />
-      
-      <SuccessModal isOpen={showSuccessModal} onClose={handleSuccessModalClose} />
-      
       <Footer />
       
-      <CreateWalletButton />
+      <div className="hidden">
+        <CreateWalletButton />
+      </div>
     </div>;
 };
 
