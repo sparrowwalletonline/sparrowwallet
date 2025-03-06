@@ -70,7 +70,8 @@ const WalletViewContent: React.FC = () => {
     activeWallet,
     setActiveWallet,
     addNewWallet,
-    enabledCryptos
+    enabledCryptos,
+    refreshWalletBalance
   } = useWallet();
   const navigate = useNavigate();
   const [newWalletName, setNewWalletName] = useState('');
@@ -78,12 +79,22 @@ const WalletViewContent: React.FC = () => {
   const [isManageCryptoOpen, setIsManageCryptoOpen] = useState(false);
   const [isManageWalletsOpen, setIsManageWalletsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isRefreshingBalance, setIsRefreshingBalance] = useState(false);
 
   React.useEffect(() => {
     if (!hasWallet) {
       navigate('/');
     }
   }, [hasWallet, navigate]);
+
+  React.useEffect(() => {
+    const loadWalletData = async () => {
+      await refreshWalletBalance();
+    };
+    
+    loadWalletData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const btcValue = (btcBalance * btcPrice).toFixed(2);
   const ethValue = (ethBalance * ethPrice).toFixed(2);
@@ -213,12 +224,21 @@ const WalletViewContent: React.FC = () => {
     navigate(path);
   };
 
+  const handleRefreshBalance = async () => {
+    setIsRefreshingBalance(true);
+    try {
+      await refreshWalletBalance();
+    } finally {
+      setIsRefreshingBalance(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Header title="Sparrow" />
       
       <div className="px-0">
-        <div className="flex items-center pl-4">
+        <div className="flex items-center justify-between pl-4 pr-4">
           <DropdownMenu open={isDropdownOpen} onOpenChange={handleDropdownOpenChange}>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-2 bg-transparent hover:bg-secondary rounded-lg px-2 py-1 transition-colors">
@@ -286,6 +306,19 @@ const WalletViewContent: React.FC = () => {
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
+          
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground hover:text-foreground"
+            onClick={handleRefreshBalance}
+            disabled={isRefreshingBalance}
+          >
+            <RefreshCcw className={`h-4 w-4 ${isRefreshingBalance ? 'animate-spin' : ''}`} />
+            <span className="ml-1 text-xs">
+              {isRefreshingBalance ? 'Aktualisiere...' : 'Wallet'}
+            </span>
+          </Button>
         </div>
       </div>
       
@@ -320,7 +353,7 @@ const WalletViewContent: React.FC = () => {
               >
                 <RefreshCcw className={`h-4 w-4 ${isRefreshingPrices ? 'animate-spin' : ''}`} />
                 <span className="ml-1 text-xs">
-                  {isRefreshingPrices ? 'Aktualisiere...' : 'Aktualisieren'}
+                  {isRefreshingPrices ? 'Aktualisiere...' : 'Preise'}
                 </span>
               </Button>
             </div>

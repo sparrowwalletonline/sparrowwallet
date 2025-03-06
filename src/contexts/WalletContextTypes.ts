@@ -1,3 +1,4 @@
+
 import { Session } from '@supabase/supabase-js';
 import { CryptoPrice } from '../utils/cryptoPriceUtils';
 
@@ -48,6 +49,7 @@ export interface WalletContextType {
   deleteWallet: (walletId: string) => void;
   saveWalletAddressToUserAccount: () => Promise<boolean>;
   loadWalletFromUserAccount: () => Promise<boolean>;
+  refreshWalletBalance: () => Promise<boolean>;
   logout: () => Promise<void>;
   pinProtectionEnabled: boolean;
   requirePinVerification: boolean;

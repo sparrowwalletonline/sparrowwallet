@@ -50,7 +50,8 @@ const WalletContext = createContext<WalletContextType>({
   setPinProtectionEnabled: () => {},
   setPin: () => {},
   pinVerified: false,
-  setPinVerified: () => {}
+  setPinVerified: () => {},
+  refreshWalletBalance: async () => false
 });
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -451,6 +452,87 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return false;
   };
 
+  const refreshWalletBalance = async (): Promise<boolean> => {
+    if (!session?.user) {
+      console.log('No user logged in to refresh wallet balance');
+      return false;
+    }
+
+    try {
+      console.log('Refreshing wallet balance from Supabase for user:', session.user.id);
+      
+      const { data, error } = await supabase
+        .from('user_wallets')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error refreshing wallet balance:', error);
+        toast({
+          title: "Fehler beim Aktualisieren der Wallet",
+          description: error.message,
+          variant: "destructive",
+        });
+        return false;
+      }
+
+      if (data) {
+        console.log('Wallet balance refreshed successfully:', data);
+        
+        // Update local state with refreshed data
+        setBtcBalance(Number(data.btc_balance));
+        setEthBalance(Number(data.eth_balance));
+        setWalletAddress(data.wallet_address);
+        
+        const calculatedUsdBalance = (Number(data.btc_balance) * btcPrice) + 
+                                   (Number(data.eth_balance) * ethPrice);
+        setUsdBalance(calculatedUsdBalance);
+        
+        // Also update the active wallet
+        if (activeWallet) {
+          const updatedWallets = wallets.map(wallet => {
+            if (wallet.isActive) {
+              return {
+                ...wallet,
+                walletAddress: data.wallet_address,
+                btcBalance: Number(data.btc_balance),
+                ethBalance: Number(data.eth_balance)
+              };
+            }
+            return wallet;
+          });
+          
+          setWallets(updatedWallets);
+          
+          const newActiveWallet = updatedWallets.find(w => w.isActive);
+          if (newActiveWallet) {
+            setActiveWalletState(newActiveWallet);
+          }
+        }
+        
+        toast({
+          title: "Wallet aktualisiert",
+          description: "Wallet-Daten wurden erfolgreich aktualisiert",
+        });
+        
+        return true;
+      }
+      
+      console.log('No wallet data found during refresh');
+      return false;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Ein unerwarteter Fehler ist aufgetreten';
+      console.error('Unexpected error refreshing wallet balance:', error);
+      toast({
+        title: "Fehler beim Aktualisieren der Wallet",
+        description: errorMessage,
+        variant: "destructive",
+      });
+      return false;
+    }
+  };
+
   const generateWallet = (stage?: string) => {
     if (stage === 'passphrase') {
       setSeedPhrase(['word', 'word']);
@@ -754,7 +836,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setPinProtectionEnabled,
       setPin,
       pinVerified,
-      setPinVerified
+      setPinVerified,
+      refreshWalletBalance
     }}>
       {children}
     </WalletContext.Provider>
