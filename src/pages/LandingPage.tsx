@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -9,6 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import Footer from '@/components/Footer';
+import CreateWalletButton from '@/components/CreateWalletButton';
 
 const RegistrationModal = ({
   isOpen,
@@ -430,7 +430,6 @@ const LandingPage = () => {
           </div>
         </section>
         
-        {/* Updated Bitcoin Online Freedom Everywhere section */}
         <section className="py-20 px-6 my-12">
           <div className="max-w-screen-xl mx-auto rounded-3xl overflow-hidden bg-gradient-to-r from-indigo-500/5 to-purple-500/5 dark:from-indigo-900/20 dark:to-purple-900/20 backdrop-blur-sm border border-gray-100 dark:border-gray-800 shadow-lg">
             <div className="py-16 px-6">
@@ -517,6 +516,8 @@ const LandingPage = () => {
       <SuccessModal isOpen={showSuccessModal} onClose={handleSuccessModalClose} />
       
       <Footer />
+      
+      <CreateWalletButton />
     </div>;
 };
 
