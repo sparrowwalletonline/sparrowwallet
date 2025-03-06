@@ -15,6 +15,7 @@ import WalletView from "./pages/WalletView";
 import BrowserView from "./pages/BrowserView";
 import Terms from "./pages/Terms";
 import Auth from "./pages/Auth";
+import Register from "./pages/Register";
 import CryptoDetailView from "./pages/CryptoDetailView";
 import SecuritySettings from "./pages/SecuritySettings";
 import ProfileSettings from "./pages/ProfileSettings";
@@ -75,6 +76,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/register" element={<Register />} />
                 <Route path="/app" element={<WalletChoice />} />
                 <Route path="/personal-data" element={<PersonalDataForm onComplete={() => {}} />} />
                 <Route path="/wallet" element={

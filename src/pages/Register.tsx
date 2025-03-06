@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
@@ -9,58 +9,43 @@ import { Mail, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import Header from '@/components/Header';
 
-const Auth: React.FC = () => {
+const Register: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [acceptTerms, setAcceptTerms] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
-  const { hasWallet, loadFromSupabase, session, loadWalletFromUserAccount } = useWallet();
   
-  useEffect(() => {
-    if (session) {
-      checkUserWallet();
-    }
-  }, [session]);
-  
-  const checkUserWallet = async () => {
-    const walletLoaded = await loadWalletFromUserAccount();
-    
-    if (walletLoaded) {
-      navigate('/wallet');
-      return;
-    }
-    
-    if (hasWallet) {
-      navigate('/wallet');
-      return;
-    }
-    
-    const seedPhraseLoaded = await loadFromSupabase();
-    
-    if (seedPhraseLoaded) {
-      navigate('/wallet');
-    } else {
-      navigate('/app');
-    }
-  };
-  
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (password !== confirmPassword) {
+      toast({
+        title: "Fehler",
+        description: "Die Passwörter stimmen nicht überein",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+    
+    if (!acceptTerms) {
+      toast({
+        title: "Fehler",
+        description: "Bitte akzeptiere die AGB und Datenschutzerklärung",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+    
     setLoading(true);
     
-    // Add a notification toast for the delay
-    toast({
-      title: "Anmeldung wird verarbeitet",
-      description: "Bitte warte einen Moment...",
-      duration: 3000,
-    });
-    
-    // Add a 3-second delay for login
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
       });
@@ -68,12 +53,12 @@ const Auth: React.FC = () => {
       if (error) throw error;
       
       toast({
-        title: "Anmeldung erfolgreich",
-        description: "Du wurdest erfolgreich angemeldet",
+        title: "Registrierung erfolgreich",
+        description: "Bitte überprüfe deine E-Mail, um die Registrierung abzuschließen",
         duration: 3000,
       });
       
-      await checkUserWallet();
+      navigate('/app');
     } catch (error) {
       if (error instanceof Error) {
         toast({
@@ -88,12 +73,8 @@ const Auth: React.FC = () => {
     }
   };
   
-  const handleRegisterClick = () => {
-    navigate('/register');
-  };
-  
-  const handleBackClick = () => {
-    navigate('/');
+  const handleLoginClick = () => {
+    navigate('/auth');
   };
   
   return (
@@ -108,11 +89,11 @@ const Auth: React.FC = () => {
               alt="Sparrow Logo" 
               className="w-16 h-16 mx-auto mb-4" 
             />
-            <h1 className="text-2xl font-bold text-gray-900">Anmelden</h1>
-            <p className="text-gray-600 mt-2">Melde dich an, um auf deine Wallet zuzugreifen</p>
+            <h1 className="text-2xl font-bold text-gray-900">Registrieren</h1>
+            <p className="text-gray-600 mt-2">Erstelle ein neues Konto, um deine Wallet zu verwalten</p>
           </div>
           
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form onSubmit={handleRegister} className="space-y-5">
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-medium text-gray-700">
                 E-Mail
@@ -156,6 +137,48 @@ const Auth: React.FC = () => {
               </div>
             </div>
             
+            <div className="space-y-2">
+              <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">
+                Passwort bestätigen
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <Input
+                  id="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  className="pl-10 pr-10 border-gray-300"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
+              </div>
+            </div>
+            
+            <div className="flex items-start">
+              <div className="flex items-center h-5">
+                <input
+                  id="terms"
+                  type="checkbox"
+                  checked={acceptTerms}
+                  onChange={(e) => setAcceptTerms(e.target.checked)}
+                  className="w-4 h-4 border-gray-300 rounded text-wallet-blue focus:ring-wallet-blue"
+                />
+              </div>
+              <div className="ml-3 text-sm">
+                <label htmlFor="terms" className="text-gray-600">
+                  Ich akzeptiere die <a href="/terms" className="text-wallet-blue hover:underline">AGB</a> und <a href="/privacy" className="text-wallet-blue hover:underline">Datenschutzerklärung</a>
+                </label>
+              </div>
+            </div>
+            
             <Button
               type="submit"
               disabled={loading}
@@ -167,23 +190,23 @@ const Auth: React.FC = () => {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Anmelden...
+                  Registrieren...
                 </span>
               ) : (
-                "Anmelden"
+                "Registrieren"
               )}
             </Button>
           </form>
           
           <div className="mt-8 text-center">
             <p className="text-gray-600">
-              Noch kein Konto? 
+              Bereits ein Konto? 
               <button
                 type="button"
-                onClick={handleRegisterClick}
+                onClick={handleLoginClick}
                 className="ml-1 text-wallet-blue hover:underline font-medium"
               >
-                Registrieren
+                Anmelden
               </button>
             </p>
           </div>
@@ -193,4 +216,4 @@ const Auth: React.FC = () => {
   );
 };
 
-export default Auth;
+export default Register;
