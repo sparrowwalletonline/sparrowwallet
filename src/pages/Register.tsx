@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -192,7 +193,7 @@ const Register: React.FC = () => {
               className="text-3xl font-bold font-heading bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-1"
               variants={itemVariants}
             >
-              Registrieren
+              Willkommen!
             </motion.h1>
             <motion.p 
               className="text-gray-500 text-sm"
