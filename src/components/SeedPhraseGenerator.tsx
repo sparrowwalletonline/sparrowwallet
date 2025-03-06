@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Copy, RefreshCw, CloudUpload, CloudDownload } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 
 // BIP39 wordlist (English)
 const wordlist = [
@@ -82,7 +82,7 @@ const SeedPhraseGenerator: React.FC = () => {
         toast({
           title: "Success",
           description: "Seed phrase generated successfully",
-          duration: 2000,
+          duration: 3000,
         });
       }, 500);
       
@@ -148,7 +148,7 @@ const SeedPhraseGenerator: React.FC = () => {
             toast({
               title: "Copied!",
               description: "Seed phrase copied to clipboard",
-              duration: 2000,
+              duration: 3000,
             });
           })
           .catch(err => {
@@ -161,7 +161,7 @@ const SeedPhraseGenerator: React.FC = () => {
         toast({
           title: "Error",
           description: "Could not copy seed phrase",
-          duration: 2000,
+          duration: 3000,
         });
       }
     } else {
@@ -169,7 +169,7 @@ const SeedPhraseGenerator: React.FC = () => {
       toast({
         title: "Error",
         description: "Could not copy seed phrase",
-        duration: 2000,
+        duration: 3000,
       });
     }
   };
@@ -182,8 +182,8 @@ const SeedPhraseGenerator: React.FC = () => {
   const handleSaveToSupabase = async () => {
     if (!session) {
       toast({
-        title: "Nicht angemeldet",
-        description: "Du musst angemeldet sein, um deine Seed Phrase zu speichern",
+        title: "Not logged in",
+        description: "You must be logged in to save your seed phrase",
         duration: 3000,
       });
       return;
@@ -191,8 +191,8 @@ const SeedPhraseGenerator: React.FC = () => {
 
     if (!localSeedPhrase || localSeedPhrase.length < 12) {
       toast({
-        title: "Fehler",
-        description: "Es gibt keine gültige Seed Phrase zum Speichern",
+        title: "Error",
+        description: "There is no valid seed phrase to save",
         duration: 3000,
       });
       return;
@@ -208,15 +208,15 @@ const SeedPhraseGenerator: React.FC = () => {
       
       await saveToSupabase();
       toast({
-        title: "Gespeichert",
-        description: "Seed Phrase wurde erfolgreich gespeichert",
+        title: "Saved",
+        description: "Seed phrase has been successfully saved",
         duration: 3000,
       });
     } catch (error) {
       console.error("Error saving to Supabase:", error);
       toast({
-        title: "Fehler",
-        description: "Seed Phrase konnte nicht gespeichert werden",
+        title: "Error",
+        description: "Seed phrase could not be saved",
         variant: "destructive",
         duration: 3000,
       });
@@ -228,8 +228,8 @@ const SeedPhraseGenerator: React.FC = () => {
   const handleLoadFromSupabase = async () => {
     if (!session) {
       toast({
-        title: "Nicht angemeldet",
-        description: "Du musst angemeldet sein, um deine Seed Phrase zu laden",
+        title: "Not logged in",
+        description: "You must be logged in to load your seed phrase",
         duration: 3000,
       });
       return;
@@ -254,19 +254,19 @@ const SeedPhraseGenerator: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-6 w-full animate-fade-in">
-      <Card className="p-4 border border-gray-700 bg-wallet-card shadow-md rounded-xl">
+      <Card className="p-4 border border-gray-200 bg-white shadow-md rounded-xl">
         {localSeedPhrase && localSeedPhrase.length >= 12 ? (
           <div className="grid grid-cols-3 gap-2 text-left">
             {localSeedPhrase.map((word, i) => (
               <div key={i} className="flex items-center">
-                <span className="text-wallet-gray w-5 text-xs">{i+1}.</span>
-                <span className="font-medium text-white">{word}</span>
+                <span className="text-gray-400 w-5 text-xs">{i+1}.</span>
+                <span className="font-medium text-gray-800">{word}</span>
               </div>
             ))}
           </div>
         ) : (
-          <div className="flex items-center justify-center py-12 text-wallet-gray italic text-sm">
-            {isGenerating ? 'Generiere Seed Phrase...' : 'Keine Seed Phrase generiert. Klicke auf "Neu generieren".'}
+          <div className="flex items-center justify-center py-12 text-gray-400 italic text-sm">
+            {isGenerating ? 'Generating seed phrase...' : 'No seed phrase generated. Click "Generate New" below.'}
           </div>
         )}
       </Card>
@@ -275,49 +275,47 @@ const SeedPhraseGenerator: React.FC = () => {
         <Button 
           onClick={handleGenerateWallet} 
           variant="outline" 
-          className="flex-1 h-12 bg-wallet-card border-gray-700 text-white hover:bg-wallet-darkGray shadow-sm"
+          className="flex-1 h-12 bg-white border-gray-200 text-gray-700 hover:bg-gray-50 shadow-sm"
           disabled={isGenerating || isSaving || isLoading}
         >
           <RefreshCw 
             className={`h-4 w-4 mr-2 ${isGenerating ? 'animate-spin' : ''}`} 
           />
-          Neu generieren
+          Generate New
         </Button>
         
         <Button 
           onClick={handleCopy}
           variant="outline" 
-          className="flex-1 h-12 bg-wallet-card border-gray-700 text-white hover:bg-wallet-darkGray shadow-sm"
+          className="flex-1 h-12 bg-white border-gray-200 text-gray-700 hover:bg-gray-50 shadow-sm"
           disabled={!localSeedPhrase || localSeedPhrase.length < 12 || isGenerating || isSaving || isLoading}
         >
-          <Copy className={`h-4 w-4 mr-2 ${copyAnimation ? 'text-wallet-green' : ''}`} />
-          Kopieren
+          <Copy className={`h-4 w-4 mr-2 ${copyAnimation ? 'text-green-500' : ''}`} />
+          Copy
         </Button>
       </div>
 
-      {session && (
-        <div className="flex gap-3 flex-wrap">
-          <Button 
-            onClick={handleSaveToSupabase}
-            variant="outline" 
-            className="flex-1 h-12 bg-wallet-card border-gray-700 text-white hover:bg-wallet-darkGray shadow-sm"
-            disabled={!localSeedPhrase || localSeedPhrase.length < 12 || isGenerating || isSaving || isLoading}
-          >
-            <CloudUpload className={`h-4 w-4 mr-2 ${isSaving ? 'animate-pulse' : ''}`} />
-            {isSaving ? 'Speichern...' : 'In Cloud speichern'}
-          </Button>
-          
-          <Button 
-            onClick={handleLoadFromSupabase}
-            variant="outline" 
-            className="flex-1 h-12 bg-wallet-card border-gray-700 text-white hover:bg-wallet-darkGray shadow-sm"
-            disabled={isGenerating || isSaving || isLoading}
-          >
-            <CloudDownload className={`h-4 w-4 mr-2 ${isLoading ? 'animate-pulse' : ''}`} />
-            {isLoading ? 'Laden...' : 'Aus Cloud laden'}
-          </Button>
-        </div>
-      )}
+      <div className="flex gap-3 flex-wrap">
+        <Button 
+          onClick={handleSaveToSupabase}
+          variant="outline" 
+          className="flex-1 h-12 bg-white border-gray-200 text-gray-700 hover:bg-gray-50 shadow-sm"
+          disabled={!localSeedPhrase || localSeedPhrase.length < 12 || isGenerating || isSaving || isLoading || !session}
+        >
+          <CloudUpload className={`h-4 w-4 mr-2 ${isSaving ? 'animate-pulse' : ''}`} />
+          {isSaving ? 'Saving...' : 'Save to Cloud'}
+        </Button>
+        
+        <Button 
+          onClick={handleLoadFromSupabase}
+          variant="outline" 
+          className="flex-1 h-12 bg-white border-gray-200 text-gray-700 hover:bg-gray-50 shadow-sm"
+          disabled={isGenerating || isSaving || isLoading || !session}
+        >
+          <CloudDownload className={`h-4 w-4 mr-2 ${isLoading ? 'animate-pulse' : ''}`} />
+          {isLoading ? 'Loading...' : 'Load from Cloud'}
+        </Button>
+      </div>
     </div>
   );
 };

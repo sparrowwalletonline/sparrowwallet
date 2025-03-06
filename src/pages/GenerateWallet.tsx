@@ -60,12 +60,12 @@ const GenerateWallet: React.FC = () => {
           <SeedPhraseGenerator />
         </Card>
         
-        <div className="bg-blue-50 rounded-lg p-4 sm:p-5 border border-blue-100 max-w-md w-full shadow-sm animate-fade-in">
+        <div className="bg-red-50 rounded-lg p-4 sm:p-5 border border-red-100 max-w-md w-full shadow-sm animate-fade-in">
           <div className="flex items-start gap-3 sm:gap-4">
-            <LockKeyhole className="h-5 w-5 sm:h-6 sm:w-6 text-wallet-blue mt-0.5 flex-shrink-0" />
+            <LockKeyhole className="h-5 w-5 sm:h-6 sm:w-6 text-red-600 mt-0.5 flex-shrink-0" />
             <div>
-              <h3 className="font-medium text-sm sm:text-base mb-1 text-gray-800">Keep your phrase secure</h3>
-              <p className="text-xs sm:text-sm text-gray-600">
+              <h3 className="font-medium text-sm sm:text-base mb-1 text-red-700">Keep your phrase secure</h3>
+              <p className="text-xs sm:text-sm text-red-600">
                 Your seed phrase is the only way to recover your wallet if you lose access. 
                 Write it down and store it in a secure location.
               </p>
