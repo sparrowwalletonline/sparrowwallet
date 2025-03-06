@@ -7,6 +7,8 @@ import { useToast } from '@/components/ui/use-toast';
 import { useNavigate, Link } from 'react-router-dom';
 import SeedPhraseGenerator from '@/components/SeedPhraseGenerator';
 import Header from '@/components/Header';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 
 const SeedPhrasePage: React.FC = () => {
   const { seedPhrase, cancelWalletCreation, session, saveToSupabase, saveWalletAddressToUserAccount, createWallet } = useWallet();
@@ -185,33 +187,35 @@ const SeedPhrasePage: React.FC = () => {
           </div>
           
           <div className="space-y-3 mt-3 sm:mt-4">
-            <label className="flex items-start gap-2 cursor-pointer touch-manipulation">
-              <div className="flex items-center h-5 mt-0.5">
-                <input
-                  type="checkbox"
-                  checked={savedPhrase}
-                  onChange={(e) => setSavedPhrase(e.target.checked)}
-                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                />
-              </div>
-              <span className="text-xs sm:text-sm text-gray-600">
+            <div className="flex items-start space-x-2">
+              <Checkbox 
+                id="savedPhrase" 
+                checked={savedPhrase} 
+                onCheckedChange={(checked) => setSavedPhrase(checked === true)}
+                className="data-[state=checked]:bg-blue-600 data-[state=checked]:text-white border-gray-300 mt-1"
+              />
+              <Label 
+                htmlFor="savedPhrase" 
+                className="text-xs sm:text-sm text-gray-600 cursor-pointer"
+              >
                 Ich habe die Seed Phrase an einem sicheren Ort gespeichert
-              </span>
-            </label>
+              </Label>
+            </div>
             
-            <label className="flex items-start gap-2 cursor-pointer touch-manipulation">
-              <div className="flex items-center h-5 mt-0.5">
-                <input
-                  type="checkbox"
-                  checked={agreedToTerms}
-                  onChange={(e) => setAgreedToTerms(e.target.checked)}
-                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                />
-              </div>
-              <span className="text-xs sm:text-sm text-gray-600">
+            <div className="flex items-start space-x-2">
+              <Checkbox 
+                id="agreedToTerms" 
+                checked={agreedToTerms} 
+                onCheckedChange={(checked) => setAgreedToTerms(checked === true)}
+                className="data-[state=checked]:bg-blue-600 data-[state=checked]:text-white border-gray-300 mt-1"
+              />
+              <Label 
+                htmlFor="agreedToTerms" 
+                className="text-xs sm:text-sm text-gray-600 cursor-pointer"
+              >
                 Ich stimme den <Link to="/terms" className="text-blue-600 underline">Nutzungsbedingungen</Link> zu
-              </span>
-            </label>
+              </Label>
+            </div>
           </div>
           
           <Button 
