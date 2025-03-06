@@ -358,6 +358,28 @@ const WalletBalance: React.FC = () => {
           </div>
           
           <div className="px-4 py-2 space-y-4 flex-1">
+            {selectedToken?.symbol === 'BTC' && (
+              <div className="space-y-3">
+                <div className="bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-300 dark:border-yellow-700 p-3 rounded-lg">
+                  <div className="flex items-start gap-3 text-yellow-700 dark:text-yellow-500">
+                    <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                    <p className="text-sm">
+                      Senden Sie nur BTC an diese Adresse. Das Senden anderer Coins kann zum dauerhaften Verlust führen.
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-300 dark:border-yellow-700 p-3 rounded-lg">
+                  <div className="flex items-start gap-3 text-yellow-700 dark:text-yellow-500">
+                    <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                    <p className="text-sm">
+                      Verwenden Sie nur das Bitcoin-Netzwerk für diese Transaktion. Die Verwendung anderer Netzwerke kann zu Verlusten führen.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+            
             <div>
               <label className="block text-sm mb-2">Adresse des Empfängers</label>
               <Input
