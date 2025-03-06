@@ -39,7 +39,7 @@ const Header = ({
   );
 
   return (
-    <header className={`flex items-center justify-between py-3 ${className} wallet-header`}>
+    <header className={`flex items-center justify-between py-3 px-4 ${className} wallet-header`}>
       <div className="flex items-center gap-2">
         {showBack && (
           <BackButton />
@@ -88,3 +88,4 @@ const Header = ({
 }
 
 export default Header;
+
