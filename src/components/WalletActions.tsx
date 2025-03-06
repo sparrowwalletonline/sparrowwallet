@@ -12,7 +12,7 @@ const WalletActions: React.FC = () => {
       <div className="flex flex-col items-center">
         <Button
           variant="wallet"
-          className="w-12 h-12 rounded-full bg-[#0500ff] hover:bg-[#0500ff]/90"
+          className="w-12 h-12 rounded-full"
           onClick={() => navigate('/wallet/send')}
         >
           <ArrowUpRight className="h-5 w-5" />
@@ -23,7 +23,7 @@ const WalletActions: React.FC = () => {
       <div className="flex flex-col items-center">
         <Button
           variant="wallet"
-          className="w-12 h-12 rounded-full bg-[#0500ff] hover:bg-[#0500ff]/90"
+          className="w-12 h-12 rounded-full"
           onClick={() => navigate('/wallet/receive')}
         >
           <ArrowDownLeft className="h-5 w-5" />
@@ -34,7 +34,7 @@ const WalletActions: React.FC = () => {
       <div className="flex flex-col items-center">
         <Button
           variant="wallet"
-          className="w-12 h-12 rounded-full bg-[#0500ff] hover:bg-[#0500ff]/90"
+          className="w-12 h-12 rounded-full"
           onClick={() => navigate('/wallet/buy')}
         >
           <ShoppingCart className="h-5 w-5" />
@@ -45,7 +45,7 @@ const WalletActions: React.FC = () => {
       <div className="flex flex-col items-center">
         <Button
           variant="wallet"
-          className="w-12 h-12 rounded-full bg-[#0500ff] hover:bg-[#0500ff]/90"
+          className="w-12 h-12 rounded-full"
           onClick={() => navigate('/wallet/earn')}
         >
           <Sparkles className="h-5 w-5" />
