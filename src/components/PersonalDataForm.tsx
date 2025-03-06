@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,6 +19,29 @@ const PersonalDataForm: React.FC = () => {
   const [phone, setPhone] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+
+  useEffect(() => {
+    let timer: number | undefined;
+    if (countdown > 0) {
+      timer = window.setTimeout(() => {
+        setCountdown(prev => prev - 1);
+      }, 1000);
+    } else if (countdown === 0 && isLoading) {
+      // When countdown reaches 0 and loading is still active, navigate to the seed phrase
+      generateWallet();
+      navigate('/wallet-intro');
+      toast({
+        title: "Wallet wird vorbereitet",
+        description: "Bitte folgen Sie den nächsten Schritten zur Wallet-Erstellung."
+      });
+      setIsLoading(false);
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [countdown, isLoading, navigate, generateWallet]);
 
   const handleBack = () => {
     // Add exit animation
@@ -67,16 +90,8 @@ const PersonalDataForm: React.FC = () => {
         duration: 3000,
       });
       
-      // Navigate to wallet intro with animation
-      setTimeout(() => {
-        generateWallet();
-        navigate('/wallet-intro');
-        toast({
-          title: "Wallet wird vorbereitet",
-          description: "Bitte folgen Sie den nächsten Schritten zur Wallet-Erstellung."
-        });
-        setIsLoading(false);
-      }, 500);
+      // Start the 5-second countdown
+      setCountdown(5);
       
     } catch (error) {
       console.error("Error:", error);
@@ -224,7 +239,7 @@ const PersonalDataForm: React.FC = () => {
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 
-                      Weiter...
+                      {countdown > 0 ? `Weiter in ${countdown}...` : "Weiter..."}
                     </>
                   ) : (
                     "Wallet erstellen"
