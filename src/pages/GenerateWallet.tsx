@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import SeedPhraseGenerator from '@/components/SeedPhraseGenerator';
 import WalletLogo from '@/components/WalletLogo';
@@ -43,6 +43,13 @@ const GenerateWallet: React.FC = () => {
     }, 300);
   };
 
+  // Adding console logs to help debug the button enablement issue
+  useEffect(() => {
+    console.log("Seed phrase length:", seedPhrase.length);
+    console.log("Has confirmed seed phrase:", hasConfirmedSeedPhrase);
+    console.log("Button should be enabled:", seedPhrase.length > 0 && hasConfirmedSeedPhrase);
+  }, [seedPhrase, hasConfirmedSeedPhrase]);
+
   return (
     <div className="min-h-screen flex flex-col px-4 page-enter safe-area-inset-bottom bg-gradient-to-b from-white to-blue-50">
       <div className="flex-1 flex flex-col items-center justify-center gap-5 sm:gap-8 py-6 sm:py-8">
@@ -78,7 +85,10 @@ const GenerateWallet: React.FC = () => {
           <Checkbox 
             id="seedPhraseConfirmation" 
             checked={hasConfirmedSeedPhrase}
-            onCheckedChange={(checked) => setHasConfirmedSeedPhrase(checked as boolean)}
+            onCheckedChange={(checked) => {
+              console.log("Checkbox changed to:", checked);
+              setHasConfirmedSeedPhrase(checked === true);
+            }}
             className="border-gray-400 data-[state=checked]:bg-wallet-blue"
           />
           <label 
@@ -101,7 +111,7 @@ const GenerateWallet: React.FC = () => {
           <Button 
             onClick={handleCreateWallet}
             className="flex-1 h-11 sm:h-12 bg-wallet-blue hover:bg-wallet-darkBlue text-white shadow-md hover:shadow-lg text-sm sm:text-base min-h-[44px] touch-manipulation"
-            disabled={seedPhrase.length === 0 || !hasConfirmedSeedPhrase}
+            disabled={!seedPhrase.length || !hasConfirmedSeedPhrase}
           >
             <Check size={18} className="mr-1.5 sm:mr-2" /> Wallet erstellen
           </Button>
