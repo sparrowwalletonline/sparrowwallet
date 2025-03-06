@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -105,12 +106,12 @@ export default {
 					'100%': { transform: 'scale(1)', opacity: '1' }
 				},
 				'bounce-slow': {
-					'0%, 95%, 100%': { 
+					'0%, 98%, 100%': { 
 						transform: 'translateY(0)',
 						animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)'
 					},
-					'97.5%': {
-						transform: 'translateY(-8px)',
+					'99%': {
+						transform: 'translateY(-5px)',
 						animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)'
 					}
 				}
@@ -123,7 +124,7 @@ export default {
 				'slide-in': 'slide-in 0.5s ease-out',
 				'slide-out': 'slide-out 0.5s ease-out',
 				'scale-in': 'scale-in 0.4s ease-out',
-				'bounce-slow': 'bounce-slow 8s infinite'
+				'bounce-slow': 'bounce-slow 20s infinite'
 			},
 			screens: {
 				'xs': '480px',
