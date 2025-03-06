@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useMenu } from '@/contexts/MenuContext';
 import { Button } from '@/components/ui/button';
@@ -112,9 +111,7 @@ const SideMenu: React.FC = () => {
       >
         <div className="flex flex-col h-full">
           <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-800">
-            <div className="flex items-center">
-              <WalletLogo className="w-8 h-8" />
-            </div>
+            <WalletLogo className="w-8 h-8" />
             <div className="flex items-center gap-2">
               <ThemeToggle />
               <button 
