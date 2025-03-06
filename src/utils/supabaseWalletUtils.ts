@@ -131,6 +131,7 @@ export const loadWalletFromSupabase = async (
   }
 
   try {
+    // Load seed phrase
     const { data, error } = await supabase
       .from('wallet_seed_phrases')
       .select('encrypted_seed_phrase')
@@ -151,42 +152,44 @@ export const loadWalletFromSupabase = async (
       const decryptedPhrase = decryptSeedPhrase(data.encrypted_seed_phrase);
       
       if (decryptedPhrase && decryptedPhrase.length >= 12) {
-        // Update wallet state values
-        const simulatedBtcBalance = 0.01;
-        setBtcBalance(simulatedBtcBalance);
-        const calculatedUsdBalance = simulatedBtcBalance * btcPrice;
-        setUsdBalance(calculatedUsdBalance);
-        setWalletAddress(generateBtcAddress());
-        setBalance(Math.random() * 10);
+        // Load wallet data
+        const { data: walletData, error: walletError } = await supabase
+          .from('user_wallets')
+          .select('*')
+          .eq('user_id', session.user.id)
+          .maybeSingle();
+          
+        if (walletError) {
+          console.error("Error loading wallet data:", walletError);
+        } else if (walletData) {
+          setBtcBalance(Number(walletData.btc_balance));
+          setWalletAddress(walletData.wallet_address);
+          const calculatedUsdBalance = Number(walletData.btc_balance) * btcPrice;
+          setUsdBalance(calculatedUsdBalance);
+          setBalance(Number(walletData.btc_balance));
+        }
         
         toast({
           title: "Erfolgreich geladen",
           description: "Deine Seed Phrase wurde aus der Cloud geladen",
         });
         return decryptedPhrase;
-      } else {
-        console.error("Invalid decrypted seed phrase:", decryptedPhrase);
-        toast({
-          title: "Fehler beim Laden",
-          description: "Die gespeicherte Seed Phrase ist ungültig",
-          variant: "destructive",
-        });
-        return null;
       }
-    } else {
-      console.log("No seed phrase found in Supabase");
-      toast({
-        title: "Keine Seed Phrase gefunden",
-        description: "Es wurde keine gespeicherte Seed Phrase gefunden",
-        variant: "destructive",
-      });
-      return null;
     }
+    
+    console.log("No seed phrase found in Supabase");
+    toast({
+      title: "Keine Seed Phrase gefunden",
+      description: "Es wurde keine gespeicherte Seed Phrase gefunden",
+      variant: "destructive",
+    });
+    return null;
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Ein unerwarteter Fehler ist aufgetreten';
     console.error("Exception loading seed phrase from Supabase:", error);
     toast({
       title: "Fehler beim Laden",
-      description: "Ein unerwarteter Fehler ist aufgetreten",
+      description: errorMessage,
       variant: "destructive",
     });
     return null;
