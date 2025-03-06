@@ -127,7 +127,7 @@ const Auth: React.FC = () => {
         <ArrowLeft size={24} />
       </button>
       
-      <div className="w-full max-w-md bg-wallet-card p-10 sm:p-12 rounded-3xl shadow-lg border border-gray-800 transform transition-all duration-300 animate-scale-in">
+      <div className="w-full max-w-md bg-wallet-card px-8 sm:px-10 py-10 sm:py-12 rounded-3xl shadow-lg border border-gray-800 transform transition-all duration-300 animate-scale-in">
         <h1 className="text-2xl font-bold text-center text-white mb-8">
           {isLogin ? 'Anmelden' : 'Registrieren'}
         </h1>
@@ -179,7 +179,7 @@ const Auth: React.FC = () => {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-wallet-blue hover:bg-wallet-darkBlue text-white py-6 rounded-xl mt-2"
+            className="w-full bg-wallet-blue hover:bg-wallet-darkBlue text-white py-6 rounded-xl mt-4"
           >
             {loading ? (
               <span className="flex items-center justify-center">
