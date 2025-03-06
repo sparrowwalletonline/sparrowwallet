@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -65,7 +66,7 @@ const WalletChoice: React.FC = () => {
     
     setTimeout(() => {
       cancelWalletCreation();
-      navigate('/');
+      navigate('/wallet-intro');
       
       setTimeout(() => {
         document.body.classList.remove('page-exit');
