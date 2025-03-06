@@ -50,9 +50,9 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
-  // Get the user's preferred color scheme
+  // Get the user's preferred color scheme but default to light
   const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const defaultTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
+  const defaultTheme = localStorage.getItem('theme') || 'light'; // Changed to default to light
   
   return (
     <ThemeProvider defaultTheme={defaultTheme} storageKey="wallet-theme" attribute="class">

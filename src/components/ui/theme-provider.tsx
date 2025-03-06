@@ -6,7 +6,12 @@ import { ThemeProvider as NextThemesProvider, useTheme as useNextTheme } from "n
 import { type ThemeProviderProps } from "next-themes/dist/types"
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>
+  // Set defaultTheme prop to "light" if not provided
+  const updatedProps = {
+    ...props,
+    defaultTheme: props.defaultTheme || "light",
+  };
+  return <NextThemesProvider {...updatedProps}>{children}</NextThemesProvider>
 }
 
 export const useTheme = () => {
