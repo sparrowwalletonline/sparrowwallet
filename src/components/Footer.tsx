@@ -21,7 +21,7 @@ const Footer = () => {
       <div className="container mx-auto px-6 md:px-8 lg:px-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           {/* Logo and company info */}
-          <div className="col-span-1">
+          <div className="col-span-1 px-4">
             <div className="flex items-center gap-2 mb-4">
               <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" />
               <span className="font-heading text-xl font-bold text-white">Sparrow Wallet</span>
@@ -40,7 +40,7 @@ const Footer = () => {
           </div>
 
           {/* Links column 1 */}
-          <div>
+          <div className="px-4">
             <h3 className="font-medium text-white mb-4">Resources</h3>
             <ul className="space-y-2">
               <li>
@@ -71,7 +71,7 @@ const Footer = () => {
           </div>
 
           {/* Links column 2 */}
-          <div>
+          <div className="px-4">
             <h3 className="font-medium text-white mb-4">About</h3>
             <ul className="space-y-2">
               <li>
@@ -102,7 +102,7 @@ const Footer = () => {
           </div>
 
           {/* Online version message */}
-          <div>
+          <div className="px-4">
             <h3 className="font-medium text-white mb-4">Online Version</h3>
             <p className="text-sm mb-4">This is the online version of Sparrow Wallet. For the most secure experience, consider downloading the desktop version.</p>
             <a 
@@ -115,7 +115,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="pt-6 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center">
+        <div className="pt-6 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center px-4">
           <p className="text-sm">© {new Date().getFullYear()} Sparrow Wallet. MIT Licensed. Open Source Software.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="https://sparrowwallet.com/" className="text-sm hover:text-blue-400 transition-colors flex items-center gap-1">
