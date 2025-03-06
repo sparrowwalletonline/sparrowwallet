@@ -86,7 +86,7 @@ const Register: React.FC = () => {
         <div className="w-full max-w-md space-y-8">
           <div className="text-center relative">
             <div className="absolute -top-24 -z-10 left-1/2 transform -translate-x-1/2">
-              <div className="w-56 h-56 rounded-full bg-gradient-to-br from-primary/10 to-primary/5 blur-3xl"></div>
+              <div className="w-56 h-56 rounded-full bg-gradient-to-br from-blue-500/10 to-blue-400/5 blur-3xl"></div>
             </div>
             <WalletLogo 
               useSparrowLogo={true} 
@@ -178,12 +178,12 @@ const Register: React.FC = () => {
                     type="checkbox"
                     checked={acceptTerms}
                     onChange={(e) => setAcceptTerms(e.target.checked)}
-                    className="w-4 h-4 border-gray-300 rounded text-primary focus:ring-primary"
+                    className="w-4 h-4 border-gray-300 rounded text-blue-600 focus:ring-blue-500"
                   />
                 </div>
                 <div className="ml-3 text-sm">
                   <label htmlFor="terms" className="text-gray-600">
-                    Ich akzeptiere die <a href="/terms" className="text-primary hover:underline font-medium">AGB</a> und <a href="/privacy" className="text-primary hover:underline font-medium">Datenschutzerklärung</a>
+                    Ich akzeptiere die <a href="/terms" className="text-blue-600 hover:underline font-medium">AGB</a> und <a href="/privacy" className="text-blue-600 hover:underline font-medium">Datenschutzerklärung</a>
                   </label>
                 </div>
               </div>
@@ -191,7 +191,7 @@ const Register: React.FC = () => {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-white font-medium py-6 transition-all duration-300"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-medium py-6 transition-all duration-300"
               >
                 {loading ? (
                   <span className="flex items-center justify-center">
@@ -214,7 +214,7 @@ const Register: React.FC = () => {
               <button
                 type="button"
                 onClick={handleLoginClick}
-                className="ml-1 text-primary hover:text-primary/80 font-medium"
+                className="ml-1 text-blue-600 hover:text-blue-700 font-medium"
               >
                 Anmelden
               </button>
