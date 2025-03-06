@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -245,8 +246,8 @@ const Register: React.FC = () => {
                   >
                     Ich akzeptiere die <a href="/terms" className="text-blue-600 hover:underline font-medium">AGB</a> und <a href="/privacy" className="text-blue-600 hover:underline font-medium">Datenschutzerklärung</a>
                   </Label>
-                  <p className="text-xs text-gray-500 mt-2 flex items-center gap-1.5">
-                    <Shield className="h-3.5 w-3.5 text-blue-500 flex-shrink-0" />
+                  <p className="text-xs text-gray-500 mt-1 flex items-center">
+                    <Shield className="h-3 w-3 text-blue-500 mr-1 inline-flex" />
                     Deine Daten sind bei uns sicher und werden nicht an Dritte weitergegeben
                   </p>
                 </div>
