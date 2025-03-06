@@ -1,4 +1,3 @@
-
 import { Session } from '@supabase/supabase-js';
 import { CryptoPrice } from '../utils/cryptoPriceUtils';
 
@@ -59,4 +58,5 @@ export interface WalletContextType {
   setPin: (pin: string) => void;
   pinVerified: boolean;
   setPinVerified: (value: boolean) => void;
+  sendBitcoin: (recipientAddress: string, amount: number) => Promise<void>;
 }

@@ -1,10 +1,11 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useWallet } from '@/contexts/WalletContext';
-import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/components/ui/use-toast';
+import { Loader2 } from 'lucide-react';
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -14,20 +15,21 @@ interface ConfirmDialogProps {
   btcPrice: number;
 }
 
-export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
+const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   open,
   setOpen,
   recipientAddress,
   amount,
   btcPrice
 }) => {
-  const { sendBitcoin, activeWallet } = useWallet();
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [recipientUsername, setRecipientUsername] = React.useState<string | null>(null);
+  const { activeWallet, sendBitcoin } = useWallet();
+  const [isLoading, setIsLoading] = useState(false);
+  const [recipientUsername, setRecipientUsername] = useState<string | null>(null);
   
-  // Check if the recipient address belongs to a registered user
-  React.useEffect(() => {
-    const getUsernameByWalletAddress = async () => {
+  useEffect(() => {
+    const fetchRecipientUsername = async () => {
+      if (!recipientAddress) return;
+      
       try {
         const { data, error } = await supabase
           .from('user_wallets')
@@ -40,42 +42,44 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           .eq('wallet_address', recipientAddress)
           .single();
         
-        if (data && data.profiles.username) {
+        if (!error && data && data.profiles && data.profiles.username) {
           setRecipientUsername(data.profiles.username);
         }
       } catch (error) {
         console.error("Error fetching username:", error);
       }
     };
-
-    if (recipientAddress) {
-      getUsernameByWalletAddress();
-    }
+    
+    fetchRecipientUsername();
   }, [recipientAddress]);
-
+  
   const handleConfirm = async () => {
+    if (!activeWallet || !recipientAddress || amount <= 0) return;
+    
     setIsLoading(true);
+    
     try {
       await sendBitcoin(recipientAddress, amount);
-      setOpen(false);
+      
       toast({
         title: "Transaktion erfolgreich",
-        description: `${amount} BTC wurden erfolgreich versendet`,
+        description: "Die Bitcoins wurden erfolgreich gesendet.",
       });
+      
+      setOpen(false);
     } catch (error) {
-      console.error("Transaction error:", error);
+      console.error("Error sending Bitcoin:", error);
+      
       toast({
-        title: "Transaktion fehlgeschlagen",
-        description: "Es gab ein Problem bei der Verarbeitung der Transaktion",
+        title: "Fehler bei der Transaktion",
+        description: "Die Transaktion konnte nicht durchgeführt werden.",
         variant: "destructive",
       });
     } finally {
       setIsLoading(false);
     }
   };
-
-  if (!open) return null;
-
+  
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-md">
@@ -83,7 +87,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           <DialogTitle>Transaktion bestätigen</DialogTitle>
         </DialogHeader>
         
-        <div className="space-y-6">
+        <div className="space-y-4 py-2">
           <div className="space-y-2">
             <h3 className="text-sm font-medium">Absender</h3>
             <div className="p-3 bg-muted rounded-md">
@@ -105,32 +109,30 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           <div className="space-y-2">
             <h3 className="text-sm font-medium">Details</h3>
             <div className="grid grid-cols-2 gap-2">
-              <div className="p-3 bg-muted rounded-md">
-                <p className="text-xs text-muted-foreground">Betrag</p>
+              <div className="p-3 bg-muted rounded-md space-y-1">
+                <p className="text-xs text-muted-foreground">Betrag (BTC)</p>
                 <p className="font-medium">{amount} BTC</p>
               </div>
-              
-              <div className="p-3 bg-muted rounded-md">
-                <p className="text-xs text-muted-foreground">Wert in USD</p>
+              <div className="p-3 bg-muted rounded-md space-y-1">
+                <p className="text-xs text-muted-foreground">Wert (USD)</p>
                 <p className="font-medium">${(amount * btcPrice).toFixed(2)}</p>
-              </div>
-              
-              <div className="p-3 bg-muted rounded-md col-span-2">
-                <p className="text-xs text-muted-foreground">Netzwerkgebühr</p>
-                <p className="font-medium">0.0001 BTC</p>
               </div>
             </div>
           </div>
           
-          <div className="flex justify-end space-x-2 pt-4">
-            <Button variant="outline" onClick={() => setOpen(false)}>
+          <div className="pt-2 flex justify-end space-x-2">
+            <Button variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
               Abbrechen
             </Button>
-            <Button 
-              onClick={handleConfirm}
-              disabled={isLoading}
-            >
-              {isLoading ? "Wird verarbeitet..." : "Bestätigen"}
+            <Button onClick={handleConfirm} disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 
+                  Wird gesendet...
+                </>
+              ) : (
+                "Bestätigen"
+              )}
             </Button>
           </div>
         </div>
@@ -138,3 +140,5 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
     </Dialog>
   );
 };
+
+export default ConfirmDialog;

@@ -1,10 +1,11 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, Search, User } from 'lucide-react';
+import { AlertCircle, Loader2, Search, User } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface UserSearchProps {
   onSelectUser: (address: string, username: string) => void;
@@ -21,24 +22,14 @@ export const UserSearch: React.FC<UserSearchProps> = ({ onSelectUser }) => {
   const [isSearching, setIsSearching] = useState(false);
   const [results, setResults] = useState<UserResult[]>([]);
   const [noResults, setNoResults] = useState(false);
-
-  useEffect(() => {
-    const searchTimeout = setTimeout(() => {
-      if (searchQuery.trim().length >= 3) {
-        handleSearch();
-      } else {
-        setResults([]);
-        setNoResults(false);
-      }
-    }, 500);
-
-    return () => clearTimeout(searchTimeout);
-  }, [searchQuery]);
-
+  
   const handleSearch = async () => {
-    if (searchQuery.trim().length < 3) return;
+    if (!searchQuery || searchQuery.length < 2) {
+      return;
+    }
     
     setIsSearching(true);
+    setResults([]);
     setNoResults(false);
     
     try {
@@ -56,20 +47,22 @@ export const UserSearch: React.FC<UserSearchProps> = ({ onSelectUser }) => {
 
       if (error) throw error;
 
-      const formattedResults = data
-        ? data.map(profile => ({
+      if (data && Array.isArray(data)) {
+        const formattedResults = data
+          .map(profile => ({
             id: profile.id,
             username: profile.username || '',
-            wallet_address: profile.user_wallets[0]?.wallet_address || ''
+            wallet_address: profile.user_wallets && 
+                           profile.user_wallets.length > 0 ? 
+                           profile.user_wallets[0].wallet_address : ''
           }))
-        .filter(result => result.wallet_address !== '') // Only include users with wallets
-        : [];
-      
-      setResults(formattedResults);
-      setNoResults(formattedResults.length === 0);
+          .filter(result => result.wallet_address !== ''); // Only include users with wallets
+        
+        setResults(formattedResults);
+        setNoResults(formattedResults.length === 0);
+      }
     } catch (error) {
-      console.error("Error searching users:", error);
-      setResults([]);
+      console.error('Search error:', error);
       setNoResults(true);
     } finally {
       setIsSearching(false);
@@ -79,7 +72,7 @@ export const UserSearch: React.FC<UserSearchProps> = ({ onSelectUser }) => {
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="user-search">Nutzer suchen</Label>
+        <Label htmlFor="user-search">Nutzername suchen</Label>
         <div className="relative">
           <Input
             id="user-search"
@@ -87,56 +80,53 @@ export const UserSearch: React.FC<UserSearchProps> = ({ onSelectUser }) => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pr-10"
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
           />
-          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-            {isSearching ? (
-              <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-            ) : (
-              <Search className="h-4 w-4 text-muted-foreground" />
-            )}
-          </div>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="absolute right-0 top-0 h-full" 
+            onClick={handleSearch}
+            disabled={isSearching}
+          >
+            {isSearching ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
+          </Button>
         </div>
       </div>
       
       {results.length > 0 && (
         <div className="space-y-2">
-          <p className="text-sm text-muted-foreground">Ergebnisse</p>
-          <div className="space-y-2 max-h-60 overflow-y-auto">
-            {results.map((user) => (
-              <div
-                key={user.id}
-                className="p-3 border rounded-md flex justify-between items-center hover:bg-accent cursor-pointer"
-                onClick={() => onSelectUser(user.wallet_address, user.username)}
-              >
-                <div>
-                  <div className="flex items-center gap-2">
-                    <User className="h-4 w-4 text-muted-foreground" />
-                    <span className="font-medium">{user.username}</span>
-                  </div>
-                  <div className="text-xs text-muted-foreground truncate max-w-[220px]">
-                    {user.wallet_address}
-                  </div>
+          {results.map(user => (
+            <div
+              key={user.id}
+              className="p-3 border rounded-md flex justify-between items-center hover:bg-accent cursor-pointer"
+              onClick={() => onSelectUser(user.wallet_address, user.username)}
+            >
+              <div>
+                <div className="flex items-center gap-2">
+                  <User className="h-4 w-4 text-muted-foreground" />
+                  <span className="font-medium">{user.username}</span>
                 </div>
-                <Button variant="ghost" size="sm">
-                  Auswählen
-                </Button>
+                <div className="text-xs text-muted-foreground truncate max-w-[220px]">
+                  {user.wallet_address}
+                </div>
               </div>
-            ))}
-          </div>
+              <Button size="sm" variant="ghost">Auswählen</Button>
+            </div>
+          ))}
         </div>
       )}
       
-      {noResults && searchQuery.trim().length >= 3 && (
-        <div className="text-center p-4 text-muted-foreground">
-          Keine Benutzer gefunden
-        </div>
-      )}
-
-      {searchQuery.trim().length < 3 && searchQuery.trim().length > 0 && (
-        <div className="text-center p-4 text-muted-foreground">
-          Bitte gib mindestens 3 Zeichen ein
-        </div>
+      {noResults && (
+        <Alert>
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>
+            Keine Benutzer gefunden. Versuche es mit einem anderen Suchmuster.
+          </AlertDescription>
+        </Alert>
       )}
     </div>
   );
 };
+
+export default UserSearch;

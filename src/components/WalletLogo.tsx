@@ -9,20 +9,18 @@ interface WalletLogoProps {
 
 const WalletLogo: React.FC<WalletLogoProps> = ({ 
   className, 
-  color = 'sparrow', // Change default to sparrow
-  useSparrowLogo = true // Change default to true
+  color = 'sparrow', 
+  useSparrowLogo = true 
 }) => {
-  // If using the sparrow logo, return the image
+  // If using the sparrow logo, return the image without background
   if (useSparrowLogo) {
     return (
       <div className={`flex items-center ${className}`}>
-        <div className="rounded-md flex items-center justify-center shadow-lg relative overflow-hidden">
-          <img 
-            src="/lovable-uploads/311d7952-d195-4eb5-8b1a-17ed65abc660.png" 
-            alt="Sparrow Logo" 
-            className="w-full h-full object-contain" 
-          />
-        </div>
+        <img 
+          src="/lovable-uploads/311d7952-d195-4eb5-8b1a-17ed65abc660.png" 
+          alt="Sparrow Logo" 
+          className="w-full h-full object-contain" 
+        />
       </div>
     );
   }
