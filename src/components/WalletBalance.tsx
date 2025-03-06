@@ -10,6 +10,8 @@ import { copyToClipboard } from '@/utils/clipboardUtils';
 import { getQrCodeValue } from '@/utils/encryptionUtils';
 import { useTheme } from '@/components/ui/theme-provider';
 import AnalyticsChart from './AnalyticsChart';
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
+import { Shield } from "lucide-react";
 
 interface Token {
   id: string;
@@ -41,6 +43,8 @@ const WalletBalance: React.FC = () => {
   const initialLoadRef = useRef(true);
   
   const [selectedAction, setSelectedAction] = useState<'send' | 'receive' | null>(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isConfirmingTransaction, setIsConfirmingTransaction] = useState(false);
   
   useEffect(() => {
     const prevBalance = prevBalanceRef.current;
@@ -205,6 +209,23 @@ const WalletBalance: React.FC = () => {
     if (selectedToken) {
       setAmount(selectedToken.balance.toString());
     }
+  };
+
+  const handlePreviewTransaction = () => {
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmTransaction = () => {
+    setIsConfirmingTransaction(true);
+    setTimeout(() => {
+      toast({
+        title: "Transaktion in Bearbeitung",
+        description: `${amount} ${selectedToken?.symbol} werden an ${recipientAddress} gesendet.`,
+      });
+      setShowConfirmation(false);
+      setIsSendDialogOpen(false);
+      setIsConfirmingTransaction(false);
+    }, 1000);
   };
 
   const handleSend = () => {
@@ -417,13 +438,77 @@ const WalletBalance: React.FC = () => {
             <Button 
               variant="wallet" 
               className="w-full"
-              onClick={handleSend}
+              onClick={handlePreviewTransaction}
             >
               Vorschau
             </Button>
           </div>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <Shield className="h-5 w-5 text-green-500" />
+              Transaktion bestätigen
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              <div className="space-y-4">
+                <div className="bg-secondary/50 p-4 rounded-lg space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Token:</span>
+                    <span className="font-medium">{selectedToken?.symbol}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Betrag:</span>
+                    <span className="font-medium">{amount} {selectedToken?.symbol}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Empfänger:</span>
+                    <span className="font-medium">{recipientAddress}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Netzwerk:</span>
+                    <span className="font-medium">{selectedToken?.network}</span>
+                  </div>
+                </div>
+
+                <div className="bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-300 dark:border-yellow-700 p-3 rounded-lg">
+                  <div className="flex items-start gap-3 text-yellow-700 dark:text-yellow-500">
+                    <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium">Wichtige Sicherheitshinweise:</p>
+                      <ul className="text-sm list-disc pl-4 space-y-1">
+                        <li>Überprüfen Sie die Empfängeradresse sorgfältig</li>
+                        <li>Stellen Sie sicher, dass der Betrag korrekt ist</li>
+                        <li>Transaktionen können nicht rückgängig gemacht werden</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction
+              disabled={isConfirmingTransaction}
+              onClick={handleConfirmTransaction}
+              className="bg-[#0500ff] text-primary-foreground hover:bg-[#0500ff]/90"
+            >
+              {isConfirmingTransaction ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Wird bestätigt...
+                </div>
+              ) : (
+                "Bestätigen & Senden"
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <Dialog open={isReceiveDialogOpen} onOpenChange={setIsReceiveDialogOpen}>
         <DialogContent fullScreen className={`dialog-content max-w-full md:max-w-3xl overflow-hidden flex flex-col`}>
