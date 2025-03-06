@@ -217,7 +217,7 @@ const WalletViewContent: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Header title="Sparrow" />
       
-      <div className="px-4 mb-1">
+      <div className="px-4 mb-0">
         <div className="flex items-center">
           <DropdownMenu open={isDropdownOpen} onOpenChange={handleDropdownOpenChange}>
             <DropdownMenuTrigger asChild>
