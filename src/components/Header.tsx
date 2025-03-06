@@ -18,7 +18,8 @@ const Header = ({
   className = "", 
   showMenuToggle = false, 
   showWalletInfo = false, 
-  showTutorial = false 
+  showTutorial = false,
+  showProfileButton = true
 }: { 
   title: string; 
   showBack?: boolean; 
@@ -27,6 +28,7 @@ const Header = ({
   showMenuToggle?: boolean;
   showWalletInfo?: boolean;
   showTutorial?: boolean;
+  showProfileButton?: boolean;
 }) => {
   const navigate = useNavigate();
   const { toggleMenu } = useMenu();
@@ -81,7 +83,7 @@ const Header = ({
         )}
         
         <ThemeToggle />
-        <ProfileButton />
+        {showProfileButton && <ProfileButton />}
       </div>
     </header>
   );

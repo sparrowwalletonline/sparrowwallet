@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -103,7 +104,7 @@ const Register: React.FC = () => {
   
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-white to-gray-50">
-      <Header title="Sparrow" showBack={true} className="bg-transparent shadow-none" />
+      <Header title="Sparrow" showBack={true} className="bg-transparent shadow-none" showProfileButton={false} />
       
       <div className="flex-1 flex flex-col items-center justify-center p-4">
         <motion.div 
