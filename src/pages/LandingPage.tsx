@@ -348,7 +348,10 @@ const LandingPage = () => {
       <header className="w-full p-6 flex justify-between items-center">
         <div className="flex items-center gap-2">
           <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" />
-          <span className="font-heading text-xl font-bold">Sparrow Wallet</span>
+          <div>
+            <span className="font-heading text-xl font-bold">Sparrow Wallet</span>
+            <p className="text-xs text-gray-600 dark:text-gray-400 -mt-1">Financial self sovereignty</p>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <ThemeToggle className="mr-2" />

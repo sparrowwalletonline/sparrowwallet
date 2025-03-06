@@ -58,7 +58,10 @@ const Header = ({
               alt="Sparrow Logo" 
               className="w-8 h-8 object-contain" 
             />
-            <h1 className="text-2xl font-bold">{title}</h1>
+            <div>
+              <h1 className="text-2xl font-bold leading-tight">{title}</h1>
+              <p className="text-xs text-gray-600 dark:text-gray-400 -mt-1">Financial self sovereignty</p>
+            </div>
           </div>
         ) : (
           <h1 className="text-xl font-medium">{title}</h1>
