@@ -10,7 +10,7 @@ import {
   DialogDescription,
   DialogClose
 } from '@/components/ui/dialog';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
@@ -21,6 +21,7 @@ import { Link } from 'react-router-dom';
 import { Switch } from '@/components/ui/switch';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useWallet } from '@/contexts/WalletContext';
+import { motion } from 'framer-motion';
 
 const CreateWalletButton = () => {
   const navigate = useNavigate();
@@ -34,12 +35,33 @@ const CreateWalletButton = () => {
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordFeedback, setPasswordFeedback] = useState('');
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [errors, setErrors] = useState({
     email: '',
     password: '',
     confirmPassword: '',
     terms: ''
   });
+
+  useEffect(() => {
+    if (isLoading) {
+      const interval = setInterval(() => {
+        setProgress((prevProgress) => {
+          if (prevProgress >= 100) {
+            clearInterval(interval);
+            return 100;
+          }
+          return prevProgress + (100 / 5) / 10; // Divide by 10 for smoother animation (10 updates per second)
+        });
+      }, 100);
+      
+      return () => {
+        clearInterval(interval);
+      };
+    } else {
+      setProgress(0);
+    }
+  }, [isLoading]);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -143,27 +165,29 @@ const CreateWalletButton = () => {
     
     setIsLoading(true);
     
-    try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-      
-      if (error) throw error;
-      
-      setIsRegisterOpen(false);
-      setIsSuccessOpen(true);
-      
-    } catch (error) {
-      console.error("Registration error:", error);
-      toast({
-        title: "Registrierung fehlgeschlagen",
-        description: error instanceof Error ? error.message : "Bitte versuche es mit einer anderen E-Mail-Adresse",
-        variant: "destructive"
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    setTimeout(async () => {
+      try {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+        
+        if (error) throw error;
+        
+        setIsRegisterOpen(false);
+        setIsSuccessOpen(true);
+        
+      } catch (error) {
+        console.error("Registration error:", error);
+        toast({
+          title: "Registrierung fehlgeschlagen",
+          description: error instanceof Error ? error.message : "Bitte versuche es mit einer anderen E-Mail-Adresse",
+          variant: "destructive"
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }, 5000); // 5 second delay
   };
 
   const handleSuccessModalClose = () => {
@@ -305,10 +329,20 @@ const CreateWalletButton = () => {
                   className="bg-wallet-blue hover:bg-wallet-darkBlue"
                 >
                   {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Registriere...
-                    </>
+                    <div className="flex flex-col items-center w-full">
+                      <div className="flex items-center justify-center">
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        <span>Registriere...</span>
+                      </div>
+                      <div className="w-full bg-blue-400/30 h-1 rounded-full overflow-hidden mt-1">
+                        <motion.div
+                          className="h-full bg-white"
+                          initial={{ width: 0 }}
+                          animate={{ width: `${progress}%` }}
+                          transition={{ duration: 0.1 }}
+                        />
+                      </div>
+                    </div>
                   ) : "Registrieren"}
                 </Button>
               </div>

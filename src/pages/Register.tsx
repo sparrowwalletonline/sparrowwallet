@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
@@ -23,7 +23,28 @@ const Register: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordFeedback, setPasswordFeedback] = useState('');
+  const [progress, setProgress] = useState(0);
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (loading) {
+      const interval = setInterval(() => {
+        setProgress((prevProgress) => {
+          if (prevProgress >= 100) {
+            clearInterval(interval);
+            return 100;
+          }
+          return prevProgress + (100 / 5) / 10; // Divide by 10 for smoother animation (10 updates per second)
+        });
+      }, 100);
+      
+      return () => {
+        clearInterval(interval);
+      };
+    } else {
+      setProgress(0);
+    }
+  }, [loading]);
   
   const checkPasswordStrength = (password: string) => {
     let strength = 0;
@@ -104,34 +125,37 @@ const Register: React.FC = () => {
     
     setLoading(true);
     
-    try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-      
-      if (error) throw error;
-      
-      toast({
-        title: "Registrierung erfolgreich",
-        description: "Bitte überprüfe deine E-Mail, um die Registrierung abzuschließen",
-        duration: 3000,
-      });
-      
-      // Redirect to wallet-intro page directly after successful registration
-      navigate('/wallet-intro');
-    } catch (error) {
-      if (error instanceof Error) {
+    // Add a 5-second delay
+    setTimeout(async () => {
+      try {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+        
+        if (error) throw error;
+        
         toast({
-          title: "Fehler",
-          description: error.message,
-          variant: "destructive",
+          title: "Registrierung erfolgreich",
+          description: "Bitte überprüfe deine E-Mail, um die Registrierung abzuschließen",
           duration: 3000,
         });
+        
+        // Redirect to wallet-intro page directly after successful registration
+        navigate('/wallet-intro');
+      } catch (error) {
+        if (error instanceof Error) {
+          toast({
+            title: "Fehler",
+            description: error.message,
+            variant: "destructive",
+            duration: 3000,
+          });
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
-    }
+    }, 5000); // 5 second delay
   };
   
   const handleLoginClick = () => {
@@ -331,13 +355,23 @@ const Register: React.FC = () => {
                   className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-medium py-6 transition-all duration-300 relative overflow-hidden group"
                 >
                   {loading ? (
-                    <span className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Registrieren...
-                    </span>
+                    <div className="flex flex-col items-center w-full">
+                      <div className="flex items-center justify-center mb-2">
+                        <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>Registrieren...</span>
+                      </div>
+                      <div className="w-full bg-blue-400/30 h-1 rounded-full overflow-hidden mt-1">
+                        <motion.div
+                          className="h-full bg-white"
+                          initial={{ width: 0 }}
+                          animate={{ width: `${progress}%` }}
+                          transition={{ duration: 0.1 }}
+                        />
+                      </div>
+                    </div>
                   ) : (
                     <>
                       <span className="z-10 relative">Registrieren</span>
