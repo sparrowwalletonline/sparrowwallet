@@ -135,7 +135,10 @@ const WalletApp: React.FC = () => {
 // Main component with provider
 const Index: React.FC = () => {
   return (
-    <div className="min-h-screen bg-wallet-darkBg flex justify-center w-full">
+    <div className="min-h-screen bg-wallet-darkBg flex flex-col justify-center items-center w-full">
+      <h1 className="text-3xl font-bold text-white mb-8 text-center z-10">
+        Welcome to Sparrow Wallet
+      </h1>
       <MenuProvider>
         <WalletProvider>
           <WalletApp />
