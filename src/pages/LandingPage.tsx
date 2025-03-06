@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
-import { ArrowRight, Check, Menu, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift, Coins, Wallet, Search, X, Loader2, Star, ExternalLink } from 'lucide-react';
+import { ArrowRight, Check, Menu, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift, Coins, Wallet, Search, X, Loader2, Star, ExternalLink, Lock, Zap } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import { useMenu } from '@/contexts/MenuContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -318,7 +319,7 @@ const LandingPage = () => {
 
   console.log("Rendering LandingPage component");
   return <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
-      <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm bg-white/70 dark:bg-black/20 sticky top-0 z-50">
+      <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm bg-white/70 dark:bg-black/20 sticky top-0 z-40">
         <div className="flex items-center gap-2">
           <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" />
           <div>
@@ -429,60 +430,63 @@ const LandingPage = () => {
           </div>
         </section>
         
-        <section className="py-20 my-12 px-6">
-          <div className="relative max-w-screen-xl mx-auto rounded-3xl overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-blue-500 via-blue-600 to-blue-900"></div>
-            
-            <div className="relative py-20 px-6 text-white">
-              <div className="text-center mb-12">
-                <h2 className="font-heading text-4xl font-bold mb-6">Bitcoin Online<br />Freedom Everywhere</h2>
-                <p className="text-blue-50 max-w-2xl mx-auto text-lg">
-                  Sparrow provides a powerful platform for interacting with the Bitcoin network, whether you're a beginner or an advanced user.
-                  Now accessible from any web browser, anywhere.
-                </p>
-              </div>
-              
-              <div className="bg-white rounded-3xl max-w-xl mx-auto overflow-hidden text-gray-800 shadow-2xl transform transition-transform hover:scale-[1.02]">
-                <div className="p-6">
-                  <div className="border-b border-gray-100 pb-4 mb-4">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-full bg-orange-400 flex items-center justify-center text-white">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M23.638 14.904c-1.602 6.425-8.113 10.334-14.542 8.746C2.67 22.052-1.244 15.546.345 9.105 1.952 2.677 8.458-1.233 14.895.355c6.447 1.605 10.346 8.11 8.743 14.549z" fill="#FFF" />
-                          <path d="M17.291 10.174c.25-1.669-.998-2.564-2.7-3.165l.55-2.212-1.346-.336-.535 2.151c-.355-.088-.717-.172-1.078-.253l.54-2.165-1.344-.336-.552 2.21a44.184 44.184 0 01-.86-.202l.001-.007-1.855-.463-.358 1.437s.998.23.978.244c.545.136.644.497.627.784l-.627 2.518c.037.01.087.024.14.046l-.142-.036-.879 3.524c-.067.166-.236.414-.618.32.013.02-.979-.244-.979-.244l-.67 1.545 1.75.437c.325.082.644.167.958.247l-.558 2.24 1.342.336.558-2.234c2.297.435 4.03.26 4.758-1.818.586-1.674-.03-2.641-1.237-3.267.879-.203 1.544-.78 1.723-1.974zm-3.081 4.298c-.417 1.674-3.233.77-4.147.542l.74-2.967c.914.228 3.85.68 3.407 2.425zm.415-4.348c-.38 1.52-2.725.747-3.487.557l.67-2.693c.762.19 3.217.543 2.817 2.136z" fill="#FFF" />
-                        </svg>
-                      </div>
-                      <span className="font-semibold">Bitcoin (BTC)</span>
+        {/* Updated Bitcoin Online Freedom Everywhere section */}
+        <section className="py-20 px-6 my-12">
+          <div className="max-w-screen-xl mx-auto rounded-3xl overflow-hidden bg-gradient-to-r from-indigo-500/5 to-purple-500/5 dark:from-indigo-900/20 dark:to-purple-900/20 backdrop-blur-sm border border-gray-100 dark:border-gray-800 shadow-lg">
+            <div className="py-16 px-6">
+              <div className="max-w-3xl mx-auto">
+                <div className="text-center mb-12">
+                  <h2 className="font-heading text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-wallet-blue to-indigo-600 bg-clip-text text-transparent">Bitcoin Everywhere</h2>
+                  <p className="text-gray-600 dark:text-gray-300 text-lg">
+                    Take control of your bitcoin with a powerful wallet built for both beginners and experts.
+                  </p>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="p-6 rounded-xl bg-white/80 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col items-center text-center transition-all hover:shadow-md hover:-translate-y-1">
+                    <div className="w-12 h-12 mb-4 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-wallet-blue">
+                      <Globe className="w-6 h-6" />
                     </div>
-                    
-                    <div className="space-y-3 ml-13">
-                      <SupportedFeature label="Transaction Control" supported={true} />
-                      <SupportedFeature label="Coin Selection" supported={true} />
-                      <SupportedFeature label="UTXO Management" supported={true} />
-                      <SupportedFeature label="Multiple Hardware Wallets" supported={true} />
-                      <SupportedFeature label="Online Access" supported={true} />
+                    <h3 className="font-semibold text-lg mb-2">Global Access</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                      Access your bitcoin from anywhere with our secure web interface
+                    </p>
+                  </div>
+                  
+                  <div className="p-6 rounded-xl bg-white/80 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col items-center text-center transition-all hover:shadow-md hover:-translate-y-1">
+                    <div className="w-12 h-12 mb-4 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                      <Lock className="w-6 h-6" />
                     </div>
+                    <h3 className="font-semibold text-lg mb-2">Self-Custody</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                      Stay in control with keys that never leave your device
+                    </p>
+                  </div>
+                  
+                  <div className="p-6 rounded-xl bg-white/80 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col items-center text-center transition-all hover:shadow-md hover:-translate-y-1">
+                    <div className="w-12 h-12 mb-4 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                      <Zap className="w-6 h-6" />
+                    </div>
+                    <h3 className="font-semibold text-lg mb-2">Full Control</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                      Manage your UTXOs with advanced coin selection features
+                    </p>
                   </div>
                 </div>
+                
+                <div className="mt-12 text-center">
+                  <Button onClick={handleCreateWallet} disabled={isLoading} className="bg-wallet-blue hover:bg-wallet-darkBlue text-white py-3 px-8">
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Loading...
+                      </>
+                    ) : (
+                      <>Start Using Sparrow</>
+                    )}
+                  </Button>
+                </div>
               </div>
-            </div>
-          </div>
-        </section>
-        
-        <section className="py-20 px-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-3xl mx-6 my-12">
-          <div className="max-w-screen-xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="font-heading text-3xl font-bold mb-4">Features For Power Users</h2>
-              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Sparrow Wallet gives you complete control over your bitcoin with advanced features now accessible from anywhere.
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <AssetCard icon={<Globe className="h-6 w-6" />} title="Web Access" description="Use Sparrow from any browser, anywhere in the world" color="indigo" />
-              <AssetCard icon={<Coins className="h-6 w-6" />} title="UTXO Control" description="Full control over your unspent transaction outputs" color="purple" />
-              <AssetCard icon={<Shield className="h-6 w-6" />} title="Self-Custody" description="Your keys, your coins - you maintain control" color="blue" />
-              <AssetCard icon={<Wallet className="h-6 w-6" />} title="Multiple Wallets" description="Manage multiple wallets for different purposes" color="teal" />
             </div>
           </div>
         </section>
