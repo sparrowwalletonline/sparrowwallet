@@ -184,25 +184,6 @@ const WalletBalance: React.FC = () => {
         <CryptoAction icon="earn" label="Earn" />
       </div>
       
-      <div className={`mt-4 rounded-xl p-4 border ${theme === 'dark' ? 'bg-[#232733] border-gray-800' : 'bg-white border-gray-200'}`}>
-        <div className="flex items-center gap-3">
-          <div className="flex-shrink-0">
-            <img 
-              src="/lovable-uploads/b5f7d5f1-4b8c-465c-ab6e-151090ca29ec.png" 
-              alt="Promotion" 
-              className="w-10 h-10 object-cover rounded-lg"
-            />
-          </div>
-          <div className="flex-1">
-            <div className="flex justify-between items-start">
-              <p className="text-sm font-medium">Add funds from exchange</p>
-              <button className="text-xs text-gray-400">×</button>
-            </div>
-            <p className="text-xs text-wallet-green mt-1">Deposit now →</p>
-          </div>
-        </div>
-      </div>
-
       <Dialog open={isTokenSelectionOpen} onOpenChange={setIsTokenSelectionOpen}>
         <DialogContent fullScreen className={`dialog-content max-w-full md:max-w-3xl overflow-hidden flex flex-col`}>
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800">
