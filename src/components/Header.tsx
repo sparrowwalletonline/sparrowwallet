@@ -58,7 +58,7 @@ const Header = ({
               alt="Sparrow Logo" 
               className="w-8 h-8 object-contain" 
             />
-            <h1 className="text-2xl font-medium">{title}</h1>
+            <h1 className="text-2xl font-bold">{title}</h1>
           </div>
         ) : (
           <h1 className="text-xl font-medium">{title}</h1>
