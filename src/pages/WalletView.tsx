@@ -4,7 +4,6 @@ import { WalletProvider, useWallet } from '@/contexts/WalletContext';
 import { MenuProvider } from '@/contexts/MenuContext';
 import Header from '@/components/Header';
 import WalletBalance from '@/components/WalletBalance';
-import WalletActions from '@/components/WalletActions';
 import ManageCryptoDialog from '@/components/ManageCryptoDialog';
 import ManageWalletsDialog from '@/components/ManageWalletsDialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -337,7 +336,6 @@ const WalletViewContent: React.FC = () => {
       
       <div className="flex-1 flex flex-col px-4">
         <WalletBalance />
-        <WalletActions />
         
         <div className="mt-6">
           <Tabs defaultValue="crypto" className="w-full">
@@ -674,3 +672,4 @@ const WalletView: React.FC = () => {
 };
 
 export default WalletView;
+
