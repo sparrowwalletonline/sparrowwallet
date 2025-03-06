@@ -10,47 +10,40 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '@/components/Footer';
 import CreateWalletButton from '@/components/CreateWalletButton';
 import FeaturesSection from '@/components/FeaturesSection';
+
 const LandingPage = () => {
-  const {
-    generateWallet
-  } = useWallet();
-  const {
-    toggleMenu
-  } = useMenu();
+  const { generateWallet } = useWallet();
+  const { toggleMenu } = useMenu();
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [session, setSession] = useState(null);
   const navigate = useNavigate();
+  
   useEffect(() => {
-    supabase.auth.getSession().then(({
-      data: {
-        session
-      }
-    }) => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
     });
-    const {
-      data: {
-        subscription
-      }
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
+    
     return () => subscription.unsubscribe();
   }, []);
-  const handleCreateWallet = () => {
+  
+  const handleRegisterClick = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      document.querySelector('.create-wallet-trigger')?.dispatchEvent(new MouseEvent('click', {
-        bubbles: true
-      }));
-    }, 3000);
+      navigate('/register');
+    }, 1000);
   };
+  
   const handleMenuClick = () => {
     console.log('Landing page menu button clicked');
     toggleMenu();
   };
+  
   const FeatureCard = ({
     icon,
     title,
@@ -66,6 +59,7 @@ const LandingPage = () => {
         <p className="text-gray-600 text-sm dark:text-gray-400">{description}</p>
       </div>;
   };
+  
   const SecurityCard = ({
     title,
     description
@@ -78,6 +72,7 @@ const LandingPage = () => {
         <p className="text-blue-100 text-sm">{description}</p>
       </div>;
   };
+  
   const AssetCard = ({
     icon,
     title,
@@ -111,6 +106,7 @@ const LandingPage = () => {
         <p className="text-gray-600 text-sm dark:text-gray-400">{description}</p>
       </div>;
   };
+  
   const StepCard = ({
     number,
     title,
@@ -128,6 +124,7 @@ const LandingPage = () => {
         <p className="text-gray-600 text-sm">{description}</p>
       </div>;
   };
+  
   const TestimonialCard = ({
     quote,
     author,
@@ -148,6 +145,7 @@ const LandingPage = () => {
         </div>
       </div>;
   };
+  
   const FAQItem = ({
     question,
     answer
@@ -172,6 +170,7 @@ const LandingPage = () => {
           </div>}
       </div>;
   };
+  
   const SupportedFeature = ({
     label,
     supported
@@ -188,8 +187,11 @@ const LandingPage = () => {
           </div>}
       </div>;
   };
+  
   console.log("Rendering LandingPage component");
-  return <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
+  
+  return (
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
       <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm bg-white/70 dark:bg-black/20 sticky top-0 z-40">
         <div className="flex items-center gap-2">
           <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" animate={false} />
@@ -256,13 +258,21 @@ const LandingPage = () => {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4 pt-4 z-10 relative justify-center lg:justify-start">
-                  <Button onClick={handleCreateWallet} disabled={isLoading} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue">
-                    {isLoading ? <>
+                  <Button 
+                    onClick={handleRegisterClick} 
+                    disabled={isLoading} 
+                    className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
+                  >
+                    {isLoading ? (
+                      <>
                         <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        Creating Wallet...
-                      </> : <>
-                        Create Online Wallet <ArrowRight className="h-4 w-4" />
-                      </>}
+                        Loading...
+                      </>
+                    ) : (
+                      <>
+                        Registrieren <ArrowRight className="h-4 w-4" />
+                      </>
+                    )}
                   </Button>
                   
                   <Button variant="outline" className="w-full sm:w-auto py-6 text-base" onClick={() => window.open('https://sparrowwallet.com/download/', '_blank')}>
@@ -433,11 +443,19 @@ const LandingPage = () => {
             </div>
             
             <div className="mt-16 text-center">
-              <Button onClick={handleCreateWallet} disabled={isLoading} className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-lg font-medium px-[15px]">
-                {isLoading ? <>
+              <Button 
+                onClick={handleRegisterClick} 
+                disabled={isLoading} 
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-lg font-medium px-[15px]"
+              >
+                {isLoading ? (
+                  <>
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                     Loading...
-                  </> : <>Get Started with Sparrow Wallet</>}
+                  </>
+                ) : (
+                  <>Jetzt registrieren</>
+                )}
               </Button>
             </div>
           </div>
@@ -489,11 +507,18 @@ const LandingPage = () => {
                 </div>
                 
                 <div className="mt-12 text-center">
-                  <Button onClick={handleCreateWallet} disabled={isLoading} className="bg-wallet-blue hover:bg-wallet-darkBlue text-white py-3 px-8">
-                    {isLoading ? <>
+                  <Button 
+                    onClick={handleRegisterClick} 
+                    disabled={isLoading} 
+                    className="bg-wallet-blue hover:bg-wallet-darkBlue text-white py-3 px-8"
+                  >
+                    {isLoading ? (
+                      <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         Loading...
-                      </> : <>Start Using Sparrow</>}
+                      </>
+                    ) : (
+                      <>Start Using Sparrow</>}
                   </Button>
                 </div>
               </div>
@@ -527,6 +552,8 @@ const LandingPage = () => {
       <div className="hidden">
         <CreateWalletButton />
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default LandingPage;
