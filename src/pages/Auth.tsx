@@ -127,7 +127,7 @@ const Auth: React.FC = () => {
         <ArrowLeft size={24} />
       </button>
       
-      <div className="w-full max-w-md bg-wallet-card p-8 rounded-xl shadow-lg border border-gray-800">
+      <div className="w-full max-w-md bg-wallet-card p-8 rounded-2xl shadow-lg border border-gray-800 transform transition-all duration-300 animate-scale-in">
         <h1 className="text-2xl font-bold text-center text-white mb-6">
           {isLogin ? 'Anmelden' : 'Registrieren'}
         </h1>
@@ -146,7 +146,7 @@ const Auth: React.FC = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@example.com"
                 required
-                className="pl-10 bg-gray-800 border-gray-700 text-white"
+                className="pl-10 bg-gray-800 border-gray-700 text-white rounded-xl"
               />
             </div>
           </div>
@@ -164,7 +164,7 @@ const Auth: React.FC = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="pl-10 pr-10 bg-gray-800 border-gray-700 text-white"
+                className="pl-10 pr-10 bg-gray-800 border-gray-700 text-white rounded-xl"
               />
               <button
                 type="button"
@@ -179,7 +179,7 @@ const Auth: React.FC = () => {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-wallet-blue hover:bg-wallet-darkBlue text-white py-6"
+            className="w-full bg-wallet-blue hover:bg-wallet-darkBlue text-white py-6 rounded-xl"
           >
             {loading ? (
               <span className="flex items-center justify-center">

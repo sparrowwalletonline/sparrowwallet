@@ -196,9 +196,9 @@ const CreateWalletButton = () => {
 
       {/* Registration Dialog */}
       <Dialog open={isRegisterOpen} onOpenChange={setIsRegisterOpen}>
-        <DialogContent className="bg-white border-gray-200 text-gray-800 dark:bg-wallet-card dark:border-gray-800 dark:text-white max-w-md p-0 overflow-hidden">
+        <DialogContent className="bg-white border-gray-200 text-gray-800 dark:bg-wallet-card dark:border-gray-800 dark:text-white max-w-md p-0 overflow-hidden rounded-2xl m-3">
           <div className="flex flex-col">
-            <div className="bg-blue-50 dark:bg-wallet-blue/10 p-6 flex justify-between items-center">
+            <div className="bg-blue-50 dark:bg-wallet-blue/10 p-8 flex justify-between items-center rounded-t-2xl">
               <div>
                 <DialogTitle className="text-xl font-bold">Registrieren</DialogTitle>
                 <DialogDescription className="text-gray-600 dark:text-gray-400 mt-2">
@@ -208,7 +208,7 @@ const CreateWalletButton = () => {
               <ThemeToggle />
             </div>
             
-            <form onSubmit={handleRegister} className="p-6 space-y-4">
+            <form onSubmit={handleRegister} className="p-8 space-y-5">
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-gray-700 dark:text-gray-300">E-Mail</Label>
                 <Input 
@@ -282,7 +282,7 @@ const CreateWalletButton = () => {
                 {errors.terms && <p className="text-red-500 text-xs mt-1">{errors.terms}</p>}
               </div>
               
-              <div className="mt-6 flex justify-end space-x-3">
+              <div className="mt-8 flex justify-end space-x-3">
                 <DialogClose asChild>
                   <Button type="button" variant="ghost" className="text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                     Abbrechen
@@ -291,7 +291,7 @@ const CreateWalletButton = () => {
                 <Button 
                   type="submit" 
                   disabled={isLoading} 
-                  className="bg-wallet-blue hover:bg-wallet-darkBlue"
+                  className="bg-wallet-blue hover:bg-wallet-darkBlue rounded-xl"
                 >
                   {isLoading ? (
                     <>
@@ -308,8 +308,8 @@ const CreateWalletButton = () => {
 
       {/* Success Dialog */}
       <Dialog open={isSuccessOpen} onOpenChange={setIsSuccessOpen}>
-        <DialogContent className="bg-white border-gray-200 text-gray-800 dark:bg-wallet-card dark:border-gray-800 dark:text-white max-w-md text-center">
-          <div className="flex flex-col items-center justify-center p-6">
+        <DialogContent className="bg-white border-gray-200 text-gray-800 dark:bg-wallet-card dark:border-gray-800 dark:text-white max-w-md text-center rounded-2xl p-8 m-3">
+          <div className="flex flex-col items-center justify-center">
             <div className="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center mb-4">
               <Check className="h-8 w-8 text-white" />
             </div>
@@ -318,7 +318,7 @@ const CreateWalletButton = () => {
               Du wirst jetzt zur Wallet-Auswahl weitergeleitet.
             </DialogDescription>
             
-            <Button onClick={handleSuccessModalClose} className="bg-wallet-blue hover:bg-wallet-darkBlue">
+            <Button onClick={handleSuccessModalClose} className="bg-wallet-blue hover:bg-wallet-darkBlue rounded-xl">
               Weiter
             </Button>
           </div>

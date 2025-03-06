@@ -108,6 +108,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder="Max"
                   required
+                  className="rounded-xl"
                 />
               </div>
               
@@ -119,6 +120,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
                   onChange={(e) => setLastName(e.target.value)}
                   placeholder="Mustermann"
                   required
+                  className="rounded-xl"
                 />
               </div>
             </div>
@@ -131,6 +133,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
                 value={dateOfBirth}
                 onChange={(e) => setDateOfBirth(e.target.value)}
                 required
+                className="rounded-xl"
               />
             </div>
             
@@ -143,6 +146,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="max.mustermann@example.com"
                 required
+                className="rounded-xl"
               />
             </div>
             
@@ -154,6 +158,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+49 123 4567890"
+                className="rounded-xl"
               />
             </div>
             
@@ -177,12 +182,13 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
                 onClick={handleBack}
                 variant="outline"
                 disabled={isLoading}
+                className="rounded-xl"
               >
                 Abbrechen
               </Button>
               <Button 
                 type="submit"
-                className="shadow-md hover:shadow-lg"
+                className="shadow-md hover:shadow-lg rounded-xl"
                 disabled={isLoading}
               >
                 {isLoading ? (
