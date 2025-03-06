@@ -89,10 +89,22 @@ const WalletViewContent: React.FC = () => {
 
   React.useEffect(() => {
     const loadWalletData = async () => {
-      await refreshWalletBalance();
+      setIsRefreshingBalance(true);
+      try {
+        await refreshWalletBalance();
+        await refreshPrices();
+      } finally {
+        setIsRefreshingBalance(false);
+      }
     };
     
     loadWalletData();
+    
+    const autoRefreshInterval = setInterval(loadWalletData, 60000); // Refresh every minute
+    
+    return () => {
+      clearInterval(autoRefreshInterval);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

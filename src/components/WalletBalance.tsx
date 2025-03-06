@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useWallet } from '@/contexts/WalletContext';
 import { QRCodeSVG } from 'qrcode.react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -35,6 +35,44 @@ const WalletBalance: React.FC = () => {
   const [recipientAddress, setRecipientAddress] = useState('');
   const [amount, setAmount] = useState('');
   const { theme } = useTheme();
+  
+  const [animatedBalance, setAnimatedBalance] = useState(0);
+  const prevBalanceRef = useRef(0);
+  
+  useEffect(() => {
+    const prevBalance = prevBalanceRef.current;
+    prevBalanceRef.current = usdBalance;
+    
+    if (prevBalance === 0 && usdBalance !== 0) {
+      setAnimatedBalance(usdBalance);
+      return;
+    }
+    
+    if (prevBalance !== usdBalance) {
+      setAnimatedBalance(prevBalance);
+      
+      const startTime = performance.now();
+      const duration = 1000;
+      
+      const animateValue = (timestamp: number) => {
+        const runtime = timestamp - startTime;
+        const progress = Math.min(runtime / duration, 1);
+        
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        const nextValue = prevBalance + (usdBalance - prevBalance) * easeProgress;
+        
+        setAnimatedBalance(nextValue);
+        
+        if (runtime < duration) {
+          requestAnimationFrame(animateValue);
+        } else {
+          setAnimatedBalance(usdBalance);
+        }
+      };
+      
+      requestAnimationFrame(animateValue);
+    }
+  }, [usdBalance]);
   
   const formatAddress = (address: string) => {
     if (!address) return '';
@@ -172,7 +210,7 @@ const WalletBalance: React.FC = () => {
   return (
     <div className="animate-fade-in w-full wallet-balance-wrapper">
       <div className="mb-1 px-1">
-        <h2 className="text-3xl font-bold">{formatUSD(usdBalance)}</h2>
+        <h2 className="text-3xl font-bold">{formatUSD(animatedBalance)}</h2>
       </div>
       
       <AnalyticsChart tokens={tokens} />
