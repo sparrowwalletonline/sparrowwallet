@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
-import { ArrowRight, Check, Menu, Star, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift, Coins, Wallet, Search, X, Loader2 } from 'lucide-react';
+import { ArrowRight, Check, Menu, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift, Coins, Wallet, Search, X, Loader2 } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import { useMenu } from '@/contexts/MenuContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import Footer from '@/components/Footer';
-import ThemeToggle from '@/components/ThemeToggle';
 
 const RegistrationModal = ({ isOpen, onClose, onRegister, isLoading }) => {
   const [email, setEmail] = useState('');
@@ -350,7 +349,7 @@ const LandingPage = () => {
           <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" />
           <div>
             <span className="font-heading text-xl font-bold">Sparrow Wallet</span>
-            <p className="text-xs text-gray-600 dark:text-gray-400 -mt-1">Financial self sovereignty</p>
+            <p className="text-xs text-gray-600 dark:text-gray-400 -mt-1">Bitcoin Wallet for Desktop & Web</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -366,13 +365,13 @@ const LandingPage = () => {
       <div className="flex-1 flex flex-col p-6">
         <div className="space-y-6 mb-10">
           <h1 className="font-heading tracking-tight text-gray-900 leading-[1.1] font-bold text-4xl md:text-5xl">
-            The most<br />
-            trusted & secure<br />
-            crypto wallet
+            Powerful Bitcoin<br />
+            Wallet for Power<br />
+            Users - Now Online
           </h1>
           
           <p className="font-sans text-gray-600 text-base max-w-md">
-            Buy, store, collect NFTs, exchange & earn crypto. Join 50 million+ people using Sparrow Wallet.
+            Sparrow is a Bitcoin wallet for those who value financial self sovereignty. Now available as a web application.
           </p>
           
           <div className="w-full max-w-xs mx-auto mb-6">
@@ -396,7 +395,7 @@ const LandingPage = () => {
                 </>
               ) : (
                 <>
-                  Registrieren & Wallet erstellen <ArrowRight className="h-4 w-4" />
+                  Create Online Wallet <ArrowRight className="h-4 w-4" />
                 </>
               )}
             </Button>
@@ -407,13 +406,13 @@ const LandingPage = () => {
               <div className="rounded-full bg-green-100 p-1">
                 <Check className="h-4 w-4 text-green-600" />
               </div>
-              <span className="text-sm text-gray-700">Multi-chain support for 8M+ assets</span>
+              <span className="text-sm text-gray-700">Privacy-focused and open source</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="rounded-full bg-green-100 p-1">
                 <Check className="h-4 w-4 text-green-600" />
               </div>
-              <span className="text-sm text-gray-700">Buy crypto with credit card</span>
+              <span className="text-sm text-gray-700">Complete transaction control with coin selection</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="rounded-full bg-green-100 p-1">
@@ -425,57 +424,35 @@ const LandingPage = () => {
         </div>
         
         <div className="mt-6 relative">
-          <img alt="Trust Wallet Features" className="w-full max-w-md mx-auto" src="/lovable-uploads/057ecf4e-ca5a-4928-9979-cb5032455af3.jpg" />
+          <img alt="Sparrow Wallet Features" className="w-full max-w-md mx-auto" src="/lovable-uploads/057ecf4e-ca5a-4928-9979-cb5032455af3.jpg" />
         </div>
         
         <div className="mt-12 grid grid-cols-3 gap-4">
           <div className="text-center">
-            <div className="text-wallet-blue-500 font-heading font-bold text-xl bg-transparent">50M+</div>
-            <div className="text-gray-600 text-sm">Users</div>
+            <div className="text-wallet-blue-500 font-heading font-bold text-xl bg-transparent">100%</div>
+            <div className="text-gray-600 text-sm">Open Source</div>
+          </div>
+          <div className="text-center">
+            <div className="text-blue-500 font-heading font-bold text-xl">24/7</div>
+            <div className="text-gray-600 text-sm">Access</div>
           </div>
           <div className="text-center">
             <div className="text-blue-500 font-heading font-bold text-xl">100+</div>
-            <div className="text-gray-600 text-sm">Blockchains</div>
-          </div>
-          <div className="text-center">
-            <div className="text-blue-500 font-heading font-bold text-xl">8M+</div>
-            <div className="text-gray-600 text-sm">Assets</div>
+            <div className="text-gray-600 text-sm">Hardware Wallets</div>
           </div>
         </div>
         
         <div className="py-16 my-12 -mx-6 bg-gradient-to-b from-blue-500 via-blue-600 to-blue-900 text-white rounded-3xl px-[15px]">
           <div className="text-center mb-8">
-            <h2 className="font-heading text-4xl font-bold mb-4">One Platform,<br />Millions of Assets</h2>
+            <h2 className="font-heading text-4xl font-bold mb-4">Bitcoin Online<br />Freedom Everywhere</h2>
             <p className="text-blue-50 max-w-2xl mx-auto">
-              As a leading self-custody multi-chain platform, we support millions of assets across 
-              100+ blockchains. From Bitcoin, Ethereum, and Solana, to Cosmos, Optimism, and much more.
+              Sparrow provides a powerful platform for interacting with the Bitcoin network, whether you're a beginner or an advanced user.
+              Now accessible from any web browser, anywhere.
             </p>
-          </div>
-          
-          <div className="relative max-w-md mx-auto mb-8">
-            <div className="bg-white rounded-full flex items-center p-2 pl-4 shadow-lg">
-              <Search className="h-5 w-5 text-gray-400 mr-2" />
-              <input type="text" placeholder="Search a chain..." className="w-full bg-transparent border-none outline-none text-gray-800" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
-            </div>
           </div>
           
           <div className="bg-white rounded-3xl max-w-md mx-auto overflow-hidden text-gray-800">
             <div className="p-4">
-              <div className="border-b border-gray-100 pb-4 mb-4">
-                <div className="flex items-center gap-3 mb-3">
-                  <img src="/lovable-uploads/d6777daf-350a-4823-8823-22586f89c3f4.png" alt="BNB Smart Chain" className="w-10 h-10 rounded-full" />
-                  <span className="font-semibold">BNB Smart Chain (BNB)</span>
-                </div>
-                
-                <div className="space-y-2 ml-13">
-                  <SupportedFeature label="Buy" supported={true} />
-                  <SupportedFeature label="Sell" supported={true} />
-                  <SupportedFeature label="Swap" supported={true} />
-                  <SupportedFeature label="Earn" supported={true} />
-                  <SupportedFeature label="dApps" supported={true} />
-                </div>
-              </div>
-              
               <div className="border-b border-gray-100 pb-4 mb-4">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 rounded-full bg-orange-400 flex items-center justify-center text-white">
@@ -488,59 +465,11 @@ const LandingPage = () => {
                 </div>
                 
                 <div className="space-y-2 ml-13">
-                  <SupportedFeature label="Buy" supported={true} />
-                  <SupportedFeature label="Sell" supported={true} />
-                  <SupportedFeature label="Swap" supported={false} />
-                  <SupportedFeature label="Earn" supported={false} />
-                  <SupportedFeature label="dApps" supported={false} />
-                </div>
-              </div>
-              
-              <div className="border-b border-gray-100 pb-4 mb-4">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 2L3 12l9 4.5L21 12 12 2z" fill="#5064FB" />
-                      <path d="M12 22.5l9-5.3-9-4.5-9 4.5 9 5.3z" fill="#5064FB" />
-                      <path d="M12 2v7l9 3-9-10z" fill="#6C78F1" fillOpacity=".8" />
-                      <path d="M12 2L3 12l9-3V2z" fill="#5064FB" fillOpacity=".5" />
-                      <path d="M12 16.5v6l9-5.3-9-.7z" fill="#6C78F1" fillOpacity=".8" />
-                      <path d="M12 22.5v-6l-9-.7 9 6.7z" fill="#5064FB" fillOpacity=".5" />
-                    </svg>
-                  </div>
-                  <span className="font-semibold">Cosmos (ATOM)</span>
-                </div>
-                
-                <div className="space-y-2 ml-13">
-                  <SupportedFeature label="Buy" supported={true} />
-                  <SupportedFeature label="Sell" supported={true} />
-                  <SupportedFeature label="Swap" supported={false} />
-                  <SupportedFeature label="Earn" supported={true} />
-                  <SupportedFeature label="dApps" supported={false} />
-                </div>
-              </div>
-              
-              <div className="border-b border-gray-100 pb-4 mb-4">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11.999 0L11.798 0.675V16.4236L11.999 16.6236L19.364 12.3171L11.999 0Z" fill="#343434" />
-                      <path d="M11.999 0L4.63599 12.3171L11.999 16.6236V8.8927V0Z" fill="#8C8C8C" />
-                      <path d="M11.999 18.0319L11.8862 18.1688V23.7944L11.999 24.0001L19.3689 13.7283L11.999 18.0319Z" fill="#3C3C3B" />
-                      <path d="M11.999 24.0001V18.0319L4.63599 13.7283L11.999 24.0001Z" fill="#8C8C8C" />
-                      <path d="M11.999 16.6236L19.364 12.3171L11.999 8.8927V16.6236Z" fill="#141414" />
-                      <path d="M4.63599 12.3171L11.999 16.6236V8.8927L4.63599 12.3171Z" fill="#393939" />
-                    </svg>
-                  </div>
-                  <span className="font-semibold">Ethereum (ETH)</span>
-                </div>
-                
-                <div className="space-y-2 ml-13">
-                  <SupportedFeature label="Buy" supported={true} />
-                  <SupportedFeature label="Sell" supported={true} />
-                  <SupportedFeature label="Swap" supported={true} />
-                  <SupportedFeature label="Earn" supported={true} />
-                  <SupportedFeature label="dApps" supported={true} />
+                  <SupportedFeature label="Transaction Control" supported={true} />
+                  <SupportedFeature label="Coin Selection" supported={true} />
+                  <SupportedFeature label="UTXO Management" supported={true} />
+                  <SupportedFeature label="Multiple Hardware Wallets" supported={true} />
+                  <SupportedFeature label="Online Access" supported={true} />
                 </div>
               </div>
             </div>
@@ -549,35 +478,35 @@ const LandingPage = () => {
         
         <div className="py-16 my-12 -mx-6 px-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl">
           <div className="text-center mb-12">
-            <h2 className="font-heading text-3xl font-bold mb-4">One Platform, Millions of Assets</h2>
+            <h2 className="font-heading text-3xl font-bold mb-4">Features For Power Users</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Sparrow Wallet is your gateway to the blockchain ecosystem. Store, trade, and discover over 8 million digital assets across 100+ blockchains.
+              Sparrow Wallet gives you complete control over your bitcoin with advanced features now accessible from anywhere.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <AssetCard icon={<Globe className="h-6 w-6 text-indigo-500" />} title="Global Access" description="Access the blockchain ecosystem from anywhere in the world" color="indigo" />
-            <AssetCard icon={<Coins className="h-6 w-6 text-purple-500" />} title="Multiple Assets" description="Support for 8M+ cryptocurrencies and digital assets" color="purple" />
-            <AssetCard icon={<Users className="h-6 w-6 text-blue-500" />} title="Growing Community" description="Join 50M+ users who trust our platform" color="blue" />
-            <AssetCard icon={<Wallet className="h-6 w-6 text-teal-500" />} title="One Wallet" description="Manage all your digital assets in one secure place" color="teal" />
+            <AssetCard icon={<Globe className="h-6 w-6 text-indigo-500" />} title="Web Access" description="Use Sparrow from any browser, anywhere in the world" color="indigo" />
+            <AssetCard icon={<Coins className="h-6 w-6 text-purple-500" />} title="UTXO Control" description="Full control over your unspent transaction outputs" color="purple" />
+            <AssetCard icon={<Shield className="h-6 w-6 text-blue-500" />} title="Self-Custody" description="Your keys, your coins - you maintain control" color="blue" />
+            <AssetCard icon={<Wallet className="h-6 w-6 text-teal-500" />} title="Multiple Wallets" description="Manage multiple wallets for different purposes" color="teal" />
           </div>
         </div>
         
         <div className="py-16 bg-gray-50 my-12 -mx-6 px-6">
           <div className="text-center mb-12">
-            <h2 className="font-heading text-3xl font-bold mb-4">The most trusted & secure crypto wallet</h2>
+            <h2 className="font-heading text-3xl font-bold mb-4">Privacy & Security Focus</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Sparrow Wallet is a secure multi-coin wallet enabling blockchain access at your fingertips.
+              Sparrow Wallet is designed with your privacy and security as the top priority.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <FeatureCard icon={<Shield className="h-6 w-6 text-blue-500" />} title="Secure by design" description="Trust Wallet keeps your private keys only on your device, protecting your assets from server breaches." />
-            <FeatureCard icon={<Eye className="h-6 w-6 text-blue-500" />} title="Private & anonymous" description="We don't collect any personal information, ensuring your data remains private and anonymous." />
-            <FeatureCard icon={<Globe className="h-6 w-6 text-blue-500" />} title="Cross-chain enabled" description="Collect, store, and manage 8M+ cryptocurrencies and NFTs on 100+ blockchains." />
-            <FeatureCard icon={<Star className="h-6 w-6 text-blue-500" />} title="DEX in your pocket" description="Swap crypto tokens directly from your wallet with the built-in DEX functionality." />
-            <FeatureCard icon={<Smartphone className="h-6 w-6 text-blue-500" />} title="Web3 ready" description="Easily connect to web3 dApps with the built-in browser and enhance your DeFi experience." />
-            <FeatureCard icon={<Gift className="h-6 w-6 text-blue-500" />} title="Buy crypto easily" description="Buy cryptocurrency with credit card, bank transfer, or Apple Pay directly in the app." />
+            <FeatureCard icon={<Shield className="h-6 w-6 text-blue-500" />} title="Self-Custody" description="Sparrow gives you full control of your bitcoin. Your keys never leave your device." />
+            <FeatureCard icon={<Eye className="h-6 w-6 text-blue-500" />} title="Privacy-focused" description="Connect to your own node for maximum privacy, or use public electrum servers." />
+            <FeatureCard icon={<Globe className="h-6 w-6 text-blue-500" />} title="Open Source" description="All code is open source and available for review by the community." />
+            <FeatureCard icon={<Users className="h-6 w-6 text-blue-500" />} title="Coin Control" description="Advanced coin selection allows you to maintain privacy with UTXO management." />
+            <FeatureCard icon={<Smartphone className="h-6 w-6 text-blue-500" />} title="Hardware Support" description="Works with major hardware wallets for enhanced security." />
+            <FeatureCard icon={<Sparkles className="h-6 w-6 text-blue-500" />} title="Online Access" description="Now available online with the same powerful features as the desktop app." />
           </div>
         </div>
       </div>

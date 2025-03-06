@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { useMenu } from '@/contexts/MenuContext';
 import { Button } from '@/components/ui/button';
@@ -131,7 +132,7 @@ const SideMenu: React.FC = () => {
                   onClick={() => handleNavigation('/')}
                 >
                   <Home className="w-5 h-5" />
-                  <span className="font-medium">Start</span>
+                  <span className="font-medium">Home</span>
                 </div>
               </li>
               <li>
@@ -146,10 +147,10 @@ const SideMenu: React.FC = () => {
               <li>
                 <div 
                   className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
-                  onClick={() => handleNavigation('https://www.coindesk.com/')}
+                  onClick={() => handleNavigation('https://sparrowwallet.com/docs/')}
                 >
                   <Compass className="w-5 h-5" />
-                  <span className="font-medium">Discover</span>
+                  <span className="font-medium">Documentation</span>
                 </div>
               </li>
               <li>
@@ -158,7 +159,7 @@ const SideMenu: React.FC = () => {
                   onClick={() => handleNavigation('/auth')}
                 >
                   <User className="w-5 h-5" />
-                  <span className="font-medium">Konto</span>
+                  <span className="font-medium">Account</span>
                 </div>
               </li>
               <li>
@@ -167,7 +168,7 @@ const SideMenu: React.FC = () => {
                   onClick={() => handleNavigation('/terms')}
                 >
                   <Settings className="w-5 h-5" />
-                  <span className="font-medium">Einstellungen</span>
+                  <span className="font-medium">Settings</span>
                 </div>
               </li>
             </ul>
@@ -181,7 +182,7 @@ const SideMenu: React.FC = () => {
                 onClick={handleSignOut}
               >
                 <LogOut className="h-5 w-5 mr-3" />
-                <span>Abmelden</span>
+                <span>Sign Out</span>
               </Button>
             ) : (
               <Button 
@@ -190,7 +191,7 @@ const SideMenu: React.FC = () => {
                 onClick={() => handleNavigation('/auth')}
               >
                 <User className="h-5 w-5 mr-3" />
-                <span>Anmelden</span>
+                <span>Sign In</span>
               </Button>
             )}
           </div>
