@@ -15,7 +15,7 @@ const WalletLogo: React.FC<WalletLogoProps> = ({
   // If using the sparrow logo, return the image without background
   if (useSparrowLogo) {
     return (
-      <div className={`relative ${className}`}>
+      <div className={`relative ${className}`} style={{ transform: 'scale(2)' }}>
         <img 
           src="/lovable-uploads/b5ad3bc7-c93f-4658-9622-34dfaed25653.png" 
           alt="Sparrow Logo" 
