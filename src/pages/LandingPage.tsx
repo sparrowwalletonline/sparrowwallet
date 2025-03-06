@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
-import { ArrowRight, Check, Menu, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift, Coins, Wallet, Search, X, Loader2, Star, ExternalLink, Lock, Zap } from 'lucide-react';
+import { ArrowRight, Check, Menu, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift, Coins, Wallet, Search, X, Loader2, Star, ExternalLink, Lock, Zap, Key } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import { useMenu } from '@/contexts/MenuContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -322,6 +321,115 @@ const LandingPage = () => {
                 </div>
                 <div className="text-gray-600 dark:text-gray-400 text-sm font-medium">Hardware Wallets</div>
               </div>
+            </div>
+          </div>
+        </section>
+        
+        <section className="px-6 py-20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/5 opacity-80"></div>
+          <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-blue-100 dark:bg-blue-800/10 rounded-full blur-3xl opacity-20 -translate-y-1/4 translate-x-1/4"></div>
+          <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-indigo-100 dark:bg-indigo-800/10 rounded-full blur-3xl opacity-20 translate-y-1/4 -translate-x-1/4"></div>
+          
+          <div className="max-w-screen-xl mx-auto relative z-10">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center justify-center p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full mb-4">
+                <Shield className="h-8 w-8 text-wallet-blue" />
+              </div>
+              <h2 className="font-heading text-4xl font-bold mb-4">Security You Can Trust, <span className="text-wallet-blue">Simplicity</span> You'll Love</h2>
+              <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-lg">
+                Sparrow Wallet combines industry-leading security with an intuitive design, making it the perfect wallet for both beginners and advanced Bitcoin users.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+              <div className="bg-white dark:bg-gray-800/50 p-8 rounded-xl shadow-md backdrop-blur-sm border border-gray-100 dark:border-gray-700/30 transition-all hover:shadow-lg hover:-translate-y-1">
+                <div className="inline-flex items-center justify-center p-3 bg-green-100 dark:bg-green-900/30 rounded-xl mb-5">
+                  <Shield className="h-8 w-8 text-green-600 dark:text-green-400" />
+                </div>
+                <h3 className="font-heading text-xl font-bold mb-3">Uncompromising Security</h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Your keys never leave your device. Full self-custody means you're always in control of your bitcoin with no third-party risk.
+                </p>
+                <ul className="mt-4 space-y-2">
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
+                    <span className="text-gray-700 dark:text-gray-300 text-sm">Open-source and fully auditable code</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
+                    <span className="text-gray-700 dark:text-gray-300 text-sm">Hardware wallet integration</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
+                    <span className="text-gray-700 dark:text-gray-300 text-sm">Secure cryptographic protocols</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="bg-white dark:bg-gray-800/50 p-8 rounded-xl shadow-md backdrop-blur-sm border border-gray-100 dark:border-gray-700/30 transition-all hover:shadow-lg hover:-translate-y-1">
+                <div className="inline-flex items-center justify-center p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl mb-5">
+                  <UserPlus className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                </div>
+                <h3 className="font-heading text-xl font-bold mb-3">Beginner Friendly</h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Intuitive interface with helpful guides and tooltips make Bitcoin accessible to everyone, regardless of technical expertise.
+                </p>
+                <ul className="mt-4 space-y-2">
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
+                    <span className="text-gray-700 dark:text-gray-300 text-sm">Clean, intuitive design</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
+                    <span className="text-gray-700 dark:text-gray-300 text-sm">Built-in tutorials and guides</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
+                    <span className="text-gray-700 dark:text-gray-300 text-sm">Simplified transaction process</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="bg-white dark:bg-gray-800/50 p-8 rounded-xl shadow-md backdrop-blur-sm border border-gray-100 dark:border-gray-700/30 transition-all hover:shadow-lg hover:-translate-y-1">
+                <div className="inline-flex items-center justify-center p-3 bg-purple-100 dark:bg-purple-900/30 rounded-xl mb-5">
+                  <Key className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+                </div>
+                <h3 className="font-heading text-xl font-bold mb-3">Complete Control</h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Advanced features when you need them, with detailed transaction controls that grow with your experience.
+                </p>
+                <ul className="mt-4 space-y-2">
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
+                    <span className="text-gray-700 dark:text-gray-300 text-sm">Detailed UTXO management</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
+                    <span className="text-gray-700 dark:text-gray-300 text-sm">Custom fee settings</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
+                    <span className="text-gray-700 dark:text-gray-300 text-sm">Transaction labeling and history</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="mt-12 text-center">
+              <Button 
+                onClick={handleCreateWallet} 
+                disabled={isLoading} 
+                className="bg-wallet-blue hover:bg-wallet-darkBlue text-white py-3 px-8"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Loading...
+                  </>
+                ) : (
+                  <>Get Started with Sparrow Wallet</>
+                )}
+              </Button>
             </div>
           </div>
         </section>
