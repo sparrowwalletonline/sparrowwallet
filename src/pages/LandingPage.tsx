@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -346,18 +347,18 @@ const LandingPage = () => {
           <div className="max-w-screen-xl mx-auto">
             <div className="flex flex-col lg:flex-row items-center gap-10">
               <div className="space-y-8 lg:w-1/2">
-                <h1 className="font-heading tracking-tight text-gray-900 dark:text-white leading-[1.1] font-bold text-4xl md:text-5xl lg:text-6xl max-w-xl bg-white/90 dark:bg-wallet-darkBg/90 p-2 rounded-lg shadow-sm backdrop-blur-sm z-10 relative">
+                <h1 className="font-heading tracking-tight text-gray-900 dark:text-white leading-[1.1] font-bold text-4xl md:text-5xl lg:text-6xl max-w-xl z-10 relative">
                   Powerful Bitcoin
                   <span className="text-wallet-blue"> Wallet </span>
                   for Power Users
                 </h1>
                 
-                <p className="font-sans text-gray-600 dark:text-gray-300 text-lg max-w-lg bg-white/90 dark:bg-wallet-darkBg/90 p-2 rounded-lg shadow-sm backdrop-blur-sm z-10 relative">
+                <p className="font-sans text-gray-600 dark:text-gray-300 text-lg max-w-lg z-10 relative">
                   Sparrow is a Bitcoin wallet for those who value financial self sovereignty. 
                   Now available as a secure, full-featured web application.
                 </p>
                 
-                <div className="flex flex-col space-y-3 pt-2 bg-white/90 dark:bg-wallet-darkBg/90 p-2 rounded-lg shadow-sm backdrop-blur-sm z-10 relative">
+                <div className="flex flex-col space-y-3 pt-2 z-10 relative">
                   <div className="flex items-center gap-2">
                     <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
                       <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
@@ -397,7 +398,7 @@ const LandingPage = () => {
               
               <div className="relative lg:w-1/2 z-10">
                 <div className="absolute inset-0 rounded-3xl bg-blue-500/10 dark:bg-blue-500/5 blur-xl -z-10"></div>
-                <div className="relative bg-white dark:bg-wallet-card rounded-3xl shadow-lg p-6 border border-gray-200 dark:border-gray-800 overflow-hidden">
+                <div className="relative bg-transparent rounded-3xl shadow-lg p-6 border border-gray-200 dark:border-gray-800 overflow-hidden">
                   <img src="/lovable-uploads/1b77eb0f-8d23-4584-b764-6202a16c8247.png" alt="Bitcoin Wallet App" className="w-full max-w-md mx-auto" />
                 </div>
               </div>
