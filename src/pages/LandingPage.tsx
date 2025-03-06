@@ -8,6 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import Footer from '@/components/Footer';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const RegistrationModal = ({ isOpen, onClose, onRegister, isLoading }) => {
   const [email, setEmail] = useState('');
@@ -343,18 +344,21 @@ const LandingPage = () => {
   console.log("Rendering LandingPage component");
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-gray-800">
+    <div className="min-h-screen flex flex-col bg-white text-gray-800 dark:bg-wallet-darkBg dark:text-white">
       <header className="w-full p-6 flex justify-between items-center">
         <div className="flex items-center gap-2">
           <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" />
           <span className="font-heading text-xl font-bold">Sparrow Wallet</span>
         </div>
-        <button 
-          onClick={handleMenuClick}
-          className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-800"
-        >
-          <Menu className="w-6 h-6 cursor-pointer" />
-        </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle className="mr-2" />
+          <button 
+            onClick={handleMenuClick}
+            className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+          >
+            <Menu className="w-6 h-6 cursor-pointer" />
+          </button>
+        </div>
       </header>
       
       <div className="flex-1 flex flex-col p-6">

@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useMenu } from '@/contexts/MenuContext';
 import { Button } from '@/components/ui/button';
@@ -8,13 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { useWallet } from '@/contexts/WalletContext';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const SideMenu: React.FC = () => {
   const { isMenuOpen, closeMenu } = useMenu();
   const navigate = useNavigate();
   const { session, hasWallet, loadFromSupabase } = useWallet();
   
-  // Close menu when clicking outside or pressing escape
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeMenu();
@@ -30,7 +29,6 @@ const SideMenu: React.FC = () => {
     if (isMenuOpen) {
       document.addEventListener('keydown', handleEscape);
       document.addEventListener('click', handleClickOutside);
-      // Prevent scrolling when menu is open
       document.body.style.overflow = 'hidden';
     }
     
@@ -62,14 +60,12 @@ const SideMenu: React.FC = () => {
   };
 
   const handleNavigation = async (path: string) => {
-    // For external links, use the browser view
     if (path.startsWith('http')) {
       navigate('/browser', { state: { url: path } });
       closeMenu();
       return;
     }
     
-    // For wallet route, check if the user is authenticated first
     if (path === '/wallet') {
       if (!session) {
         toast({
@@ -79,17 +75,14 @@ const SideMenu: React.FC = () => {
         });
         navigate('/auth');
       } else {
-        // User is authenticated, check if they have a wallet
         if (hasWallet) {
           navigate('/wallet');
         } else {
-          // Try to load wallet from Supabase
           const walletLoaded = await loadFromSupabase();
           
           if (walletLoaded) {
             navigate('/wallet');
           } else {
-            // Redirect to wallet creation flow
             toast({
               title: "Keine Wallet gefunden",
               description: "Erstelle deine erste Wallet",
@@ -107,38 +100,37 @@ const SideMenu: React.FC = () => {
 
   return (
     <>
-      {/* Overlay */}
       {isMenuOpen && (
         <div className="fixed inset-0 z-40 overlay-bg bg-black bg-opacity-50 backdrop-blur-sm" />
       )}
       
-      {/* Sidebar */}
       <div 
-        className={`fixed top-0 right-0 z-50 w-[280px] h-full bg-wallet-darkBg transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 z-50 w-[280px] h-full bg-white dark:bg-wallet-darkBg transform transition-transform duration-300 ease-in-out ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <div className="flex flex-col h-full">
-          {/* Sidebar Header */}
-          <div className="flex justify-between items-center p-6 border-b border-gray-800">
+          <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-800">
             <div className="flex items-center gap-2">
               <WalletLogo className="w-8 h-8" />
-              <span className="font-heading text-lg font-bold text-white">Trust Wallet</span>
+              <span className="font-heading text-lg font-bold text-gray-900 dark:text-white">Trust Wallet</span>
             </div>
-            <button 
-              onClick={closeMenu} 
-              className="text-gray-400 hover:text-white"
-            >
-              <X className="w-6 h-6" />
-            </button>
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <button 
+                onClick={closeMenu} 
+                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
           </div>
           
-          {/* Navigation Links */}
           <nav className="flex-1 p-6">
             <ul className="space-y-6">
               <li>
                 <div 
-                  className="flex items-center gap-3 text-gray-200 hover:text-white cursor-pointer"
+                  className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
                   onClick={() => handleNavigation('/')}
                 >
                   <Home className="w-5 h-5" />
@@ -147,7 +139,7 @@ const SideMenu: React.FC = () => {
               </li>
               <li>
                 <div 
-                  className="flex items-center gap-3 text-gray-200 hover:text-white cursor-pointer"
+                  className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
                   onClick={() => handleNavigation('/wallet')}
                 >
                   <CreditCard className="w-5 h-5" />
@@ -156,7 +148,7 @@ const SideMenu: React.FC = () => {
               </li>
               <li>
                 <div 
-                  className="flex items-center gap-3 text-gray-200 hover:text-white cursor-pointer"
+                  className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
                   onClick={() => handleNavigation('https://www.coindesk.com/')}
                 >
                   <Compass className="w-5 h-5" />
@@ -165,7 +157,7 @@ const SideMenu: React.FC = () => {
               </li>
               <li>
                 <div 
-                  className="flex items-center gap-3 text-gray-200 hover:text-white cursor-pointer"
+                  className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
                   onClick={() => handleNavigation('/auth')}
                 >
                   <User className="w-5 h-5" />
@@ -174,7 +166,7 @@ const SideMenu: React.FC = () => {
               </li>
               <li>
                 <div 
-                  className="flex items-center gap-3 text-gray-200 hover:text-white cursor-pointer"
+                  className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
                   onClick={() => handleNavigation('/terms')}
                 >
                   <Settings className="w-5 h-5" />
@@ -184,8 +176,7 @@ const SideMenu: React.FC = () => {
             </ul>
           </nav>
           
-          {/* Sign Out Button */}
-          <div className="p-6 border-t border-gray-800">
+          <div className="p-6 border-t border-gray-200 dark:border-gray-800">
             {session ? (
               <Button 
                 variant="destructive" 

@@ -4,7 +4,17 @@ import { Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/components/ui/theme-provider';
 
-const ThemeToggle: React.FC = () => {
+interface ThemeToggleProps {
+  variant?: 'default' | 'outline' | 'ghost';
+  size?: 'default' | 'sm' | 'lg' | 'icon';
+  className?: string;
+}
+
+const ThemeToggle: React.FC<ThemeToggleProps> = ({ 
+  variant = 'ghost', 
+  size = 'icon',
+  className = ''
+}) => {
   const { theme, setTheme } = useTheme();
   
   const toggleTheme = () => {
@@ -13,10 +23,10 @@ const ThemeToggle: React.FC = () => {
 
   return (
     <Button
-      variant="ghost"
-      size="icon"
+      variant={variant}
+      size={size}
       onClick={toggleTheme}
-      className="rounded-full h-9 w-9 bg-transparent"
+      className={`rounded-full ${className}`}
       aria-label="Toggle theme"
     >
       {theme === 'dark' ? (

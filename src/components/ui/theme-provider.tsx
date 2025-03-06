@@ -6,24 +6,22 @@ import { ThemeProvider as NextThemesProvider, useTheme as useNextTheme } from "n
 import { type ThemeProviderProps } from "next-themes/dist/types"
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  // Set defaultTheme prop to "light" if not provided
+  // Always set defaultTheme prop to "light" to ensure light mode by default
   const updatedProps = {
     ...props,
-    defaultTheme: props.defaultTheme || "light",
-    enableSystem: true, // Enable system theme detection
+    defaultTheme: "light",
+    enableSystem: false, // Disable system theme detection to force light mode
     disableTransitionOnChange: false, // Smoother transitions
   };
   
   React.useEffect(() => {
-    // Force theme application on mobile by setting a data attribute
+    // Force light theme application on initial load
     const applyTheme = () => {
-      const storedTheme = localStorage.getItem('theme');
-      if (storedTheme) {
-        document.documentElement.setAttribute('data-theme', storedTheme);
-        // Ensure class is also set for Tailwind
-        document.documentElement.classList.remove('light', 'dark');
-        document.documentElement.classList.add(storedTheme);
-      }
+      const storedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', storedTheme);
+      // Ensure class is also set for Tailwind
+      document.documentElement.classList.remove('light', 'dark');
+      document.documentElement.classList.add(storedTheme);
     };
     
     applyTheme();
