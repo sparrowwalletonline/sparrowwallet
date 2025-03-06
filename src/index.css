@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -38,54 +37,13 @@
     --radius: 0.75rem;
   }
 
-  .dark {
-    --background: 220 13% 10%;
-    --foreground: 0 0% 100%;
-
-    --card: 224 17% 17%;
-    --card-foreground: 0 0% 100%;
-
-    --popover: 224 17% 17%;
-    --popover-foreground: 0 0% 100%;
-
-    --primary: 140 100% 50%;
-    --primary-foreground: 0 0% 0%;
-
-    --secondary: 217 11% 18%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 215 14% 24%;
-    --muted-foreground: 215 14% 65%;
-
-    --accent: 140 100% 50%;
-    --accent-foreground: 0 0% 0%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 217 11% 28%;
-    --input: 215 14% 22%;
-    --ring: 140 100% 50%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  html {
-    -webkit-text-size-adjust: 100%;
-    height: 100%;
-  }
-
   body {
     @apply bg-background text-foreground font-sans antialiased;
     -webkit-tap-highlight-color: transparent;
     min-height: 100vh;
     /* Mobile viewport fix */
     min-height: -webkit-fill-available;
-    color-scheme: light dark;  /* Ensure proper color handling */
+    color-scheme: light;  /* Force light color scheme */
   }
   
   /* Safari mobile viewport height fix */
@@ -150,22 +108,13 @@
   }
 }
 
-/* Light/dark theme-specific styles for components */
-.light .personal-data-form {
+/* Light theme-specific styles for components */
+.personal-data-form {
   @apply bg-white text-gray-800 border-gray-200;
 }
 
-.dark .personal-data-form {
-  @apply bg-gray-900 text-white border-gray-800;
-}
-
-/* Theme-specific styles */
-.dark .wallet-card {
-  background: #232733;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.light .wallet-card {
+/* Theme-specific styling overrides to ensure light mode */
+.wallet-card {
   background: #FFFFFF;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
@@ -185,14 +134,7 @@
   transition: transform 0.4s ease-out, opacity 0.4s ease-out;
 }
 
-.dark .glass-morph {
-  background: rgba(35, 39, 51, 0.8);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(55, 59, 71, 0.2);
-}
-
-.light .glass-morph {
+.glass-morph {
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -214,35 +156,23 @@
   }
 }
 
-/* Modified to make wallet-balance-wrapper transparent in both light and dark theme */
+/* Make wallet-balance-wrapper transparent in light theme */
 .wallet-balance-wrapper {
   @apply bg-transparent text-card-foreground;
 }
 
-.light .crypto-action-button {
+.crypto-action-button {
   @apply bg-gray-100 text-gray-700;
 }
 
-.dark .crypto-action-button {
-  @apply bg-gray-800 text-white;
-}
-
 /* Dialog content theme-specific styles */
-.light .dialog-content {
+.dialog-content {
   @apply bg-white border-gray-200 text-gray-800;
 }
 
-.dark .dialog-content {
-  @apply bg-gray-900 border-gray-800 text-white;
-}
-
 /* Add theme-specific styling for tabs */
-.light [data-state="active"].tabs-trigger {
+[data-state="active"].tabs-trigger {
   @apply bg-white text-gray-800;
-}
-
-.dark [data-state="active"].tabs-trigger {
-  @apply bg-[#1A1F2C] text-white;
 }
 
 @media (max-width: 640px) {
@@ -251,7 +181,7 @@
     border-radius: 0.75rem;
   }
   
-  .dark .glass-morph, .light .glass-morph {
+  .glass-morph, .light .glass-morph {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }

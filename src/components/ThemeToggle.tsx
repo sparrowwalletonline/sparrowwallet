@@ -1,8 +1,7 @@
 
 import React from 'react';
-import { Moon, Sun } from 'lucide-react';
+import { Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useTheme } from '@/components/ui/theme-provider';
 
 interface ThemeToggleProps {
   variant?: 'default' | 'outline' | 'ghost';
@@ -15,25 +14,16 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({
   size = 'icon',
   className = ''
 }) => {
-  const { theme, setTheme } = useTheme();
-  
-  const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
-  };
-
+  // In light-only mode, this component is purely decorative
   return (
     <Button
       variant={variant}
       size={size}
-      onClick={toggleTheme}
       className={`rounded-full ${className}`}
-      aria-label="Toggle theme"
+      aria-label="Theme indicator (light mode)"
+      disabled
     >
-      {theme === 'dark' ? (
-        <Sun className="h-5 w-5 text-yellow-400" />
-      ) : (
-        <Moon className="h-5 w-5 text-gray-700" />
-      )}
+      <Sun className="h-5 w-5 text-yellow-400" />
     </Button>
   );
 };

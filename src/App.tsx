@@ -53,10 +53,11 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
-  const defaultTheme = 'light';
+  // Force light theme - never allow it to be changed
+  const forceLightTheme = 'light';
   
   return (
-    <ThemeProvider defaultTheme={defaultTheme} storageKey="wallet-theme" attribute="class">
+    <ThemeProvider defaultTheme={forceLightTheme} forcedTheme={forceLightTheme} storageKey="wallet-theme" attribute="class">
       <MenuProvider>
         <WalletProvider>
           <Router>
