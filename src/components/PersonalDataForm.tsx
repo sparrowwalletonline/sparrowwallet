@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,7 +24,17 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
   const [acceptTerms, setAcceptTerms] = useState(false);
 
   const handleBack = () => {
-    navigate('/app');
+    // Add exit animation
+    document.body.classList.add('page-exit');
+    
+    setTimeout(() => {
+      navigate('/app');
+      
+      // Remove class after navigation
+      setTimeout(() => {
+        document.body.classList.remove('page-exit');
+      }, 50);
+    }, 300);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
