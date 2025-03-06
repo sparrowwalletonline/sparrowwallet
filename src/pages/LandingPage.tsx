@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
-import { ArrowRight, Check, Menu, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift, Coins, Wallet, Search, X, Loader2 } from 'lucide-react';
+import { ArrowRight, Check, Menu, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift, Coins, Wallet, Search, X, Loader2, Star } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import { useMenu } from '@/contexts/MenuContext';
 import { supabase } from '@/integrations/supabase/client';
