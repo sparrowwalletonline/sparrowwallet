@@ -1,9 +1,10 @@
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 
 interface MenuContextType {
   isMenuOpen: boolean;
   toggleMenu: () => void;
+  openMenu: () => void;
   closeMenu: () => void;
 }
 
@@ -12,15 +13,21 @@ const MenuContext = createContext<MenuContextType | undefined>(undefined);
 export const MenuProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const toggleMenu = () => {
+  const toggleMenu = useCallback(() => {
     console.log('Toggle menu called, current state:', isMenuOpen);
     setIsMenuOpen(prev => !prev);
-  };
+  }, [isMenuOpen]);
   
-  const closeMenu = () => setIsMenuOpen(false);
+  const openMenu = useCallback(() => {
+    setIsMenuOpen(true);
+  }, []);
+  
+  const closeMenu = useCallback(() => {
+    setIsMenuOpen(false);
+  }, []);
 
   return (
-    <MenuContext.Provider value={{ isMenuOpen, toggleMenu, closeMenu }}>
+    <MenuContext.Provider value={{ isMenuOpen, toggleMenu, openMenu, closeMenu }}>
       {children}
     </MenuContext.Provider>
   );

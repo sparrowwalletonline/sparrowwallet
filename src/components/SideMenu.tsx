@@ -1,9 +1,8 @@
-
 import React, { useEffect } from 'react';
 import { useMenu } from '@/contexts/MenuContext';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
-import { Home, CreditCard, Settings, X, User, LogOut, Compass } from 'lucide-react';
+import { Home, CreditCard, Settings, X, User, LogOut, Compass, Shield, Gift, HelpCircle, HeartHandshake, Terminal, FileText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
@@ -125,53 +124,113 @@ const SideMenu: React.FC = () => {
           </div>
           
           <nav className="flex-1 p-6">
-            <ul className="space-y-6">
-              <li>
-                <div 
-                  className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
-                  onClick={() => handleNavigation('/')}
-                >
-                  <Home className="w-5 h-5" />
-                  <span className="font-medium">Home</span>
-                </div>
-              </li>
-              <li>
-                <div 
-                  className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
-                  onClick={() => handleNavigation('/wallet')}
-                >
-                  <CreditCard className="w-5 h-5" />
-                  <span className="font-medium">Wallet</span>
-                </div>
-              </li>
-              <li>
-                <div 
-                  className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
-                  onClick={() => handleNavigation('https://sparrowwallet.com/docs/')}
-                >
-                  <Compass className="w-5 h-5" />
-                  <span className="font-medium">Documentation</span>
-                </div>
-              </li>
-              <li>
-                <div 
-                  className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
-                  onClick={() => handleNavigation('/auth')}
-                >
-                  <User className="w-5 h-5" />
-                  <span className="font-medium">Account</span>
-                </div>
-              </li>
-              <li>
-                <div 
-                  className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
-                  onClick={() => handleNavigation('/terms')}
-                >
-                  <Settings className="w-5 h-5" />
-                  <span className="font-medium">Settings</span>
-                </div>
-              </li>
-            </ul>
+            <div className="mb-6">
+              <h3 className="text-xs uppercase text-gray-500 dark:text-gray-400 font-semibold mb-3">Main</h3>
+              <ul className="space-y-4">
+                <li>
+                  <div 
+                    className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
+                    onClick={() => handleNavigation('/')}
+                  >
+                    <Home className="w-5 h-5" />
+                    <span className="font-medium">Home</span>
+                  </div>
+                </li>
+                <li>
+                  <div 
+                    className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
+                    onClick={() => handleNavigation('/wallet')}
+                  >
+                    <CreditCard className="w-5 h-5" />
+                    <span className="font-medium">Wallet</span>
+                  </div>
+                </li>
+                <li>
+                  <div 
+                    className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
+                    onClick={() => handleNavigation('/security-settings')}
+                  >
+                    <Shield className="w-5 h-5" />
+                    <span className="font-medium">Security</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            
+            <div className="mb-6">
+              <h3 className="text-xs uppercase text-gray-500 dark:text-gray-400 font-semibold mb-3">Resources</h3>
+              <ul className="space-y-4">
+                <li>
+                  <div 
+                    className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
+                    onClick={() => handleNavigation('/features')}
+                  >
+                    <Gift className="w-5 h-5" />
+                    <span className="font-medium">Features</span>
+                  </div>
+                </li>
+                <li>
+                  <div 
+                    className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
+                    onClick={() => handleNavigation('/documentation')}
+                  >
+                    <FileText className="w-5 h-5" />
+                    <span className="font-medium">Documentation</span>
+                  </div>
+                </li>
+                <li>
+                  <div 
+                    className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
+                    onClick={() => handleNavigation('/support')}
+                  >
+                    <HelpCircle className="w-5 h-5" />
+                    <span className="font-medium">Support</span>
+                  </div>
+                </li>
+                <li>
+                  <div 
+                    className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
+                    onClick={() => handleNavigation('https://github.com/sparrowwallet/sparrow')}
+                  >
+                    <Terminal className="w-5 h-5" />
+                    <span className="font-medium">GitHub</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            
+            <div className="mb-6">
+              <h3 className="text-xs uppercase text-gray-500 dark:text-gray-400 font-semibold mb-3">Account</h3>
+              <ul className="space-y-4">
+                <li>
+                  <div 
+                    className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
+                    onClick={() => handleNavigation('/auth')}
+                  >
+                    <User className="w-5 h-5" />
+                    <span className="font-medium">Profile</span>
+                  </div>
+                </li>
+                <li>
+                  <div 
+                    className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
+                    onClick={() => handleNavigation('/donate')}
+                  >
+                    <HeartHandshake className="w-5 h-5" />
+                    <span className="font-medium">Donate</span>
+                  </div>
+                </li>
+                <li>
+                  <div 
+                    className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer"
+                    onClick={() => handleNavigation('/terms')}
+                  >
+                    <Settings className="w-5 h-5" />
+                    <span className="font-medium">Settings</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </nav>
           
           <div className="p-6 border-t border-gray-200 dark:border-gray-800">
