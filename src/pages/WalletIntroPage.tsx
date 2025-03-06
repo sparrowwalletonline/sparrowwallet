@@ -1,16 +1,28 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Shield, Key, LockKeyhole, CheckCircle } from 'lucide-react';
 import WalletLogo from '@/components/WalletLogo';
 import { useWallet } from '@/contexts/WalletContext';
+import { Checkbox } from '@/components/ui/checkbox';
+import { toast } from '@/components/ui/use-toast';
 
 const WalletIntroPage: React.FC = () => {
   const navigate = useNavigate();
   const { cancelWalletCreation } = useWallet();
+  const [seedPhraseAgreement, setSeedPhraseAgreement] = useState(false);
 
   const handleReady = () => {
+    if (!seedPhraseAgreement) {
+      toast({
+        title: "Bitte bestätigen",
+        description: "Bitte bestätigen Sie, dass Sie Ihre Seed-Phrase nicht teilen werden.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     document.body.classList.add('page-exit');
     setTimeout(() => {
       navigate('/generate-wallet');
@@ -108,9 +120,25 @@ const WalletIntroPage: React.FC = () => {
           </p>
         </div>
 
+        <div className="flex items-start space-x-2 w-full mb-6">
+          <Checkbox 
+            id="seedPhraseAgreement" 
+            checked={seedPhraseAgreement}
+            onCheckedChange={(checked) => setSeedPhraseAgreement(checked === true)}
+            className="data-[state=checked]:bg-blue-600 data-[state=checked]:text-white border-gray-300 mt-1"
+          />
+          <label 
+            htmlFor="seedPhraseAgreement" 
+            className="text-sm text-gray-700 cursor-pointer"
+          >
+            Verstanden, ich werde meine Seed-Phrase niemals teilen und bin mir bewusst, dass ich bei Verlust keinen Zugriff mehr auf meine Wallet habe.
+          </label>
+        </div>
+
         <Button 
           onClick={handleReady}
-          className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium shadow-md hover:-translate-y-0.5 transition-all duration-300 text-base"
+          className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium shadow-md hover:-translate-y-0.5 transition-all duration-300 text-base disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={!seedPhraseAgreement}
         >
           Ich bin bereit!
         </Button>
