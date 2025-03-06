@@ -217,7 +217,7 @@ const WalletViewContent: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Header title="Home" />
       
-      <div className="px-4 mb-4">
+      <div className="px-4 mb-1">
         <div className="flex items-center">
           <DropdownMenu open={isDropdownOpen} onOpenChange={handleDropdownOpenChange}>
             <DropdownMenuTrigger asChild>
@@ -227,6 +227,7 @@ const WalletViewContent: React.FC = () => {
                 <ChevronDown className="h-3 w-3 text-muted-foreground" />
               </button>
             </DropdownMenuTrigger>
+            
             <DropdownMenuContent className="bg-popover border border-border text-popover-foreground z-50 min-w-[200px]">
               {wallets.map((wallet) => (
                 <DropdownMenuItem 
