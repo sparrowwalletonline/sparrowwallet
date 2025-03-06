@@ -3,18 +3,46 @@ import React from 'react';
 
 interface WalletLogoProps {
   className?: string;
-  color?: 'blue' | 'green';
+  color?: 'blue' | 'green' | 'sparrow';
+  useSparrowLogo?: boolean;
 }
 
-const WalletLogo: React.FC<WalletLogoProps> = ({ className, color = 'blue' }) => {
+const WalletLogo: React.FC<WalletLogoProps> = ({ 
+  className, 
+  color = 'blue', 
+  useSparrowLogo = false 
+}) => {
+  // If using the sparrow logo, return the image
+  if (useSparrowLogo) {
+    return (
+      <div className={`flex items-center ${className}`}>
+        <div className="rounded-md flex items-center justify-center shadow-lg relative overflow-hidden">
+          <img 
+            src="/lovable-uploads/311d7952-d195-4eb5-8b1a-17ed65abc660.png" 
+            alt="Sparrow Logo" 
+            className="w-full h-full object-contain" 
+          />
+        </div>
+      </div>
+    );
+  }
+  
   // Define gradient colors based on the color prop
   const gradientColors = color === 'blue' 
     ? { from: '#0033ff', to: '#00ffaa' }
-    : { from: '#4ade80', to: '#22c55e' };
+    : color === 'sparrow' 
+      ? { from: '#8E9196', to: '#403E43' }
+      : { from: '#4ade80', to: '#22c55e' };
+  
+  const bgClass = color === 'blue' 
+    ? 'from-blue-600 to-blue-400' 
+    : color === 'sparrow'
+      ? 'from-gray-500 to-gray-700'
+      : 'from-green-500 to-green-400';
   
   return (
     <div className={`flex items-center ${className}`}>
-      <div className={`bg-gradient-to-br ${color === 'blue' ? 'from-blue-600 to-blue-400' : 'from-green-500 to-green-400'} rounded-md flex items-center justify-center shadow-lg relative overflow-hidden`}>
+      <div className={`bg-gradient-to-br ${bgClass} rounded-md flex items-center justify-center shadow-lg relative overflow-hidden`}>
         <svg 
           viewBox="0 0 100 100" 
           className="w-full h-full"
