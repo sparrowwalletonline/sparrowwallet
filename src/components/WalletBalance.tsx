@@ -38,17 +38,45 @@ const WalletBalance: React.FC = () => {
   
   const [animatedBalance, setAnimatedBalance] = useState(0);
   const prevBalanceRef = useRef(0);
+  const initialLoadRef = useRef(true);
   
   useEffect(() => {
     const prevBalance = prevBalanceRef.current;
     prevBalanceRef.current = usdBalance;
     
-    if (prevBalance === 0 && usdBalance !== 0) {
-      setAnimatedBalance(usdBalance);
+    if (initialLoadRef.current && usdBalance > 0) {
+      initialLoadRef.current = false;
+      
+      const startTime = performance.now();
+      const duration = 600;
+      
+      const animateValue = (timestamp: number) => {
+        const runtime = timestamp - startTime;
+        const progress = Math.min(runtime / duration, 1);
+        
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        const nextValue = 0 + (usdBalance * easeProgress);
+        
+        setAnimatedBalance(nextValue);
+        
+        if (runtime < duration) {
+          requestAnimationFrame(animateValue);
+        } else {
+          setAnimatedBalance(usdBalance);
+        }
+      };
+      
+      requestAnimationFrame(animateValue);
       return;
     }
     
     if (prevBalance !== usdBalance) {
+      if (prevBalance === 0 && initialLoadRef.current) {
+        setAnimatedBalance(usdBalance);
+        initialLoadRef.current = false;
+        return;
+      }
+      
       setAnimatedBalance(prevBalance);
       
       const startTime = performance.now();

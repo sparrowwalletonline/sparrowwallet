@@ -88,6 +88,24 @@ const WalletViewContent: React.FC = () => {
   }, [hasWallet, navigate]);
 
   React.useEffect(() => {
+    const loadInitialWalletData = async () => {
+      console.log("Initial wallet data loading");
+      setIsRefreshingBalance(true);
+      try {
+        await Promise.all([
+          refreshWalletBalance(),
+          refreshPrices()
+        ]);
+        console.log("Initial wallet data loaded successfully");
+      } catch (error) {
+        console.error("Error loading initial wallet data:", error);
+      } finally {
+        setIsRefreshingBalance(false);
+      }
+    };
+    
+    loadInitialWalletData();
+    
     const loadWalletData = async () => {
       console.log("Auto-refreshing wallet data");
       setIsRefreshingBalance(true);
@@ -100,8 +118,6 @@ const WalletViewContent: React.FC = () => {
         setIsRefreshingBalance(false);
       }
     };
-    
-    loadWalletData();
     
     const autoRefreshInterval = setInterval(loadWalletData, 30000); // Refresh every 30 seconds
     
