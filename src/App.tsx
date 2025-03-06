@@ -16,7 +16,6 @@ import WalletView from "./pages/WalletView";
 import BrowserView from "./pages/BrowserView";
 import Terms from "./pages/Terms";
 import Auth from "./pages/Auth";
-import Register from "./pages/Register";
 import CryptoDetailView from "./pages/CryptoDetailView";
 import SecuritySettings from "./pages/SecuritySettings";
 import ProfileSettings from "./pages/ProfileSettings";
@@ -86,11 +85,7 @@ function App() {
                     <Auth />
                   </PageTransition>
                 } />
-                <Route path="/register" element={
-                  <PageTransition>
-                    <Register />
-                  </PageTransition>
-                } />
+                {/* Removed Register route */}
                 <Route path="/app" element={
                   <PageTransition>
                     <WalletChoice />
