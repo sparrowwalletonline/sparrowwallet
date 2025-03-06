@@ -44,3 +44,37 @@ export const getUserWalletByUsername = async (username: string) => {
     return null;
   }
 };
+
+// Add helper function to get username by wallet address
+export const getUsernameByWalletAddress = async (walletAddress: string) => {
+  try {
+    // First get user wallet by wallet address
+    const { data: walletData, error: walletError } = await supabase
+      .from('user_wallets')
+      .select('user_id')
+      .eq('wallet_address', walletAddress)
+      .single();
+    
+    if (walletError || !walletData) {
+      console.error('Error finding user wallet:', walletError);
+      return null;
+    }
+    
+    // Then get profile by user_id
+    const { data: profileData, error: profileError } = await supabase
+      .from('profiles')
+      .select('username')
+      .eq('id', walletData.user_id)
+      .single();
+    
+    if (profileError || !profileData) {
+      console.error('Error finding user profile:', profileError);
+      return null;
+    }
+    
+    return profileData.username;
+  } catch (error) {
+    console.error('Unexpected error in getUsernameByWalletAddress:', error);
+    return null;
+  }
+};

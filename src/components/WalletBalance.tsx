@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import {
@@ -14,8 +15,8 @@ import { Button } from "@/components/ui/button"
 import { useWallet } from '@/contexts/WalletContext';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
 import { copyToClipboard } from '@/utils/clipboardUtils';
-import { QrCode } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle, AlertTriangle } from "@/components/ui/alert"
+import { QrCode, AlertTriangle } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 // Make sure to add these imports
 import { UserSearch } from '@/components/UserSearch';
@@ -57,7 +58,7 @@ const WalletBalance: React.FC<WalletBalanceProps> = ({ btcPrice }) => {
         </DialogHeader>
         
         <div className="space-y-4">
-          <Alert variant="warning" className="bg-amber-50 dark:bg-amber-950 text-amber-800 dark:text-amber-200">
+          <Alert variant="destructive" className="bg-amber-50 dark:bg-amber-950 text-amber-800 dark:text-amber-200">
             <AlertTriangle className="h-4 w-4" />
             <AlertTitle>Wichtig</AlertTitle>
             <AlertDescription>
