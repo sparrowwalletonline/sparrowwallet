@@ -17,7 +17,7 @@ const WalletLogo: React.FC<WalletLogoProps> = ({
     return (
       <div className={`flex items-center ${className}`}>
         <img 
-          src="/lovable-uploads/311d7952-d195-4eb5-8b1a-17ed65abc660.png" 
+          src="/lovable-uploads/b5ad3bc7-c93f-4658-9622-34dfaed25653.png" 
           alt="Sparrow Logo" 
           className="w-full h-full object-contain" 
         />
