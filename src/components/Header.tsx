@@ -52,13 +52,13 @@ const Header = ({
         )}
         
         {title === "Sparrow" ? (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <img 
               src="/lovable-uploads/311d7952-d195-4eb5-8b1a-17ed65abc660.png" 
               alt="Sparrow Logo" 
-              className="w-6 h-6 object-contain" 
+              className="w-8 h-8 object-contain" 
             />
-            <h1 className="text-xl font-medium">{title}</h1>
+            <h1 className="text-2xl font-medium">{title}</h1>
           </div>
         ) : (
           <h1 className="text-xl font-medium">{title}</h1>
@@ -88,4 +88,3 @@ const Header = ({
 }
 
 export default Header;
-

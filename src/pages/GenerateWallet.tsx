@@ -44,7 +44,7 @@ const GenerateWallet: React.FC = () => {
     <div className="min-h-screen flex flex-col px-4 page-enter safe-area-inset-bottom">
       <div className="flex-1 flex flex-col items-center justify-center gap-5 sm:gap-8 py-6 sm:py-8">
         <WalletLogo 
-          className="animate-scale-in w-16 h-16 sm:w-24 sm:h-24" 
+          className="animate-scale-in w-20 h-20 sm:w-28 sm:h-28" 
           useSparrowLogo={true}
         />
         
