@@ -40,7 +40,6 @@ const LandingPage = () => {
   const handleCreateWallet = () => {
     setIsLoading(true);
     
-    // Show loading animation for 3 seconds
     setTimeout(() => {
       setIsLoading(false);
       document.querySelector('.create-wallet-trigger')?.dispatchEvent(
@@ -326,104 +325,136 @@ const LandingPage = () => {
         </section>
         
         <section className="px-6 py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/5 opacity-80"></div>
-          <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-blue-100 dark:bg-blue-800/10 rounded-full blur-3xl opacity-20 -translate-y-1/4 translate-x-1/4"></div>
-          <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-indigo-100 dark:bg-indigo-800/10 rounded-full blur-3xl opacity-20 translate-y-1/4 -translate-x-1/4"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/80 to-indigo-50/80 dark:from-blue-900/10 dark:to-indigo-900/10 opacity-80"></div>
+          
+          <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-blue-100 dark:bg-blue-800/10 rounded-full blur-3xl opacity-20 -translate-y-1/4 translate-x-1/4 animate-pulse"></div>
+          <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-indigo-100 dark:bg-indigo-800/10 rounded-full blur-3xl opacity-20 translate-y-1/4 -translate-x-1/4 animate-pulse" style={{animationDuration: '8s', animationDelay: '2s'}}></div>
           
           <div className="max-w-screen-xl mx-auto relative z-10">
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center justify-center p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full mb-4">
-                <Shield className="h-8 w-8 text-wallet-blue" />
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 dark:from-blue-500/20 dark:to-indigo-500/20 rounded-2xl mb-6 backdrop-blur-sm border border-blue-100/30 dark:border-blue-400/10 transform transition-all duration-300 hover:scale-105">
+                <Shield className="h-10 w-10 text-blue-600 dark:text-blue-400" />
               </div>
-              <h2 className="font-heading text-4xl font-bold mb-4">Security You Can Trust, <span className="text-wallet-blue">Simplicity</span> You'll Love</h2>
-              <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-lg">
+              <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6">
+                Security You Can Trust, 
+                <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"> Simplicity </span> 
+                You'll Love
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-lg leading-relaxed">
                 Sparrow Wallet combines industry-leading security with an intuitive design, making it the perfect wallet for both beginners and advanced Bitcoin users.
               </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-              <div className="bg-white dark:bg-gray-800/50 p-8 rounded-xl shadow-md backdrop-blur-sm border border-gray-100 dark:border-gray-700/30 transition-all hover:shadow-lg hover:-translate-y-1">
-                <div className="inline-flex items-center justify-center p-3 bg-green-100 dark:bg-green-900/30 rounded-xl mb-5">
-                  <Shield className="h-8 w-8 text-green-600 dark:text-green-400" />
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-r from-green-400/20 to-emerald-400/20 rounded-2xl blur-xl opacity-70 group-hover:opacity-100 transition-all duration-300 -z-10 group-hover:scale-105"></div>
+                <div className="bg-white/80 dark:bg-gray-800/40 p-8 rounded-2xl shadow-sm backdrop-blur-md border border-green-100/50 dark:border-green-500/10 transition-all duration-300 group-hover:shadow-lg hover:-translate-y-1 h-full">
+                  <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-green-400/20 to-emerald-400/20 dark:from-green-500/20 dark:to-emerald-500/20 rounded-xl mb-5 group-hover:scale-110 transition-all duration-300">
+                    <Shield className="h-7 w-7 text-green-600 dark:text-green-400" />
+                  </div>
+                  <h3 className="font-heading text-xl font-bold mb-3 text-gray-800 dark:text-white">Uncompromising Security</h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Your keys never leave your device. Full self-custody means you're always in control of your bitcoin with no third-party risk.
+                  </p>
+                  <ul className="mt-5 space-y-3">
+                    <li className="flex items-start">
+                      <div className="flex-shrink-0 p-1 bg-green-100 dark:bg-green-900/30 rounded-full mr-3 mt-0.5">
+                        <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                      </div>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Open-source and fully auditable code</span>
+                    </li>
+                    <li className="flex items-start">
+                      <div className="flex-shrink-0 p-1 bg-green-100 dark:bg-green-900/30 rounded-full mr-3 mt-0.5">
+                        <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                      </div>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Hardware wallet integration</span>
+                    </li>
+                    <li className="flex items-start">
+                      <div className="flex-shrink-0 p-1 bg-green-100 dark:bg-green-900/30 rounded-full mr-3 mt-0.5">
+                        <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                      </div>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Secure cryptographic protocols</span>
+                    </li>
+                  </ul>
                 </div>
-                <h3 className="font-heading text-xl font-bold mb-3">Uncompromising Security</h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Your keys never leave your device. Full self-custody means you're always in control of your bitcoin with no third-party risk.
-                </p>
-                <ul className="mt-4 space-y-2">
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-300 text-sm">Open-source and fully auditable code</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-300 text-sm">Hardware wallet integration</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-300 text-sm">Secure cryptographic protocols</span>
-                  </li>
-                </ul>
               </div>
               
-              <div className="bg-white dark:bg-gray-800/50 p-8 rounded-xl shadow-md backdrop-blur-sm border border-gray-100 dark:border-gray-700/30 transition-all hover:shadow-lg hover:-translate-y-1">
-                <div className="inline-flex items-center justify-center p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl mb-5">
-                  <UserPlus className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-indigo-400/20 rounded-2xl blur-xl opacity-70 group-hover:opacity-100 transition-all duration-300 -z-10 group-hover:scale-105"></div>
+                <div className="bg-white/80 dark:bg-gray-800/40 p-8 rounded-2xl shadow-sm backdrop-blur-md border border-blue-100/50 dark:border-blue-500/10 transition-all duration-300 group-hover:shadow-lg hover:-translate-y-1 h-full">
+                  <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-blue-400/20 to-indigo-400/20 dark:from-blue-500/20 dark:to-indigo-500/20 rounded-xl mb-5 group-hover:scale-110 transition-all duration-300">
+                    <UserPlus className="h-7 w-7 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <h3 className="font-heading text-xl font-bold mb-3 text-gray-800 dark:text-white">Beginner Friendly</h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Intuitive interface with helpful guides and tooltips make Bitcoin accessible to everyone, regardless of technical expertise.
+                  </p>
+                  <ul className="mt-5 space-y-3">
+                    <li className="flex items-start">
+                      <div className="flex-shrink-0 p-1 bg-blue-100 dark:bg-blue-900/30 rounded-full mr-3 mt-0.5">
+                        <Check className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                      </div>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Clean, intuitive design</span>
+                    </li>
+                    <li className="flex items-start">
+                      <div className="flex-shrink-0 p-1 bg-blue-100 dark:bg-blue-900/30 rounded-full mr-3 mt-0.5">
+                        <Check className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                      </div>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Built-in tutorials and guides</span>
+                    </li>
+                    <li className="flex items-start">
+                      <div className="flex-shrink-0 p-1 bg-blue-100 dark:bg-blue-900/30 rounded-full mr-3 mt-0.5">
+                        <Check className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                      </div>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Simplified transaction process</span>
+                    </li>
+                  </ul>
                 </div>
-                <h3 className="font-heading text-xl font-bold mb-3">Beginner Friendly</h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Intuitive interface with helpful guides and tooltips make Bitcoin accessible to everyone, regardless of technical expertise.
-                </p>
-                <ul className="mt-4 space-y-2">
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-300 text-sm">Clean, intuitive design</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-300 text-sm">Built-in tutorials and guides</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-300 text-sm">Simplified transaction process</span>
-                  </li>
-                </ul>
               </div>
               
-              <div className="bg-white dark:bg-gray-800/50 p-8 rounded-xl shadow-md backdrop-blur-sm border border-gray-100 dark:border-gray-700/30 transition-all hover:shadow-lg hover:-translate-y-1">
-                <div className="inline-flex items-center justify-center p-3 bg-purple-100 dark:bg-purple-900/30 rounded-xl mb-5">
-                  <Key className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-violet-400/20 rounded-2xl blur-xl opacity-70 group-hover:opacity-100 transition-all duration-300 -z-10 group-hover:scale-105"></div>
+                <div className="bg-white/80 dark:bg-gray-800/40 p-8 rounded-2xl shadow-sm backdrop-blur-md border border-purple-100/50 dark:border-purple-500/10 transition-all duration-300 group-hover:shadow-lg hover:-translate-y-1 h-full">
+                  <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-purple-400/20 to-violet-400/20 dark:from-purple-500/20 dark:to-violet-500/20 rounded-xl mb-5 group-hover:scale-110 transition-all duration-300">
+                    <Key className="h-7 w-7 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <h3 className="font-heading text-xl font-bold mb-3 text-gray-800 dark:text-white">Complete Control</h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Advanced features when you need them, with detailed transaction controls that grow with your experience.
+                  </p>
+                  <ul className="mt-5 space-y-3">
+                    <li className="flex items-start">
+                      <div className="flex-shrink-0 p-1 bg-purple-100 dark:bg-purple-900/30 rounded-full mr-3 mt-0.5">
+                        <Check className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Detailed UTXO management</span>
+                    </li>
+                    <li className="flex items-start">
+                      <div className="flex-shrink-0 p-1 bg-purple-100 dark:bg-purple-900/30 rounded-full mr-3 mt-0.5">
+                        <Check className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Custom fee settings</span>
+                    </li>
+                    <li className="flex items-start">
+                      <div className="flex-shrink-0 p-1 bg-purple-100 dark:bg-purple-900/30 rounded-full mr-3 mt-0.5">
+                        <Check className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Transaction labeling and history</span>
+                    </li>
+                  </ul>
                 </div>
-                <h3 className="font-heading text-xl font-bold mb-3">Complete Control</h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Advanced features when you need them, with detailed transaction controls that grow with your experience.
-                </p>
-                <ul className="mt-4 space-y-2">
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-300 text-sm">Detailed UTXO management</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-300 text-sm">Custom fee settings</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-300 text-sm">Transaction labeling and history</span>
-                  </li>
-                </ul>
               </div>
             </div>
             
-            <div className="mt-12 text-center">
+            <div className="mt-16 text-center">
               <Button 
                 onClick={handleCreateWallet} 
-                disabled={isLoading} 
-                className="bg-wallet-blue hover:bg-wallet-darkBlue text-white py-3 px-8"
+                disabled={isLoading}
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-6 px-10 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-lg font-medium"
               >
                 {isLoading ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                     Loading...
                   </>
                 ) : (
