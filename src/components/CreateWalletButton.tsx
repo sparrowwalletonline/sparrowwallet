@@ -319,7 +319,7 @@ const CreateWalletButton = () => {
             </DialogDescription>
             
             <Button onClick={handleSuccessModalClose} className="bg-wallet-blue hover:bg-wallet-darkBlue">
-              Weiter
+              Auf Wallet Zugreifen
             </Button>
           </div>
         </DialogContent>

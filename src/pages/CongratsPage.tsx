@@ -59,7 +59,7 @@ const CongratsPage: React.FC = () => {
             variant="wallet"
             className="w-full px-4 py-3 sm:px-6 sm:py-6 text-base sm:text-lg min-h-[50px] touch-manipulation"
           >
-            Wallet öffnen!
+            Auf Wallet Zugreifen
           </Button>
         </div>
       </div>
