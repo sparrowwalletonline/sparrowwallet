@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Shield, Key, LockKeyhole, CheckCircle } from 'lucide-react';
@@ -12,6 +12,42 @@ const WalletIntroPage: React.FC = () => {
   const navigate = useNavigate();
   const { cancelWalletCreation } = useWallet();
   const [seedPhraseAgreement, setSeedPhraseAgreement] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [countdownSeconds, setCountdownSeconds] = useState(0);
+
+  useEffect(() => {
+    if (loading) {
+      const interval = setInterval(() => {
+        setProgress(prevProgress => {
+          if (prevProgress >= 100) {
+            clearInterval(interval);
+            return 100;
+          }
+          return prevProgress + (100 / 3) / 10; // 3 seconds delay - 10 updates per second
+        });
+      }, 100);
+      
+      setCountdownSeconds(3);
+      const countdownInterval = setInterval(() => {
+        setCountdownSeconds((prevCount) => {
+          if (prevCount <= 1) {
+            clearInterval(countdownInterval);
+            return 0;
+          }
+          return prevCount - 1;
+        });
+      }, 1000);
+      
+      return () => {
+        clearInterval(interval);
+        clearInterval(countdownInterval);
+      };
+    } else {
+      setProgress(0);
+      setCountdownSeconds(0);
+    }
+  }, [loading]);
 
   const handleReady = () => {
     if (!seedPhraseAgreement) {
@@ -23,13 +59,18 @@ const WalletIntroPage: React.FC = () => {
       return;
     }
     
-    document.body.classList.add('page-exit');
+    setLoading(true);
+    
     setTimeout(() => {
-      navigate('/app');
+      document.body.classList.add('page-exit');
       setTimeout(() => {
-        document.body.classList.remove('page-exit');
-      }, 50);
-    }, 300);
+        navigate('/app');
+        setTimeout(() => {
+          document.body.classList.remove('page-exit');
+        }, 50);
+      }, 300);
+      setLoading(false);
+    }, 3000); // 3 second delay
   };
 
   const handleBack = () => {
@@ -138,9 +179,27 @@ const WalletIntroPage: React.FC = () => {
         <Button 
           onClick={handleReady}
           className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium shadow-md hover:-translate-y-0.5 transition-all duration-300 text-base disabled:opacity-50 disabled:cursor-not-allowed"
-          disabled={!seedPhraseAgreement}
+          disabled={!seedPhraseAgreement || loading}
         >
-          Ich bin bereit!
+          {loading ? (
+            <>
+              <div className="flex items-center gap-2">
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Wird vorbereitet... {countdownSeconds > 0 ? `(${countdownSeconds}s)` : ''}</span>
+              </div>
+              <div className="w-full bg-blue-400/30 h-1 rounded-full overflow-hidden mt-1">
+                <div 
+                  className="h-full bg-white rounded-full transition-all duration-100 ease-in-out"
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
+            </>
+          ) : (
+            'Ich bin bereit!'
+          )}
         </Button>
       </div>
       
