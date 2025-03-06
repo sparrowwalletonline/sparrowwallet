@@ -15,12 +15,11 @@ const WalletLogo: React.FC<WalletLogoProps> = ({
   // If using the sparrow logo, return the image without background
   if (useSparrowLogo) {
     return (
-      <div className={`flex items-center justify-center ${className}`}>
+      <div className={`relative ${className}`}>
         <img 
           src="/lovable-uploads/b5ad3bc7-c93f-4658-9622-34dfaed25653.png" 
           alt="Sparrow Logo" 
-          className="w-full h-full object-contain" 
-          style={{ minWidth: '100%', minHeight: '100%' }}
+          className="absolute inset-0 w-full h-full object-contain z-10"
         />
       </div>
     );
