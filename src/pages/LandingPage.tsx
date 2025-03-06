@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -38,9 +39,15 @@ const LandingPage = () => {
   }, []);
 
   const handleCreateWallet = () => {
-    document.querySelector('.create-wallet-trigger')?.dispatchEvent(
-      new MouseEvent('click', { bubbles: true })
-    );
+    setIsLoading(true);
+    
+    // Show loading animation for 3 seconds
+    setTimeout(() => {
+      setIsLoading(false);
+      document.querySelector('.create-wallet-trigger')?.dispatchEvent(
+        new MouseEvent('click', { bubbles: true })
+      );
+    }, 3000);
   };
 
   const handleMenuClick = () => {
@@ -265,12 +272,16 @@ const LandingPage = () => {
                     disabled={isLoading} 
                     className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
                   >
-                    {isLoading ? <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Wird geladen...
-                      </> : <>
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                        Creating Wallet...
+                      </>
+                    ) : (
+                      <>
                         Create Online Wallet <ArrowRight className="h-4 w-4" />
-                      </>}
+                      </>
+                    )}
                   </Button>
                   
                   <Button variant="outline" className="w-full sm:w-auto py-6 text-base" onClick={() => window.open('https://sparrowwallet.com/download/', '_blank')}>
