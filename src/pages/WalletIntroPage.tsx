@@ -25,7 +25,7 @@ const WalletIntroPage: React.FC = () => {
     
     document.body.classList.add('page-exit');
     setTimeout(() => {
-      navigate('/generate-wallet');
+      navigate('/app');
       setTimeout(() => {
         document.body.classList.remove('page-exit');
       }, 50);
