@@ -5,17 +5,19 @@ interface WalletLogoProps {
   className?: string;
   color?: 'blue' | 'green' | 'sparrow';
   useSparrowLogo?: boolean;
+  scale?: number;
 }
 
 const WalletLogo: React.FC<WalletLogoProps> = ({ 
   className, 
   color = 'sparrow', 
-  useSparrowLogo = true 
+  useSparrowLogo = true,
+  scale = 1
 }) => {
   // If using the sparrow logo, return the image without background
   if (useSparrowLogo) {
     return (
-      <div className={`relative ${className}`} style={{ transform: 'scale(2)' }}>
+      <div className={`relative ${className}`} style={scale !== 1 ? { transform: `scale(${scale})` } : undefined}>
         <img 
           src="/lovable-uploads/b5ad3bc7-c93f-4658-9622-34dfaed25653.png" 
           alt="Sparrow Logo" 
