@@ -58,17 +58,17 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				wallet: {
-					blue: '#8E9196',
-					lightBlue: '#8E9196',
-					darkBlue: '#403E43',
+					blue: '#0500ff',
+					lightBlue: '#0500ff',
+					darkBlue: '#0400cf',
 					bg: '#111111',
 					darkBg: '#1A1F2C',
 					card: '#232733',
-					gray: '#8E9196',
+					gray: '#8A8D97',
 					darkGray: '#403E43',
-					green: '#8E9196',
-					darkGreen: '#403E43',
-					accent: '#8E9196',
+					green: '#00FF5F',
+					darkGreen: '#00D651',
+					accent: '#00FF5F',
 					text: '#FFFFFF'
 				}
 			},
