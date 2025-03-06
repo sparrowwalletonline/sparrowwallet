@@ -1,11 +1,14 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Header from '@/components/Header';
-import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { MapPin, Calendar } from 'lucide-react';
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { MapPin, Calendar, HelpCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const PaymentMethods = () => {
+  const [open, setOpen] = useState(false);
+  
   return (
     <div className="container mx-auto px-4 py-6 max-w-4xl">
       <Header title="Zahlungsmethoden" showBack={true} />
@@ -29,27 +32,36 @@ const PaymentMethods = () => {
             <p className="text-sm text-muted-foreground mb-6">
               Sobald dieser Service in Ihrer Region verfügbar ist, können Sie hier Kreditkarten, Bankkonto und andere Zahlungsmethoden hinzufügen.
             </p>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>In welchen Regionen ist dies verfügbar?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Unser Zahlungssystem ist derzeit in den folgenden Regionen verfügbar:
-                  <ul className="list-disc pl-5 mt-2 space-y-1">
-                    <li>Vereinigte Staaten</li>
-                    <li>Europäische Union (ausgenommen einige Länder)</li>
-                    <li>Vereinigtes Königreich</li>
-                    <li>Kanada</li>
-                    <li>Australien</li>
-                  </ul>
-                  <p className="mt-4">
-                    Wir planen, in den kommenden Monaten weitere Regionen hinzuzufügen, mit einer vollständigen Abdeckung bis Juni 2025. Danke für Ihre Geduld!
-                  </p>
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogAction>Verstanden</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
+            
+            <AlertDialog open={open} onOpenChange={setOpen}>
+              <AlertDialogTrigger asChild>
+                <Button variant="outline" className="flex items-center gap-2">
+                  <HelpCircle className="h-4 w-4" />
+                  <span>In welchen Regionen ist dies verfügbar?</span>
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>In welchen Regionen ist dies verfügbar?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Unser Zahlungssystem ist derzeit in den folgenden Regionen verfügbar:
+                    <ul className="list-disc pl-5 mt-2 space-y-1">
+                      <li>Vereinigte Staaten</li>
+                      <li>Europäische Union (ausgenommen einige Länder)</li>
+                      <li>Vereinigtes Königreich</li>
+                      <li>Kanada</li>
+                      <li>Australien</li>
+                    </ul>
+                    <p className="mt-4">
+                      Wir planen, in den kommenden Monaten weitere Regionen hinzuzufügen, mit einer vollständigen Abdeckung bis Juni 2025. Danke für Ihre Geduld!
+                    </p>
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogAction>Verstanden</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </CardContent>
         </Card>
       </div>
