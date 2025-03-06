@@ -216,25 +216,26 @@ const LandingPage = () => {
       </header>
       
       <div className="flex-1 flex flex-col">
-        <section className="relative px-6 sm:py-28 overflow-hidden py-[40px]">
+        <section className="relative px-6 sm:py-32 overflow-hidden py-[60px]">
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute inset-0 bg-blue-50 dark:bg-blue-900/10" />
+            <div className="absolute inset-0 bg-blue-50/80 dark:bg-blue-900/10" />
             <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white dark:from-wallet-darkBg to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white dark:from-wallet-darkBg to-transparent" />
-            <div className="absolute opacity-30 -top-24 -right-24 w-96 h-96 rounded-full bg-blue-200 dark:bg-blue-800/20 blur-3xl" />
-            <div className="absolute opacity-30 -bottom-24 -left-24 w-96 h-96 rounded-full bg-purple-200 dark:bg-purple-800/20 blur-3xl" />
+            <div className="absolute opacity-50 -top-24 -right-24 w-96 h-96 rounded-full bg-blue-200 dark:bg-blue-800/20 blur-3xl" />
+            <div className="absolute opacity-50 -bottom-24 -left-24 w-96 h-96 rounded-full bg-purple-200 dark:bg-purple-800/20 blur-3xl" />
+            <div className="absolute top-1/4 left-1/3 w-64 h-64 rounded-full bg-pink-200/30 dark:bg-pink-800/10 blur-3xl" />
           </div>
           
           <div className="max-w-screen-xl mx-auto">
             <div className="flex flex-col lg:flex-row items-center gap-10">
               <div className="space-y-8 lg:w-1/2 mx-auto text-center lg:text-left">
                 <div className="flex flex-col items-center lg:items-start gap-4 mb-4">
-                  <div className="w-32 h-32 mb-4 bg-white/5 rounded-lg p-2 flex items-center justify-center">
+                  <div className="w-24 h-24 mb-4 bg-gradient-to-br from-white/10 to-white/5 dark:from-white/5 dark:to-transparent backdrop-blur-sm rounded-2xl p-2 flex items-center justify-center shadow-xl">
                     <WalletLogo className="w-full h-full" useSparrowLogo={true} color="sparrow" animate={true} />
                   </div>
                   <h1 className="font-heading tracking-tight text-gray-900 dark:text-white leading-[1.1] font-bold text-4xl md:text-5xl lg:text-6xl max-w-xl z-10 relative">
                     Powerful Bitcoin
-                    <span className="text-wallet-blue"> Wallet </span>
+                    <span className="bg-gradient-to-r from-[#0500ff] to-[#0400df] bg-clip-text text-transparent"> Wallet </span>
                     for Power Users
                   </h1>
                 </div>
@@ -265,11 +266,11 @@ const LandingPage = () => {
                   </div>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-4 pt-4 z-10 relative justify-center lg:justify-start">
+                <div className="flex flex-col sm:flex-row gap-4 pt-6 z-10 relative justify-center lg:justify-start">
                   <Button 
                     onClick={handleCreateWallet} 
                     disabled={isLoading} 
-                    className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
+                    className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 font-medium transition-all rounded-xl"
                   >
                     {isLoading ? (
                       <>
@@ -283,7 +284,7 @@ const LandingPage = () => {
                     )}
                   </Button>
                   
-                  <Button variant="outline" className="w-full sm:w-auto py-6 text-base" onClick={() => window.open('https://sparrowwallet.com/download/', '_blank')}>
+                  <Button variant="outline" className="w-full sm:w-auto py-6 text-base backdrop-blur-sm bg-white/50 dark:bg-black/20 border-gray-200 dark:border-gray-800" onClick={() => window.open('https://sparrowwallet.com/download/', '_blank')}>
                     <ExternalLink className="mr-2 h-4 w-4" />
                     Download Desktop App
                   </Button>
@@ -291,9 +292,9 @@ const LandingPage = () => {
               </div>
               
               <div className="relative lg:w-1/2 z-10">
-                <div className="absolute inset-0 rounded-3xl bg-blue-500/10 dark:bg-blue-500/5 blur-xl -z-10"></div>
-                <div className="relative rounded-3xl overflow-hidden">
-                  <img src="/lovable-uploads/1b77eb0f-8d23-4584-b764-6202a16c8247.png" alt="Bitcoin Wallet App" className="w-full max-w-md mx-auto" />
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:from-blue-500/10 dark:to-purple-500/10 blur-xl -z-10"></div>
+                <div className="relative rounded-3xl overflow-hidden border border-white/20 dark:border-white/5 shadow-2xl">
+                  <img src="/lovable-uploads/1b77eb0f-8d23-4584-b764-6202a16c8247.png" alt="Bitcoin Wallet App" className="w-full max-w-md mx-auto transform transition-transform hover:scale-[1.02] duration-700" />
                 </div>
               </div>
             </div>
@@ -332,7 +333,7 @@ const LandingPage = () => {
             <div className="py-16 px-6">
               <div className="max-w-3xl mx-auto">
                 <div className="text-center mb-12">
-                  <h2 className="font-heading text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-wallet-blue to-indigo-600 bg-clip-text text-transparent">Bitcoin Everywhere</h2>
+                  <h2 className="font-heading text-3xl font-bold mb-6 bg-gradient-to-r from-wallet-blue to-indigo-600 bg-clip-text text-transparent">Bitcoin Everywhere</h2>
                   <p className="text-gray-600 dark:text-gray-300 text-lg">
                     Take control of your bitcoin with a powerful wallet built for both beginners and experts.
                   </p>
@@ -417,3 +418,4 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+
