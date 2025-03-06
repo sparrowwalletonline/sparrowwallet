@@ -610,7 +610,7 @@ const CryptoItem = ({
   
   return (
     <div 
-      className="flex items-center justify-between p-2 hover:bg-gray-800 rounded-lg cursor-pointer transition-colors"
+      className="flex items-center justify-between p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg cursor-pointer transition-colors"
       onClick={onClick}
     >
       <div className="flex items-center">
