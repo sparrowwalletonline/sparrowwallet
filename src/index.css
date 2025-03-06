@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -71,6 +72,8 @@
 @layer base {
   * {
     @apply border-border;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   html {
@@ -85,6 +88,8 @@
     /* Mobile viewport fix */
     min-height: -webkit-fill-available;
     color-scheme: light dark;  /* Ensure proper color handling */
+    opacity: 1 !important;
+    visibility: visible !important;
   }
   
   /* Safari mobile viewport height fix */
@@ -236,6 +241,40 @@
   @apply bg-[#1A1F2C] text-white;
 }
 
+/* Critical visibility fixes */
+/* Force all UI elements to be visible */
+.landing-page-content * {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+/* Make buttons specifically visible */
+button, .trust-button, .feature-card, .asset-card {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: inline-flex !important;
+}
+
+/* Fix for text visibility */
+h1, h2, h3, p, span, div {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Fix for layout and container visibility */
+.landing-page-content, 
+.hero-section, 
+.features-section,
+.main-content,
+.container,
+.mx-auto,
+section {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
 @media (max-width: 640px) {
   .wallet-card {
     padding: 0.75rem;
@@ -248,19 +287,27 @@
   }
 }
 
-/* Fix for visibility issues */
-.landing-page-content * {
-  opacity: 1 !important;
-  visibility: visible !important;
+/* Fix z-index issues that might hide content */
+body > div, 
+#root > div {
+  position: relative;
+  z-index: auto !important;
 }
 
-.trust-button, .feature-card, .asset-card, button {
-  opacity: 1 !important;
-  visibility: visible !important;
+/* Ensure flexbox layouts display correctly */
+.flex {
+  display: flex !important;
 }
 
-/* Fix for text visibility */
-h1, h2, h3, p, span, div {
+.grid {
+  display: grid !important;
+}
+
+/* Add a force-display class that can be added to any element */
+.force-display {
+  display: block !important;
   opacity: 1 !important;
   visibility: visible !important;
+  position: relative !important;
+  z-index: 1 !important;
 }
