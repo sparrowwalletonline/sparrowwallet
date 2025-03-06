@@ -44,8 +44,6 @@ const SecuritySettings = () => {
   
   const [devices, setDevices] = useState([
     { id: '1', name: 'Aktuelles Gerät', lastActive: 'Jetzt', isCurrent: true },
-    { id: '2', name: 'iPhone 13', lastActive: 'Vor 2 Tagen', isCurrent: false },
-    { id: '3', name: 'MacBook Pro', lastActive: 'Vor 5 Tagen', isCurrent: false },
   ]);
 
   useEffect(() => {
@@ -466,17 +464,12 @@ const SecuritySettings = () => {
                       <p className="font-medium">{device.name} {device.isCurrent && <span className="text-xs bg-blue-100 text-blue-800 py-0.5 px-2 rounded-full ml-2">Aktuell</span>}</p>
                       <p className="text-xs text-muted-foreground">Letzter Zugriff: {device.lastActive}</p>
                     </div>
-                    {!device.isCurrent && (
-                      <Button variant="outline" size="sm" onClick={() => removeDevice(device.id)}>
-                        Entfernen
-                      </Button>
-                    )}
                   </div>
                 ))}
               </div>
               
               <p className="text-xs mt-4 bg-muted p-3 rounded-md">
-                Wenn du ein Gerät entfernst, wird die Sitzung auf diesem Gerät sofort beendet und erfordert eine erneute Anmeldung.
+                Sie sind aktuell nur auf diesem Gerät angemeldet. Wenn Sie sich auf einem weiteren Gerät anmelden, wird es hier angezeigt.
               </p>
             </CardContent>
           </Card>
