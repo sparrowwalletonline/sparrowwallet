@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useWallet } from '@/contexts/WalletContext';
 import { QRCodeSVG } from 'qrcode.react';
@@ -126,7 +125,7 @@ const WalletBalance: React.FC = () => {
   };
   
   const getDisplayAddress = () => {
-    return activeWallet?.address || walletAddress || '';
+    return activeWallet?.walletAddress || walletAddress || '';
   };
   
   const handleCopyAddress = () => {
