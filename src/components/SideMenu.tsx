@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { useMenu } from '@/contexts/MenuContext';
 import { Button } from '@/components/ui/button';
@@ -101,11 +102,11 @@ const SideMenu: React.FC = () => {
   return (
     <>
       {isMenuOpen && (
-        <div className="fixed inset-0 z-40 overlay-bg bg-black bg-opacity-50 backdrop-blur-sm" />
+        <div className="fixed inset-0 z-50 overlay-bg bg-black bg-opacity-50 backdrop-blur-sm" />
       )}
       
       <div 
-        className={`fixed top-0 right-0 z-50 w-[280px] h-full bg-white dark:bg-wallet-darkBg transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 z-[51] w-[280px] h-full bg-white dark:bg-wallet-darkBg transform transition-transform duration-300 ease-in-out ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >

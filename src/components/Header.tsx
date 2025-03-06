@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ArrowLeft, Menu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -39,7 +38,7 @@ const Header = ({
   );
 
   return (
-    <header className={`flex items-center justify-between py-3 px-4 ${className} wallet-header`}>
+    <header className={`flex items-center justify-between py-3 px-4 ${className} wallet-header z-40 relative`}>
       <div className="flex items-center gap-2">
         {showBack && (
           <BackButton />
