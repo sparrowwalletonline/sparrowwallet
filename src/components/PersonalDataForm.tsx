@@ -30,7 +30,7 @@ const PersonalDataForm: React.FC = () => {
     } else if (countdown === 0 && isLoading) {
       // When countdown reaches 0 and loading is still active, navigate to the seed phrase
       generateWallet();
-      navigate('/wallet-intro');
+      navigate('/seed-phrase');
       toast({
         title: "Wallet wird vorbereitet",
         description: "Bitte folgen Sie den nächsten Schritten zur Wallet-Erstellung."
