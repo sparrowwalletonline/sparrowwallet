@@ -13,7 +13,7 @@ const WalletActions: React.FC = () => {
         <Button
           variant="wallet"
           className="w-14 h-14 rounded-full shadow-[0_4px_10px_rgba(5,0,255,0.3)] hover:shadow-[0_6px_14px_rgba(5,0,255,0.4)]"
-          onClick={() => navigate('/wallet/send')}
+          onClick={() => navigate('/wallet')}
         >
           <ArrowUpRight className="h-6 w-6" />
         </Button>
@@ -24,7 +24,7 @@ const WalletActions: React.FC = () => {
         <Button
           variant="wallet"
           className="w-14 h-14 rounded-full shadow-[0_4px_10px_rgba(5,0,255,0.3)] hover:shadow-[0_6px_14px_rgba(5,0,255,0.4)]"
-          onClick={() => navigate('/wallet/receive')}
+          onClick={() => navigate('/wallet')}
         >
           <ArrowDownLeft className="h-6 w-6" />
         </Button>
@@ -35,7 +35,7 @@ const WalletActions: React.FC = () => {
         <Button
           variant="wallet"
           className="w-14 h-14 rounded-full shadow-[0_4px_10px_rgba(5,0,255,0.3)] hover:shadow-[0_6px_14px_rgba(5,0,255,0.4)]"
-          onClick={() => navigate('/wallet/buy')}
+          onClick={() => navigate('/wallet')}
         >
           <ShoppingCart className="h-6 w-6" />
         </Button>
@@ -46,7 +46,7 @@ const WalletActions: React.FC = () => {
         <Button
           variant="wallet"
           className="w-14 h-14 rounded-full shadow-[0_4px_10px_rgba(5,0,255,0.3)] hover:shadow-[0_6px_14px_rgba(5,0,255,0.4)]"
-          onClick={() => navigate('/wallet/earn')}
+          onClick={() => navigate('/donate')}
         >
           <Sparkles className="h-6 w-6" />
         </Button>
