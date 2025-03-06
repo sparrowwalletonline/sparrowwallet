@@ -21,7 +21,7 @@ const WalletLogo: React.FC<WalletLogoProps> = ({
         <img 
           src="/lovable-uploads/b5ad3bc7-c93f-4658-9622-34dfaed25653.png" 
           alt="Sparrow Logo" 
-          className="absolute inset-0 w-full h-full object-contain z-10"
+          className="w-full h-full object-contain z-10"
         />
       </div>
     );

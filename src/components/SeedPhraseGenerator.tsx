@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -80,8 +81,8 @@ const SeedPhraseGenerator: React.FC = () => {
         setIsGenerating(false);
         
         toast({
-          title: "Success",
-          description: "Seed phrase generated successfully",
+          title: "Erfolg",
+          description: "Seed-Phrase erfolgreich generiert",
           duration: 3000,
         });
       }, 500);
@@ -97,8 +98,8 @@ const SeedPhraseGenerator: React.FC = () => {
       importWallet(fallbackPhrase);
       
       toast({
-        title: "Error",
-        description: "Using fallback seed phrase due to generation error",
+        title: "Fehler",
+        description: "Verwende Ersatz-Seed-Phrase aufgrund eines Generierungsfehlers",
         duration: 3000,
       });
     }
@@ -146,8 +147,8 @@ const SeedPhraseGenerator: React.FC = () => {
             setTimeout(() => setCopyAnimation(false), 1500);
             
             toast({
-              title: "Copied!",
-              description: "Seed phrase copied to clipboard",
+              title: "Kopiert!",
+              description: "Seed-Phrase in die Zwischenablage kopiert",
               duration: 3000,
             });
           })
@@ -159,16 +160,16 @@ const SeedPhraseGenerator: React.FC = () => {
       } catch (error) {
         console.error("Copy operation failed:", error);
         toast({
-          title: "Error",
-          description: "Could not copy seed phrase",
+          title: "Fehler",
+          description: "Seed-Phrase konnte nicht kopiert werden",
           duration: 3000,
         });
       }
     } else {
       console.error("Cannot copy: localSeedPhrase is invalid", localSeedPhrase);
       toast({
-        title: "Error",
-        description: "Could not copy seed phrase",
+        title: "Fehler",
+        description: "Seed-Phrase konnte nicht kopiert werden",
         duration: 3000,
       });
     }
@@ -182,8 +183,8 @@ const SeedPhraseGenerator: React.FC = () => {
   const handleSaveToSupabase = async () => {
     if (!session) {
       toast({
-        title: "Not logged in",
-        description: "You must be logged in to save your seed phrase",
+        title: "Nicht eingeloggt",
+        description: "Sie müssen eingeloggt sein, um Ihre Seed-Phrase zu speichern",
         duration: 3000,
       });
       return;
@@ -191,8 +192,8 @@ const SeedPhraseGenerator: React.FC = () => {
 
     if (!localSeedPhrase || localSeedPhrase.length < 12) {
       toast({
-        title: "Error",
-        description: "There is no valid seed phrase to save",
+        title: "Fehler",
+        description: "Es gibt keine gültige Seed-Phrase zum Speichern",
         duration: 3000,
       });
       return;
@@ -208,15 +209,15 @@ const SeedPhraseGenerator: React.FC = () => {
       
       await saveToSupabase();
       toast({
-        title: "Saved",
-        description: "Seed phrase has been successfully saved",
+        title: "Gespeichert",
+        description: "Seed-Phrase wurde erfolgreich gespeichert",
         duration: 3000,
       });
     } catch (error) {
       console.error("Error saving to Supabase:", error);
       toast({
-        title: "Error",
-        description: "Seed phrase could not be saved",
+        title: "Fehler",
+        description: "Seed-Phrase konnte nicht gespeichert werden",
         variant: "destructive",
         duration: 3000,
       });
@@ -228,8 +229,8 @@ const SeedPhraseGenerator: React.FC = () => {
   const handleLoadFromSupabase = async () => {
     if (!session) {
       toast({
-        title: "Not logged in",
-        description: "You must be logged in to load your seed phrase",
+        title: "Nicht eingeloggt",
+        description: "Sie müssen eingeloggt sein, um Ihre Seed-Phrase zu laden",
         duration: 3000,
       });
       return;
@@ -266,7 +267,7 @@ const SeedPhraseGenerator: React.FC = () => {
           </div>
         ) : (
           <div className="flex items-center justify-center py-12 text-gray-400 italic text-sm">
-            {isGenerating ? 'Generating seed phrase...' : 'No seed phrase generated. Click "Generate New" below.'}
+            {isGenerating ? 'Generiere Seed-Phrase...' : 'Keine Seed-Phrase generiert. Klicken Sie unten auf "Neu generieren".'}
           </div>
         )}
       </Card>
@@ -281,7 +282,7 @@ const SeedPhraseGenerator: React.FC = () => {
           <RefreshCw 
             className={`h-4 w-4 mr-2 ${isGenerating ? 'animate-spin' : ''}`} 
           />
-          Generate New
+          Neu generieren
         </Button>
         
         <Button 
@@ -291,7 +292,7 @@ const SeedPhraseGenerator: React.FC = () => {
           disabled={!localSeedPhrase || localSeedPhrase.length < 12 || isGenerating || isSaving || isLoading}
         >
           <Copy className={`h-4 w-4 mr-2 ${copyAnimation ? 'text-green-500' : ''}`} />
-          Copy
+          Kopieren
         </Button>
       </div>
 
@@ -303,7 +304,7 @@ const SeedPhraseGenerator: React.FC = () => {
           disabled={!localSeedPhrase || localSeedPhrase.length < 12 || isGenerating || isSaving || isLoading || !session}
         >
           <CloudUpload className={`h-4 w-4 mr-2 ${isSaving ? 'animate-pulse' : ''}`} />
-          {isSaving ? 'Saving...' : 'Save to Cloud'}
+          {isSaving ? 'Speichern...' : 'In Cloud speichern'}
         </Button>
         
         <Button 
@@ -313,7 +314,7 @@ const SeedPhraseGenerator: React.FC = () => {
           disabled={isGenerating || isSaving || isLoading || !session}
         >
           <CloudDownload className={`h-4 w-4 mr-2 ${isLoading ? 'animate-pulse' : ''}`} />
-          {isLoading ? 'Loading...' : 'Load from Cloud'}
+          {isLoading ? 'Laden...' : 'Aus Cloud laden'}
         </Button>
       </div>
     </div>
