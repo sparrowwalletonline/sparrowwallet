@@ -127,13 +127,13 @@ const Auth: React.FC = () => {
         <ArrowLeft size={24} />
       </button>
       
-      <div className="w-full max-w-md bg-wallet-card p-8 rounded-2xl shadow-lg border border-gray-800 transform transition-all duration-300 animate-scale-in">
-        <h1 className="text-2xl font-bold text-center text-white mb-6">
+      <div className="w-full max-w-md bg-wallet-card p-10 sm:p-12 rounded-3xl shadow-lg border border-gray-800 transform transition-all duration-300 animate-scale-in">
+        <h1 className="text-2xl font-bold text-center text-white mb-8">
           {isLogin ? 'Anmelden' : 'Registrieren'}
         </h1>
         
-        <form onSubmit={handleAuth} className="space-y-4">
-          <div className="space-y-2">
+        <form onSubmit={handleAuth} className="space-y-6">
+          <div className="space-y-3">
             <label htmlFor="email" className="text-sm font-medium text-gray-300">
               E-Mail
             </label>
@@ -151,7 +151,7 @@ const Auth: React.FC = () => {
             </div>
           </div>
           
-          <div className="space-y-2">
+          <div className="space-y-3">
             <label htmlFor="password" className="text-sm font-medium text-gray-300">
               Passwort
             </label>
@@ -179,7 +179,7 @@ const Auth: React.FC = () => {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-wallet-blue hover:bg-wallet-darkBlue text-white py-6 rounded-xl"
+            className="w-full bg-wallet-blue hover:bg-wallet-darkBlue text-white py-6 rounded-xl mt-2"
           >
             {loading ? (
               <span className="flex items-center justify-center">
@@ -195,7 +195,7 @@ const Auth: React.FC = () => {
           </Button>
         </form>
         
-        <div className="mt-6 text-center">
+        <div className="mt-8 text-center">
           <button
             type="button"
             onClick={toggleView}
