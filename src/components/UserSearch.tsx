@@ -12,7 +12,7 @@ interface UserSearchProps {
 
 interface UserResult {
   id: string;
-  email: string;
+  username: string;
   wallet_address: string;
 }
 
@@ -42,21 +42,27 @@ export const UserSearch: React.FC<UserSearchProps> = ({ onSelectUser }) => {
     setNoResults(false);
     
     try {
-      // Search for users where email contains the search query
       const { data, error } = await supabase
-        .from('users')
-        .select('id, email, user_wallets!inner(wallet_address)')
-        .ilike('email', `%${searchQuery}%`)
+        .from('profiles')
+        .select(`
+          id,
+          username,
+          user_wallets!inner (
+            wallet_address
+          )
+        `)
+        .ilike('username', `%${searchQuery}%`)
         .limit(5);
-      
+
       if (error) throw error;
-      
+
       const formattedResults = data
-        ? data.map(user => ({
-            id: user.id,
-            email: user.email,
-            wallet_address: user.user_wallets[0]?.wallet_address || ''
+        ? data.map(profile => ({
+            id: profile.id,
+            username: profile.username || '',
+            wallet_address: profile.user_wallets[0]?.wallet_address || ''
           }))
+        .filter(result => result.wallet_address !== '') // Only include users with wallets
         : [];
       
       setResults(formattedResults);
@@ -70,10 +76,6 @@ export const UserSearch: React.FC<UserSearchProps> = ({ onSelectUser }) => {
     }
   };
 
-  const getUsernameFromEmail = (email: string) => {
-    return email.split('@')[0];
-  };
-
   return (
     <div className="space-y-4">
       <div className="space-y-2">
@@ -81,7 +83,7 @@ export const UserSearch: React.FC<UserSearchProps> = ({ onSelectUser }) => {
         <div className="relative">
           <Input
             id="user-search"
-            placeholder="E-Mail-Adresse eingeben"
+            placeholder="Benutzernamen eingeben"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pr-10"
@@ -104,12 +106,12 @@ export const UserSearch: React.FC<UserSearchProps> = ({ onSelectUser }) => {
               <div
                 key={user.id}
                 className="p-3 border rounded-md flex justify-between items-center hover:bg-accent cursor-pointer"
-                onClick={() => onSelectUser(user.wallet_address, getUsernameFromEmail(user.email))}
+                onClick={() => onSelectUser(user.wallet_address, user.username)}
               >
                 <div>
                   <div className="flex items-center gap-2">
                     <User className="h-4 w-4 text-muted-foreground" />
-                    <span className="font-medium">{getUsernameFromEmail(user.email)}</span>
+                    <span className="font-medium">{user.username}</span>
                   </div>
                   <div className="text-xs text-muted-foreground truncate max-w-[220px]">
                     {user.wallet_address}

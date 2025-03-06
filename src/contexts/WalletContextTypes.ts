@@ -6,7 +6,7 @@ export interface Wallet {
   id: string;
   name: string;
   seedPhrase: string[];
-  walletAddress: string;
+  walletAddress: string;  // This was missing
   btcBalance: number;
   ethBalance: number;
   isActive: boolean;

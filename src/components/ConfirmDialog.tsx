@@ -31,14 +31,17 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       try {
         const { data, error } = await supabase
           .from('user_wallets')
-          .select('users(email)')
+          .select(`
+            wallet_address,
+            profiles!inner (
+              username
+            )
+          `)
           .eq('wallet_address', recipientAddress)
           .single();
         
-        if (data && data.users && data.users.email) {
-          // Extract username from the email (e.g., user@example.com -> user)
-          const username = data.users.email.split('@')[0];
-          setRecipientUsername(username);
+        if (data && data.profiles.username) {
+          setRecipientUsername(data.profiles.username);
         }
       } catch (error) {
         console.error("Error fetching username:", error);
@@ -85,7 +88,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             <h3 className="text-sm font-medium">Absender</h3>
             <div className="p-3 bg-muted rounded-md">
               <p className="font-medium">{activeWallet?.name || 'Meine Wallet'}</p>
-              <p className="text-xs text-muted-foreground truncate">{activeWallet?.address}</p>
+              <p className="text-xs text-muted-foreground truncate">{activeWallet?.walletAddress}</p>
             </div>
           </div>
           
