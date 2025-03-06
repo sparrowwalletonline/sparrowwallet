@@ -8,12 +8,14 @@ import { Shield, X, Check, LockKeyhole } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
+import { toast } from '@/components/ui/use-toast';
 
 const GenerateWallet: React.FC = () => {
   const { seedPhrase, createWallet, cancelWalletCreation, importWallet } = useWallet();
   const navigate = useNavigate();
   const [hasConfirmedSeedPhrase, setHasConfirmedSeedPhrase] = useState(false);
   const [localSeedPhrase, setLocalSeedPhrase] = useState<string[]>([]);
+  const [isCreating, setIsCreating] = useState(false);
   
   // Function to handle seed phrase changes from the SeedPhraseGenerator
   const handleSeedPhraseChange = (newSeedPhrase: string[]) => {
@@ -29,19 +31,43 @@ const GenerateWallet: React.FC = () => {
   const handleCreateWallet = () => {
     // Add exit animation
     document.body.classList.add('page-exit');
+    setIsCreating(true);
     
+    // Ensure we're using the current seed phrase
+    if (localSeedPhrase.length >= 12) {
+      console.log("Importing local seed phrase before creating wallet");
+      importWallet(localSeedPhrase);
+    }
+    
+    // Create the wallet and then navigate
     setTimeout(() => {
-      // Ensure we're using the current seed phrase
-      if (localSeedPhrase.length >= 12) {
-        importWallet(localSeedPhrase);
+      try {
+        console.log("Creating wallet...");
+        createWallet();
+        
+        // Add toast for better user feedback
+        toast({
+          title: "Wallet erstellt",
+          description: "Ihre Wallet wurde erfolgreich erstellt!"
+        });
+        
+        console.log("Navigating to /seed-phrase");
+        navigate('/seed-phrase');
+        
+        // Remove class after navigation
+        setTimeout(() => {
+          document.body.classList.remove('page-exit');
+          setIsCreating(false);
+        }, 50);
+      } catch (error) {
+        console.error("Error creating wallet:", error);
+        setIsCreating(false);
+        toast({
+          title: "Fehler",
+          description: "Es gab ein Problem bei der Erstellung der Wallet.",
+          variant: "destructive"
+        });
       }
-      
-      createWallet();
-      
-      // Remove class after navigation
-      setTimeout(() => {
-        document.body.classList.remove('page-exit');
-      }, 50);
     }, 300);
   };
 
@@ -129,9 +155,18 @@ const GenerateWallet: React.FC = () => {
           <Button 
             onClick={handleCreateWallet}
             className="flex-1 h-11 sm:h-12 bg-wallet-blue hover:bg-wallet-darkBlue text-white shadow-md hover:shadow-lg text-sm sm:text-base min-h-[44px] touch-manipulation"
-            disabled={!(localSeedPhrase.length >= 12 || seedPhrase.length > 0) || !hasConfirmedSeedPhrase}
+            disabled={!(localSeedPhrase.length >= 12 || seedPhrase.length > 0) || !hasConfirmedSeedPhrase || isCreating}
           >
-            <Check size={18} className="mr-1.5 sm:mr-2" /> Wallet erstellen
+            {isCreating ? (
+              <>
+                <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                Erstellen...
+              </>
+            ) : (
+              <>
+                <Check size={18} className="mr-1.5 sm:mr-2" /> Wallet erstellen
+              </>
+            )}
           </Button>
         </div>
       </div>
