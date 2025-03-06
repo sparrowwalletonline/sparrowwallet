@@ -113,8 +113,7 @@ const WalletChoice: React.FC = () => {
   
   return (
     <div className="min-h-screen flex flex-col items-center justify-between bg-wallet-darkBg text-white p-4 sm:p-6 relative page-enter safe-area-inset-bottom">
-      <div className="w-full relative">
-        <Header title="Wallet auswählen" />
+      <div className="w-full relative flex items-center justify-center">
         <button 
           onClick={handleBackClick}
           className="absolute left-2 sm:left-4 top-0 bottom-0 my-auto text-white hover:text-gray-300 transition-colors h-10 w-10 flex items-center justify-center touch-manipulation"
@@ -122,12 +121,15 @@ const WalletChoice: React.FC = () => {
         >
           <ArrowLeft size={24} />
         </button>
+        <div className="text-center">
+          <h1 className="text-xl font-medium">Wallet auswählen</h1>
+        </div>
       </div>
       
       <div className="flex-1"></div>
       
       <div className="flex flex-col items-center justify-center gap-4 sm:gap-6 w-full max-w-md mb-auto pt-4">
-        <div className="h-24 sm:h-32 w-24 sm:w-32 relative mb-4 sm:mb-6">
+        <div className="h-24 sm:h-32 w-24 sm:w-32 relative mb-4 sm:mb-6 animate-bounce-slow">
           <WalletLogo className="w-full h-full" color="sparrow" useSparrowLogo={true} scale={2.5} />
         </div>
         <h1 className="font-heading text-xl sm:text-3xl font-bold text-center">Sparrow Wallet</h1>
