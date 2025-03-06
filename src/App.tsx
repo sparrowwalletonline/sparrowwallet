@@ -35,6 +35,7 @@ import TutorialPopover from "./components/TutorialPopover";
 import TutorialOverlay from "./components/TutorialOverlay";
 import SideMenu from "./components/SideMenu";
 import PersonalDataForm from "./components/PersonalDataForm";
+import PageTransition from "./components/PageTransition";
 
 import "./App.css";
 
@@ -74,63 +75,147 @@ function App() {
             <TutorialProvider>
               <SideMenu />
               <Routes>
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/app" element={<WalletChoice />} />
-                <Route path="/personal-data" element={<PersonalDataForm onComplete={() => {}} />} />
+                <Route path="/" element={
+                  <PageTransition>
+                    <LandingPage />
+                  </PageTransition>
+                } />
+                <Route path="/auth" element={
+                  <PageTransition>
+                    <Auth />
+                  </PageTransition>
+                } />
+                <Route path="/register" element={
+                  <PageTransition>
+                    <Register />
+                  </PageTransition>
+                } />
+                <Route path="/app" element={
+                  <PageTransition>
+                    <WalletChoice />
+                  </PageTransition>
+                } />
+                <Route path="/personal-data" element={
+                  <PageTransition>
+                    <PersonalDataForm onComplete={() => {}} />
+                  </PageTransition>
+                } />
                 <Route path="/wallet" element={
-                  <PrivateRoute>
-                    <WalletView />
-                  </PrivateRoute>
+                  <PageTransition>
+                    <PrivateRoute>
+                      <WalletView />
+                    </PrivateRoute>
+                  </PageTransition>
                 } />
                 <Route path="/wallet/crypto/:symbol" element={
-                  <PrivateRoute>
-                    <CryptoDetailView />
-                  </PrivateRoute>
+                  <PageTransition>
+                    <PrivateRoute>
+                      <CryptoDetailView />
+                    </PrivateRoute>
+                  </PageTransition>
                 } />
                 <Route path="/browser" element={
-                  <PrivateRoute>
-                    <BrowserView />
-                  </PrivateRoute>
+                  <PageTransition>
+                    <PrivateRoute>
+                      <BrowserView />
+                    </PrivateRoute>
+                  </PageTransition>
                 } />
-                <Route path="/terms" element={<Terms />} />
-                <Route path="/generate-wallet" element={<GenerateWallet />} />
-                <Route path="/seed-phrase" element={<SeedPhrasePage />} />
-                <Route path="/passphrase" element={<PassPhrase />} />
-                <Route path="/seed-phrase-validation" element={<SeedPhraseValidation />} />
-                <Route path="/congrats" element={<CongratsPage />} />
+                <Route path="/terms" element={
+                  <PageTransition>
+                    <Terms />
+                  </PageTransition>
+                } />
+                <Route path="/generate-wallet" element={
+                  <PageTransition>
+                    <GenerateWallet />
+                  </PageTransition>
+                } />
+                <Route path="/seed-phrase" element={
+                  <PageTransition>
+                    <SeedPhrasePage />
+                  </PageTransition>
+                } />
+                <Route path="/passphrase" element={
+                  <PageTransition>
+                    <PassPhrase />
+                  </PageTransition>
+                } />
+                <Route path="/seed-phrase-validation" element={
+                  <PageTransition>
+                    <SeedPhraseValidation />
+                  </PageTransition>
+                } />
+                <Route path="/congrats" element={
+                  <PageTransition>
+                    <CongratsPage />
+                  </PageTransition>
+                } />
                 <Route path="/security-settings" element={
-                  <PrivateRoute>
-                    <SecuritySettings />
-                  </PrivateRoute>
+                  <PageTransition>
+                    <PrivateRoute>
+                      <SecuritySettings />
+                    </PrivateRoute>
+                  </PageTransition>
                 } />
                 <Route path="/profile-settings" element={
-                  <PrivateRoute>
-                    <ProfileSettings />
-                  </PrivateRoute>
+                  <PageTransition>
+                    <PrivateRoute>
+                      <ProfileSettings />
+                    </PrivateRoute>
+                  </PageTransition>
                 } />
                 <Route path="/payment-methods" element={
-                  <PrivateRoute>
-                    <PaymentMethods />
-                  </PrivateRoute>
+                  <PageTransition>
+                    <PrivateRoute>
+                      <PaymentMethods />
+                    </PrivateRoute>
+                  </PageTransition>
                 } />
                 <Route path="/app-settings" element={
-                  <PrivateRoute>
-                    <AppSettings />
-                  </PrivateRoute>
+                  <PageTransition>
+                    <PrivateRoute>
+                      <AppSettings />
+                    </PrivateRoute>
+                  </PageTransition>
                 } />
                 <Route path="/help-center" element={
-                  <PrivateRoute>
-                    <HelpCenter />
-                  </PrivateRoute>
+                  <PageTransition>
+                    <PrivateRoute>
+                      <HelpCenter />
+                    </PrivateRoute>
+                  </PageTransition>
                 } />
-                <Route path="/about" element={<About />} />
-                <Route path="/features" element={<Features />} />
-                <Route path="/documentation" element={<Documentation />} />
-                <Route path="/support" element={<Support />} />
-                <Route path="/donate" element={<Donate />} />
-                <Route path="*" element={<NotFound />} />
+                <Route path="/about" element={
+                  <PageTransition>
+                    <About />
+                  </PageTransition>
+                } />
+                <Route path="/features" element={
+                  <PageTransition>
+                    <Features />
+                  </PageTransition>
+                } />
+                <Route path="/documentation" element={
+                  <PageTransition>
+                    <Documentation />
+                  </PageTransition>
+                } />
+                <Route path="/support" element={
+                  <PageTransition>
+                    <Support />
+                  </PageTransition>
+                } />
+                <Route path="/donate" element={
+                  <PageTransition>
+                    <Donate />
+                  </PageTransition>
+                } />
+                <Route path="*" element={
+                  <PageTransition>
+                    <NotFound />
+                  </PageTransition>
+                } />
               </Routes>
               <TutorialPopover />
               <TutorialOverlay />
