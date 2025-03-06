@@ -12,13 +12,55 @@ import {
   Info,
   ExternalLink,
   MessageCircle,
-  Sparkles
+  Sparkles,
+  Shield,
+  UserPlus,
+  Key
 } from 'lucide-react';
 
 const Footer = () => {
   return (
     <footer className="bg-gray-900 text-gray-300 py-8 mt-8">
       <div className="container mx-auto px-6 md:px-8 lg:px-12">
+        {/* New Safety and Beginner Section */}
+        <div className="mb-10 border-b border-gray-800 pb-8">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center justify-center p-2 bg-blue-900/30 rounded-full mb-4">
+              <Shield className="h-6 w-6 text-blue-400" />
+            </div>
+            <h2 className="text-2xl font-heading font-bold text-white mb-4">Security You Can Trust, Simplicity You'll Love</h2>
+            <p className="text-gray-300 mb-6">
+              Sparrow Wallet combines industry-leading security with an intuitive design, making it the perfect wallet for both beginners and advanced Bitcoin users.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+              <div className="bg-gray-800/50 p-6 rounded-lg backdrop-blur-sm">
+                <div className="flex justify-center mb-3">
+                  <Shield className="h-6 w-6 text-green-400" />
+                </div>
+                <h3 className="text-lg font-medium text-white mb-2">Uncompromising Security</h3>
+                <p className="text-sm text-gray-400">Your keys never leave your device. Full self-custody means you're always in control of your bitcoin.</p>
+              </div>
+              
+              <div className="bg-gray-800/50 p-6 rounded-lg backdrop-blur-sm">
+                <div className="flex justify-center mb-3">
+                  <UserPlus className="h-6 w-6 text-blue-400" />
+                </div>
+                <h3 className="text-lg font-medium text-white mb-2">Beginner Friendly</h3>
+                <p className="text-sm text-gray-400">Intuitive interface with helpful guides and tooltips make Bitcoin accessible to everyone, regardless of technical expertise.</p>
+              </div>
+              
+              <div className="bg-gray-800/50 p-6 rounded-lg backdrop-blur-sm">
+                <div className="flex justify-center mb-3">
+                  <Key className="h-6 w-6 text-purple-400" />
+                </div>
+                <h3 className="text-lg font-medium text-white mb-2">Complete Control</h3>
+                <p className="text-sm text-gray-400">Advanced features when you need them, with detailed transaction controls that grow with your experience.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           {/* Logo and company info */}
           <div className="col-span-1 px-4">
