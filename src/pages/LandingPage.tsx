@@ -346,8 +346,8 @@ const LandingPage = () => {
     <div className="min-h-screen flex flex-col bg-white text-gray-800">
       <header className="w-full p-6 flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <WalletLogo className="w-8 h-8" />
-          <span className="font-heading text-xl font-bold">Trust Wallet</span>
+          <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" />
+          <span className="font-heading text-xl font-bold">Sparrow Wallet</span>
         </div>
         <button 
           onClick={handleMenuClick}
@@ -366,7 +366,7 @@ const LandingPage = () => {
           </h1>
           
           <p className="font-sans text-gray-600 text-base max-w-md">
-            Buy, store, collect NFTs, exchange & earn crypto. Join 50 million+ people using Trust Wallet.
+            Buy, store, collect NFTs, exchange & earn crypto. Join 50 million+ people using Sparrow Wallet.
           </p>
           
           <div className="w-full max-w-xs mx-auto mb-6">
@@ -545,7 +545,7 @@ const LandingPage = () => {
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl font-bold mb-4">One Platform, Millions of Assets</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Trust Wallet is your gateway to the blockchain ecosystem. Store, trade, and discover over 8 million digital assets across 100+ blockchains.
+              Sparrow Wallet is your gateway to the blockchain ecosystem. Store, trade, and discover over 8 million digital assets across 100+ blockchains.
             </p>
           </div>
           
@@ -561,7 +561,7 @@ const LandingPage = () => {
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl font-bold mb-4">The most trusted & secure crypto wallet</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Trust Wallet is a secure multi-coin wallet enabling blockchain access at your fingertips.
+              Sparrow Wallet is a secure multi-coin wallet enabling blockchain access at your fingertips.
             </p>
           </div>
           

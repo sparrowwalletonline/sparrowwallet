@@ -128,8 +128,8 @@ const WalletChoice: React.FC = () => {
       <div className="flex-1"></div>
       
       <div className="flex flex-col items-center justify-center gap-4 sm:gap-6 w-full max-w-md mb-auto pt-4">
-        <WalletLogo className="w-20 h-20 sm:w-28 sm:h-28 mb-4 sm:mb-6" color="green" />
-        <h1 className="font-heading text-xl sm:text-3xl font-bold text-center">Trust Wallet</h1>
+        <WalletLogo className="w-20 h-20 sm:w-28 sm:h-28 mb-4 sm:mb-6" color="sparrow" useSparrowLogo={true} />
+        <h1 className="font-heading text-xl sm:text-3xl font-bold text-center">Sparrow Wallet</h1>
       </div>
       
       <div className="flex-1"></div>
@@ -168,7 +168,7 @@ const WalletChoice: React.FC = () => {
       </div>
       
       <div className="text-center text-xs text-gray-500 mt-2 sm:mt-4">
-        © 2025 Trust Wallet
+        © 2025 Sparrow Wallet
       </div>
     </div>
   );

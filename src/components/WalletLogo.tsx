@@ -9,8 +9,8 @@ interface WalletLogoProps {
 
 const WalletLogo: React.FC<WalletLogoProps> = ({ 
   className, 
-  color = 'blue', 
-  useSparrowLogo = false 
+  color = 'sparrow', // Change default to sparrow
+  useSparrowLogo = true // Change default to true
 }) => {
   // If using the sparrow logo, return the image
   if (useSparrowLogo) {
