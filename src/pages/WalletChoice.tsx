@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -7,15 +6,12 @@ import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import PersonalDataForm from '@/components/PersonalDataForm';
 
 const WalletChoice: React.FC = () => {
-  const { generateWallet, importWallet, cancelWalletCreation } = useWallet();
+  const { importWallet, cancelWalletCreation } = useWallet();
   const navigate = useNavigate();
   const [session, setSession] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [isImportLoading, setIsImportLoading] = useState(false);
-  const [showPersonalDataForm, setShowPersonalDataForm] = useState(false);
   
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -30,20 +26,7 @@ const WalletChoice: React.FC = () => {
   }, [navigate]);
   
   const handleCreateWallet = () => {
-    setShowPersonalDataForm(true);
-  };
-  
-  const handlePersonalDataComplete = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      generateWallet();
-      navigate('/wallet-intro');
-      toast({
-        title: "Wallet wird vorbereitet",
-        description: "Bitte folgen Sie den nächsten Schritten zur Wallet-Erstellung."
-      });
-      setIsLoading(false);
-    }, 500);
+    navigate('/personal-data');
   };
   
   const handleImportWallet = () => {
@@ -73,10 +56,6 @@ const WalletChoice: React.FC = () => {
       }, 50);
     }, 300);
   };
-  
-  if (showPersonalDataForm) {
-    return <PersonalDataForm onComplete={handlePersonalDataComplete} />;
-  }
   
   return (
     <div className="min-h-screen flex flex-col items-center justify-between bg-gradient-to-b from-[#f8fafc] to-[#e2e8f0] text-gray-800 p-4 sm:p-6 relative page-enter safe-area-inset-bottom">
@@ -113,23 +92,15 @@ const WalletChoice: React.FC = () => {
             <Button 
               onClick={handleCreateWallet}
               className="w-full py-2 sm:py-3 text-sm sm:text-base bg-[#0500ff] hover:bg-[#0400cf] text-white font-medium min-h-[44px] sm:min-h-[50px] touch-manipulation hover:translate-y-[-2px] transition-all duration-300 shadow-md hover:shadow-lg"
-              disabled={isLoading}
             >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 
-                  Wallet wird vorbereitet...
-                </>
-              ) : (
-                "Neue Wallet erstellen"
-              )}
+              Neue Wallet erstellen
             </Button>
             
             <Button 
               onClick={handleImportWallet}
               variant="outline" 
               className="w-full py-1.5 sm:py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100 min-h-[40px] sm:min-h-[44px] touch-manipulation hover:translate-y-[-2px] transition-all duration-300"
-              disabled={isLoading || isImportLoading}
+              disabled={isImportLoading}
             >
               {isImportLoading ? (
                 <>

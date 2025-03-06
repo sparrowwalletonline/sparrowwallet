@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { Toaster } from "./components/ui/toaster";
@@ -103,7 +102,7 @@ function App() {
                 } />
                 <Route path="/personal-data" element={
                   <PageTransition>
-                    <PersonalDataForm onComplete={() => {}} />
+                    <PersonalDataForm />
                   </PageTransition>
                 } />
                 <Route path="/wallet" element={

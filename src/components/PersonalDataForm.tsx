@@ -4,17 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Loader2 } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
+import { Loader2, ArrowLeft } from 'lucide-react';
+import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
-import Header from '@/components/Header';
+import { useWallet } from '@/contexts/WalletContext';
 
-interface PersonalDataFormProps {
-  onComplete: () => void;
-}
-
-const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
+const PersonalDataForm: React.FC = () => {
   const navigate = useNavigate();
+  const { generateWallet } = useWallet();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
@@ -70,8 +67,16 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
         duration: 3000,
       });
       
-      // Call the onComplete callback from parent component
-      onComplete();
+      // Navigate to wallet intro with animation
+      setTimeout(() => {
+        generateWallet();
+        navigate('/wallet-intro');
+        toast({
+          title: "Wallet wird vorbereitet",
+          description: "Bitte folgen Sie den nächsten Schritten zur Wallet-Erstellung."
+        });
+        setIsLoading(false);
+      }, 500);
       
     } catch (error) {
       console.error("Error:", error);
@@ -86,8 +91,19 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground page-enter safe-area-inset-bottom">
-      <Header title="Persönliche Daten" showBack={true} />
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#f8fafc] to-[#e2e8f0] text-gray-800 page-enter safe-area-inset-bottom">
+      <div className="w-full relative flex items-center justify-center p-4">
+        <button 
+          onClick={handleBack}
+          className="absolute left-2 sm:left-4 top-0 bottom-0 my-auto text-gray-700 hover:text-gray-900 transition-colors h-10 w-10 flex items-center justify-center touch-manipulation z-10"
+          aria-label="Back to wallet choice"
+        >
+          <ArrowLeft size={24} />
+        </button>
+        <div className="text-center">
+          <h1 className="text-xl font-medium ml-10 text-gray-800">Persönliche Daten</h1>
+        </div>
+      </div>
       
       <div className="flex-1 container max-w-md mx-auto px-4 py-6 overflow-y-auto">
         <div className="space-y-6">
