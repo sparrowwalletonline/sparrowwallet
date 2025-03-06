@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -350,7 +349,7 @@ const LandingPage = () => {
   console.log("Rendering LandingPage component");
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
+    <div className="landing-page-content min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
       <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm bg-white/70 dark:bg-black/20 sticky top-0 z-10">
         <div className="flex items-center gap-2">
           <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" />
@@ -372,7 +371,7 @@ const LandingPage = () => {
       
       <div className="flex-1 flex flex-col">
         {/* Hero Section */}
-        <section className="relative px-6 py-20 sm:py-28 overflow-hidden">
+        <section className="relative px-6 py-20 sm:py-28 overflow-hidden opacity-100 visible">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute inset-0 bg-blue-50 dark:bg-blue-900/10" />
             <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white dark:from-wallet-darkBg to-transparent" />
@@ -384,7 +383,7 @@ const LandingPage = () => {
           <div className="max-w-screen-xl mx-auto">
             <div className="flex flex-col lg:flex-row items-center gap-10">
               <div className="space-y-8 lg:w-1/2">
-                <h1 className="font-heading tracking-tight text-gray-900 dark:text-white leading-[1.1] font-bold text-4xl md:text-5xl lg:text-6xl max-w-xl">
+                <h1 className="font-heading tracking-tight text-gray-900 dark:text-white leading-[1.1] font-bold text-4xl md:text-5xl lg:text-6xl max-w-xl opacity-100 visible">
                   Powerful Bitcoin
                   <span className="text-wallet-blue"> Wallet </span>
                   for Power Users
@@ -416,11 +415,11 @@ const LandingPage = () => {
                   </div>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <div className="flex flex-col sm:flex-row gap-4 pt-4 opacity-100 visible">
                   <Button 
                     onClick={handleCreateWallet} 
                     disabled={isLoading}
-                    className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
+                    className="opacity-100 visible w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
                   >
                     {isLoading ? (
                       <>
@@ -436,7 +435,7 @@ const LandingPage = () => {
                   
                   <Button
                     variant="outline"
-                    className="w-full sm:w-auto py-6 text-base"
+                    className="opacity-100 visible w-full sm:w-auto py-6 text-base"
                     onClick={() => window.open('https://sparrowwallet.com/download/', '_blank')}
                   >
                     <ExternalLink className="mr-2 h-4 w-4" />

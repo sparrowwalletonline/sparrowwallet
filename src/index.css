@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -85,6 +84,7 @@
     min-height: 100vh;
     /* Mobile viewport fix */
     min-height: -webkit-fill-available;
+    color-scheme: light dark;  /* Ensure proper color handling */
   }
   
   /* Safari mobile viewport height fix */
@@ -103,6 +103,7 @@
     font-size: 16px; /* Prevents iOS zooming on input focus */
     appearance: none;
     border-radius: 0; /* Removes iOS default styling */
+    opacity: 1 !important; /* Ensure elements are visible */
   }
 
   /* Better touch targets for mobile */
@@ -111,6 +112,7 @@
     touch-action: manipulation;
     min-height: 44px;
     min-width: 44px;
+    opacity: 1 !important; /* Ensure elements are visible */
   }
   
   .touch-manipulation {
@@ -244,4 +246,21 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
+}
+
+/* Fix for visibility issues */
+.landing-page-content * {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.trust-button, .feature-card, .asset-card, button {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Fix for text visibility */
+h1, h2, h3, p, span, div {
+  opacity: 1 !important;
+  visibility: visible !important;
 }
