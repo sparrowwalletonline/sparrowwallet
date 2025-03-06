@@ -168,7 +168,7 @@ const CreateWalletButton = () => {
 
   const handleSuccessModalClose = () => {
     setIsSuccessOpen(false);
-    navigate('/generate-wallet');
+    navigate('/wallet-intro');
   };
 
   const getStrengthColor = () => {
