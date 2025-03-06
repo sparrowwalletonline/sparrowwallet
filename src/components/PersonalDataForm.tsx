@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Loader2 } from 'lucide-react';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 
@@ -45,7 +45,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
         title: "Nutzungsbedingungen nicht akzeptiert",
         description: "Bitte akzeptiere die Nutzungsbedingungen, um fortzufahren.",
         variant: "destructive",
-        duration: 1500,
+        duration: 3000,
       });
       return;
     }
@@ -55,7 +55,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
         title: "Fehlende Informationen",
         description: "Bitte fülle alle erforderlichen Felder aus.",
         variant: "destructive",
-        duration: 1500,
+        duration: 3000,
       });
       return;
     }
@@ -67,7 +67,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
       toast({
         title: "Daten erfasst",
         description: "Deine persönlichen Daten wurden erfolgreich erfasst.",
-        duration: 1500,
+        duration: 3000,
       });
       
       // Call the onComplete callback from parent component
@@ -79,7 +79,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ onComplete }) => {
         title: "Fehler",
         description: "Ein Fehler ist aufgetreten. Bitte versuche es später erneut.",
         variant: "destructive",
-        duration: 1500,
+        duration: 3000,
       });
       setIsLoading(false);
     }

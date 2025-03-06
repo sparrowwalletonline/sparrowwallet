@@ -37,12 +37,13 @@ import PersonalDataForm from "./components/PersonalDataForm";
 
 import "./App.css";
 
-// Authentication guard component
+// Authentication guard component - modified to redirect to wallet choice
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   const { session, requirePinVerification, pinVerified } = useWallet();
 
   if (!session) {
-    return <Navigate to="/auth" replace />;
+    // Redirect to wallet choice instead of auth
+    return <Navigate to="/app" replace />;
   }
 
   if (requirePinVerification && !pinVerified) {
@@ -67,11 +68,7 @@ function App() {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/app" element={<WalletChoice />} />
-                <Route path="/personal-data" element={
-                  <PrivateRoute>
-                    <PersonalDataForm onComplete={() => {}} />
-                  </PrivateRoute>
-                } />
+                <Route path="/personal-data" element={<PersonalDataForm onComplete={() => {}} />} />
                 <Route path="/wallet" element={
                   <PrivateRoute>
                     <WalletView />
@@ -88,31 +85,11 @@ function App() {
                   </PrivateRoute>
                 } />
                 <Route path="/terms" element={<Terms />} />
-                <Route path="/generate-wallet" element={
-                  <PrivateRoute>
-                    <GenerateWallet />
-                  </PrivateRoute>
-                } />
-                <Route path="/seed-phrase" element={
-                  <PrivateRoute>
-                    <SeedPhrasePage />
-                  </PrivateRoute>
-                } />
-                <Route path="/passphrase" element={
-                  <PrivateRoute>
-                    <PassPhrase />
-                  </PrivateRoute>
-                } />
-                <Route path="/seed-phrase-validation" element={
-                  <PrivateRoute>
-                    <SeedPhraseValidation />
-                  </PrivateRoute>
-                } />
-                <Route path="/congrats" element={
-                  <PrivateRoute>
-                    <CongratsPage />
-                  </PrivateRoute>
-                } />
+                <Route path="/generate-wallet" element={<GenerateWallet />} />
+                <Route path="/seed-phrase" element={<SeedPhrasePage />} />
+                <Route path="/passphrase" element={<PassPhrase />} />
+                <Route path="/seed-phrase-validation" element={<SeedPhraseValidation />} />
+                <Route path="/congrats" element={<CongratsPage />} />
                 <Route path="/security-settings" element={
                   <PrivateRoute>
                     <SecuritySettings />

@@ -37,16 +37,16 @@ const PinVerification: React.FC<PinVerificationProps> = ({ onSuccess }) => {
         duration: 3000,
       });
       
-      // After 3 failed attempts, log out and redirect to login
+      // After 3 failed attempts, redirect to wallet choice instead of auth
       if (attempts >= 2) {
         toast({
           title: "Zu viele Versuche",
-          description: "Aus Sicherheitsgründen müssen Sie sich erneut anmelden",
+          description: "Aus Sicherheitsgründen müssen Sie erneut beginnen",
           variant: "destructive",
           duration: 3000,
         });
         setTimeout(() => {
-          navigate('/auth');
+          navigate('/app');
         }, 1500);
       }
     }
@@ -95,10 +95,10 @@ const PinVerification: React.FC<PinVerificationProps> = ({ onSuccess }) => {
           <div className="text-center">
             <button
               type="button"
-              onClick={() => navigate('/auth')}
+              onClick={() => navigate('/app')}
               className="text-wallet-blue hover:underline text-sm"
             >
-              Stattdessen anmelden
+              Stattdessen neue Wallet erstellen
             </button>
           </div>
         </form>

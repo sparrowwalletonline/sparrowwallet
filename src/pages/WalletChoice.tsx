@@ -18,45 +18,13 @@ const WalletChoice: React.FC = () => {
   const [showPersonalDataForm, setShowPersonalDataForm] = useState(false);
   
   useEffect(() => {
+    // Check for session but don't redirect to auth
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      
-      if (!session) {
-        // Add exit animation
-        document.body.classList.add('page-exit');
-        
-        setTimeout(() => {
-          navigate('/auth');
-          toast({
-            title: "Anmeldung erforderlich",
-            description: "Bitte melde dich an, um fortzufahren",
-            variant: "destructive",
-            duration: 1500,
-          });
-          
-          // Remove class after navigation
-          setTimeout(() => {
-            document.body.classList.remove('page-exit');
-          }, 50);
-        }, 300);
-      }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-      if (!session) {
-        // Add exit animation
-        document.body.classList.add('page-exit');
-        
-        setTimeout(() => {
-          navigate('/auth');
-          
-          // Remove class after navigation
-          setTimeout(() => {
-            document.body.classList.remove('page-exit');
-          }, 50);
-        }, 300);
-      }
     });
 
     return () => subscription.unsubscribe();
@@ -98,6 +66,7 @@ const WalletChoice: React.FC = () => {
     
     setTimeout(() => {
       cancelWalletCreation();
+      navigate('/');
       
       // Remove class after navigation
       setTimeout(() => {
@@ -105,10 +74,6 @@ const WalletChoice: React.FC = () => {
       }, 50);
     }, 300);
   };
-  
-  if (!session) {
-    return null;
-  }
   
   if (showPersonalDataForm) {
     return <PersonalDataForm onComplete={handlePersonalDataComplete} />;
