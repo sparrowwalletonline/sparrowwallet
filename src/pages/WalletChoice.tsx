@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -25,11 +26,12 @@ const WalletChoice: React.FC = () => {
         document.body.classList.add('page-exit');
         
         setTimeout(() => {
-          navigate('/');
+          navigate('/auth');
           toast({
             title: "Anmeldung erforderlich",
             description: "Bitte melde dich an, um fortzufahren",
             variant: "destructive",
+            duration: 1500,
           });
           
           // Remove class after navigation
@@ -47,7 +49,7 @@ const WalletChoice: React.FC = () => {
         document.body.classList.add('page-exit');
         
         setTimeout(() => {
-          navigate('/');
+          navigate('/auth');
           
           // Remove class after navigation
           setTimeout(() => {
@@ -61,12 +63,15 @@ const WalletChoice: React.FC = () => {
   }, [navigate]);
   
   const handleCreateWallet = () => {
-    navigate('/personal-data');
+    setShowPersonalDataForm(true);
   };
   
   const handlePersonalDataComplete = () => {
     setIsLoading(true);
-    generateWallet();
+    // Add a slight delay for better user experience
+    setTimeout(() => {
+      generateWallet();
+    }, 500);
   };
   
   const handleImportWallet = () => {

@@ -41,7 +41,7 @@ const Auth: React.FC = () => {
     if (seedPhraseLoaded) {
       navigate('/wallet');
     } else {
-      navigate('/wallet-choice');
+      navigate('/app');
     }
   };
   
@@ -54,6 +54,7 @@ const Auth: React.FC = () => {
       toast({
         title: "Anmeldung wird verarbeitet",
         description: "Bitte warte einen Moment...",
+        duration: 1500,
       });
     }
     
@@ -74,6 +75,7 @@ const Auth: React.FC = () => {
         toast({
           title: "Anmeldung erfolgreich",
           description: "Du wurdest erfolgreich angemeldet",
+          duration: 1500,
         });
         
         await checkUserWallet();
@@ -88,9 +90,10 @@ const Auth: React.FC = () => {
         toast({
           title: "Registrierung erfolgreich",
           description: "Bitte überprüfe deine E-Mail, um die Registrierung abzuschließen",
+          duration: 1500,
         });
         
-        navigate('/wallet-choice');
+        navigate('/app');
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -98,6 +101,7 @@ const Auth: React.FC = () => {
           title: "Fehler",
           description: error.message,
           variant: "destructive",
+          duration: 1500,
         });
       }
     } finally {
