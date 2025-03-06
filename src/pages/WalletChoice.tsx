@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -6,7 +5,7 @@ import { useWallet } from '@/contexts/WalletContext';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/hooks/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import PersonalDataForm from '@/components/PersonalDataForm';
 
 const WalletChoice: React.FC = () => {
@@ -37,11 +36,12 @@ const WalletChoice: React.FC = () => {
     setIsLoading(true);
     setTimeout(() => {
       generateWallet();
-      navigate('/seed-phrase');
+      navigate('/wallet-intro');
       toast({
-        title: "Wallet wird erstellt",
-        description: "Sie werden zur Seed-Phrase-Bestätigung weitergeleitet."
+        title: "Wallet wird vorbereitet",
+        description: "Bitte folgen Sie den nächsten Schritten zur Wallet-Erstellung."
       });
+      setIsLoading(false);
     }, 500);
   };
   

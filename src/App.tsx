@@ -6,6 +6,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import LandingPage from "./pages/LandingPage";
 import WalletChoice from "./pages/WalletChoice";
+import WalletIntroPage from "./pages/WalletIntroPage";
 import GenerateWallet from "./pages/GenerateWallet";
 import SeedPhrasePage from "./pages/SeedPhrasePage";
 import PassPhrase from "./pages/PassPhrase";
@@ -93,6 +94,11 @@ function App() {
                 <Route path="/app" element={
                   <PageTransition>
                     <WalletChoice />
+                  </PageTransition>
+                } />
+                <Route path="/wallet-intro" element={
+                  <PageTransition>
+                    <WalletIntroPage />
                   </PageTransition>
                 } />
                 <Route path="/personal-data" element={
