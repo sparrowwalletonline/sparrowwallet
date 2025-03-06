@@ -106,8 +106,8 @@ export default {
 					'100%': { transform: 'scale(1)', opacity: '1' }
 				},
 				'force-visible': {
-					'0%': { opacity: '0.99' },
-					'100%': { opacity: '1' }
+					'0%': { opacity: '1', visibility: 'visible' },
+					'100%': { opacity: '1', visibility: 'visible' }
 				}
 			},
 			animation: {
@@ -118,7 +118,7 @@ export default {
 				'slide-in': 'slide-in 0.5s ease-out',
 				'slide-out': 'slide-out 0.5s ease-out',
 				'scale-in': 'scale-in 0.4s ease-out',
-				'force-visible': 'force-visible 0.1s forwards'
+				'force-visible': 'force-visible 0.1s ease-out forwards'
 			},
 			screens: {
 				'xs': '480px',

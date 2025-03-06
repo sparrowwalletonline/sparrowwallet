@@ -8,29 +8,29 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import Footer from '@/components/Footer';
-
-const RegistrationModal = ({ isOpen, onClose, onRegister, isLoading }) => {
+const RegistrationModal = ({
+  isOpen,
+  onClose,
+  onRegister,
+  isLoading
+}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
   if (!isOpen) return null;
-
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     if (password !== confirmPassword) {
       toast({
         title: "Fehler",
         description: "Die Passwörter stimmen nicht überein",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
     onRegister(email, password);
   };
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+  return <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
       <div className="bg-wallet-card text-white p-6 rounded-xl w-full max-w-md shadow-xl">
         <h2 className="text-xl font-bold mb-4">Registrieren</h2>
         <p className="text-gray-400 mb-6">Erstelle ein Konto, um deine Wallet zu sichern</p>
@@ -38,72 +38,40 @@ const RegistrationModal = ({ isOpen, onClose, onRegister, isLoading }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-1">E-Mail</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 rounded bg-wallet-darkBg border border-gray-700 text-white"
-              required
-            />
+            <input type="email" value={email} onChange={e => setEmail(e.target.value)} className="w-full p-2 rounded bg-wallet-darkBg border border-gray-700 text-white" required />
           </div>
           
           <div>
             <label className="block text-sm font-medium mb-1">Passwort</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 rounded bg-wallet-darkBg border border-gray-700 text-white"
-              required
-            />
+            <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="w-full p-2 rounded bg-wallet-darkBg border border-gray-700 text-white" required />
           </div>
           
           <div>
             <label className="block text-sm font-medium mb-1">Passwort bestätigen</label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full p-2 rounded bg-wallet-darkBg border border-gray-700 text-white"
-              required
-            />
+            <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="w-full p-2 rounded bg-wallet-darkBg border border-gray-700 text-white" required />
           </div>
           
           <div className="flex justify-end space-x-3 mt-6">
-            <Button 
-              type="button" 
-              onClick={onClose}
-              variant="ghost"
-              className="text-gray-400 hover:text-white"
-            >
+            <Button type="button" onClick={onClose} variant="ghost" className="text-gray-400 hover:text-white">
               Abbrechen
             </Button>
-            <Button 
-              type="submit"
-              disabled={isLoading}
-              className="bg-wallet-blue hover:bg-wallet-darkBlue"
-            >
-              {isLoading ? (
-                <>
+            <Button type="submit" disabled={isLoading} className="bg-wallet-blue hover:bg-wallet-darkBlue">
+              {isLoading ? <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Registriere...
-                </>
-              ) : (
-                "Registrieren"
-              )}
+                </> : "Registrieren"}
             </Button>
           </div>
         </form>
       </div>
-    </div>
-  );
+    </div>;
 };
-
-const SuccessModal = ({ isOpen, onClose }) => {
+const SuccessModal = ({
+  isOpen,
+  onClose
+}) => {
   if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+  return <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
       <div className="bg-wallet-card text-white p-6 rounded-xl w-full max-w-md shadow-xl text-center">
         <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500 flex items-center justify-center">
           <Check className="h-8 w-8 text-white" />
@@ -111,20 +79,19 @@ const SuccessModal = ({ isOpen, onClose }) => {
         <h2 className="text-xl font-bold mb-2">Konto erfolgreich erstellt!</h2>
         <p className="text-gray-400 mb-6">Du wirst jetzt zur Wallet-Auswahl weitergeleitet.</p>
         
-        <Button 
-          onClick={onClose}
-          className="bg-wallet-blue hover:bg-wallet-darkBlue"
-        >
+        <Button onClick={onClose} className="bg-wallet-blue hover:bg-wallet-darkBlue">
           Weiter
         </Button>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 const LandingPage = () => {
-  const { generateWallet } = useWallet();
-  const { toggleMenu } = useMenu();
+  const {
+    generateWallet
+  } = useWallet();
+  const {
+    toggleMenu
+  } = useMenu();
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
@@ -134,40 +101,25 @@ const LandingPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
-  
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({
+      data: {
+        session
+      }
+    }) => {
       setSession(session);
     });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: {
+        subscription
+      }
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
-
     return () => subscription.unsubscribe();
   }, []);
-  
-  useEffect(() => {
-    const elements = document.querySelectorAll('.landing-page-content *');
-    elements.forEach(el => {
-      if (el instanceof HTMLElement) {
-        el.style.opacity = '1';
-        el.style.visibility = 'visible';
-        el.style.display = el.style.display === 'none' ? 'block' : el.style.display;
-      }
-    });
-    
-    const buttons = document.querySelectorAll('button');
-    buttons.forEach(button => {
-      button.style.opacity = '1';
-      button.style.visibility = 'visible';
-      button.style.display = 'inline-flex';
-    });
-  }, []);
-
   const handleCreateWallet = () => {
     setIsLoading(true);
-    
     setTimeout(() => {
       if (session) {
         generateWallet();
@@ -177,19 +129,19 @@ const LandingPage = () => {
       }
     }, 3000);
   };
-  
   const handleRegister = async (email, password) => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const {
+        data,
+        error
+      } = await supabase.auth.signUp({
         email,
-        password,
+        password
       });
-      
       if (error) {
         throw error;
       }
-      
       setShowRegistrationModal(false);
       setShowSuccessModal(true);
     } catch (error) {
@@ -197,23 +149,20 @@ const LandingPage = () => {
       toast({
         title: "Registrierung fehlgeschlagen",
         description: error.message || "Bitte versuche es mit einer anderen E-Mail-Adresse",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
     }
   };
-  
   const handleSuccessModalClose = () => {
     setShowSuccessModal(false);
     navigate('/wallet-choice');
   };
-  
   const handleMenuClick = () => {
     console.log('Landing page menu button clicked');
     toggleMenu();
   };
-  
   const FeatureCard = ({
     icon,
     title,
@@ -223,15 +172,12 @@ const LandingPage = () => {
     title: string;
     description: string;
   }) => {
-    return (
-      <div className="p-6 rounded-xl border border-gray-100 bg-white shadow-sm transition-all hover:shadow-md hover:translate-y-[-4px] dark:bg-wallet-card dark:border-gray-800">
+    return <div className="p-6 rounded-xl border border-gray-100 bg-white shadow-sm transition-all hover:shadow-md hover:translate-y-[-4px] dark:bg-wallet-card dark:border-gray-800">
         <div className="mb-4 text-wallet-blue">{icon}</div>
         <h3 className="font-heading font-semibold text-lg mb-2">{title}</h3>
         <p className="text-gray-600 text-sm dark:text-gray-400">{description}</p>
-      </div>
-    );
+      </div>;
   };
-  
   const SecurityCard = ({
     title,
     description
@@ -239,14 +185,11 @@ const LandingPage = () => {
     title: string;
     description: string;
   }) => {
-    return (
-      <div className="p-6 rounded-xl transition-all bg-white/10 backdrop-blur-sm hover:bg-white/20">
+    return <div className="p-6 rounded-xl transition-all bg-white/10 backdrop-blur-sm hover:bg-white/20">
         <h3 className="font-heading font-semibold text-lg mb-2">{title}</h3>
         <p className="text-blue-100 text-sm">{description}</p>
-      </div>
-    );
+      </div>;
   };
-  
   const AssetCard = ({
     icon,
     title,
@@ -272,17 +215,14 @@ const LandingPage = () => {
           return 'from-blue-500 to-blue-600';
       }
     };
-    return (
-      <div className="p-6 rounded-xl transition-all bg-white shadow-md hover:shadow-lg dark:bg-wallet-card dark:border-gray-800 hover:translate-y-[-4px]">
+    return <div className="p-6 rounded-xl transition-all bg-white shadow-md hover:shadow-lg dark:bg-wallet-card dark:border-gray-800 hover:translate-y-[-4px]">
         <div className={`bg-gradient-to-r ${getGradient()} inline-flex p-3 rounded-lg text-white mb-4`}>
           {icon}
         </div>
         <h3 className="font-heading font-semibold text-lg mb-2 bg-gradient-to-r from-indigo-500 to-blue-600 bg-clip-text text-transparent">{title}</h3>
         <p className="text-gray-600 text-sm dark:text-gray-400">{description}</p>
-      </div>
-    );
+      </div>;
   };
-  
   const StepCard = ({
     number,
     title,
@@ -300,7 +240,6 @@ const LandingPage = () => {
         <p className="text-gray-600 text-sm">{description}</p>
       </div>;
   };
-  
   const TestimonialCard = ({
     quote,
     author,
@@ -321,7 +260,6 @@ const LandingPage = () => {
         </div>
       </div>;
   };
-  
   const FAQItem = ({
     question,
     answer
@@ -346,7 +284,6 @@ const LandingPage = () => {
           </div>}
       </div>;
   };
-  
   const SupportedFeature = ({
     label,
     supported
@@ -363,15 +300,9 @@ const LandingPage = () => {
           </div>}
       </div>;
   };
-
   console.log("Rendering LandingPage component");
-
-  return (
-    <div 
-      className="landing-page-content min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white force-visible"
-      style={{ opacity: 1, visibility: 'visible' }}
-    >
-      <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm bg-white/70 dark:bg-black/20 sticky top-0 z-10 force-visible">
+  return <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
+      <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm bg-white/70 dark:bg-black/20 sticky top-0 z-10">
         <div className="flex items-center gap-2">
           <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" />
           <div>
@@ -380,19 +311,15 @@ const LandingPage = () => {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button 
-            onClick={handleMenuClick}
-            className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-            aria-label="Open menu"
-          >
+          <button onClick={handleMenuClick} className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" aria-label="Open menu">
             <Menu className="w-5 h-5 cursor-pointer" />
           </button>
         </div>
       </header>
       
-      <div className="flex-1 flex flex-col force-visible" style={{ opacity: 1, visibility: 'visible' }}>
+      <div className="flex-1 flex flex-col">
         {/* Hero Section */}
-        <section className="relative px-6 py-20 sm:py-28 overflow-hidden force-visible hero-section" style={{ opacity: 1, visibility: 'visible' }}>
+        <section className="relative px-6 py-20 sm:py-28 overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute inset-0 bg-blue-50 dark:bg-blue-900/10" />
             <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white dark:from-wallet-darkBg to-transparent" />
@@ -402,62 +329,61 @@ const LandingPage = () => {
           </div>
           
           <div className="max-w-screen-xl mx-auto">
-            <div className="flex flex-col lg:flex-row items-center gap-10">
+            <div className="flex flex-col lg:flex-row items-center gap-10 bg-slate-50">
               <div className="space-y-8 lg:w-1/2">
-                <h1 className="font-heading tracking-tight text-gray-900 dark:text-white leading-[1.1] font-bold text-4xl md:text-5xl lg:text-6xl max-w-xl force-visible"
-                    style={{ opacity: 1, visibility: 'visible' }}>
+                <h1 className="font-heading tracking-tight text-gray-900 dark:text-white leading-[1.1] font-bold text-4xl md:text-5xl lg:text-6xl max-w-xl">
                   Powerful Bitcoin
                   <span className="text-wallet-blue"> Wallet </span>
                   for Power Users
                 </h1>
                 
-                <p className="font-sans text-gray-600 dark:text-gray-300 text-lg max-w-lg force-visible"
-                   style={{ opacity: 1, visibility: 'visible' }}>
+                <p className="font-sans text-gray-600 dark:text-gray-300 text-lg max-w-lg">
                   Sparrow is a Bitcoin wallet for those who value financial self sovereignty. 
                   Now available as a secure, full-featured web application.
                 </p>
                 
-                <div className="flex flex-col sm:flex-row gap-4 pt-4 force-visible"
-                     style={{ opacity: 1, visibility: 'visible', display: 'flex' }}>
-                  <Button 
-                    onClick={handleCreateWallet} 
-                    disabled={isLoading}
-                    className="force-visible w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
-                    style={{ opacity: 1, visibility: 'visible', display: 'flex' }}
-                  >
-                    {isLoading ? (
-                      <>
+                <div className="flex flex-col space-y-3 pt-2">
+                  <div className="flex items-center gap-2">
+                    <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
+                      <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                    </div>
+                    <span className="text-gray-700 dark:text-gray-300">Privacy-focused and open source</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
+                      <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                    </div>
+                    <span className="text-gray-700 dark:text-gray-300">Complete transaction control with coin selection</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
+                      <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                    </div>
+                    <span className="text-gray-700 dark:text-gray-300">Self-custodial & secure</span>
+                  </div>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                  <Button onClick={handleCreateWallet} disabled={isLoading} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue">
+                    {isLoading ? <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         Wird geladen...
-                      </>
-                    ) : (
-                      <>
+                      </> : <>
                         Create Online Wallet <ArrowRight className="h-4 w-4" />
-                      </>
-                    )}
+                      </>}
                   </Button>
                   
-                  <Button
-                    variant="outline"
-                    className="force-visible w-full sm:w-auto py-6 text-base"
-                    style={{ opacity: 1, visibility: 'visible', display: 'flex' }}
-                    onClick={() => window.open('https://sparrowwallet.com/download/', '_blank')}
-                  >
+                  <Button variant="outline" className="w-full sm:w-auto py-6 text-base" onClick={() => window.open('https://sparrowwallet.com/download/', '_blank')}>
                     <ExternalLink className="mr-2 h-4 w-4" />
                     Download Desktop App
                   </Button>
                 </div>
               </div>
               
-              <div className="relative lg:w-1/2 force-visible" style={{ opacity: 1, visibility: 'visible' }}>
+              <div className="relative lg:w-1/2">
                 <div className="absolute inset-0 rounded-3xl bg-blue-500/10 dark:bg-blue-500/5 blur-xl -z-10"></div>
                 <div className="relative bg-white dark:bg-wallet-card rounded-3xl shadow-lg p-6 border border-gray-200 dark:border-gray-800 overflow-hidden">
-                  <img 
-                    src="/lovable-uploads/1b77eb0f-8d23-4584-b764-6202a16c8247.png" 
-                    alt="Bitcoin Wallet App" 
-                    className="w-full max-w-md mx-auto force-visible"
-                    style={{ opacity: 1, visibility: 'visible' }}
-                  />
+                  <img src="/lovable-uploads/1b77eb0f-8d23-4584-b764-6202a16c8247.png" alt="Bitcoin Wallet App" className="w-full max-w-md mx-auto" />
                 </div>
               </div>
             </div>
@@ -536,30 +462,10 @@ const LandingPage = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <AssetCard 
-                icon={<Globe className="h-6 w-6" />} 
-                title="Web Access" 
-                description="Use Sparrow from any browser, anywhere in the world" 
-                color="indigo" 
-              />
-              <AssetCard 
-                icon={<Coins className="h-6 w-6" />} 
-                title="UTXO Control" 
-                description="Full control over your unspent transaction outputs" 
-                color="purple" 
-              />
-              <AssetCard 
-                icon={<Shield className="h-6 w-6" />} 
-                title="Self-Custody" 
-                description="Your keys, your coins - you maintain control" 
-                color="blue" 
-              />
-              <AssetCard 
-                icon={<Wallet className="h-6 w-6" />} 
-                title="Multiple Wallets" 
-                description="Manage multiple wallets for different purposes" 
-                color="teal" 
-              />
+              <AssetCard icon={<Globe className="h-6 w-6" />} title="Web Access" description="Use Sparrow from any browser, anywhere in the world" color="indigo" />
+              <AssetCard icon={<Coins className="h-6 w-6" />} title="UTXO Control" description="Full control over your unspent transaction outputs" color="purple" />
+              <AssetCard icon={<Shield className="h-6 w-6" />} title="Self-Custody" description="Your keys, your coins - you maintain control" color="blue" />
+              <AssetCard icon={<Wallet className="h-6 w-6" />} title="Multiple Wallets" description="Manage multiple wallets for different purposes" color="teal" />
             </div>
           </div>
         </section>
@@ -575,56 +481,22 @@ const LandingPage = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <FeatureCard 
-                icon={<Shield className="h-6 w-6" />} 
-                title="Self-Custody" 
-                description="Sparrow gives you full control of your bitcoin. Your keys never leave your device." 
-              />
-              <FeatureCard 
-                icon={<Eye className="h-6 w-6" />} 
-                title="Privacy-focused" 
-                description="Connect to your own node for maximum privacy, or use public electrum servers." 
-              />
-              <FeatureCard 
-                icon={<Globe className="h-6 w-6" />} 
-                title="Open Source" 
-                description="All code is open source and available for review by the community." 
-              />
-              <FeatureCard 
-                icon={<Users className="h-6 w-6" />} 
-                title="Coin Control" 
-                description="Advanced coin selection allows you to maintain privacy with UTXO management." 
-              />
-              <FeatureCard 
-                icon={<Smartphone className="h-6 w-6" />} 
-                title="Hardware Support" 
-                description="Works with major hardware wallets for enhanced security." 
-              />
-              <FeatureCard 
-                icon={<Sparkles className="h-6 w-6" />} 
-                title="Online Access" 
-                description="Now available online with the same powerful features as the desktop app." 
-              />
+              <FeatureCard icon={<Shield className="h-6 w-6" />} title="Self-Custody" description="Sparrow gives you full control of your bitcoin. Your keys never leave your device." />
+              <FeatureCard icon={<Eye className="h-6 w-6" />} title="Privacy-focused" description="Connect to your own node for maximum privacy, or use public electrum servers." />
+              <FeatureCard icon={<Globe className="h-6 w-6" />} title="Open Source" description="All code is open source and available for review by the community." />
+              <FeatureCard icon={<Users className="h-6 w-6" />} title="Coin Control" description="Advanced coin selection allows you to maintain privacy with UTXO management." />
+              <FeatureCard icon={<Smartphone className="h-6 w-6" />} title="Hardware Support" description="Works with major hardware wallets for enhanced security." />
+              <FeatureCard icon={<Sparkles className="h-6 w-6" />} title="Online Access" description="Now available online with the same powerful features as the desktop app." />
             </div>
           </div>
         </section>
       </div>
       
-      <RegistrationModal
-        isOpen={showRegistrationModal}
-        onClose={() => setShowRegistrationModal(false)}
-        onRegister={handleRegister}
-        isLoading={isLoading}
-      />
+      <RegistrationModal isOpen={showRegistrationModal} onClose={() => setShowRegistrationModal(false)} onRegister={handleRegister} isLoading={isLoading} />
       
-      <SuccessModal
-        isOpen={showSuccessModal}
-        onClose={handleSuccessModalClose}
-      />
+      <SuccessModal isOpen={showSuccessModal} onClose={handleSuccessModalClose} />
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default LandingPage;
