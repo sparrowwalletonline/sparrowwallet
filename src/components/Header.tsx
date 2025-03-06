@@ -39,8 +39,8 @@ const Header = ({
   );
 
   return (
-    <header className={`flex items-center justify-between py-4 ${className} wallet-header`}>
-      <div className="flex items-center gap-3">
+    <header className={`flex items-center justify-between py-3 ${className} wallet-header`}>
+      <div className="flex items-center gap-2">
         {showBack && (
           <BackButton />
         )}
@@ -54,7 +54,7 @@ const Header = ({
         <h1 className="text-xl font-medium">{title}</h1>
       </div>
       
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         {showTutorial && (
           <TutorialMenu />
         )}

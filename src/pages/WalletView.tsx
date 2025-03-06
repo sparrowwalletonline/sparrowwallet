@@ -215,7 +215,7 @@ const WalletViewContent: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <Header title="Home" />
+      <Header title="Sparrow" />
       
       <div className="px-4 mb-1">
         <div className="flex items-center">
