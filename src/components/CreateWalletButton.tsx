@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Wallet } from 'lucide-react';
@@ -20,6 +19,7 @@ import { Loader2, Check } from 'lucide-react';
 import ThemeToggle from '@/components/ThemeToggle';
 import { Link } from 'react-router-dom';
 import { Switch } from '@/components/ui/switch';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const CreateWalletButton = () => {
   const navigate = useNavigate();
@@ -263,19 +263,18 @@ const CreateWalletButton = () => {
               </div>
               
               <div className="space-y-2 pt-2">
-                <div className="flex items-start">
-                  <div className="flex items-center h-5">
-                    <input
-                      id="terms"
-                      type="checkbox"
-                      checked={acceptedTerms}
-                      onChange={() => setAcceptedTerms(!acceptedTerms)}
-                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 cursor-pointer"
-                      aria-label="Accept terms and conditions"
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label htmlFor="terms" className="text-gray-700 dark:text-gray-300 cursor-pointer" onClick={() => setAcceptedTerms(!acceptedTerms)}>
+                <div className="flex items-start space-x-2">
+                  <Checkbox 
+                    id="terms" 
+                    checked={acceptedTerms}
+                    onCheckedChange={() => setAcceptedTerms(!acceptedTerms)}
+                    className="data-[state=checked]:bg-wallet-blue border-gray-300 dark:border-gray-600"
+                  />
+                  <div className="grid gap-1.5 leading-none">
+                    <label
+                      htmlFor="terms"
+                      className="text-sm font-medium leading-none text-gray-700 dark:text-gray-300 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                    >
                       Ich akzeptiere die <Link to="/terms" className="text-blue-600 dark:text-blue-400 hover:underline">Nutzungsbedingungen</Link> und <Link to="/terms" className="text-blue-600 dark:text-blue-400 hover:underline">Datenschutzrichtlinien</Link>
                     </label>
                   </div>
