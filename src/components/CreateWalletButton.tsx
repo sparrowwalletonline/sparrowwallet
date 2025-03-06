@@ -9,7 +9,7 @@ const CreateWalletButton = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/wallet-choice');
+    navigate('/app');
   };
 
   return (
