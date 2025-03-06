@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -518,7 +519,8 @@ const LandingPage = () => {
                         Loading...
                       </>
                     ) : (
-                      <>Start Using Sparrow</>}
+                      <>Start Using Sparrow</>
+                    )}
                   </Button>
                 </div>
               </div>
