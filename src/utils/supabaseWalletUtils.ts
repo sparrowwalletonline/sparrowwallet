@@ -1,7 +1,6 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from '@supabase/supabase-js';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { encryptSeedPhrase, decryptSeedPhrase } from './encryptionUtils';
 import { generateBtcAddress } from './walletUtils';
 
@@ -15,6 +14,7 @@ export const saveWalletToSupabase = async (
       title: "Fehler",
       description: "Du musst angemeldet sein, um zu speichern",
       variant: "destructive",
+      duration: 3000,
     });
     return false;
   }
@@ -27,6 +27,7 @@ export const saveWalletToSupabase = async (
       title: "Fehler",
       description: "Ungültige Seed Phrase",
       variant: "destructive",
+      duration: 3000,
     });
     return false;
   }
@@ -41,6 +42,7 @@ export const saveWalletToSupabase = async (
         title: "Fehler beim Speichern",
         description: "Die Seed Phrase konnte nicht verschlüsselt werden",
         variant: "destructive",
+        duration: 3000,
       });
       return false;
     }
@@ -58,6 +60,7 @@ export const saveWalletToSupabase = async (
         title: "Fehler beim Speichern",
         description: checkError.message,
         variant: "destructive",
+        duration: 3000,
       });
       return false;
     }
@@ -90,6 +93,7 @@ export const saveWalletToSupabase = async (
         title: "Fehler beim Speichern",
         description: error.message,
         variant: "destructive",
+        duration: 3000,
       });
       return false;
     }
@@ -98,6 +102,7 @@ export const saveWalletToSupabase = async (
     toast({
       title: "Erfolgreich gespeichert",
       description: "Deine Seed Phrase wurde in der Cloud gespeichert",
+      duration: 3000,
     });
     return true;
   } catch (error) {
@@ -107,6 +112,7 @@ export const saveWalletToSupabase = async (
       title: "Fehler beim Speichern",
       description: errorMessage,
       variant: "destructive",
+      duration: 3000,
     });
     return false;
   }
@@ -126,6 +132,7 @@ export const loadWalletFromSupabase = async (
       title: "Fehler",
       description: "Du musst angemeldet sein, um deine Seed Phrase zu laden",
       variant: "destructive",
+      duration: 3000,
     });
     return null;
   }
@@ -144,6 +151,7 @@ export const loadWalletFromSupabase = async (
         title: "Fehler beim Laden",
         description: error.message,
         variant: "destructive",
+        duration: 3000,
       });
       return null;
     }
@@ -172,6 +180,7 @@ export const loadWalletFromSupabase = async (
         toast({
           title: "Erfolgreich geladen",
           description: "Deine Seed Phrase wurde aus der Cloud geladen",
+          duration: 3000,
         });
         return decryptedPhrase;
       }
@@ -182,6 +191,7 @@ export const loadWalletFromSupabase = async (
       title: "Keine Seed Phrase gefunden",
       description: "Es wurde keine gespeicherte Seed Phrase gefunden",
       variant: "destructive",
+      duration: 3000,
     });
     return null;
   } catch (error) {
@@ -191,6 +201,7 @@ export const loadWalletFromSupabase = async (
       title: "Fehler beim Laden",
       description: errorMessage,
       variant: "destructive",
+      duration: 3000,
     });
     return null;
   }

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { Lock } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 
@@ -25,6 +25,7 @@ const PinVerification: React.FC<PinVerificationProps> = ({ onSuccess }) => {
       toast({
         title: "Zugriff gewährt",
         description: "PIN-Verifizierung erfolgreich",
+        duration: 3000,
       });
     } else {
       setAttempts(prev => prev + 1);
@@ -33,6 +34,7 @@ const PinVerification: React.FC<PinVerificationProps> = ({ onSuccess }) => {
         title: "Ungültige PIN",
         description: "Bitte versuchen Sie es erneut",
         variant: "destructive",
+        duration: 3000,
       });
       
       // After 3 failed attempts, log out and redirect to login
@@ -41,6 +43,7 @@ const PinVerification: React.FC<PinVerificationProps> = ({ onSuccess }) => {
           title: "Zu viele Versuche",
           description: "Aus Sicherheitsgründen müssen Sie sich erneut anmelden",
           variant: "destructive",
+          duration: 3000,
         });
         setTimeout(() => {
           navigate('/auth');

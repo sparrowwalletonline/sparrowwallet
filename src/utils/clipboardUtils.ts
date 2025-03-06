@@ -1,5 +1,5 @@
 
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 
 export const copyToClipboard = (text: string): void => {
   navigator.clipboard.writeText(text).then(
@@ -8,7 +8,7 @@ export const copyToClipboard = (text: string): void => {
       toast({
         title: "Copied to clipboard",
         description: "The text has been copied to your clipboard.",
-        duration: 1500,
+        duration: 3000,
       });
     },
     (err) => {
@@ -17,7 +17,7 @@ export const copyToClipboard = (text: string): void => {
         title: "Failed to copy",
         description: "Could not copy text to clipboard.",
         variant: "destructive",
-        duration: 1500,
+        duration: 3000,
       });
     }
   );

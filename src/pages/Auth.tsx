@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { Mail, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 
@@ -54,7 +54,7 @@ const Auth: React.FC = () => {
       toast({
         title: "Anmeldung wird verarbeitet",
         description: "Bitte warte einen Moment...",
-        duration: 1500,
+        duration: 3000,
       });
     }
     
@@ -75,7 +75,7 @@ const Auth: React.FC = () => {
         toast({
           title: "Anmeldung erfolgreich",
           description: "Du wurdest erfolgreich angemeldet",
-          duration: 1500,
+          duration: 3000,
         });
         
         await checkUserWallet();
@@ -90,7 +90,7 @@ const Auth: React.FC = () => {
         toast({
           title: "Registrierung erfolgreich",
           description: "Bitte überprüfe deine E-Mail, um die Registrierung abzuschließen",
-          duration: 1500,
+          duration: 3000,
         });
         
         navigate('/app');
@@ -101,7 +101,7 @@ const Auth: React.FC = () => {
           title: "Fehler",
           description: error.message,
           variant: "destructive",
-          duration: 1500,
+          duration: 3000,
         });
       }
     } finally {

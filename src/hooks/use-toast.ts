@@ -1,3 +1,4 @@
+
 import * as React from "react"
 
 import type {
@@ -6,7 +7,7 @@ import type {
 } from "@/components/ui/toast"
 
 const TOAST_LIMIT = 1
-const TOAST_REMOVE_DELAY = 1500 // Changed from 2000 to 1500 milliseconds (1.5 seconds)
+const TOAST_REMOVE_DELAY = 3000 // Changed from 1500 to 3000 milliseconds (3 seconds)
 
 type ToasterToast = ToastProps & {
   id: string
@@ -154,7 +155,7 @@ function toast({ ...props }: Toast) {
     toast: {
       ...props,
       id,
-      duration: props.duration ?? 1500, // Set default duration to 1500ms (1.5 seconds) if not specified
+      duration: props.duration ?? 3000, // Set default duration to 3000ms (3 seconds) if not specified
       open: true,
       onOpenChange: (open) => {
         if (!open) dismiss()

@@ -1,4 +1,5 @@
-import { toast } from '@/components/ui/use-toast';
+
+import { toast } from '@/hooks/use-toast';
 
 export interface CryptoPrice {
   symbol: string;
@@ -108,7 +109,8 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
       toast({
         variant: "destructive",
         title: "API-Fehler",
-        description: "Verwende Fallback-Daten für Kryptowährungen."
+        description: "Verwende Fallback-Daten für Kryptowährungen.",
+        duration: 3000,
       });
       
       // If we have cached data, prefer that over fallback
@@ -156,7 +158,8 @@ export const fetchCryptoPrices = async (): Promise<Record<string, CryptoPrice>> 
     toast({
       variant: "destructive",
       title: "Fehler beim Laden der Preise",
-      description: "Es werden Fallback-Preise angezeigt."
+      description: "Es werden Fallback-Preise angezeigt.",
+      duration: 3000,
     });
     
     // Return cached prices if available, otherwise fallback
