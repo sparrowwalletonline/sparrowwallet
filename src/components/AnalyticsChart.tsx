@@ -16,6 +16,7 @@ interface AnalyticsChartProps {
     name: string;
     iconColor: string;
     logoUrl?: string;
+    price: number;
   }[];
 }
 
@@ -26,9 +27,10 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ tokens }) => {
   const currentToken = tokens[currentTokenIndex];
   
   // Generate some dummy data for the chart
-  const generateChartData = (symbol: string): ChartDataPoint[] => {
-    const baseValue = symbol === 'BTC' ? 30000 : symbol === 'ETH' ? 2000 : 100;
-    const volatility = symbol === 'BTC' ? 2000 : symbol === 'ETH' ? 150 : 10;
+  const generateChartData = (token: typeof tokens[0]): ChartDataPoint[] => {
+    // Use the actual current price as the base value
+    const baseValue = token.price;
+    const volatility = baseValue * 0.05; // 5% volatility based on the actual price
     
     const data: ChartDataPoint[] = [];
     const now = new Date();
@@ -40,7 +42,7 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ tokens }) => {
       // Create some random but somewhat realistic price movements
       const randomFactor = 0.5 + Math.random();
       const trendFactor = Math.sin(i / 5) * 0.3 + 0.7;
-      const value = baseValue + (volatility * randomFactor * trendFactor);
+      const value = baseValue + (volatility * randomFactor * trendFactor) - (volatility / 2);
       
       data.push({
         date: date.toLocaleDateString('de-DE', { month: 'short', day: 'numeric' }),
@@ -51,7 +53,7 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ tokens }) => {
     return data;
   };
   
-  const chartData = generateChartData(currentToken?.symbol || 'BTC');
+  const chartData = currentToken ? generateChartData(currentToken) : [];
   
   const handlePrevToken = () => {
     setCurrentTokenIndex(prevIndex => 
@@ -80,7 +82,7 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ tokens }) => {
                     currentToken?.symbol === 'MATIC' || currentToken?.symbol === 'POL' ? '#8247E5' : 
                     '#4ade80';
   
-  if (!currentToken) return null;
+  if (!currentToken || tokens.length === 0) return null;
   
   return (
     <div className="mt-6 animate-fade-in">
@@ -117,7 +119,7 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ tokens }) => {
           )}
         </div>
         <div>
-          <div className="text-lg font-medium">{formatPrice(chartData[chartData.length - 1].value)}</div>
+          <div className="text-lg font-medium">{formatPrice(currentToken.price)}</div>
           <div className="text-xs text-gray-400">30 Tage</div>
         </div>
       </div>
@@ -144,7 +146,7 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ tokens }) => {
             />
             <YAxis 
               hide 
-              domain={['dataMin - 500', 'dataMax + 500']} 
+              domain={['dataMin - 100', 'dataMax + 100']} 
             />
             <Tooltip 
               formatter={(value: number) => [formatPrice(value), 'Preis']}
