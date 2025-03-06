@@ -609,14 +609,6 @@ const WalletBalance: React.FC = () => {
               </Button>
               <DialogTitle className="text-lg font-medium">{selectedToken?.symbol} erhalten</DialogTitle>
             </div>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="text-muted-foreground hover:text-foreground"
-              onClick={() => setIsReceiveDialogOpen(false)}
-            >
-              <X className="h-5 w-5" />
-            </Button>
           </DialogHeader>
           
           <div className="flex flex-col items-center py-4">
