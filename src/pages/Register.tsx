@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -117,9 +116,6 @@ const Register: React.FC = () => {
             className="text-center relative"
             variants={itemVariants}
           >
-            <div className="absolute -top-24 -z-10 left-1/2 transform -translate-x-1/2">
-              <div className="w-56 h-56 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-400/10 blur-3xl animate-pulse"></div>
-            </div>
             <motion.div 
               className="mb-6 mx-auto"
               whileHover={{ scale: 1.05 }}
