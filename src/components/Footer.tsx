@@ -44,22 +44,22 @@ const Footer = () => {
             <h3 className="font-medium text-white mb-4">Resources</h3>
             <ul className="space-y-2">
               <li>
-                <a href="https://sparrowwallet.com/features/" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
+                <Link to="/features" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
                   <Sparkles size={16} />
                   <span>Features</span>
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="https://sparrowwallet.com/docs/" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
+                <Link to="/documentation" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
                   <FileText size={16} />
                   <span>Documentation</span>
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="https://sparrowwallet.com/support/" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
+                <Link to="/support" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
                   <MessageCircle size={16} />
                   <span>Support</span>
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="https://sparrowwallet.com/download/" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
@@ -75,16 +75,16 @@ const Footer = () => {
             <h3 className="font-medium text-white mb-4">About</h3>
             <ul className="space-y-2">
               <li>
-                <a href="https://sparrowwallet.com/about/" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
+                <Link to="/about" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
                   <Info size={16} />
                   <span>About</span>
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="https://sparrowwallet.com/donate/" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
+                <Link to="/donate" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
                   <Heart size={16} />
                   <span>Donate</span>
-                </a>
+                </Link>
               </li>
               <li>
                 <Link to="/terms" className="flex items-center gap-2 hover:text-blue-400 transition-colors">

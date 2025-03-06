@@ -22,6 +22,10 @@ import PaymentMethods from "./pages/PaymentMethods";
 import AppSettings from "./pages/AppSettings";
 import HelpCenter from "./pages/HelpCenter";
 import About from "./pages/About";
+import Features from "./pages/Features";
+import Documentation from "./pages/Documentation";
+import Support from "./pages/Support";
+import Donate from "./pages/Donate";
 import PinVerification from "./components/PinVerification";
 import { MenuProvider } from "./contexts/MenuContext";
 import { WalletProvider, useWallet } from "./contexts/WalletContext";
@@ -136,11 +140,11 @@ function App() {
                     <HelpCenter />
                   </PrivateRoute>
                 } />
-                <Route path="/about" element={
-                  <PrivateRoute>
-                    <About />
-                  </PrivateRoute>
-                } />
+                <Route path="/about" element={<About />} />
+                <Route path="/features" element={<Features />} />
+                <Route path="/documentation" element={<Documentation />} />
+                <Route path="/support" element={<Support />} />
+                <Route path="/donate" element={<Donate />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
               <TutorialPopover />
