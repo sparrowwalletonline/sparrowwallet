@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from '@supabase/supabase-js';
@@ -827,7 +827,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     if (amount > activeWallet.btcBalance) {
       toast({
         title: "Fehler",
-        description: "Nicht genügend Bitcoin in der Wallet",
+        description: `Nicht genügend Bitcoin in der Wallet. Maximal verfügbar: ${activeWallet.btcBalance} BTC`,
         variant: "destructive",
       });
       return;

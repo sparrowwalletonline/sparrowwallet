@@ -1,3 +1,4 @@
+<lov-code>
 import React, { useState, useEffect, useRef } from 'react';
 import { useWallet } from '@/contexts/WalletContext';
 import { QRCodeSVG } from 'qrcode.react';
@@ -45,6 +46,8 @@ const WalletBalance: React.FC = () => {
   const [selectedAction, setSelectedAction] = useState<'send' | 'receive' | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isConfirmingTransaction, setIsConfirmingTransaction] = useState(false);
+  
+  const [amountError, setAmountError] = useState<string | null>(null);
   
   useEffect(() => {
     const prevBalance = prevBalanceRef.current;
@@ -207,58 +210,101 @@ const WalletBalance: React.FC = () => {
 
   const handleSetMaxAmount = () => {
     if (selectedToken) {
+      setAmountError(null);
       setAmount(selectedToken.balance.toString());
     }
   };
 
+  const validateTransaction = (): boolean => {
+    if (!selectedToken) {
+      toast({
+        title: "Fehler",
+        description: "Bitte wähle ein Token aus",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    if (!recipientAddress.trim()) {
+      toast({
+        title: "Fehler",
+        description: "Bitte gib eine Empfängeradresse ein",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    const numAmount = parseFloat(amount);
+    if (isNaN(numAmount) || numAmount <= 0) {
+      setAmountError("Der Betrag muss größer als 0 sein");
+      toast({
+        title: "Fehler",
+        description: "Der Betrag muss größer als 0 sein",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    if (numAmount > selectedToken.balance) {
+      setAmountError(`Nicht genügend ${selectedToken.symbol} im Wallet. Maximal verfügbar: ${selectedToken.balance}`);
+      toast({
+        title: "Fehler",
+        description: `Nicht genügend ${selectedToken.symbol} im Wallet`,
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    setAmountError(null);
+    return true;
+  };
+
   const handlePreviewTransaction = () => {
-    setShowConfirmation(true);
+    if (validateTransaction()) {
+      setShowConfirmation(true);
+    }
   };
 
   const handleConfirmTransaction = () => {
-    setIsConfirmingTransaction(true);
-    setTimeout(() => {
+    if (validateTransaction()) {
+      setIsConfirmingTransaction(true);
+      setTimeout(() => {
+        toast({
+          title: "Transaktion in Bearbeitung",
+          description: `${amount} ${selectedToken?.symbol} werden an ${recipientAddress} gesendet.`,
+        });
+        setShowConfirmation(false);
+        setIsSendDialogOpen(false);
+        setIsConfirmingTransaction(false);
+      }, 1000);
+    }
+  };
+
+  const handleSend = () => {
+    if (validateTransaction()) {
       toast({
         title: "Transaktion in Bearbeitung",
         description: `${amount} ${selectedToken?.symbol} werden an ${recipientAddress} gesendet.`,
       });
-      setShowConfirmation(false);
       setIsSendDialogOpen(false);
-      setIsConfirmingTransaction(false);
-    }, 1000);
-  };
-
-  const handleSend = () => {
-    toast({
-      title: "Transaktion in Bearbeitung",
-      description: `${amount} ${selectedToken?.symbol} werden an ${recipientAddress} gesendet.`,
-    });
-    setIsSendDialogOpen(false);
-  };
-
-  const handleCopyAddress = () => {
-    const addressToCopy = activeWallet?.walletAddress || walletAddress;
-    if (addressToCopy) {
-      copyToClipboard(addressToCopy);
-    } else {
-      toast({
-        title: "Fehler",
-        description: "Keine Wallet-Adresse verfügbar zum Kopieren",
-        variant: "destructive",
-      });
     }
   };
 
-  const getDisplayAddress = () => {
-    return activeWallet?.walletAddress || walletAddress || "";
-  };
-
-  useEffect(() => {
-    if (isReceiveDialogOpen) {
-      console.log("Receive dialog opened, wallet address:", walletAddress);
-      console.log("Active wallet:", activeWallet);
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setAmount(value);
+    
+    // Clear error when user starts typing a new amount
+    if (amountError) {
+      setAmountError(null);
     }
-  }, [isReceiveDialogOpen, walletAddress, activeWallet]);
+    
+    // Validate in real-time if needed
+    const numAmount = parseFloat(value);
+    if (selectedToken && !isNaN(numAmount) && numAmount > selectedToken.balance) {
+      setAmountError(`Nicht genügend ${selectedToken.symbol} im Wallet. Maximal verfügbar: ${selectedToken.balance}`);
+    }
+  };
 
   return (
     <div className="animate-fade-in w-full wallet-balance-wrapper">
@@ -418,8 +464,8 @@ const WalletBalance: React.FC = () => {
                   placeholder="Gib einen gültigen Betrag ein"
                   type="number"
                   value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  className="bg-secondary border-input pr-16"
+                  onChange={handleAmountChange}
+                  className={`bg-secondary border-input pr-16 ${amountError ? 'border-red-500' : ''}`}
                 />
                 <button 
                   className="absolute right-2 top-1/2 transform -translate-y-1/2 text-green-500 text-sm font-medium"
@@ -428,9 +474,15 @@ const WalletBalance: React.FC = () => {
                   MAX
                 </button>
               </div>
-              <div className="mt-2 text-sm text-muted-foreground">
-                Guthaben: {selectedToken?.balance || 0} {selectedToken?.symbol}
-              </div>
+              {amountError ? (
+                <div className="mt-2 text-sm text-red-500">
+                  {amountError}
+                </div>
+              ) : (
+                <div className="mt-2 text-sm text-muted-foreground">
+                  Guthaben: {selectedToken?.balance || 0} {selectedToken?.symbol}
+                </div>
+              )}
             </div>
           </div>
           
@@ -622,62 +674,4 @@ const WalletBalance: React.FC = () => {
             >
               Verstanden
             </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
-};
-
-interface CryptoActionProps {
-  icon: string;
-  label: string;
-  onClick?: () => void;
-}
-
-const CryptoAction = ({ icon, label, onClick }: CryptoActionProps) => {
-  const { theme } = useTheme();
-  
-  const getIcon = () => {
-    switch(icon) {
-      case 'send':
-        return (
-          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 4V20M12 4L6 10M12 4L18 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        );
-      case 'receive':
-        return (
-          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 20V4M12 20L6 14M12 20L18 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        );
-      case 'buy':
-        return (
-          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="6" width="20" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
-            <path d="M12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14Z" stroke="currentColor" strokeWidth="2"/>
-          </svg>
-        );
-      case 'earn':
-        return (
-          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        );
-      default:
-        return null;
-    }
-  };
-  
-  return (
-    <button className="flex flex-col items-center" onClick={onClick}>
-      <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-1 crypto-action-button`}>
-        {getIcon()}
-      </div>
-      <span className="text-xs">{label}</span>
-    </button>
-  );
-};
-
-export default WalletBalance;
+          
