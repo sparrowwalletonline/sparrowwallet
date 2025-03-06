@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import { Mail, Lock, Eye, EyeOff, ArrowLeft, Check, Shield, Sparkles } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowLeft, Check, Shield, Sparkles, Key, LockKeyhole, CheckCircle } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import Header from '@/components/Header';
 import WalletLogo from '@/components/WalletLogo';
@@ -138,7 +138,7 @@ const Register: React.FC = () => {
   };
 
   const handleWalletAccess = () => {
-    navigate('/app');
+    navigate('/wallet-intro');
   };
 
   const containerVariants = {
@@ -212,13 +212,56 @@ const Register: React.FC = () => {
                   <motion.div 
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center"
+                    className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4"
                   >
                     <Check className="h-8 w-8 text-green-600" />
                   </motion.div>
                 </div>
                 <h2 className="text-xl font-bold text-gray-800">Konto erfolgreich erstellt!</h2>
-                <p className="text-gray-600">Dein Konto wurde erfolgreich erstellt. Du kannst jetzt auf deine Wallet zugreifen.</p>
+                <p className="text-gray-600 mb-6">Folge den nächsten Schritten, um deine Sparrow Wallet einzurichten.</p>
+                
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-start space-x-4 bg-blue-50 p-3 rounded-lg">
+                    <div className="bg-blue-100 p-2 rounded-full">
+                      <Key className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <div className="text-left">
+                      <h3 className="font-medium text-gray-800">1. Seed-Phrase generieren</h3>
+                      <p className="text-sm text-gray-600">Eine einzigartige Seed-Phrase für deine Wallet erstellen</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-4 bg-blue-50 p-3 rounded-lg">
+                    <div className="bg-blue-100 p-2 rounded-full">
+                      <Shield className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <div className="text-left">
+                      <h3 className="font-medium text-gray-800">2. Seed-Phrase sichern</h3>
+                      <p className="text-sm text-gray-600">Bewahre deine Seed-Phrase sicher auf</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-4 bg-blue-50 p-3 rounded-lg">
+                    <div className="bg-blue-100 p-2 rounded-full">
+                      <LockKeyhole className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <div className="text-left">
+                      <h3 className="font-medium text-gray-800">3. Seed-Phrase bestätigen</h3>
+                      <p className="text-sm text-gray-600">Bestätige deine Seed-Phrase zur Sicherheit</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-4 bg-blue-50 p-3 rounded-lg">
+                    <div className="bg-blue-100 p-2 rounded-full">
+                      <CheckCircle className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <div className="text-left">
+                      <h3 className="font-medium text-gray-800">4. Wallet einrichten</h3>
+                      <p className="text-sm text-gray-600">Starte mit deiner neuen Wallet</p>
+                    </div>
+                  </div>
+                </div>
+                
                 <motion.div
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.98 }}
@@ -227,7 +270,7 @@ const Register: React.FC = () => {
                     onClick={handleWalletAccess}
                     className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-medium py-6 transition-all duration-300 relative overflow-hidden group"
                   >
-                    <span className="z-10 relative">Auf Wallet Zugreifen</span>
+                    <span className="z-10 relative">Wallet erstellen</span>
                     <span className="absolute inset-0 bg-gradient-to-r from-blue-400/0 via-blue-400/30 to-blue-400/0 opacity-0 group-hover:opacity-100 transform group-hover:translate-x-full transition-all duration-1000"></span>
                   </Button>
                 </motion.div>
