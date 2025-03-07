@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Copy, Eye, EyeOff, Lock, Timer, Smartphone, KeyRound, Fingerprint } from 'lucide-react';
@@ -220,7 +221,7 @@ const SecuritySettings = () => {
   };
 
   return (
-    <div className="container max-w-md mx-auto px-4 py-6">
+    <div className="container max-w-md mx-auto px-4 py-6 pt-16">
       <Header title="Sicherheitseinstellungen" showBack={true} />
       
       <Tabs defaultValue="seed" className="mt-8">
