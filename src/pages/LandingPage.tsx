@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '@/components/Footer';
 import CreateWalletButton from '@/components/CreateWalletButton';
 import FeaturesSection from '@/components/FeaturesSection';
+import SupportedAssetsSection from '@/components/SupportedAssetsSection';
 
 const LandingPage = () => {
   const { generateWallet, hasWallet, session } = useWallet();
@@ -493,6 +494,8 @@ const LandingPage = () => {
         </section>
         
         <FeaturesSection />
+        
+        <SupportedAssetsSection />
         
         <section className="py-20 px-6 my-12">
           <div className="max-w-screen-xl mx-auto rounded-3xl overflow-hidden bg-gradient-to-r from-indigo-500/5 to-purple-500/5 dark:from-indigo-900/20 dark:to-purple-900/20 backdrop-blur-sm border border-gray-100 dark:border-gray-800 shadow-lg">
