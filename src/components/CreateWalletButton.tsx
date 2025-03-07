@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Wallet } from 'lucide-react';
@@ -114,7 +113,7 @@ const CreateWalletButton = () => {
         navigate('/generate-wallet');
       }
     } else {
-      // Direct to Register page instead of opening modal
+      // Direct to Register page
       navigate('/register');
     }
   };
@@ -192,6 +191,7 @@ const CreateWalletButton = () => {
     }, 5000); // 5 second delay
   };
 
+  // Remove any automatic account creation that happens when closing the modal
   const handleSuccessModalClose = () => {
     setIsSuccessOpen(false);
     navigate('/wallet-intro');
@@ -232,6 +232,7 @@ const CreateWalletButton = () => {
         </Button>
       </div>
 
+      {/* Keep the Dialog components but they're not actively used for registration now */}
       <Dialog open={isRegisterOpen} onOpenChange={setIsRegisterOpen}>
         <DialogContent className="bg-white border-gray-200 text-gray-800 dark:bg-wallet-card dark:border-gray-800 dark:text-white max-w-md p-0 overflow-hidden">
           <div className="flex flex-col">
