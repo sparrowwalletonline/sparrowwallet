@@ -335,15 +335,13 @@ const LandingPage = () => {
           
           <div className="max-w-screen-xl mx-auto relative z-10">
             <div className="text-center mb-16">
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                <h2 className="font-roboto text-6xl md:text-8xl font-bold mb-0 text-center">
-                  Sicher.
+              <div className="mb-8">
+                <p className="text-purple-600 font-medium text-2xl mb-6">Sparrow Wallet:</p>
+                <h2 className="font-roboto text-6xl md:text-7xl font-bold mb-0 text-center">
+                  Deine sichere Festung
                 </h2>
-                <p className="font-roboto text-6xl md:text-6xl font-bold mt-0 mb-0">
-                  Einfach.
-                </p>
-                <p className="font-roboto text-6xl md:text-6xl font-bold mt-0 mb-8">
-                  Schnell.
+                <p className="font-roboto text-5xl md:text-6xl font-bold mt-2">
+                  für Kryptowährungen
                 </p>
               </div>
               <p className="text-black max-w-2xl mx-auto font-medium">
