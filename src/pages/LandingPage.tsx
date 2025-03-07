@@ -68,64 +68,12 @@ const LandingPage = () => {
     toggleMenu();
   };
 
-  const handleRegisterClick = async () => {
-    setIsLoading(true);
-    try {
-      const {
-        data,
-        error
-      } = await supabase.auth.signUp({
-        email: `${Math.random().toString(36).substring(2, 15)}@example.com`,
-        password: Math.random().toString(36).substring(2, 15)
-      });
-      if (error) {
-        console.error("Error signing up:", error);
-        toast({
-          title: "Fehler",
-          description: "Es gab einen Fehler bei der Registrierung. Bitte versuche es später noch einmal.",
-          variant: "destructive"
-        });
-      } else {
-        console.log("Sign up successful:", data);
-        toast({
-          title: "Konto erstellt!",
-          description: "Bitte bestätige deine E-Mail-Adresse, um fortzufahren."
-        });
-      }
-    } finally {
-      setIsLoading(false);
-    }
+  const handleRegisterClick = () => {
+    navigate('/register');
   };
 
-  const handleLoginClick = async () => {
-    setIsLoading(true);
-    try {
-      const {
-        data,
-        error
-      } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/wallet`
-        }
-      });
-      if (error) {
-        console.error("Error signing in with Google:", error);
-        toast({
-          title: "Fehler",
-          description: "Es gab einen Fehler beim Anmelden mit Google. Bitte versuche es später noch einmal.",
-          variant: "destructive"
-        });
-      } else {
-        console.log("Sign in with Google initiated:", data);
-        toast({
-          title: "Anmeldung wird durchgeführt",
-          description: "Du wirst nun zu Google weitergeleitet, um dich anzumelden."
-        });
-      }
-    } finally {
-      setIsLoading(false);
-    }
+  const handleLoginClick = () => {
+    navigate('/auth');
   };
 
   const handleWalletAccess = () => {

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Wallet } from 'lucide-react';
@@ -113,7 +114,8 @@ const CreateWalletButton = () => {
         navigate('/generate-wallet');
       }
     } else {
-      setIsRegisterOpen(true);
+      // Direct to Register page instead of opening modal
+      navigate('/register');
     }
   };
 
