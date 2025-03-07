@@ -25,7 +25,7 @@ const Footer = () => {
           <div className="col-span-1 px-4">
             <div className="flex items-center gap-2 mb-4">
               <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" />
-              <span className="font-heading text-xl font-bold text-white">Sparrow Wallet</span>
+              <span className="font-playfair text-xl font-bold text-white">Sparrow Wallet</span>
             </div>
             <p className="text-sm mb-4">
               Eine moderne, umfassende Bitcoin-Wallet mit einer fortschrittlichen Benutzeroberfläche für datenschutzbewusste Benutzer
@@ -42,7 +42,7 @@ const Footer = () => {
 
           {/* Links column 1 */}
           <div className="px-4">
-            <h3 className="font-medium text-white mb-4">Ressourcen</h3>
+            <h3 className="font-playfair font-medium text-white mb-4">Ressourcen</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/features" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
@@ -73,7 +73,7 @@ const Footer = () => {
 
           {/* Links column 2 */}
           <div className="px-4">
-            <h3 className="font-medium text-white mb-4">Über uns</h3>
+            <h3 className="font-playfair font-medium text-white mb-4">Über uns</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/about" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
@@ -104,7 +104,7 @@ const Footer = () => {
 
           {/* Online version message */}
           <div className="px-4">
-            <h3 className="font-medium text-white mb-4">Online-Version</h3>
+            <h3 className="font-playfair font-medium text-white mb-4">Online-Version</h3>
             <p className="text-sm mb-4">Dies ist die Online-Version von Sparrow Wallet. Für ein sichereres Erlebnis empfehlen wir den Download der Desktop-Version.</p>
             <a 
               href="https://sparrowwallet.com/download/" 
