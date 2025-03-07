@@ -37,8 +37,9 @@ export const generateSeedPhrase = (): string[] => {
       .join('');
     
     // Generate mnemonic with entropy
-    const baseEntropy = bip39.generateMnemonic();
-    const mnemonic = bip39.generateMnemonic(128, undefined, entropyHex);
+    // Using bip39.generateMnemonic directly without passing entropyHex as third parameter
+    // since it expects different parameters than what we're providing
+    const mnemonic = bip39.generateMnemonic(128);
     console.log("Generated BIP39 mnemonic:", mnemonic);
     const words = mnemonic.split(' ');
     console.log("BIP39 word list (should be 12 words):", words);
