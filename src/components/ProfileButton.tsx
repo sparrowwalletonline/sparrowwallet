@@ -29,7 +29,10 @@ const ProfileButton = () => {
           <span className="sr-only">Profil</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent 
+        align="end" 
+        className="z-[10002] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border border-gray-200/50 dark:border-gray-800/50 shadow-lg rounded-xl"
+      >
         <div className="px-2 py-1.5">
           <p className="text-sm font-medium">Konto</p>
           <p className="text-xs text-muted-foreground truncate max-w-[200px]">

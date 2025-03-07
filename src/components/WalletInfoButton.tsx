@@ -38,7 +38,10 @@ const WalletInfoButton = () => {
           <span className="sr-only">Wallet Info</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="rounded-xl border border-gray-100 shadow-lg dark:border-gray-800 bg-white/95 backdrop-blur-md dark:bg-gray-900/90">
+      <DropdownMenuContent 
+        align="end" 
+        className="z-[10002] rounded-xl border border-gray-100 shadow-lg dark:border-gray-800 bg-white/95 backdrop-blur-md dark:bg-gray-900/90"
+      >
         <div className="px-3 py-2">
           <p className="text-sm font-medium">Wallet Details</p>
           <p className="text-xs text-muted-foreground">{activeWallet?.name}</p>
