@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { fetchCryptoPrices, CryptoPrice } from '@/utils/cryptoPriceUtils';
-import { ChevronUp, ChevronDown } from 'lucide-react';
+import { TrendingUp, TrendingDown } from 'lucide-react';
 
 const LiveTicker = () => {
   const [cryptoData, setCryptoData] = useState<Record<string, CryptoPrice>>({});
@@ -98,7 +98,7 @@ const LiveTicker = () => {
   // If still loading, show a placeholder
   if (isLoading) {
     return (
-      <div className="bg-[#F1F0FB] dark:bg-gray-800 text-[#1A1F2C] dark:text-gray-200 py-1 overflow-hidden border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 dark:from-indigo-500/20 dark:to-purple-500/20 text-[#1A1F2C] dark:text-gray-200 py-2 overflow-hidden border-b border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm">
         <div className="flex items-center justify-center">
           <span className="text-xs animate-pulse">Loading crypto prices...</span>
         </div>
@@ -107,7 +107,7 @@ const LiveTicker = () => {
   }
   
   return (
-    <div className="bg-[#F1F0FB] dark:bg-gray-800 text-[#1A1F2C] dark:text-gray-200 py-1 overflow-hidden border-b border-gray-200 dark:border-gray-700 z-50 sticky top-0">
+    <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 dark:from-indigo-500/20 dark:to-purple-500/20 text-[#1A1F2C] dark:text-gray-200 py-2 overflow-hidden border-b border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm z-50 sticky top-0">
       <div 
         ref={tickerRef} 
         className="flex overflow-x-auto whitespace-nowrap ticker-scroll"
@@ -126,20 +126,26 @@ const LiveTicker = () => {
               key={`${symbol}-${index}`} 
               className="flex items-center mx-3 first:ml-2 last:mr-2 py-1"
             >
-              <span className="font-medium mr-1">{symbol}</span>
+              {crypto.image && (
+                <img 
+                  src={crypto.image} 
+                  alt={crypto.name || symbol} 
+                  className="w-5 h-5 mr-2 rounded-full"
+                />
+              )}
               <span 
-                className={`flex items-center text-xs ${
-                  isPositive ? 'text-[#0FA0CE]' : 'text-[#ea384c]'
+                className={`flex items-center text-xs font-medium ${
+                  isPositive ? 'text-emerald-500 dark:text-emerald-400' : 'text-rose-500 dark:text-rose-400'
                 }`}
               >
                 {isPositive ? (
-                  <ChevronUp className="w-3 h-3" />
+                  <TrendingUp className="w-3 h-3 mr-1" />
                 ) : (
-                  <ChevronDown className="w-3 h-3" />
+                  <TrendingDown className="w-3 h-3 mr-1" />
                 )}
                 {Math.abs(change).toFixed(2)}%
               </span>
-              <span className="ml-1 text-xs">${formatPrice(crypto.price)}</span>
+              <span className="ml-2 text-xs font-medium">${formatPrice(crypto.price)}</span>
             </div>
           );
         })}

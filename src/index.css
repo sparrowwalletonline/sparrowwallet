@@ -121,17 +121,20 @@
   display: none;
 }
 
-/* Ticker animations */
-@keyframes ticker {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
+/* Smooth scroll behavior for ticker */
 .ticker-scroll {
   -ms-overflow-style: none;  /* Internet Explorer and Edge */
   scrollbar-width: none;  /* Firefox */
+  scroll-behavior: smooth;
 }
+
+/* Add subtle shadow to ticker items for depth */
+.ticker-scroll > div {
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.ticker-scroll > div:hover {
+  transform: translateY(-1px);
+}
+
