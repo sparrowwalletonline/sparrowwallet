@@ -12,21 +12,25 @@ import CreateWalletButton from '@/components/CreateWalletButton';
 import FeaturesSection from '@/components/FeaturesSection';
 import SupportedAssetsSection from '@/components/SupportedAssetsSection';
 import { fetchCryptoPrices, CryptoPrice } from '@/utils/cryptoPriceUtils';
+
 interface Testimonial {
   name: string;
   title: string;
   image: string;
   text: string;
 }
+
 interface FAQItemProps {
   question: string;
   answer: string;
 }
+
 interface SupportedFeatureProps {
   icon: React.ReactNode;
   title: string;
   description: string;
 }
+
 const LandingPage = () => {
   const {
     generateWallet,
@@ -41,6 +45,7 @@ const LandingPage = () => {
   const [cryptoData, setCryptoData] = useState<Record<string, CryptoPrice>>({});
   const [backgroundCryptos, setBackgroundCryptos] = useState<CryptoPrice[]>([]);
   const navigate = useNavigate();
+
   useEffect(() => {
     const loadCryptoData = async () => {
       try {
@@ -53,12 +58,15 @@ const LandingPage = () => {
     };
     loadCryptoData();
   }, []);
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
+
   const handleMenuClick = () => {
     toggleMenu();
   };
+
   const handleRegisterClick = async () => {
     setIsLoading(true);
     try {
@@ -87,6 +95,7 @@ const LandingPage = () => {
       setIsLoading(false);
     }
   };
+
   const handleLoginClick = async () => {
     setIsLoading(true);
     try {
@@ -117,9 +126,11 @@ const LandingPage = () => {
       setIsLoading(false);
     }
   };
+
   const handleWalletAccess = () => {
     navigate('/wallet');
   };
+
   const FeatureCard = ({
     icon,
     title,
@@ -135,6 +146,7 @@ const LandingPage = () => {
         <p className="text-gray-600 text-sm dark:text-gray-400">{description}</p>
       </div>;
   };
+
   const SecurityCard = ({
     icon,
     title,
@@ -150,6 +162,7 @@ const LandingPage = () => {
         <p className="text-gray-600 text-sm text-center dark:text-gray-400">{description}</p>
       </div>;
   };
+
   const AssetCard = ({
     image,
     name,
@@ -181,6 +194,7 @@ const LandingPage = () => {
         </div>
       </div>;
   };
+
   const StepCard = ({
     number,
     title,
@@ -200,6 +214,7 @@ const LandingPage = () => {
         </div>
       </div>;
   };
+
   const TestimonialCard = ({
     name,
     title,
@@ -217,6 +232,7 @@ const LandingPage = () => {
         <p className="text-gray-600 dark:text-gray-400">{text}</p>
       </div>;
   };
+
   const FAQItem = ({
     question,
     answer
@@ -236,6 +252,7 @@ const LandingPage = () => {
         </div>
       </div>;
   };
+
   const SupportedFeature = ({
     icon,
     title,
@@ -251,6 +268,7 @@ const LandingPage = () => {
         </div>
       </div>;
   };
+
   const CryptoBackgroundIcon = ({
     image,
     index
@@ -278,6 +296,7 @@ const LandingPage = () => {
         </div>
       </div>;
   };
+
   console.log("Rendering LandingPage component");
   return <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
       <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm bg-white/70 dark:bg-black/20 sticky top-0 z-40">
@@ -381,6 +400,18 @@ const LandingPage = () => {
               <img src="/lovable-uploads/1b77eb0f-8d23-4584-b764-6202a16c8247.png" alt="Bitcoin Wallet App" className="w-full max-w-2xl mx-auto z-10 rounded-xl shadow-2xl shadow-blue-500/10" />
               <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-2xl h-20 bg-gradient-to-t from-white to-transparent"></div>
             </div>
+            
+            <div className="max-w-3xl mx-auto mt-10 px-6 py-8 bg-gray-50 rounded-xl shadow-sm text-sm leading-relaxed text-gray-700">
+              <p className="mb-4">
+                Sparrow ist einzigartig, da es einen vollwertigen Transaktionseditor enthält, der auch als Blockchain-Explorer fungiert. Diese Funktion ermöglicht nicht nur die Bearbeitung aller Felder einer Transaktion, sondern auch eine einfache Überprüfung der Transaktionsbytes vor der Übertragung. Sparrow enthält viele weitere Funktionen, die auf der Funktionsseite ausführlich beschrieben werden.
+              </p>
+              <p className="mb-4">
+                Sparrow legt großen Wert auf Privatsphäre und möchte eine Wallet sein, die Benutzer auf einer Reise zur Privatsphäre begleitet - von der Nutzung öffentlicher Server bis hin zu Cold-Storage-Techniken auf privaten Servern. Weitere Details finden Sie im Leitfaden für bewährte Praktiken.
+              </p>
+              <p>
+                Obwohl Sparrow eine Wallet für fortgeschrittene Benutzer ist, ist sie nicht schwer zu bedienen.
+              </p>
+            </div>
           </div>
         </section>
         
@@ -424,4 +455,6 @@ const LandingPage = () => {
       </div>
     </div>;
 };
-export default LandingPage;
+
+
+
