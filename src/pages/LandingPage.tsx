@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -69,10 +68,11 @@ const LandingPage = () => {
     toggleMenu();
   };
 
-  // Fix the register button navigation
-  const handleRegisterClick = () => {
-    // Simply navigate to register page without any API calls
-    navigate('/register');
+  const handleRegisterClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Navigating to register page from LandingPage");
+    navigate('/register', { replace: true });
   };
 
   const handleLoginClick = () => {

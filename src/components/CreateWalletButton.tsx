@@ -22,12 +22,14 @@ const CreateWalletButton = ({
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent any default form submission
+    e.stopPropagation(); // Stop event propagation
     
     if (session) {
       // If user is already logged in, go to wallet creation flow
       navigate('/generate-wallet');
     } else {
-      // If not logged in, go to register page first
+      // If not logged in, go to register page first - ensure direct navigation
+      console.log("Navigating to register page from CreateWalletButton");
       navigate('/register');
     }
   };
