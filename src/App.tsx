@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { Toaster } from "./components/ui/toaster";
@@ -87,7 +88,8 @@ function AppContent() {
     '/seed-phrase', 
     '/seed-phrase-validation', 
     '/register',
-    '/profile-settings'
+    '/profile-settings',
+    '/app-settings'
   ];
   
   const shouldHideHeader = hideHeaderRoutes.includes(location.pathname);
