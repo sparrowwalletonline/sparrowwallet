@@ -320,7 +320,7 @@ const LandingPage = () => {
       </header>
       
       <div className="flex-1 flex flex-col">
-        <section className="py-12 px-6 relative overflow-hidden bg-white text-black">
+        <section className="py-8 px-6 relative overflow-hidden bg-white text-black">
           <div className="absolute inset-0 bg-gradient-to-b from-white to-blue-50/30"></div>
           
           <div className="absolute inset-0 overflow-hidden z-0">
@@ -336,7 +336,7 @@ const LandingPage = () => {
           <div className="max-w-screen-xl mx-auto relative z-10">
             <div className="text-center mb-16">
               <div className="mb-8">
-                <p className="text-purple-600 font-medium text-2xl mb-6">Sparrow Wallet:</p>
+                <p className="text-purple-600 font-medium text-xl mb-6">Sparrow Wallet:</p>
                 <h2 className="font-roboto text-6xl md:text-7xl font-bold mb-0 text-center">
                   Deine
                 </h2>
