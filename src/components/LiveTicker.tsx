@@ -22,36 +22,24 @@ const LiveTicker = () => {
     return () => clearInterval(interval);
   }, []);
   
-  // Simple horizontal scrolling effect
+  // More reliable horizontal scrolling effect
   useEffect(() => {
     if (isLoading || !tickerRef.current) return;
     
     const ticker = tickerRef.current;
+    const isMobileSafari = /iPhone|iPod|iPad/.test(navigator.userAgent) && 
+                          /WebKit/.test(navigator.userAgent) &&
+                          !/(Chrome|Android)/.test(navigator.userAgent);
     
     const animateScroll = () => {
-      // For smoother scrolling on iOS
-      if ('ontouchstart' in window) {
-        // Manual scroll method for iOS
-        if (ticker && ticker.scrollWidth > ticker.clientWidth) {
-          setScrollPosition(prev => {
-            const newPos = prev + 1;
-            if (newPos >= ticker.scrollWidth / 2) {
-              return 0;
-            }
-            return newPos;
-          });
-        }
-      } else {
-        // Standard animation for desktop
-        if (ticker && ticker.scrollWidth > ticker.clientWidth) {
-          setScrollPosition(prev => {
-            const newPos = prev + 1;
-            if (newPos >= ticker.scrollWidth / 2) {
-              return 0;
-            }
-            return newPos;
-          });
-        }
+      if (ticker && ticker.scrollWidth > ticker.clientWidth) {
+        setScrollPosition(prev => {
+          const newPos = prev + (isMobileSafari ? 0.5 : 1); // Slower scroll for Safari
+          if (newPos >= ticker.scrollWidth / 2) {
+            return 0;
+          }
+          return newPos;
+        });
       }
     };
     
@@ -60,7 +48,7 @@ const LiveTicker = () => {
       ticker.scrollLeft = scrollPosition;
     }
     
-    const animation = setInterval(animateScroll, 30);
+    const animation = setInterval(animateScroll, isMobileSafari ? 40 : 30);
     
     return () => clearInterval(animation);
   }, [isLoading, scrollPosition]);
@@ -98,7 +86,7 @@ const LiveTicker = () => {
   // If still loading, show a placeholder
   if (isLoading) {
     return (
-      <div className="ticker-background text-[#1A1F2C] dark:text-gray-200 py-2 overflow-hidden border-b border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm">
+      <div className="bg-white/90 dark:bg-gray-900/90 text-[#1A1F2C] dark:text-gray-200 py-2 overflow-hidden border-b border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm">
         <div className="flex items-center justify-center">
           <span className="text-xs animate-pulse">Loading crypto prices...</span>
         </div>
@@ -107,7 +95,7 @@ const LiveTicker = () => {
   }
   
   return (
-    <div className="ticker-background text-[#1A1F2C] dark:text-gray-200 py-2 overflow-hidden border-b border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm z-50 sticky top-0">
+    <div className="bg-white/90 dark:bg-gray-900/90 text-[#1A1F2C] dark:text-gray-200 py-2 overflow-hidden border-b border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm z-50 sticky top-0">
       <div 
         ref={tickerRef} 
         className="flex overflow-x-auto whitespace-nowrap ticker-scroll"
