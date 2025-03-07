@@ -98,7 +98,7 @@ const LiveTicker = () => {
   // If still loading, show a placeholder
   if (isLoading) {
     return (
-      <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 dark:from-indigo-500/20 dark:to-purple-500/20 text-[#1A1F2C] dark:text-gray-200 py-2 overflow-hidden border-b border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm">
+      <div className="ticker-background text-[#1A1F2C] dark:text-gray-200 py-2 overflow-hidden border-b border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm">
         <div className="flex items-center justify-center">
           <span className="text-xs animate-pulse">Loading crypto prices...</span>
         </div>
@@ -107,7 +107,7 @@ const LiveTicker = () => {
   }
   
   return (
-    <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 dark:from-indigo-500/20 dark:to-purple-500/20 text-[#1A1F2C] dark:text-gray-200 py-2 overflow-hidden border-b border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm z-50 sticky top-0">
+    <div className="ticker-background text-[#1A1F2C] dark:text-gray-200 py-2 overflow-hidden border-b border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm z-50 sticky top-0">
       <div 
         ref={tickerRef} 
         className="flex overflow-x-auto whitespace-nowrap ticker-scroll"
