@@ -77,7 +77,11 @@ const LandingPage = () => {
   };
 
   const handleWalletAccess = () => {
-    navigate('/wallet');
+    if (hasWallet) {
+      navigate('/wallet');
+    } else {
+      navigate('/generate-wallet');
+    }
   };
 
   const FeatureCard = ({

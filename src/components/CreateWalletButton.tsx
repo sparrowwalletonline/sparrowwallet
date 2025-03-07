@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Wallet } from 'lucide-react';
@@ -113,6 +114,7 @@ const CreateWalletButton = () => {
         navigate('/generate-wallet');
       }
     } else {
+      // Always navigate to the registration page
       navigate('/register');
     }
   };
