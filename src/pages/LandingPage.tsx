@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -263,20 +264,23 @@ const LandingPage = () => {
       </header>
       
       <div className="flex-1 flex flex-col">
-        <section className="py-24 px-6 relative overflow-hidden bg-white text-gray-800">
+        <section className="py-24 px-6 relative overflow-hidden bg-white text-black">
           <div className="absolute inset-0 bg-gradient-to-b from-white to-blue-50/30"></div>
           
           <div className="max-w-screen-xl mx-auto relative z-10">
             <div className="text-center mb-16">
               <div className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                <h2 className="font-roboto text-6xl md:text-8xl font-bold mb-4 text-center">
-                  Sicher
+                <h2 className="font-roboto text-6xl md:text-8xl font-bold mb-0 text-center">
+                  Sicher.
                 </h2>
-                <p className="text-6xl md:text-6xl font-roboto font-bold mb-8">
-                  Einfach. Bitcoin für jeden.
+                <p className="font-roboto text-6xl md:text-6xl font-bold mt-0 mb-0">
+                  Einfach.
+                </p>
+                <p className="font-roboto text-6xl md:text-6xl font-bold mt-0 mb-8">
+                  Schnell.
                 </p>
               </div>
-              <p className="text-gray-600 max-w-2xl mx-auto bg-gradient-to-r from-blue-600/70 to-purple-600/70 bg-clip-text text-transparent font-medium">
+              <p className="text-black max-w-2xl mx-auto font-medium">
                 Sparrow ist eine Bitcoin-Wallet für alle, die finanziell selbstbestimmt sein wollen. 
                 Jetzt auch als sichere, vollständige Webanwendung verfügbar.
               </p>
@@ -289,7 +293,7 @@ const LandingPage = () => {
                     <Shield className="h-8 w-8 text-blue-600" />
                   </div>
                 </div>
-                <span className="mt-2 text-sm text-gray-700 font-medium">Sicher</span>
+                <span className="mt-2 text-sm text-black font-medium">Sicher</span>
               </div>
               
               <div className="flex flex-col items-center">
@@ -298,7 +302,7 @@ const LandingPage = () => {
                     <Key className="h-8 w-8 text-purple-600" />
                   </div>
                 </div>
-                <span className="mt-2 text-sm text-gray-700 font-medium">Privat</span>
+                <span className="mt-2 text-sm text-black font-medium">Privat</span>
               </div>
               
               <div className="flex flex-col items-center">
@@ -307,7 +311,7 @@ const LandingPage = () => {
                     <Zap className="h-8 w-8 text-green-600" />
                   </div>
                 </div>
-                <span className="mt-2 text-sm text-gray-700 font-medium">Schnell</span>
+                <span className="mt-2 text-sm text-black font-medium">Schnell</span>
               </div>
             </div>
             
@@ -363,7 +367,7 @@ const LandingPage = () => {
         
         <section className="bg-gray-50 py-12">
           <div className="max-w-screen-xl mx-auto px-6 text-center">
-            <h2 className="font-roboto text-4xl font-bold mb-8">Funktionen</h2>
+            <h2 className="font-roboto text-4xl font-bold mb-8 text-black">Funktionen</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
               <FeatureCard icon={<Shield className="w-6 h-6" />} title="Sicherheit" description="Schützen Sie Ihre Bitcoin mit modernster Verschlüsselung und Sicherheitsfunktionen." />
               <FeatureCard icon={<Key className="w-6 h-6" />} title="Privatsphäre" description="Behalten Sie die Kontrolle über Ihre Daten und Transaktionen." />
