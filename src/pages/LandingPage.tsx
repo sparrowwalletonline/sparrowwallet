@@ -354,12 +354,12 @@ const LandingPage = () => {
                 <Shield className="h-10 w-10 text-blue-600 dark:text-blue-400" />
               </div>
               <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6">
-                Security You Can Trust, 
-                <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"> Simplicity </span> 
-                You'll Love
+                Sicherheit der du vertrauen kannst, 
+                <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"> Einfachheit </span> 
+                die du lieben wirst
               </h2>
               <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-lg leading-relaxed">
-                Sparrow Wallet combines industry-leading security with an intuitive design, making it the perfect wallet for both beginners and advanced Bitcoin users.
+                Sparrow Wallet kombiniert branchenführende Sicherheit mit intuitivem Design und macht es zur perfekten Wallet für Anfänger und fortgeschrittene Bitcoin-Nutzer.
               </p>
             </div>
             
@@ -370,28 +370,28 @@ const LandingPage = () => {
                   <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-green-400/20 to-emerald-400/20 dark:from-green-500/20 dark:to-emerald-500/20 rounded-xl mb-5 group-hover:scale-110 transition-all duration-300">
                     <Shield className="h-7 w-7 text-green-600 dark:text-green-400" />
                   </div>
-                  <h3 className="font-heading text-xl font-bold mb-3 text-gray-800 dark:text-white">Uncompromising Security</h3>
+                  <h3 className="font-heading text-xl font-bold mb-3 text-gray-800 dark:text-white">Kompromisslose Sicherheit</h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    Your keys never leave your device. Full self-custody means you're always in control of your bitcoin with no third-party risk.
+                    Deine Schlüssel verlassen niemals dein Gerät. Volle Selbstverwahrung bedeutet, dass du immer die Kontrolle über deine Bitcoin hast, ohne Risiko durch Dritte.
                   </p>
                   <ul className="mt-5 space-y-3">
                     <li className="flex items-start">
                       <div className="flex-shrink-0 p-1 bg-green-100 dark:bg-green-900/30 rounded-full mr-3 mt-0.5">
                         <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
                       </div>
-                      <span className="text-gray-700 dark:text-gray-300 text-sm">Open-source and fully auditable code</span>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Open-Source und vollständig prüfbarer Code</span>
                     </li>
                     <li className="flex items-start">
                       <div className="flex-shrink-0 p-1 bg-green-100 dark:bg-green-900/30 rounded-full mr-3 mt-0.5">
                         <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
                       </div>
-                      <span className="text-gray-700 dark:text-gray-300 text-sm">Hardware wallet integration</span>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Hardware-Wallet Integration</span>
                     </li>
                     <li className="flex items-start">
                       <div className="flex-shrink-0 p-1 bg-green-100 dark:bg-green-900/30 rounded-full mr-3 mt-0.5">
                         <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
                       </div>
-                      <span className="text-gray-700 dark:text-gray-300 text-sm">Secure cryptographic protocols</span>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Sichere kryptographische Protokolle</span>
                     </li>
                   </ul>
                 </div>
@@ -403,28 +403,28 @@ const LandingPage = () => {
                   <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-blue-400/20 to-indigo-400/20 dark:from-blue-500/20 dark:to-indigo-500/20 rounded-xl mb-5 group-hover:scale-110 transition-all duration-300">
                     <UserPlus className="h-7 w-7 text-blue-600 dark:text-blue-400" />
                   </div>
-                  <h3 className="font-heading text-xl font-bold mb-3 text-gray-800 dark:text-white">Beginner Friendly</h3>
+                  <h3 className="font-heading text-xl font-bold mb-3 text-gray-800 dark:text-white">Anfängerfreundlich</h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    Intuitive interface with helpful guides and tooltips make Bitcoin accessible to everyone, regardless of technical expertise.
+                    Eine intuitive Benutzeroberfläche mit hilfreichen Anleitungen und Tooltips macht Bitcoin für jeden zugänglich, unabhängig von technischem Fachwissen.
                   </p>
                   <ul className="mt-5 space-y-3">
                     <li className="flex items-start">
                       <div className="flex-shrink-0 p-1 bg-blue-100 dark:bg-blue-900/30 rounded-full mr-3 mt-0.5">
                         <Check className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                       </div>
-                      <span className="text-gray-700 dark:text-gray-300 text-sm">Clean, intuitive design</span>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Klares, intuitives Design</span>
                     </li>
                     <li className="flex items-start">
                       <div className="flex-shrink-0 p-1 bg-blue-100 dark:bg-blue-900/30 rounded-full mr-3 mt-0.5">
                         <Check className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                       </div>
-                      <span className="text-gray-700 dark:text-gray-300 text-sm">Built-in tutorials and guides</span>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Integrierte Tutorials und Anleitungen</span>
                     </li>
                     <li className="flex items-start">
                       <div className="flex-shrink-0 p-1 bg-blue-100 dark:bg-blue-900/30 rounded-full mr-3 mt-0.5">
                         <Check className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                       </div>
-                      <span className="text-gray-700 dark:text-gray-300 text-sm">Simplified transaction process</span>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Vereinfachter Transaktionsprozess</span>
                     </li>
                   </ul>
                 </div>
@@ -436,28 +436,28 @@ const LandingPage = () => {
                   <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-purple-400/20 to-violet-400/20 dark:from-purple-500/20 dark:to-violet-500/20 rounded-xl mb-5 group-hover:scale-110 transition-all duration-300">
                     <Key className="h-7 w-7 text-purple-600 dark:text-purple-400" />
                   </div>
-                  <h3 className="font-heading text-xl font-bold mb-3 text-gray-800 dark:text-white">Complete Control</h3>
+                  <h3 className="font-heading text-xl font-bold mb-3 text-gray-800 dark:text-white">Vollständige Kontrolle</h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    Advanced features when you need them, with detailed transaction controls that grow with your experience.
+                    Erweiterte Funktionen, wenn du sie brauchst, mit detaillierten Transaktionskontrollen, die mit deiner Erfahrung wachsen.
                   </p>
                   <ul className="mt-5 space-y-3">
                     <li className="flex items-start">
                       <div className="flex-shrink-0 p-1 bg-purple-100 dark:bg-purple-900/30 rounded-full mr-3 mt-0.5">
                         <Check className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                       </div>
-                      <span className="text-gray-700 dark:text-gray-300 text-sm">Detailed UTXO management</span>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Detaillierte UTXO-Verwaltung</span>
                     </li>
                     <li className="flex items-start">
                       <div className="flex-shrink-0 p-1 bg-purple-100 dark:bg-purple-900/30 rounded-full mr-3 mt-0.5">
                         <Check className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                       </div>
-                      <span className="text-gray-700 dark:text-gray-300 text-sm">Custom fee settings</span>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Benutzerdefinierte Gebühreneinstellungen</span>
                     </li>
                     <li className="flex items-start">
                       <div className="flex-shrink-0 p-1 bg-purple-100 dark:bg-purple-900/30 rounded-full mr-3 mt-0.5">
                         <Check className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                       </div>
-                      <span className="text-gray-700 dark:text-gray-300 text-sm">Transaction labeling and history</span>
+                      <span className="text-gray-700 dark:text-gray-300 text-sm">Transaktionskennzeichnung und -verlauf</span>
                     </li>
                   </ul>
                 </div>
@@ -499,9 +499,9 @@ const LandingPage = () => {
             <div className="py-16 px-6">
               <div className="max-w-3xl mx-auto">
                 <div className="text-center mb-12">
-                  <h2 className="font-heading text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-wallet-blue to-indigo-600 bg-clip-text text-transparent">Bitcoin Everywhere</h2>
+                  <h2 className="font-heading text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-wallet-blue to-indigo-600 bg-clip-text text-transparent">Bitcoin Überall</h2>
                   <p className="text-gray-600 dark:text-gray-300 text-lg">
-                    Take control of your bitcoin with a powerful wallet built for both beginners and experts.
+                    Übernimm die Kontrolle über deine Bitcoin mit einer leistungsstarken Wallet für Anfänger und Experten.
                   </p>
                 </div>
                 
@@ -510,9 +510,9 @@ const LandingPage = () => {
                     <div className="w-12 h-12 mb-4 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-wallet-blue">
                       <Globe className="w-6 h-6" />
                     </div>
-                    <h3 className="font-semibold text-lg mb-2">Global Access</h3>
+                    <h3 className="font-semibold text-lg mb-2">Globaler Zugriff</h3>
                     <p className="text-gray-600 dark:text-gray-400 text-sm">
-                      Access your bitcoin from anywhere with our secure web interface
+                      Greife von überall auf deine Bitcoin zu mit unserer sicheren Weboberfläche
                     </p>
                   </div>
                   
@@ -520,9 +520,9 @@ const LandingPage = () => {
                     <div className="w-12 h-12 mb-4 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
                       <Lock className="w-6 h-6" />
                     </div>
-                    <h3 className="font-semibold text-lg mb-2">Self-Custody</h3>
+                    <h3 className="font-semibold text-lg mb-2">Selbstverwahrung</h3>
                     <p className="text-gray-600 dark:text-gray-400 text-sm">
-                      Stay in control with keys that never leave your device
+                      Behalte die Kontrolle mit Schlüsseln, die dein Gerät niemals verlassen
                     </p>
                   </div>
                   
@@ -530,9 +530,9 @@ const LandingPage = () => {
                     <div className="w-12 h-12 mb-4 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
                       <Zap className="w-6 h-6" />
                     </div>
-                    <h3 className="font-semibold text-lg mb-2">Full Control</h3>
+                    <h3 className="font-semibold text-lg mb-2">Volle Kontrolle</h3>
                     <p className="text-gray-600 dark:text-gray-400 text-sm">
-                      Manage your UTXOs with advanced coin selection features
+                      Verwalte deine UTXOs mit erweiterten Coin-Auswahlfunktionen
                     </p>
                   </div>
                 </div>
@@ -557,7 +557,7 @@ const LandingPage = () => {
                           Loading...
                         </>
                       ) : (
-                        <>Start Using Sparrow</>
+                        <>Sparrow Jetzt Nutzen</>
                       )}
                     </Button>
                   )}
@@ -570,19 +570,19 @@ const LandingPage = () => {
         <section className="py-20 px-6 bg-white dark:bg-wallet-card my-12 rounded-3xl mx-6">
           <div className="max-w-screen-xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="font-heading text-3xl font-bold mb-4">Privacy & Security Focus</h2>
+              <h2 className="font-heading text-3xl font-bold mb-4">Datenschutz & Sicherheit im Fokus</h2>
               <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Sparrow Wallet is designed with your privacy and security as the top priority.
+                Sparrow Wallet wurde mit Schwerpunkt auf deinen Datenschutz und deine Sicherheit entwickelt.
               </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <FeatureCard icon={<Shield className="h-6 w-6" />} title="Self-Custody" description="Sparrow gives you full control of your bitcoin. Your keys never leave your device." />
-              <FeatureCard icon={<Eye className="h-6 w-6" />} title="Privacy-focused" description="Connect to your own node for maximum privacy, or use public electrum servers." />
-              <FeatureCard icon={<Globe className="h-6 w-6" />} title="Open Source" description="All code is open source and available for review by the community." />
-              <FeatureCard icon={<Users className="h-6 w-6" />} title="Coin Control" description="Advanced coin selection allows you to maintain privacy with UTXO management." />
-              <FeatureCard icon={<Smartphone className="h-6 w-6" />} title="Hardware Support" description="Works with major hardware wallets for enhanced security." />
-              <FeatureCard icon={<Sparkles className="h-6 w-6" />} title="Online Access" description="Now available online with the same powerful features as the desktop app." />
+              <FeatureCard icon={<Shield className="h-6 w-6" />} title="Selbstverwahrung" description="Sparrow gibt dir die volle Kontrolle über deine Bitcoin. Deine Schlüssel verlassen niemals dein Gerät." />
+              <FeatureCard icon={<Eye className="h-6 w-6" />} title="Datenschutzorientiert" description="Verbinde dich mit deinem eigenen Node für maximalen Datenschutz oder nutze öffentliche Electrum-Server." />
+              <FeatureCard icon={<Globe className="h-6 w-6" />} title="Open Source" description="Der gesamte Code ist Open Source und kann von der Community überprüft werden." />
+              <FeatureCard icon={<Users className="h-6 w-6" />} title="Coin-Kontrolle" description="Erweiterte Coin-Auswahl ermöglicht dir, Privatsphäre mit UTXO-Management zu bewahren." />
+              <FeatureCard icon={<Smartphone className="h-6 w-6" />} title="Hardware-Support" description="Funktioniert mit den wichtigsten Hardware-Wallets für erhöhte Sicherheit." />
+              <FeatureCard icon={<Sparkles className="h-6 w-6" />} title="Online-Zugriff" description="Jetzt online verfügbar mit den gleichen leistungsstarken Funktionen wie die Desktop-App." />
             </div>
           </div>
         </section>
