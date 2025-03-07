@@ -13,7 +13,7 @@ const Terms: React.FC = () => {
         <button 
           onClick={() => navigate(-1)}
           className="text-white hover:text-gray-300 transition-colors"
-          aria-label="Back"
+          aria-label="Zurück"
         >
           <ArrowLeft size={24} />
         </button>
