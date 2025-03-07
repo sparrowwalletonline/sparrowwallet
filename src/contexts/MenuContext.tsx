@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useState, useCallback, useRef } from 'react';
+import React, { createContext, useContext, useState, useCallback, useRef, useEffect } from 'react';
 
 interface MenuContextType {
   isMenuOpen: boolean;
@@ -49,6 +49,11 @@ export const MenuProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setTimeout(() => {
       actionInProgress.current = false;
     }, 300);
+  }, [isMenuOpen]);
+
+  // Debug to trace state changes
+  useEffect(() => {
+    console.log('Menu state changed:', isMenuOpen);
   }, [isMenuOpen]);
 
   return (
