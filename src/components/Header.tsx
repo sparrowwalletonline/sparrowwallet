@@ -38,54 +38,56 @@ const Header = ({
   const BackButton = () => (
     <button 
       onClick={() => navigate(-1)} 
-      className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-50 hover:bg-gray-100 dark:bg-gray-800/50 dark:hover:bg-gray-800 transition-colors"
+      className="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white/90 backdrop-blur-sm dark:bg-gray-800/50 dark:hover:bg-gray-800/70 transition-all shadow-sm hover:shadow-md"
     >
-      <ArrowLeft className="w-5 h-5" />
+      <ArrowLeft className="w-5 h-5 text-gray-700 dark:text-gray-200" />
     </button>
   );
 
   return (
-    <header className={`flex items-center justify-between py-3 px-4 wallet-header z-[9999] bg-white/95 dark:bg-black/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 ${className}`}>
-      <div className="flex items-center gap-3">
-        {showBack && (
-          <BackButton />
-        )}
-        
-        {showMenuToggle && (
-          <button 
-            onClick={toggleMenu} 
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 hover:bg-gray-100 dark:bg-gray-800/50 dark:hover:bg-gray-800 transition-all"
-            aria-label="Toggle menu"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-        )}
-        
-        <div className="flex items-center gap-3 ml-1">
-          <WalletLogo useSparrowLogo={true} className="w-8 h-8" />
-          <h1 className="text-xl font-semibold tracking-tight bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent dark:from-gray-100 dark:to-gray-300">{title}</h1>
-        </div>
-      </div>
-      
-      <div className="flex items-center gap-3">
-        {showTutorial && (
-          <TutorialMenu />
-        )}
-        
-        {showWalletInfo && activeWallet && (
-          <div className="flex items-center">
-            <WalletInfoButton />
+    <div className="fixed top-0 left-0 right-0 z-[9999] px-4 py-3 flex justify-center">
+      <header className={`flex items-center justify-between py-2.5 px-4 rounded-2xl bg-white/85 dark:bg-black/70 backdrop-blur-md border border-gray-200/50 dark:border-gray-800/50 shadow-lg w-full max-w-5xl ${className}`}>
+        <div className="flex items-center gap-3">
+          {showBack && (
+            <BackButton />
+          )}
+          
+          {showMenuToggle && (
+            <button 
+              onClick={toggleMenu} 
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white/90 backdrop-blur-sm dark:bg-gray-800/50 dark:hover:bg-gray-800/70 transition-all shadow-sm hover:shadow-md"
+              aria-label="Toggle menu"
+            >
+              <Menu className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+            </button>
+          )}
+          
+          <div className="flex items-center gap-3 ml-1">
+            <WalletLogo useSparrowLogo={true} className="w-8 h-8" />
+            <h1 className="text-xl font-semibold tracking-tight bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent dark:from-gray-100 dark:to-gray-300">{title}</h1>
           </div>
-        )}
+        </div>
         
-        {showSettings && (
-          <ManageAssetsButton />
-        )}
-        
-        {showProfileButton && <ThemeToggle />}
-        {showProfileButton && <ProfileButton />}
-      </div>
-    </header>
+        <div className="flex items-center gap-2">
+          {showTutorial && (
+            <TutorialMenu />
+          )}
+          
+          {showWalletInfo && activeWallet && (
+            <div className="flex items-center">
+              <WalletInfoButton />
+            </div>
+          )}
+          
+          {showSettings && (
+            <ManageAssetsButton />
+          )}
+          
+          {showProfileButton && <ThemeToggle />}
+          {showProfileButton && <ProfileButton />}
+        </div>
+      </header>
+    </div>
   );
 }
 

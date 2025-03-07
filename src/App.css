@@ -581,3 +581,95 @@ button, a {
 .wallet-header button:hover {
   transform: translateY(-1px);
 }
+
+/* New modern floating header styles */
+.wallet-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999 !important;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  padding: 0 1rem;
+  transition: all 0.3s ease;
+}
+
+/* New modern floating header styles */
+.wallet-header h1 {
+  display: inline-block;
+  position: relative;
+  font-weight: 600;
+}
+
+.wallet-header button {
+  transition: all 0.2s ease;
+}
+
+.wallet-header button:hover {
+  transform: translateY(-2px);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+  .transition-effect {
+    transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1), opacity 600ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  button.trust-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    height: auto;
+    min-height: 38px;
+  }
+  
+  .step-number {
+    height: 1.75rem;
+    width: 1.75rem;
+    font-size: 0.75rem;
+  }
+  
+  .wallet-card {
+    padding: 1rem;
+    border-radius: 0.75rem;
+  }
+  
+  .feature-card {
+    padding: 1rem;
+  }
+  
+  /* Improved mobile button sizing */
+  .security-section button {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+    height: auto !important;
+    min-height: 36px !important;
+  }
+  
+  /* Make glassmorphism cards more compact on mobile */
+  .glass-morphism {
+    padding: 1rem !important;
+  }
+  
+  /* Reduce animation intensity on mobile for better performance */
+  .animate-float {
+    animation-duration: 4s;
+  }
+  
+  /* Adjustments specifically for wallet buttons */
+  .bg-white\/90 .flex-col button {
+    font-size: 0.875rem !important;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    min-height: 38px !important;
+  }
+  
+  /* Improved floating header on mobile */
+  .wallet-header {
+    padding: 0 0.5rem;
+  }
+  
+  .wallet-header h1 {
+    font-size: 1.25rem;
+  }
+}
