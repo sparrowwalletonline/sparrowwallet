@@ -10,11 +10,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { checkExistingWallet } from '@/utils/supabaseWalletUtils';
 
-// Add a global state to prevent modals from opening on this page
-if (typeof window !== 'undefined') {
-  window.disableAllModals = true;
-}
-
 const SeedPhrasePage: React.FC = () => {
   const { seedPhrase, cancelWalletCreation, session, saveToSupabase, saveWalletAddressToUserAccount, createWallet } = useWallet();
   const { toast } = useToast();
@@ -25,50 +20,30 @@ const SeedPhrasePage: React.FC = () => {
   const [isConfirming, setIsConfirming] = useState(false);
   const [hasShownToast, setHasShownToast] = useState(false);
   
-  // Set the disableAllModals flag when page mounts and clean up when unmounting
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.disableAllModals = true;
-    }
-    
-    return () => {
-      if (typeof window !== 'undefined') {
-        window.disableAllModals = false;
-      }
-    };
-  }, []);
-  
-  // Ensure wallet is created when page loads directly
-  useEffect(() => {
-    // If we don't have a seed phrase yet, create it
     if (!seedPhrase || seedPhrase.length < 12) {
       console.log("No seed phrase found, creating wallet");
       createWallet();
     }
   }, [seedPhrase, createWallet]);
   
-  // Pre-fill checkboxes if coming back from validation page
   useEffect(() => {
     if (seedPhrase && seedPhrase.length >= 12) {
       setSavedPhrase(true);
       setAgreedToTerms(true);
     }
   }, [seedPhrase]);
-
-  // Auto-save to Supabase if user is logged in - only show toast once
+  
   useEffect(() => {
     const autoSaveToCloud = async () => {
       if (session && seedPhrase && seedPhrase.length >= 12 && !autoSaved && !hasShownToast) {
         try {
-          // First save the seed phrase
           const savedSeedPhrase = await saveToSupabase();
           
           if (savedSeedPhrase) {
-            // Check if user already has a wallet
             const hasExistingWallet = await checkExistingWallet(session.user.id);
             
             if (!hasExistingWallet) {
-              // Only save wallet address if user doesn't already have one
               const savedWalletAddress = await saveWalletAddressToUserAccount();
               
               if (savedWalletAddress) {
@@ -100,7 +75,6 @@ const SeedPhrasePage: React.FC = () => {
   }, [session, seedPhrase, saveToSupabase, saveWalletAddressToUserAccount, autoSaved, toast, hasShownToast]);
   
   const handleConfirm = async () => {
-    // CRITICAL FIX: First check localStorage if context doesn't have the seed phrase
     let phraseToUse = seedPhrase;
     
     if (!phraseToUse || phraseToUse.length < 12) {
@@ -135,10 +109,8 @@ const SeedPhrasePage: React.FC = () => {
       setIsConfirming(true);
       
       try {
-        // Store the seedPhrase in localStorage as a fallback
         localStorage.setItem('walletSeedPhrase', JSON.stringify(phraseToUse));
         
-        // Save to Supabase if user is logged in
         let allSuccess = true;
         
         if (session) {
@@ -150,7 +122,6 @@ const SeedPhrasePage: React.FC = () => {
             throw new Error("Fehler beim Speichern der Seed Phrase");
           }
           
-          // Check if user already has a wallet before trying to save a new one
           const hasExistingWallet = await checkExistingWallet(session.user.id);
           
           if (!hasExistingWallet) {
@@ -162,7 +133,6 @@ const SeedPhrasePage: React.FC = () => {
         }
         
         if (allSuccess) {
-          // Add a delay to improve the UX
           setTimeout(() => {
             console.log("Navigating to validation page with seedPhrase length:", phraseToUse.length);
             navigate('/seed-phrase-validation');
@@ -190,11 +160,6 @@ const SeedPhrasePage: React.FC = () => {
   };
   
   const handleBackClick = () => {
-    // Reset the modal disabling flag before navigating away
-    if (typeof window !== 'undefined') {
-      window.disableAllModals = false;
-    }
-    
     cancelWalletCreation();
     navigate('/passphrase');
   };

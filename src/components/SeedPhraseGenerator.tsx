@@ -203,15 +203,6 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
   };
 
   const handleSaveToSupabase = async () => {
-    if (typeof window !== 'undefined' && window.disableAllModals) {
-      toast({
-        title: "Aktion gesperrt",
-        description: "Diese Funktion ist auf dieser Seite vorübergehend deaktiviert.",
-        duration: 3000,
-      });
-      return;
-    }
-    
     if (!session) {
       toast({
         title: "Nicht eingeloggt",
@@ -256,15 +247,6 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
   };
 
   const handleLoadFromSupabase = async () => {
-    if (typeof window !== 'undefined' && window.disableAllModals) {
-      toast({
-        title: "Aktion gesperrt",
-        description: "Diese Funktion ist auf dieser Seite vorübergehend deaktiviert.",
-        duration: 3000,
-      });
-      return;
-    }
-    
     if (!session) {
       toast({
         title: "Nicht eingeloggt",
