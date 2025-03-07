@@ -338,11 +338,17 @@ const LandingPage = () => {
               <div className="mb-8">
                 <p className="text-purple-600 font-medium text-2xl mb-6">Sparrow Wallet:</p>
                 <h2 className="font-roboto text-6xl md:text-7xl font-bold mb-0 text-center">
-                  Deine sichere Festung
+                  Deine
                 </h2>
-                <p className="font-roboto text-6xl md:text-7xl font-bold mt-2">
-                  für Kryptowährungen
-                </p>
+                <h2 className="font-roboto text-6xl md:text-7xl font-bold mb-0 text-center">
+                  sichere
+                </h2>
+                <h2 className="font-roboto text-6xl md:text-7xl font-bold mb-0 text-center">
+                  Krypto
+                </h2>
+                <h2 className="font-roboto text-6xl md:text-7xl font-bold mb-0 text-center">
+                  Festung
+                </h2>
               </div>
               <p className="text-black max-w-2xl mx-auto font-medium">
                 Sparrow ist eine Bitcoin-Wallet für alle, die finanziell selbstbestimmt sein wollen. 
