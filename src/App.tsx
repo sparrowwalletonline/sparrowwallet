@@ -68,10 +68,7 @@ function App() {
           <Router>
             <TutorialProvider>
               <SideMenu />
-              <Header 
-                showMenuToggle={true}
-                showProfileButton={true}
-              />
+              {/* The Header component will not be shown on Wallet page */}
               <Routes>
                 <Route path="/" element={
                   <PageTransition>
@@ -220,6 +217,10 @@ function App() {
                   </PageTransition>
                 } />
               </Routes>
+              <Header 
+                showMenuToggle={true}
+                showProfileButton={true}
+              />
               <TutorialPopover />
               <TutorialOverlay />
             </TutorialProvider>

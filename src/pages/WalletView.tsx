@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { WalletProvider, useWallet } from '@/contexts/WalletContext';
-import { MenuProvider } from '@/contexts/MenuContext';
-import Header from '@/components/Header';
+import { MenuProvider, useMenu } from '@/contexts/MenuContext';
 import WalletBalance from '@/components/WalletBalance';
 import ManageCryptoDialog from '@/components/ManageCryptoDialog';
 import ManageWalletsDialog from '@/components/ManageWalletsDialog';
@@ -17,7 +16,8 @@ import {
   Check, 
   Bus, 
   PlusSquare, 
-  Clock 
+  Clock,
+  Menu
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -29,6 +29,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import ProfileButton from '@/components/ProfileButton';
+import ThemeToggle from '@/components/ThemeToggle';
+import WalletLogo from '@/components/WalletLogo';
 import { 
   Card, 
   CardContent, 
@@ -79,6 +82,7 @@ const WalletViewContent: React.FC = () => {
   const [isManageWalletsOpen, setIsManageWalletsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isRefreshingBalance, setIsRefreshingBalance] = useState(false);
+  const { toggleMenu } = useMenu();
 
   React.useEffect(() => {
     if (!hasWallet) {
@@ -247,7 +251,25 @@ const WalletViewContent: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <Header />
+      <div className="fixed top-0 left-0 right-0 z-[9999] px-4 py-3 pb-6 flex justify-center">
+        <div className="flex items-center justify-between py-2.5 px-4 rounded-2xl bg-white/85 dark:bg-black/70 backdrop-blur-md border border-gray-200/50 dark:border-gray-800/50 shadow-lg w-full max-w-5xl">
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => toggleMenu()} 
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white/90 backdrop-blur-sm dark:bg-gray-800/50 dark:hover:bg-gray-800/70 transition-all shadow-sm hover:shadow-md"
+              aria-label="Toggle menu"
+            >
+              <Menu className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+            </button>
+          </div>
+          
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <ProfileButton />
+            <WalletLogo useSparrowLogo={true} className="w-8 h-8 ml-2" />
+          </div>
+        </div>
+      </div>
       
       <div className="pt-24 px-0">
         <div className="flex items-center justify-between pl-4 pr-4">
