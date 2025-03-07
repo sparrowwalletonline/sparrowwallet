@@ -11,6 +11,7 @@ import WalletLogo from '@/components/WalletLogo';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { motion } from 'framer-motion';
+
 const Register: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -161,6 +162,15 @@ const Register: React.FC = () => {
   const handleLoginClick = () => {
     navigate('/auth');
   };
+    const handleBackClick = () => {
+    if (!email && !password && !confirmPassword) {
+      // If form is empty, navigate to landing page
+      navigate('/');
+    } else {
+      // Otherwise navigate to previous page
+      navigate(-1);
+    }
+  };
   const containerVariants = {
     hidden: {
       opacity: 0
@@ -193,7 +203,7 @@ const Register: React.FC = () => {
       
       <div className="flex-1 flex flex-col items-center justify-center p-4">
         <motion.div className="w-full max-w-md space-y-8" initial="hidden" animate="visible" variants={containerVariants}>
-          <motion.div variants={itemVariants} className="text-center relative pt-[83px] ">
+          <motion.div variants={itemVariants} className="text-center relative pt-84">
             <motion.div className="mb-6 mx-auto" whileHover={{
             scale: 1.05
           }} transition={{
