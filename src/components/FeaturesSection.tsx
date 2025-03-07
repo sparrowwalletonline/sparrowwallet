@@ -28,7 +28,7 @@ const FeatureCard = ({ icon, title, description, className = "" }: FeatureCardPr
           {icon}
         </div>
         <div>
-          <h3 className="font-playfair font-semibold text-lg mb-2">{title}</h3>
+          <h3 className="font-roboto font-semibold text-lg mb-2">{title}</h3>
           <p className="text-gray-600 dark:text-gray-400 text-sm">{description}</p>
         </div>
       </div>
@@ -43,12 +43,12 @@ const FeaturesSection = () => {
       
       <div className="max-w-screen-xl mx-auto relative z-10">
         <div className="text-center mb-16">
-          <h2 className="font-playfair text-4xl font-bold mb-4">
+          <h2 className="font-roboto text-4xl font-bold mb-4">
             <span className="bg-gradient-to-r from-wallet-blue to-indigo-600 bg-clip-text text-transparent">
               Leistungsstarke Funktionen
             </span>
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg font-roboto">
             Fortschrittliche Tools für Anfänger und Experten mit Fokus auf Sicherheit, Privatsphäre und Kontrolle
           </p>
         </div>
