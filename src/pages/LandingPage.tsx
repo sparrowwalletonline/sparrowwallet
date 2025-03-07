@@ -45,7 +45,7 @@ const LandingPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [cryptoData, setCryptoData] = useState<Record<string, CryptoPrice>>({});
   const [backgroundCryptos, setBackgroundCryptos] = useState<CryptoPrice[]>([]);
-  const [navigate] = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadCryptoData = async () => {
