@@ -45,7 +45,7 @@ const Header = ({
   const positionClass = isFixed ? "fixed top-0 left-0 right-0" : "relative";
 
   return (
-    <header className={`flex items-center justify-between py-3 px-4 ${positionClass} ${className} wallet-header z-50 bg-white/95 dark:bg-black/90 backdrop-blur-md shadow-md border-b border-gray-100 dark:border-gray-800`}>
+    <header className={`flex items-center justify-between py-3 px-4 ${positionClass} ${className} wallet-header z-[9999] bg-white/95 dark:bg-black/90 backdrop-blur-md shadow-xl border-b border-gray-100 dark:border-gray-800`}>
       <div className="flex items-center gap-2">
         {showBack && (
           <BackButton />

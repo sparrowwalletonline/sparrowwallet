@@ -12,6 +12,7 @@ import CreateWalletButton from '@/components/CreateWalletButton';
 import FeaturesSection from '@/components/FeaturesSection';
 import SupportedAssetsSection from '@/components/SupportedAssetsSection';
 import { fetchCryptoPrices, CryptoPrice } from '@/utils/cryptoPriceUtils';
+import Header from '@/components/Header';
 
 interface Testimonial {
   name: string;
@@ -299,16 +300,7 @@ const LandingPage = () => {
 
   console.log("Rendering LandingPage component");
   return <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
-      <header className="w-full p-6 flex justify-between items-center backdrop-blur-md bg-white/95 dark:bg-black/90 fixed top-0 left-0 right-0 z-50 shadow-lg border-b border-gray-100 dark:border-gray-800">
-        <div className="flex items-center gap-2">
-          <WalletLogo className="w-7 h-7" useSparrowLogo={true} color="sparrow" animate={true} />
-        </div>
-        <div className="flex items-center gap-2">
-          <button onClick={handleMenuClick} className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" aria-label="Open menu">
-            <Menu className="w-5 h-5 cursor-pointer" />
-          </button>
-        </div>
-      </header>
+      <Header title="Sparrow" showMenuToggle={true} isFixed={true} />
       
       <div className="flex-1 flex flex-col pt-24">
         <section className="py-8 px-6 relative overflow-hidden bg-white text-black">
@@ -451,3 +443,4 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+

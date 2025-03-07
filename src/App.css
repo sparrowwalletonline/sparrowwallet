@@ -208,6 +208,20 @@ button:hover {
   transform: translateY(-2px);
 }
 
+/* Enhanced header visibility for scrolling */
+.wallet-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999 !important; /* Ensures it's always at the top layer */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  will-change: transform;
+  transition: transform 0.3s ease;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
 /* Mobile sidebar animation - UPDATED for smoother transitions */
 .sidebar-enter {
   transform: translateX(100%);
