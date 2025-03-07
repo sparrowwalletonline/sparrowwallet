@@ -55,13 +55,11 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
   const [isLoading, setIsLoading] = useState(false);
   const [localSeedPhrase, setLocalSeedPhrase] = useState<string[]>([]);
   
-  // Generate seed phrase using our custom implementation
   const generateSeedPhrase = () => {
     try {
       setIsGenerating(true);
       console.log("Generating seed phrase locally in SeedPhraseGenerator");
       
-      // Generate 12 random words from the wordlist
       const words: string[] = [];
       for (let i = 0; i < 12; i++) {
         const randomIndex = Math.floor(Math.random() * wordlist.length);
@@ -70,20 +68,16 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
       
       console.log("Generated word list (12 words):", words);
       
-      // Add a small delay to show loading state
       setTimeout(() => {
         setLocalSeedPhrase(words);
         
-        // CRITICAL FIX: Update the wallet context with the new seed phrase
         importWallet(words);
         console.log("Updated wallet context with new seed phrase");
         
-        // Notify parent component about the seed phrase change
         if (onSeedPhraseChange) {
           onSeedPhraseChange(words);
         }
         
-        // Save to localStorage as a fallback
         localStorage.setItem('walletSeedPhrase', JSON.stringify(words));
         
         setIsGenerating(false);
@@ -99,14 +93,11 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
       console.error("Error generating local seed phrase:", error);
       setIsGenerating(false);
       
-      // Fallback to hardcoded phrase on error
       const fallbackPhrase = ["ability", "dinner", "canvas", "trash", "paper", "volcano", "energy", "horse", "author", "basket", "melody", "vintage"];
       setLocalSeedPhrase(fallbackPhrase);
       
-      // Save the fallback phrase to the wallet context
       importWallet(fallbackPhrase);
       
-      // Notify parent component about the seed phrase change
       if (onSeedPhraseChange) {
         onSeedPhraseChange(fallbackPhrase);
       }
@@ -119,21 +110,17 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
     }
   };
   
-  // Initialize seed phrase on component mount - check if we already have one in context
   useEffect(() => {
     console.log("SeedPhraseGenerator mounted, checking for existing seed phrase");
     
-    // CRITICAL FIX: Only set localSeedPhrase from context if it exists, but don't auto-generate
     if (seedPhrase && seedPhrase.length >= 12) {
       console.log("Using existing seed phrase from context:", seedPhrase);
       setLocalSeedPhrase(seedPhrase);
       
-      // Notify parent component about the seed phrase
       if (onSeedPhraseChange) {
         onSeedPhraseChange(seedPhrase);
       }
     } else {
-      // Check localStorage as fallback
       const savedPhrase = localStorage.getItem('walletSeedPhrase');
       if (savedPhrase) {
         try {
@@ -142,24 +129,19 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
             console.log("Using seed phrase from localStorage");
             setLocalSeedPhrase(parsedPhrase);
             
-            // Update the wallet context
             importWallet(parsedPhrase);
             
-            // Notify parent component about the seed phrase
             if (onSeedPhraseChange) {
               onSeedPhraseChange(parsedPhrase);
             }
           } else {
-            // Generate a new seed phrase if the parsed phrase is invalid
             generateSeedPhrase();
           }
         } catch (error) {
           console.error("Error parsing seed phrase from localStorage:", error);
-          // Generate a new seed phrase on error
           generateSeedPhrase();
         }
       } else {
-        // Generate a new seed phrase if none exists
         generateSeedPhrase();
       }
     }
@@ -171,7 +153,6 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
         const phraseText = localSeedPhrase.join(' ');
         console.log("Copying to clipboard:", phraseText);
         
-        // Direct clipboard API to ensure copying works
         navigator.clipboard.writeText(phraseText)
           .then(() => {
             console.log("Successfully copied to clipboard using navigator API");
@@ -186,7 +167,6 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
           })
           .catch(err => {
             console.error("Navigator clipboard API failed:", err);
-            // Fallback to the context method
             copyToClipboard(phraseText);
           });
       } catch (error) {
@@ -213,6 +193,15 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
   };
 
   const handleSaveToSupabase = async () => {
+    if (typeof window !== 'undefined' && window.disableAllModals) {
+      toast({
+        title: "Aktion gesperrt",
+        description: "Diese Funktion ist auf dieser Seite vorübergehend deaktiviert.",
+        duration: 3000,
+      });
+      return;
+    }
+    
     if (!session) {
       toast({
         title: "Nicht eingeloggt",
@@ -233,8 +222,6 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
 
     setIsSaving(true);
     try {
-      // CRITICAL FIX: Ensure we're using the correct seed phrase for saving
-      // First update the wallet context if needed
       if (JSON.stringify(seedPhrase) !== JSON.stringify(localSeedPhrase)) {
         importWallet(localSeedPhrase);
       }
@@ -259,6 +246,15 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
   };
 
   const handleLoadFromSupabase = async () => {
+    if (typeof window !== 'undefined' && window.disableAllModals) {
+      toast({
+        title: "Aktion gesperrt",
+        description: "Diese Funktion ist auf dieser Seite vorübergehend deaktiviert.",
+        duration: 3000,
+      });
+      return;
+    }
+    
     if (!session) {
       toast({
         title: "Nicht eingeloggt",
@@ -272,10 +268,8 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
     try {
       const success = await loadFromSupabase();
       if (success) {
-        // Update local state with the loaded seed phrase
         setLocalSeedPhrase(seedPhrase);
         
-        // Notify parent component about the seed phrase change
         if (onSeedPhraseChange) {
           onSeedPhraseChange(seedPhrase);
         }
@@ -289,7 +283,6 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
     console.log("SeedPhraseGenerator rendered with local seedPhrase:", 
       localSeedPhrase ? localSeedPhrase.join(' ') : 'undefined');
       
-    // Ensure parent component is notified about any changes to localSeedPhrase
     if (localSeedPhrase && localSeedPhrase.length >= 12 && onSeedPhraseChange) {
       onSeedPhraseChange(localSeedPhrase);
     }

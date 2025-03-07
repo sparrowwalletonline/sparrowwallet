@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Shield, Check, ArrowLeft } from 'lucide-react';
@@ -11,6 +10,11 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { checkExistingWallet } from '@/utils/supabaseWalletUtils';
 
+// Add a global state to prevent modals from opening on this page
+if (typeof window !== 'undefined') {
+  window.disableAllModals = true;
+}
+
 const SeedPhrasePage: React.FC = () => {
   const { seedPhrase, cancelWalletCreation, session, saveToSupabase, saveWalletAddressToUserAccount, createWallet } = useWallet();
   const { toast } = useToast();
@@ -19,6 +23,19 @@ const SeedPhrasePage: React.FC = () => {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [autoSaved, setAutoSaved] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
+  
+  // Set the disableAllModals flag when page mounts and clean up when unmounting
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.disableAllModals = true;
+    }
+    
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.disableAllModals = false;
+      }
+    };
+  }, []);
   
   // Ensure wallet is created when page loads directly
   useEffect(() => {
@@ -170,6 +187,11 @@ const SeedPhrasePage: React.FC = () => {
   };
   
   const handleBackClick = () => {
+    // Reset the modal disabling flag before navigating away
+    if (typeof window !== 'undefined') {
+      window.disableAllModals = false;
+    }
+    
     cancelWalletCreation();
     navigate('/passphrase');
   };
