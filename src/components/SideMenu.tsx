@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { useMenu } from '@/contexts/MenuContext';
 import { Button } from '@/components/ui/button';
@@ -102,23 +103,21 @@ const SideMenu: React.FC = () => {
   const menuVariants = {
     closed: { 
       x: "100%", 
-      opacity: 0,
+      opacity: 1, // Changed from 0 to 1 to prevent flicker
       transition: { 
-        type: "spring", 
-        stiffness: 300, 
-        damping: 30,
-        duration: 0.35 
+        type: "tween", // Changed from "spring" to "tween"
+        duration: 0.25,
+        ease: [0.33, 1, 0.68, 1] // Smoother easing
       }
     },
     open: { 
       x: 0, 
       opacity: 1,
       transition: { 
-        type: "spring", 
-        stiffness: 300, 
-        damping: 30,
-        duration: 0.35,
-        staggerChildren: 0.05,
+        type: "tween", // Changed from "spring" to "tween"
+        duration: 0.25,
+        ease: [0.33, 1, 0.68, 1], // Smoother easing
+        staggerChildren: 0.03,
         delayChildren: 0.1
       }
     }
@@ -126,29 +125,39 @@ const SideMenu: React.FC = () => {
 
   const itemVariants = {
     closed: { 
-      x: 20, 
+      x: 10, // Reduced from 20 to 10
       opacity: 0 
     },
     open: { 
       x: 0, 
       opacity: 1,
       transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 30
+        type: "tween", // Changed from "spring" to "tween"
+        duration: 0.2
       }
     }
   };
 
+  const overlayVariants = {
+    closed: { 
+      opacity: 0,
+      transition: { duration: 0.2 }
+    },
+    open: { 
+      opacity: 1,
+      transition: { duration: 0.2 }
+    }
+  };
+
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isMenuOpen && (
         <>
           <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={overlayVariants}
             className="fixed inset-0 z-50 overlay-bg bg-black bg-opacity-50 backdrop-blur-sm menu-overlay"
             onClick={closeMenu}
           />
@@ -168,8 +177,8 @@ const SideMenu: React.FC = () => {
                   <motion.button 
                     onClick={closeMenu} 
                     className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.05 }} // Reduced from 1.1
+                    whileTap={{ scale: 0.97 }} // Changed from 0.95
                   >
                     <X className="w-6 h-6" />
                   </motion.button>

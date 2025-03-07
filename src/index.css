@@ -41,6 +41,7 @@
     -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape on iOS */
     touch-action: manipulation; /* Prevent double-tap to zoom on iOS */
     height: 100%;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
   }
 
   body {
@@ -54,9 +55,12 @@
     overflow-x: hidden; /* Prevent horizontal scrolling */
     width: 100%;
     position: relative;
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    -webkit-font-smoothing: antialiased;
   }
   
-  /* Safari mobile viewport height fix */
   @supports (-webkit-touch-callout: none) {
     body, .min-h-screen {
       min-height: -webkit-fill-available;
@@ -67,7 +71,6 @@
     }
   }
 
-  /* Improve form elements on mobile */
   input, select, textarea, button {
     font-size: 16px; /* Prevents iOS zooming on input focus */
     -webkit-appearance: none;
@@ -75,7 +78,6 @@
     border-radius: 0; /* Removes iOS default styling */
   }
 
-  /* Better touch targets for mobile */
   button, a, [role="button"] {
     cursor: pointer;
     touch-action: manipulation;
@@ -85,26 +87,26 @@
     touch-action: manipulation;
   }
   
-  /* Fix iOS Safari 100vh issue */
   .min-h-screen {
     height: 100vh; /* Fallback */
     height: calc(var(--vh, 1vh) * 100);
   }
 }
 
-/* Page transition animations */
 .page-enter {
-  animation: page-enter 0.5s ease forwards;
+  animation: page-enter 0.25s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  will-change: transform, opacity;
 }
 
 .page-exit {
-  animation: page-exit 0.3s ease forwards;
+  animation: page-exit 0.15s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  will-change: transform, opacity;
 }
 
 @keyframes page-enter {
   from {
     opacity: 0;
-    transform: translateY(10px) scale(0.98);
+    transform: translateY(6px) scale(0.99);
   }
   to {
     opacity: 1;
@@ -119,23 +121,24 @@
   }
   to {
     opacity: 0;
-    transform: translateY(-10px) scale(0.98);
+    transform: translateY(-6px) scale(0.99);
   }
 }
 
-/* New page transitions for the PageTransition component */
 .page-transition-fadeIn {
-  animation: fadeIn 0.4s ease forwards;
+  animation: fadeIn 0.25s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  will-change: transform, opacity;
 }
 
 .page-transition-fadeOut {
-  animation: fadeOut 0.3s ease forwards;
+  animation: fadeOut 0.15s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  will-change: transform, opacity;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -150,16 +153,27 @@
   }
   to {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-6px);
   }
 }
 
-/* Light theme-specific styles for components */
+.menu-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  will-change: opacity;
+  transition: all 250ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.menu-content {
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+  will-change: transform, opacity;
+  transition: all 250ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
 .personal-data-form {
   @apply bg-white text-gray-800 border-gray-200;
 }
 
-/* Theme-specific styling overrides to ensure light mode */
 .wallet-card {
   background: #FFFFFF;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -202,7 +216,6 @@
   }
 }
 
-/* Make wallet-balance-wrapper transparent in light theme */
 .wallet-balance-wrapper {
   @apply bg-transparent text-card-foreground;
 }
@@ -211,12 +224,10 @@
   @apply bg-gray-100 text-gray-700;
 }
 
-/* Dialog content theme-specific styles */
 .dialog-content {
   @apply bg-white border-gray-200 text-gray-800;
 }
 
-/* Add theme-specific styling for tabs */
 [data-state="active"].tabs-trigger {
   @apply bg-white text-gray-800;
 }
@@ -233,15 +244,12 @@
   }
 }
 
-/* Fix for visibility issues */
 .landing-page-content * {
   opacity: 1;
   visibility: visible;
 }
 
-/* Additional iOS fixes */
 @media screen and (max-width: 844px) {
-  /* iPhone-specific adjustments */
   .container {
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
