@@ -1,4 +1,4 @@
-<lov-code>
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -533,4 +533,4 @@ const LandingPage = () => {
   );
 };
 
-export default Landing
+export default LandingPage;
