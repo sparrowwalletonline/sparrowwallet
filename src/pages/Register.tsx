@@ -7,7 +7,6 @@ import { toast } from '@/hooks/use-toast';
 import { Mail, Lock, Eye, EyeOff, ArrowLeft, Check, Shield, Sparkles } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import Header from '@/components/Header';
-import WalletLogo from '@/components/WalletLogo';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { motion } from 'framer-motion';
@@ -209,17 +208,6 @@ const Register: React.FC = () => {
             className="text-center relative"
             variants={itemVariants}
           >
-            <motion.div 
-              className="mb-6 mx-auto"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              <WalletLogo 
-                useSparrowLogo={true} 
-                color="sparrow" 
-                className="w-20 h-20 mx-auto drop-shadow-md" 
-              />
-            </motion.div>
             <motion.h1 
               className="text-3xl font-bold font-heading bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-1"
               variants={itemVariants}
