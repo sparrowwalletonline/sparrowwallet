@@ -1,4 +1,4 @@
-
+<lov-code>
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -253,105 +253,101 @@ const LandingPage = () => {
       </header>
       
       <div className="flex-1 flex flex-col">
-        <section className="relative px-6 sm:py-28 overflow-hidden py-[40px]">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute inset-0 bg-blue-50 dark:bg-blue-900/10" />
-            <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white dark:from-wallet-darkBg to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white dark:from-wallet-darkBg to-transparent" />
-            <div className="absolute opacity-30 -top-24 -right-24 w-96 h-96 rounded-full bg-blue-200 dark:bg-blue-800/20 blur-3xl" />
-            <div className="absolute opacity-30 -bottom-24 -left-24 w-96 h-96 rounded-full bg-purple-200 dark:bg-purple-800/20 blur-3xl" />
-          </div>
+        {/* Updated Hero Section - styled like the supported assets section */}
+        <section className="py-24 px-6 relative overflow-hidden bg-[#1A1F2C] text-white">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1A1F2C] to-[#221F26]/90"></div>
           
-          <div className="max-w-screen-xl mx-auto">
-            <div className="flex flex-col lg:flex-row items-center gap-10">
-              <div className="space-y-8 lg:w-1/2 mx-auto text-center lg:text-left">
-                <div className="flex flex-col items-center lg:items-start gap-4 mb-4">
-                  <div className="w-32 h-32 mb-4 bg-white/5 rounded-lg p-2 flex items-center justify-center">
-                    <WalletLogo className="w-full h-full" useSparrowLogo={true} color="sparrow" animate={true} />
-                  </div>
-                  <h1 className="font-roboto tracking-tight text-gray-900 dark:text-white leading-[1.1] font-bold text-4xl md:text-5xl lg:text-6xl max-w-xl z-10 relative">
-                    Sicher. Einfach.
-                    <span className="text-wallet-blue"> Bitcoin </span>
-                    für jeden.
-                  </h1>
-                </div>
-                
-                <p className="font-sans text-gray-600 dark:text-gray-300 text-lg max-w-lg z-10 relative mx-auto lg:mx-0">
-                  Sparrow ist eine Bitcoin-Wallet für alle, die finanziell selbstbestimmt sein wollen. 
-                  Jetzt auch als sichere, vollständige Webanwendung verfügbar.
-                </p>
-                
-                <div className="flex flex-col space-y-3 pt-2 z-10 relative mx-auto lg:mx-0">
-                  <div className="flex items-center gap-2 justify-center lg:justify-start">
-                    <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
-                      <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
-                    </div>
-                    <span className="text-gray-700 dark:text-gray-300">Datenschutzorientiert und Open Source</span>
-                  </div>
-                  <div className="flex items-center gap-2 justify-center lg:justify-start">
-                    <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
-                      <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
-                    </div>
-                    <span className="text-gray-700 dark:text-gray-300">Vollständige Transaktionskontrolle mit Coin-Auswahl</span>
-                  </div>
-                  <div className="flex items-center gap-2 justify-center lg:justify-start">
-                    <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
-                      <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
-                    </div>
-                    <span className="text-gray-700 dark:text-gray-300">Selbstverwahrend & sicher</span>
+          <div className="max-w-screen-xl mx-auto relative z-10">
+            <div className="text-center mb-16">
+              <h2 className="font-roboto text-6xl md:text-8xl font-bold mb-4 text-center">
+                <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                  Sicher
+                </span>
+              </h2>
+              <p className="text-3xl md:text-4xl font-roboto font-bold text-white/90 mb-8">
+                Einfach. <span className="text-wallet-blue">Bitcoin</span> für jeden.
+              </p>
+              <p className="text-gray-400 max-w-2xl mx-auto">
+                Sparrow ist eine Bitcoin-Wallet für alle, die finanziell selbstbestimmt sein wollen. 
+                Jetzt auch als sichere, vollständige Webanwendung verfügbar.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-3 md:grid-cols-3 gap-6 justify-center max-w-4xl mx-auto mb-16">
+              <div className="flex flex-col items-center">
+                <div className="w-16 h-16 bg-[#1c1c28] flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-blue-500/20">
+                  <div className="transform -rotate-45 flex items-center justify-center w-full h-full">
+                    <Shield className="h-8 w-8 text-blue-400" />
                   </div>
                 </div>
-                
-                <div className="flex flex-col sm:flex-row gap-4 pt-4 z-10 relative mx-auto lg:mx-0">
-                  {session ? (
-                    <Button 
-                      onClick={handleWalletAccess} 
-                      className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
-                    >
-                      {hasWallet ? "Auf Wallet Zugreifen" : "Wallet Erstellen"} <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  ) : (
-                    <>
-                      <Button 
-                        onClick={handleRegisterClick} 
-                        disabled={isLoading} 
-                        className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
-                      >
-                        {isLoading ? (
-                          <>
-                            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                            Loading...
-                          </>
-                        ) : (
-                          <>
-                            Registrieren <ArrowRight className="h-4 w-4" />
-                          </>
-                        )}
-                      </Button>
-                      
-                      <Button 
-                        variant="outline" 
-                        className="w-full sm:w-auto py-6 text-base"
-                        onClick={handleLoginClick}
-                      >
-                        Anmelden
-                      </Button>
-                    </>
-                  )}
-                  
-                  <Button variant="outline" className="w-full sm:w-auto py-6 text-base" onClick={() => window.open('https://sparrowwallet.com/download/', '_blank')}>
-                    <ExternalLink className="mr-2 h-4 w-4" />
-                    Download Desktop App
-                  </Button>
-                </div>
+                <span className="mt-2 text-sm text-gray-300 font-medium">Sicher</span>
               </div>
               
-              <div className="relative lg:w-1/2 z-10">
-                <div className="absolute inset-0 rounded-3xl bg-blue-500/10 dark:bg-blue-500/5 blur-xl -z-10"></div>
-                <div className="relative rounded-3xl overflow-hidden">
-                  <img src="/lovable-uploads/1b77eb0f-8d23-4584-b764-6202a16c8247.png" alt="Bitcoin Wallet App" className="w-full max-w-md mx-auto" />
+              <div className="flex flex-col items-center">
+                <div className="w-16 h-16 bg-[#1c1c28] flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-purple-500/20">
+                  <div className="transform -rotate-45 flex items-center justify-center w-full h-full">
+                    <Key className="h-8 w-8 text-purple-400" />
+                  </div>
                 </div>
+                <span className="mt-2 text-sm text-gray-300 font-medium">Privat</span>
               </div>
+              
+              <div className="flex flex-col items-center">
+                <div className="w-16 h-16 bg-[#1c1c28] flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-green-500/20">
+                  <div className="transform -rotate-45 flex items-center justify-center w-full h-full">
+                    <Zap className="h-8 w-8 text-green-400" />
+                  </div>
+                </div>
+                <span className="mt-2 text-sm text-gray-300 font-medium">Schnell</span>
+              </div>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4 pt-4 z-10 relative justify-center">
+              {session ? (
+                <Button 
+                  onClick={handleWalletAccess} 
+                  className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
+                >
+                  {hasWallet ? "Auf Wallet Zugreifen" : "Wallet Erstellen"} <ArrowRight className="h-4 w-4" />
+                </Button>
+              ) : (
+                <>
+                  <Button 
+                    onClick={handleRegisterClick} 
+                    disabled={isLoading} 
+                    className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                        Loading...
+                      </>
+                    ) : (
+                      <>
+                        Registrieren <ArrowRight className="h-4 w-4" />
+                      </>
+                    )}
+                  </Button>
+                  
+                  <Button 
+                    variant="outline" 
+                    className="w-full sm:w-auto py-6 text-base bg-[#1c1c28] hover:bg-[#252532] border-none"
+                    onClick={handleLoginClick}
+                  >
+                    Anmelden
+                  </Button>
+                </>
+              )}
+              
+              <Button variant="outline" className="w-full sm:w-auto py-6 text-base bg-[#1c1c28] hover:bg-[#252532] border-none" onClick={() => window.open('https://sparrowwallet.com/download/', '_blank')}>
+                <ExternalLink className="mr-2 h-4 w-4" />
+                Download Desktop App
+              </Button>
+            </div>
+            
+            <div className="relative mt-16 flex justify-center">
+              <img src="/lovable-uploads/1b77eb0f-8d23-4584-b764-6202a16c8247.png" alt="Bitcoin Wallet App" className="w-full max-w-2xl mx-auto z-10 rounded-xl shadow-2xl shadow-blue-500/10" />
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-2xl h-20 bg-gradient-to-t from-[#1A1F2C] to-transparent"></div>
             </div>
           </div>
         </section>
@@ -537,4 +533,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default Landing
