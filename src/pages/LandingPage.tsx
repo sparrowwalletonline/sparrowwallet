@@ -68,7 +68,8 @@ const LandingPage = () => {
     toggleMenu();
   };
 
-  const handleRegisterClick = () => {
+  const handleRegisterClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     navigate('/register');
   };
 
@@ -313,19 +314,40 @@ const LandingPage = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 pt-4 z-10 relative justify-center">
-              {session ? <Button onClick={handleWalletAccess} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+              {session ? (
+                <Button 
+                  onClick={handleWalletAccess} 
+                  className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                >
                   {hasWallet ? "Auf Wallet Zugreifen" : "Wallet Erstellen"} <ArrowRight className="h-4 w-4" />
-                </Button> : <>
-                  <Button onClick={handleRegisterClick} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                </Button>
+              ) : (
+                <>
+                  <Button 
+                    onClick={handleRegisterClick} 
+                    className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                    type="button"
+                  >
                     Registrieren <ArrowRight className="h-4 w-4" />
                   </Button>
                   
-                  <Button variant="outline" className="w-full sm:w-auto py-6 text-base bg-gray-50 hover:bg-gray-100 border-gray-200" onClick={handleLoginClick}>
+                  <Button 
+                    variant="outline" 
+                    className="w-full sm:w-auto py-6 text-base bg-gray-50 hover:bg-gray-100 border-gray-200" 
+                    onClick={handleLoginClick}
+                    type="button"
+                  >
                     Anmelden
                   </Button>
-                </>}
+                </>
+              )}
               
-              <Button variant="outline" className="w-full sm:w-auto py-6 text-base bg-gray-50 hover:bg-gray-100 border-gray-200" onClick={() => window.open('https://sparrowwallet.com/download/', '_blank')}>
+              <Button 
+                variant="outline" 
+                className="w-full sm:w-auto py-6 text-base bg-gray-50 hover:bg-gray-100 border-gray-200" 
+                onClick={() => window.open('https://sparrowwallet.com/download/', '_blank')}
+                type="button"
+              >
                 <ExternalLink className="mr-2 h-4 w-4" />
                 Download Desktop App
               </Button>
@@ -372,19 +394,40 @@ const LandingPage = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 pt-12 z-10 relative justify-center">
-              {session ? <Button onClick={handleWalletAccess} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+              {session ? (
+                <Button 
+                  onClick={handleWalletAccess} 
+                  className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                >
                   {hasWallet ? "Auf Wallet Zugreifen" : "Wallet Erstellen"} <ArrowRight className="h-4 w-4" />
-                </Button> : <>
-                  <Button onClick={handleRegisterClick} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                </Button>
+              ) : (
+                <>
+                  <Button 
+                    onClick={handleRegisterClick} 
+                    className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                    type="button"
+                  >
                     Registrieren <ArrowRight className="h-4 w-4" />
                   </Button>
                   
-                  <Button variant="outline" className="w-full sm:w-auto py-6 text-base bg-gray-50 hover:bg-gray-100 border-gray-200" onClick={handleLoginClick}>
+                  <Button 
+                    variant="outline" 
+                    className="w-full sm:w-auto py-6 text-base bg-gray-50 hover:bg-gray-100 border-gray-200" 
+                    onClick={handleLoginClick}
+                    type="button"
+                  >
                     Anmelden
                   </Button>
-                </>}
+                </>
+              )}
               
-              <Button variant="outline" className="w-full sm:w-auto py-6 text-base bg-gray-50 hover:bg-gray-100 border-gray-200" onClick={() => window.open('https://sparrowwallet.com/download/', '_blank')}>
+              <Button 
+                variant="outline" 
+                className="w-full sm:w-auto py-6 text-base bg-gray-50 hover:bg-gray-100 border-gray-200" 
+                onClick={() => window.open('https://sparrowwallet.com/download/', '_blank')}
+                type="button"
+              >
                 <ExternalLink className="mr-2 h-4 w-4" />
                 Download Desktop App
               </Button>

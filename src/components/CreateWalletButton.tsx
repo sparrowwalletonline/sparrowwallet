@@ -36,6 +36,7 @@ const CreateWalletButton = ({
       size={size}
       className={className}
       onClick={handleClick}
+      type="button" // Explicitly set type to button to prevent form submission
     >
       {children || "Create Wallet"}
     </Button>
