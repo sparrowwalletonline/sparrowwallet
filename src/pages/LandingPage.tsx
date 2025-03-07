@@ -402,6 +402,8 @@ const LandingPage = () => {
         
         <SupportedAssetsSection />
         
+        <FeaturesSection />
+        
         <section className="bg-gray-50 py-12">
           <div className="max-w-screen-xl mx-auto px-6 text-center">
             <h2 className="font-roboto text-4xl font-bold mb-8 text-black">Funktionen</h2>
@@ -434,8 +436,6 @@ const LandingPage = () => {
             </div>
           </div>
         </section>
-        
-        <FeaturesSection />
         
         <Footer />
       </div>
