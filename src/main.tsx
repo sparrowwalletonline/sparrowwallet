@@ -1,4 +1,5 @@
 
+import React from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
@@ -8,16 +9,15 @@ import { registerServiceWorker } from './utils/serviceWorkerRegistration'
 // Apply the viewport fix for iOS
 applyViewportFix();
 
-// Register service worker for PWA support - but make it optional
+// Register service worker for PWA support
 try {
   registerServiceWorker();
   console.log("Service worker registration attempted");
 } catch (error) {
   console.error("Failed to register service worker:", error);
-  // Continue even if service worker fails
 }
 
-// Add improved error boundary and debugging for the app
+// Main rendering function with improved error handling
 const renderApp = () => {
   try {
     console.log("Starting to render app...");
@@ -25,55 +25,53 @@ const renderApp = () => {
     const rootElement = document.getElementById("root");
     if (!rootElement) {
       console.error("Root element not found");
-      // Create a root element if it doesn't exist
-      const newRoot = document.createElement("div");
-      newRoot.id = "root";
-      document.body.appendChild(newRoot);
-      console.log("Created new root element");
-      createRoot(newRoot).render(<App />);
+      document.body.innerHTML = '<div style="text-align: center; padding: 20px;"><h1>Error: Root element not found</h1><p>Please refresh the page or contact support.</p></div>';
       return;
     }
     
     console.log("Root element found, rendering app...");
     
-    // Add a div with text to see if basic rendering works
-    rootElement.innerHTML = '<div id="debug-message" style="position:fixed; top:10px; left:10px; background:rgba(0,0,0,0.7); color:white; padding:10px; z-index:9999; font-family:sans-serif;">Attempting to render app...</div>';
-    
-    // Force a small timeout to ensure the debug message is visible
-    setTimeout(() => {
-      try {
-        const root = createRoot(rootElement);
-        console.log("Root created successfully");
-        root.render(<App />);
-        console.log("App rendered successfully");
-      } catch (renderError) {
-        console.error("Error during React rendering:", renderError);
-        rootElement.innerHTML = `
-          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; padding: 20px; text-align: center;">
-            <h1>React Rendering Error</h1>
-            <p>There was an error rendering the application.</p>
-            <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px; max-width: 80%; overflow: auto;">${renderError.toString()}</pre>
-            <p>Please check the console for more details or try refreshing the page.</p>
-          </div>
-        `;
+    try {
+      // Create a React root and render the app
+      const root = createRoot(rootElement);
+      root.render(
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      );
+      console.log("App rendered successfully");
+      
+      // Clear the loading indicator if it exists
+      const loaderElement = document.getElementById('app-loader');
+      if (loaderElement && loaderElement.parentNode) {
+        loaderElement.parentNode.removeChild(loaderElement);
       }
-    }, 100);
+    } catch (renderError) {
+      console.error("React rendering error:", renderError);
+      rootElement.innerHTML = `
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+          <h1>React Rendering Error</h1>
+          <p>There was an error rendering the application.</p>
+          <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px;">${renderError.toString()}</pre>
+          <p>Please check the console for more details.</p>
+          <button onclick="window.location.reload()" style="margin-top: 20px; padding: 10px 20px;">Refresh Page</button>
+        </div>
+      `;
+    }
   } catch (error) {
     console.error("Critical failure during app initialization:", error);
-    // Display a fallback UI when the app fails to render
     document.body.innerHTML = `
-      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; padding: 20px; text-align: center;">
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
         <h1>Something went wrong</h1>
         <p>The application could not initialize properly.</p>
-        <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px; max-width: 80%; overflow: auto;">${error.toString()}</pre>
-        <p>Please try refreshing the page or contact support if the issue persists.</p>
-        <button onclick="window.location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #0070f3; color: white; border: none; border-radius: 5px; cursor: pointer;">Refresh Page</button>
+        <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px;">${error.toString()}</pre>
+        <button onclick="window.location.reload()" style="margin-top: 20px; padding: 10px 20px;">Refresh Page</button>
       </div>
     `;
   }
 };
 
-// Add window error handlers to catch any unhandled errors
+// Add global error handlers
 window.addEventListener('error', (event) => {
   console.error('Global error caught:', event.error);
 });
@@ -82,5 +80,6 @@ window.addEventListener('unhandledrejection', (event) => {
   console.error('Unhandled promise rejection:', event.reason);
 });
 
+// Execute the render function
 console.log("Starting application...");
 renderApp();

@@ -8,7 +8,7 @@
     <meta name="description" content="Sparrow - Your Secure Digital Wallet" />
     <meta name="author" content="Sparrow" />
     
-    <!-- Updated Open Graph metadata for better link previews -->
+    <!-- Open Graph metadata for better link previews -->
     <meta property="og:title" content="Sparrow Wallet" />
     <meta property="og:description" content="Your Secure Digital Wallet for managing cryptocurrencies" />
     <meta property="og:image" content="https://sparrowwallet.live/og-image.png" />
@@ -40,20 +40,37 @@
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #f5f7fa;
+        background-color: #ffffff;
         color: #333;
       }
-      #root:empty {
+      #root {
+        min-height: 100vh;
+        width: 100%;
+      }
+      #app-loader {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 100vh;
-        width: 100vw;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #ffffff;
+        z-index: 9999;
       }
-      #root:empty:before {
-        content: 'Loading Sparrow Wallet...';
-        font-size: 18px;
-        font-weight: 500;
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(0, 255, 95, 0.1);
+        border-radius: 50%;
+        border-top: 4px solid #00FF5F;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
       }
       .js-error-fallback {
         display: none;
@@ -61,9 +78,6 @@
         padding: 20px;
         max-width: 600px;
         margin: 100px auto;
-      }
-      .js-error-fallback h1 {
-        color: #0500FF;
       }
       noscript {
         display: block;
@@ -84,6 +98,12 @@
       </div>
     </noscript>
     
+    <!-- Loading indicator that will be removed when React loads -->
+    <div id="app-loader">
+      <div class="spinner"></div>
+      <p style="margin-top: 20px; font-weight: 500;">Loading Sparrow Wallet...</p>
+    </div>
+    
     <!-- Root div where React mounts -->
     <div id="root"></div>
     
@@ -97,16 +117,19 @@
         <li>Temporary server problems</li>
       </ul>
       <p>Please try refreshing the page or come back later.</p>
-      <button onclick="window.location.reload()" style="padding: 10px 20px; background: #0500FF; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px;">Refresh Page</button>
+      <button onclick="window.location.reload()" style="padding: 10px 20px; background: #00FF5F; color: black; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px;">Refresh Page</button>
     </div>
     
     <!-- Script to show fallback content if main scripts don't load in time -->
     <script>
+      // Display fallback if application doesn't load within 10 seconds
       setTimeout(function() {
-        if (document.getElementById('root').children.length === 0) {
+        if (!document.getElementById('root').childNodes.length) {
           document.getElementById('js-error-fallback').style.display = 'block';
+          var loader = document.getElementById('app-loader');
+          if (loader) loader.style.display = 'none';
         }
-      }, 10000); // Show fallback after 10 seconds if app doesn't load
+      }, 10000);
     </script>
     
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
