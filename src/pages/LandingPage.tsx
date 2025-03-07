@@ -401,12 +401,9 @@ const LandingPage = () => {
               <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-2xl h-20 bg-gradient-to-t from-white to-transparent"></div>
             </div>
             
-            <div className="max-w-3xl mx-auto mt-10 px-6 py-8 bg-gray-50 rounded-xl shadow-sm text-sm leading-relaxed text-gray-700">
+            <div className="max-w-3xl mx-auto mt-10 px-6 py-8 text-sm leading-relaxed text-gray-700 text-center">
               <p className="mb-4">
                 Sparrow ist einzigartig, da es einen vollwertigen Transaktionseditor enthält, der auch als Blockchain-Explorer fungiert. Diese Funktion ermöglicht nicht nur die Bearbeitung aller Felder einer Transaktion, sondern auch eine einfache Überprüfung der Transaktionsbytes vor der Übertragung. Sparrow enthält viele weitere Funktionen, die auf der Funktionsseite ausführlich beschrieben werden.
-              </p>
-              <p className="mb-4">
-                Sparrow legt großen Wert auf Privatsphäre und möchte eine Wallet sein, die Benutzer auf einer Reise zur Privatsphäre begleitet - von der Nutzung öffentlicher Server bis hin zu Cold-Storage-Techniken auf privaten Servern. Weitere Details finden Sie im Leitfaden für bewährte Praktiken.
               </p>
               <p>
                 Obwohl Sparrow eine Wallet für fortgeschrittene Benutzer ist, ist sie nicht schwer zu bedienen.
@@ -457,3 +454,4 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+
