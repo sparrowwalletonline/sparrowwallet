@@ -1,3 +1,4 @@
+
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
@@ -18,9 +19,20 @@ const Dialog = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>
 >(({ open, onOpenChange, ...props }, ref) => {
   const dialogId = React.useId();
+  
+  // Store initial open state to determine if we're trying to open a dialog
+  const isOpeningDialog = React.useRef(false);
+  
+  React.useEffect(() => {
+    if (open && !isOpeningDialog.current) {
+      isOpeningDialog.current = true;
+    } else if (!open) {
+      isOpeningDialog.current = false;
+    }
+  }, [open]);
 
   React.useEffect(() => {
-    // Check if we should globally disable dialogs (for the seed phrase page)
+    // Block modals when flag is set
     if (typeof window !== 'undefined' && window.disableAllModals) {
       // If we're trying to open a dialog but modals are disabled, prevent it
       if (open) {
@@ -32,6 +44,7 @@ const Dialog = React.forwardRef<
       return;
     }
     
+    // Normal dialog management
     if (open && dialogId !== activeDialog) {
       activeDialog = dialogId;
     } else if (!open && dialogId === activeDialog) {
@@ -39,10 +52,13 @@ const Dialog = React.forwardRef<
     }
   }, [open, dialogId, onOpenChange]);
 
-  // Don't pass the ref directly to the Radix UI component
+  // Check modal blocking flag before rendering
+  const shouldBlockModal = typeof window !== 'undefined' && window.disableAllModals;
+  const effectiveOpen = shouldBlockModal ? false : open;
+
   return (
     <DialogPrimitive.Root 
-      open={typeof window !== 'undefined' && window.disableAllModals ? false : open} 
+      open={effectiveOpen} 
       onOpenChange={onOpenChange} 
       {...props} 
     />

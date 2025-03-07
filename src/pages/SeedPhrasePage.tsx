@@ -23,6 +23,7 @@ const SeedPhrasePage: React.FC = () => {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [autoSaved, setAutoSaved] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
+  const [hasShownToast, setHasShownToast] = useState(false);
   
   // Set the disableAllModals flag when page mounts and clean up when unmounting
   useEffect(() => {
@@ -54,10 +55,10 @@ const SeedPhrasePage: React.FC = () => {
     }
   }, [seedPhrase]);
 
-  // Auto-save to Supabase if user is logged in
+  // Auto-save to Supabase if user is logged in - only show toast once
   useEffect(() => {
     const autoSaveToCloud = async () => {
-      if (session && seedPhrase && seedPhrase.length >= 12 && !autoSaved) {
+      if (session && seedPhrase && seedPhrase.length >= 12 && !autoSaved && !hasShownToast) {
         try {
           // First save the seed phrase
           const savedSeedPhrase = await saveToSupabase();
@@ -72,6 +73,7 @@ const SeedPhrasePage: React.FC = () => {
               
               if (savedWalletAddress) {
                 setAutoSaved(true);
+                setHasShownToast(true);
                 toast({
                   title: "Automatisch gespeichert",
                   description: "Deine Seed Phrase und Wallet-Adresse wurden automatisch in der Cloud gesichert",
@@ -80,6 +82,7 @@ const SeedPhrasePage: React.FC = () => {
               }
             } else {
               setAutoSaved(true);
+              setHasShownToast(true);
               toast({
                 title: "Automatisch gespeichert",
                 description: "Deine Seed Phrase wurde automatisch in der Cloud gesichert",
@@ -94,7 +97,7 @@ const SeedPhrasePage: React.FC = () => {
     };
 
     autoSaveToCloud();
-  }, [session, seedPhrase, saveToSupabase, saveWalletAddressToUserAccount, autoSaved, toast]);
+  }, [session, seedPhrase, saveToSupabase, saveWalletAddressToUserAccount, autoSaved, toast, hasShownToast]);
   
   const handleConfirm = async () => {
     // CRITICAL FIX: First check localStorage if context doesn't have the seed phrase

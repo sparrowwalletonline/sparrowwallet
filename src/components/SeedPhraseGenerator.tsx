@@ -54,6 +54,7 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [localSeedPhrase, setLocalSeedPhrase] = useState<string[]>([]);
+  const [hasProcessedSeedPhrase, setHasProcessedSeedPhrase] = useState(false);
   
   const generateSeedPhrase = () => {
     try {
@@ -111,6 +112,8 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
   };
   
   useEffect(() => {
+    if (hasProcessedSeedPhrase) return;
+    
     console.log("SeedPhraseGenerator mounted, checking for existing seed phrase");
     
     if (seedPhrase && seedPhrase.length >= 12) {
@@ -120,6 +123,8 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
       if (onSeedPhraseChange) {
         onSeedPhraseChange(seedPhrase);
       }
+      
+      setHasProcessedSeedPhrase(true);
     } else {
       const savedPhrase = localStorage.getItem('walletSeedPhrase');
       if (savedPhrase) {
@@ -134,18 +139,23 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
             if (onSeedPhraseChange) {
               onSeedPhraseChange(parsedPhrase);
             }
+            
+            setHasProcessedSeedPhrase(true);
           } else {
             generateSeedPhrase();
+            setHasProcessedSeedPhrase(true);
           }
         } catch (error) {
           console.error("Error parsing seed phrase from localStorage:", error);
           generateSeedPhrase();
+          setHasProcessedSeedPhrase(true);
         }
       } else {
         generateSeedPhrase();
+        setHasProcessedSeedPhrase(true);
       }
     }
-  }, [seedPhrase, importWallet, onSeedPhraseChange]); 
+  }, [seedPhrase, importWallet, onSeedPhraseChange, hasProcessedSeedPhrase]); 
   
   const handleCopy = () => {
     if (localSeedPhrase && localSeedPhrase.length >= 12) {
@@ -280,13 +290,15 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
   };
 
   useEffect(() => {
-    console.log("SeedPhraseGenerator rendered with local seedPhrase:", 
-      localSeedPhrase ? localSeedPhrase.join(' ') : 'undefined');
+    if (seedPhrase && seedPhrase.length >= 12 && 
+        JSON.stringify(localSeedPhrase) !== JSON.stringify(seedPhrase)) {
+      setLocalSeedPhrase(seedPhrase);
       
-    if (localSeedPhrase && localSeedPhrase.length >= 12 && onSeedPhraseChange) {
-      onSeedPhraseChange(localSeedPhrase);
+      if (onSeedPhraseChange) {
+        onSeedPhraseChange(seedPhrase);
+      }
     }
-  }, [localSeedPhrase, onSeedPhraseChange]);
+  }, [seedPhrase, localSeedPhrase, onSeedPhraseChange]);
 
   return (
     <div className="flex flex-col gap-6 w-full animate-fade-in">
