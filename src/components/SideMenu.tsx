@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useMenu } from '@/contexts/MenuContext';
 import { Button } from '@/components/ui/button';
@@ -103,20 +102,20 @@ const SideMenu: React.FC = () => {
   const menuVariants = {
     closed: { 
       x: "100%", 
-      opacity: 1, // Changed from 0 to 1 to prevent flicker
+      opacity: 1,
       transition: { 
-        type: "tween", // Changed from "spring" to "tween"
+        type: "tween", 
         duration: 0.25,
-        ease: [0.33, 1, 0.68, 1] // Smoother easing
+        ease: [0.33, 1, 0.68, 1]
       }
     },
     open: { 
       x: 0, 
       opacity: 1,
       transition: { 
-        type: "tween", // Changed from "spring" to "tween"
+        type: "tween", 
         duration: 0.25,
-        ease: [0.33, 1, 0.68, 1], // Smoother easing
+        ease: [0.33, 1, 0.68, 1],
         staggerChildren: 0.03,
         delayChildren: 0.1
       }
@@ -125,14 +124,14 @@ const SideMenu: React.FC = () => {
 
   const itemVariants = {
     closed: { 
-      x: 10, // Reduced from 20 to 10
+      x: 10,
       opacity: 0 
     },
     open: { 
       x: 0, 
       opacity: 1,
       transition: {
-        type: "tween", // Changed from "spring" to "tween"
+        type: "tween",
         duration: 0.2
       }
     }
@@ -149,6 +148,29 @@ const SideMenu: React.FC = () => {
     }
   };
 
+  const MenuItem = ({ icon: Icon, title, path }: { icon: any, title: string, path: string }) => (
+    <motion.li variants={itemVariants}>
+      <div 
+        className="flex items-center gap-3 py-2.5 px-3 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
+        onClick={() => handleNavigation(path)}
+      >
+        <Icon className="w-5 h-5" />
+        <span className="font-medium">{title}</span>
+      </div>
+    </motion.li>
+  );
+
+  const MenuSection = ({ title, items }: { title: string, items: Array<{icon: any, title: string, path: string}> }) => (
+    <div className="mb-6">
+      <h3 className="text-xs uppercase text-gray-500 dark:text-gray-400 font-semibold mb-2 px-3">{title}</h3>
+      <ul className="space-y-1">
+        {items.map((item) => (
+          <MenuItem key={item.title} icon={item.icon} title={item.title} path={item.path} />
+        ))}
+      </ul>
+    </div>
+  );
+
   return (
     <AnimatePresence mode="wait">
       {isMenuOpen && (
@@ -163,158 +185,81 @@ const SideMenu: React.FC = () => {
           />
           
           <motion.div 
-            className="fixed top-0 right-0 z-[51] w-[280px] h-full bg-white dark:bg-wallet-darkBg shadow-xl menu-content"
+            className="fixed top-0 right-0 z-[51] w-[300px] h-full bg-white dark:bg-wallet-darkBg rounded-l-xl shadow-xl menu-content"
             variants={menuVariants}
             initial="closed"
             animate="open"
             exit="closed"
           >
             <div className="flex flex-col h-full">
-              <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-800">
-                <WalletLogo className="w-8 h-8" />
+              <div className="flex justify-between items-center p-5 border-b border-gray-200 dark:border-gray-800">
+                <div className="flex items-center gap-2">
+                  <WalletLogo className="w-8 h-8" />
+                  <span className="font-semibold text-lg">Sparrow Wallet</span>
+                </div>
                 <div className="flex items-center gap-2">
                   <ThemeToggle />
                   <motion.button 
                     onClick={closeMenu} 
-                    className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
-                    whileHover={{ scale: 1.05 }} // Reduced from 1.1
-                    whileTap={{ scale: 0.97 }} // Changed from 0.95
+                    className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.97 }}
                   >
-                    <X className="w-6 h-6" />
+                    <X className="w-5 h-5" />
                   </motion.button>
                 </div>
               </div>
               
-              <nav className="flex-1 p-6 overflow-y-auto">
-                <div className="mb-6">
-                  <h3 className="text-xs uppercase text-gray-500 dark:text-gray-400 font-semibold mb-3">Main</h3>
-                  <ul className="space-y-4">
-                    <motion.li variants={itemVariants}>
-                      <div 
-                        className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer menu-item"
-                        onClick={() => handleNavigation('/')}
-                      >
-                        <Home className="w-5 h-5" />
-                        <span className="font-medium">Home</span>
-                      </div>
-                    </motion.li>
-                    <motion.li variants={itemVariants}>
-                      <div 
-                        className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer menu-item"
-                        onClick={() => handleNavigation('/wallet')}
-                      >
-                        <CreditCard className="w-5 h-5" />
-                        <span className="font-medium">Wallet</span>
-                      </div>
-                    </motion.li>
-                    <motion.li variants={itemVariants}>
-                      <div 
-                        className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer menu-item"
-                        onClick={() => handleNavigation('/security-settings')}
-                      >
-                        <Shield className="w-5 h-5" />
-                        <span className="font-medium">Security</span>
-                      </div>
-                    </motion.li>
-                  </ul>
-                </div>
+              <nav className="flex-1 p-5 overflow-y-auto">
+                <MenuSection 
+                  title="Main" 
+                  items={[
+                    { icon: Home, title: "Home", path: "/" },
+                    { icon: CreditCard, title: "Wallet", path: "/wallet" },
+                    { icon: Shield, title: "Security", path: "/security-settings" }
+                  ]} 
+                />
                 
-                <div className="mb-6">
-                  <h3 className="text-xs uppercase text-gray-500 dark:text-gray-400 font-semibold mb-3">Resources</h3>
-                  <ul className="space-y-4">
-                    <motion.li variants={itemVariants}>
-                      <div 
-                        className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer menu-item"
-                        onClick={() => handleNavigation('/features')}
-                      >
-                        <Gift className="w-5 h-5" />
-                        <span className="font-medium">Features</span>
-                      </div>
-                    </motion.li>
-                    <motion.li variants={itemVariants}>
-                      <div 
-                        className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer menu-item"
-                        onClick={() => handleNavigation('/documentation')}
-                      >
-                        <FileText className="w-5 h-5" />
-                        <span className="font-medium">Documentation</span>
-                      </div>
-                    </motion.li>
-                    <motion.li variants={itemVariants}>
-                      <div 
-                        className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer menu-item"
-                        onClick={() => handleNavigation('/support')}
-                      >
-                        <HelpCircle className="w-5 h-5" />
-                        <span className="font-medium">Support</span>
-                      </div>
-                    </motion.li>
-                    <motion.li variants={itemVariants}>
-                      <div 
-                        className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer menu-item"
-                        onClick={() => handleNavigation('https://github.com/sparrowwallet/sparrow')}
-                      >
-                        <Terminal className="w-5 h-5" />
-                        <span className="font-medium">GitHub</span>
-                      </div>
-                    </motion.li>
-                  </ul>
-                </div>
+                <MenuSection 
+                  title="Resources" 
+                  items={[
+                    { icon: Gift, title: "Features", path: "/features" },
+                    { icon: FileText, title: "Documentation", path: "/documentation" },
+                    { icon: HelpCircle, title: "Support", path: "/support" },
+                    { icon: Terminal, title: "GitHub", path: "https://github.com/sparrowwallet/sparrow" }
+                  ]} 
+                />
                 
-                <div className="mb-6">
-                  <h3 className="text-xs uppercase text-gray-500 dark:text-gray-400 font-semibold mb-3">Account</h3>
-                  <ul className="space-y-4">
-                    <motion.li variants={itemVariants}>
-                      <div 
-                        className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer menu-item"
-                        onClick={() => handleNavigation('/auth')}
-                      >
-                        <User className="w-5 h-5" />
-                        <span className="font-medium">Profile</span>
-                      </div>
-                    </motion.li>
-                    <motion.li variants={itemVariants}>
-                      <div 
-                        className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer menu-item"
-                        onClick={() => handleNavigation('/donate')}
-                      >
-                        <HeartHandshake className="w-5 h-5" />
-                        <span className="font-medium">Donate</span>
-                      </div>
-                    </motion.li>
-                    <motion.li variants={itemVariants}>
-                      <div 
-                        className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white cursor-pointer menu-item"
-                        onClick={() => handleNavigation('/terms')}
-                      >
-                        <Settings className="w-5 h-5" />
-                        <span className="font-medium">Settings</span>
-                      </div>
-                    </motion.li>
-                  </ul>
-                </div>
+                <MenuSection 
+                  title="Account" 
+                  items={[
+                    { icon: User, title: "Profile", path: "/auth" },
+                    { icon: HeartHandshake, title: "Donate", path: "/donate" },
+                    { icon: Settings, title: "Settings", path: "/terms" }
+                  ]} 
+                />
               </nav>
               
               <motion.div 
-                className="p-6 border-t border-gray-200 dark:border-gray-800"
+                className="p-5 border-t border-gray-200 dark:border-gray-800"
                 variants={itemVariants}
               >
                 {session ? (
                   <Button 
                     variant="destructive" 
-                    className="w-full justify-start" 
+                    className="w-full justify-start rounded-lg" 
                     onClick={handleSignOut}
                   >
-                    <LogOut className="h-5 w-5 mr-3" />
+                    <LogOut className="h-5 w-5 mr-2" />
                     <span>Sign Out</span>
                   </Button>
                 ) : (
                   <Button 
-                    variant="outline" 
-                    className="w-full justify-start" 
+                    variant="default" 
+                    className="w-full justify-start rounded-lg" 
                     onClick={() => handleNavigation('/auth')}
                   >
-                    <User className="h-5 w-5 mr-3" />
+                    <User className="h-5 w-5 mr-2" />
                     <span>Sign In</span>
                   </Button>
                 )}

@@ -38,21 +38,20 @@
   }
 
   html {
-    -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape on iOS */
-    touch-action: manipulation; /* Prevent double-tap to zoom on iOS */
+    -webkit-text-size-adjust: 100%;
+    touch-action: manipulation;
     height: 100%;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-x: hidden;
   }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
     -webkit-tap-highlight-color: transparent;
     min-height: 100vh;
-    /* Mobile viewport fix */
     min-height: -webkit-fill-available;
-    color-scheme: light;  /* Force light color scheme */
+    color-scheme: light;
     height: 100%;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-x: hidden;
     width: 100%;
     position: relative;
     will-change: transform;
@@ -72,10 +71,10 @@
   }
 
   input, select, textarea, button {
-    font-size: 16px; /* Prevents iOS zooming on input focus */
+    font-size: 16px;
     -webkit-appearance: none;
     appearance: none;
-    border-radius: 0; /* Removes iOS default styling */
+    border-radius: 0;
   }
 
   button, a, [role="button"] {
@@ -88,7 +87,7 @@
   }
   
   .min-h-screen {
-    height: 100vh; /* Fallback */
+    height: 100vh;
     height: calc(var(--vh, 1vh) * 100);
   }
 }
