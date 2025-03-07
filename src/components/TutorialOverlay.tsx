@@ -48,7 +48,7 @@ const TutorialOverlay: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-40 pointer-events-none"
+        className="fixed inset-0 z-[9500] pointer-events-none"
         style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
       >
         <svg width="100%" height="100%" className="absolute inset-0">

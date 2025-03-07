@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useTutorial } from '@/contexts/TutorialContext';
@@ -112,10 +113,9 @@ const TutorialPopover: React.FC = () => {
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
         transition={{ duration: 0.2 }}
-        className="fixed z-50 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-lg w-full max-w-xs border border-gray-200 dark:border-gray-700"
+        className="fixed z-[9600] bg-white dark:bg-gray-800 p-4 rounded-xl shadow-lg w-full max-w-xs border border-gray-200 dark:border-gray-700"
         style={{
           ...position,
-          zIndex: 9999,
           maxWidth: isMobile ? 'calc(100% - 32px)' : '20rem' // Adjust width for mobile
         }}
       >
