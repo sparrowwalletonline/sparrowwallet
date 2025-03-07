@@ -16,12 +16,11 @@ export const MenuProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const actionInProgress = useRef(false);
 
   const toggleMenu = useCallback(() => {
-    // Prevent rapid toggling
     if (actionInProgress.current) return;
     
     actionInProgress.current = true;
     console.log('Toggle menu called, current state:', isMenuOpen);
-    setIsMenuOpen(prev => !prev);
+    setIsMenuOpen((prev) => !prev);
     
     // Reset action lock after animation completes
     setTimeout(() => {
@@ -33,6 +32,7 @@ export const MenuProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (actionInProgress.current || isMenuOpen) return;
     
     actionInProgress.current = true;
+    console.log('Opening menu');
     setIsMenuOpen(true);
     
     setTimeout(() => {
@@ -44,6 +44,7 @@ export const MenuProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (actionInProgress.current || !isMenuOpen) return;
     
     actionInProgress.current = true;
+    console.log('Closing menu');
     setIsMenuOpen(false);
     
     setTimeout(() => {

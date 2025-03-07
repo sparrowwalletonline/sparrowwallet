@@ -40,6 +40,10 @@ const SideMenu: React.FC = () => {
     };
   }, [isMenuOpen, closeMenu]);
 
+  useEffect(() => {
+    console.log('SideMenu: isMenuOpen state changed to', isMenuOpen);
+  }, [isMenuOpen]);
+
   const handleSignOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
@@ -181,7 +185,6 @@ const SideMenu: React.FC = () => {
             exit="closed"
             variants={overlayVariants}
             className="fixed inset-0 z-[10000] overlay-bg bg-black bg-opacity-50 backdrop-blur-sm menu-overlay"
-            onClick={closeMenu}
           />
           
           <motion.div 

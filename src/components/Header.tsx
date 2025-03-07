@@ -33,7 +33,7 @@ const Header = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { toggleMenu } = useMenu();
+  const { toggleMenu, openMenu } = useMenu();
   const { activeWallet } = useWallet();
 
   // Don't show header on specific routes
@@ -45,6 +45,11 @@ const Header = ({
   // Hide menu toggle on wallet page
   const isWalletPage = location.pathname === '/wallet' || location.pathname.startsWith('/wallet/');
   const shouldShowMenuToggle = showMenuToggle && !isWalletPage;
+
+  const handleMenuToggle = () => {
+    console.log('Hamburger button clicked');
+    toggleMenu();
+  };
 
   const BackButton = () => (
     <button 
@@ -63,23 +68,13 @@ const Header = ({
             <BackButton />
           )}
           
-          {shouldShowMenuToggle ? (
-            <button 
-              onClick={toggleMenu} 
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white/90 backdrop-blur-sm dark:bg-gray-800/50 dark:hover:bg-gray-800/70 transition-all shadow-sm hover:shadow-md"
-              aria-label="Toggle menu"
-            >
-              <Menu className="w-5 h-5 text-gray-700 dark:text-gray-200" />
-            </button>
-          ) : (
-            <button 
-              onClick={toggleMenu} 
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white/90 backdrop-blur-sm dark:bg-gray-800/50 dark:hover:bg-gray-800/70 transition-all shadow-sm hover:shadow-md"
-              aria-label="Toggle menu"
-            >
-              <Menu className="w-5 h-5 text-gray-700 dark:text-gray-200" />
-            </button>
-          )}
+          <button 
+            onClick={handleMenuToggle} 
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white/90 backdrop-blur-sm dark:bg-gray-800/50 dark:hover:bg-gray-800/70 transition-all shadow-sm hover:shadow-md"
+            aria-label="Toggle menu"
+          >
+            <Menu className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+          </button>
           
           {title && title.length > 0 && (
             <h1 className="text-lg font-medium text-gray-800 dark:text-gray-100">{title}</h1>
