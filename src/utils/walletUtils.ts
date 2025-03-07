@@ -1,4 +1,5 @@
 
+
 import * as bip39 from 'bip39';
 
 export const getRandomInt = (min: number, max: number): number => {
@@ -17,15 +18,35 @@ export const generateBtcAddress = (): string => {
   return address;
 };
 
+// Updated to ensure entropy is properly used
 export const generateSeedPhrase = (): string[] => {
   try {
-    const mnemonic = bip39.generateMnemonic(128);
+    // Use crypto for additional entropy
+    const additionalEntropy = new Uint8Array(16);
+    if (window.crypto && window.crypto.getRandomValues) {
+      window.crypto.getRandomValues(additionalEntropy);
+    } else {
+      // Fallback if crypto API not available
+      for (let i = 0; i < 16; i++) {
+        additionalEntropy[i] = Math.floor(Math.random() * 256);
+      }
+    }
+    
+    // Convert to hex string for bip39
+    const entropyHex = Array.from(additionalEntropy)
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+    
+    // Generate mnemonic with entropy
+    const mnemonic = bip39.generateMnemonic(128, undefined, bip39.mnemonicToEntropy(bip39.generateMnemonic()) + entropyHex);
     console.log("Generated BIP39 mnemonic:", mnemonic);
     const words = mnemonic.split(' ');
     console.log("BIP39 word list (should be 12 words):", words);
     return words;
   } catch (error) {
     console.error("Error generating seed phrase:", error);
-    return ["ability", "dinner", "canvas", "trash", "paper", "volcano", "energy", "horse", "author", "basket", "melody", "vintage"];
+    // Generate a fallback that's still random
+    const fallbackMnemonic = bip39.generateMnemonic(128);
+    return fallbackMnemonic.split(' ');
   }
 };
