@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ArrowLeft, Menu } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -36,7 +37,7 @@ const Header = ({
   const { activeWallet } = useWallet();
 
   // Don't show header on specific routes
-  const hideHeaderRoutes = ['/terms', '/passphrase', '/seed-phrase', '/seed-phrase-validation', '/register', '/wallet-intro'];
+  const hideHeaderRoutes = ['/terms', '/passphrase', '/seed-phrase', '/seed-phrase-validation', '/register', '/wallet-intro', '/app'];
   if (hideHeaderRoutes.includes(location.pathname)) {
     return null;
   }
