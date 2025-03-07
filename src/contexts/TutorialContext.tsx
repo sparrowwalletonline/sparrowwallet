@@ -131,9 +131,22 @@ export const TutorialProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     localStorage.setItem('completedTutorials', JSON.stringify(hasCompletedTutorials));
   }, [hasCompletedTutorials]);
 
-  // Auto-start wallet tutorial logic removed
-  // The tutorial will no longer automatically start when visiting the wallet page
-  // Users will need to manually start tutorials via the UI
+  // Auto-start wallet tutorial for new users on wallet page
+  useEffect(() => {
+    if (
+      hasWallet && 
+      location.pathname === '/wallet' && 
+      !hasCompletedTutorials.includes('walletIntro') && 
+      !activeTutorial
+    ) {
+      // Wait a bit to let UI render
+      const timer = setTimeout(() => {
+        startTutorial('walletIntro');
+      }, 1500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [hasWallet, location.pathname, hasCompletedTutorials, activeTutorial]);
 
   const startTutorial = (tutorialId: string) => {
     const tutorial = tutorials[tutorialId];
