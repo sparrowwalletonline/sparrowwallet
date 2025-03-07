@@ -153,12 +153,12 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-white to-gray-50">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-white to-gray-50 register-page-container">
       <Header title="Sparrow" showBack={true} className="bg-transparent shadow-none" showProfileButton={false} />
       
       <div className="flex-1 flex flex-col items-center justify-center p-4">
         <motion.div className="w-full max-w-md space-y-8" initial="hidden" animate="visible" variants={containerVariants}>
-          <motion.div variants={itemVariants} className="text-center relative mt-24 pt-12">
+          <motion.div variants={itemVariants} className="text-center relative register-logo-container">
             <motion.div className="mb-6 mx-auto" whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
               <WalletLogo useSparrowLogo={true} color="sparrow" className="w-20 h-20 mx-auto drop-shadow-md" />
             </motion.div>
