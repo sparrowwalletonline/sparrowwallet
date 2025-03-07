@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { Toaster } from "./components/ui/toaster";
@@ -36,6 +37,7 @@ import TutorialOverlay from "./components/TutorialOverlay";
 import SideMenu from "./components/SideMenu";
 import PersonalDataForm from "./components/PersonalDataForm";
 import PageTransition from "./components/PageTransition";
+import Header from "./components/Header";
 
 import "./App.css";
 
@@ -74,6 +76,12 @@ function App() {
           <Router>
             <TutorialProvider>
               <SideMenu />
+              {/* Global Header Component */}
+              <Header 
+                title="Sparrow" 
+                showMenuToggle={true}
+                showProfileButton={true}
+              />
               <Routes>
                 <Route path="/" element={
                   <PageTransition>

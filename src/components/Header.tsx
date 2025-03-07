@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { ArrowLeft, Menu } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useMenu } from '@/contexts/MenuContext';
 import { useWallet } from '@/contexts/WalletContext';
 import ThemeToggle from './ThemeToggle';
@@ -13,16 +13,16 @@ import { useTutorial } from '@/contexts/TutorialContext';
 import WalletLogo from './WalletLogo';
 
 const Header = ({ 
-  title, 
+  title = "Sparrow", 
   showBack = false, 
   showSettings = false, 
   className = "", 
-  showMenuToggle = true, // Changed default to true
+  showMenuToggle = true,
   showWalletInfo = false, 
   showTutorial = false,
   showProfileButton = true
 }: { 
-  title: string; 
+  title?: string; 
   showBack?: boolean; 
   showSettings?: boolean; 
   className?: string;
@@ -32,8 +32,15 @@ const Header = ({
   showProfileButton?: boolean;
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toggleMenu } = useMenu();
   const { activeWallet } = useWallet();
+
+  // Don't show header on specific routes
+  const hideHeaderRoutes = ['/terms', '/passphrase', '/seed-phrase', '/seed-phrase-validation'];
+  if (hideHeaderRoutes.includes(location.pathname)) {
+    return null;
+  }
 
   const BackButton = () => (
     <button 
@@ -60,6 +67,10 @@ const Header = ({
             >
               <Menu className="w-5 h-5 text-gray-700 dark:text-gray-200" />
             </button>
+          )}
+          
+          {title && (
+            <h1 className="text-lg font-medium text-gray-800 dark:text-gray-100">{title}</h1>
           )}
         </div>
         
