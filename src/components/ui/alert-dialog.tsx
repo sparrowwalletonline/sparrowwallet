@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
 
@@ -22,7 +21,8 @@ const AlertDialog = React.forwardRef<
     }
   }, [open, dialogId]);
 
-  return <AlertDialogPrimitive.Root ref={ref} open={open} onOpenChange={onOpenChange} {...props} />;
+  // Don't pass the ref directly to the Radix UI component
+  return <AlertDialogPrimitive.Root open={open} onOpenChange={onOpenChange} {...props} />;
 });
 AlertDialog.displayName = "AlertDialog";
 

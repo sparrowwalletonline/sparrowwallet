@@ -21,7 +21,8 @@ const Dialog = React.forwardRef<
     }
   }, [open, dialogId]);
 
-  return <DialogPrimitive.Root ref={ref} open={open} onOpenChange={onOpenChange} {...props} />;
+  // Don't pass the ref directly to the Radix UI component
+  return <DialogPrimitive.Root open={open} onOpenChange={onOpenChange} {...props} />;
 });
 Dialog.displayName = "Dialog";
 
