@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -304,7 +303,7 @@ const LandingPage = () => {
       <Header title="Sparrow Wallet" showMenuToggle={true} showProfileButton={false} />
       
       <div className="flex-1 flex flex-col">
-        <section className="py-8 px-6 relative overflow-hidden bg-white text-black">
+        <section className="py-8 px-6 pt-28 relative overflow-hidden bg-white text-black">
           <div className="absolute inset-0 bg-gradient-to-b from-white to-blue-50/30"></div>
           
           <div className="absolute inset-0 overflow-hidden z-0">
