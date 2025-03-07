@@ -1,11 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Header from '@/components/Header';
 import WalletLogo from '@/components/WalletLogo';
 import RegistrationForm from '@/components/auth/RegistrationForm';
 
@@ -154,11 +152,18 @@ const Register: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-white to-gray-50 register-page-container">
-      <Header title="Sparrow" showBack={true} className="bg-transparent shadow-none" showProfileButton={false} />
+      <div className="pt-4 px-4">
+        <button 
+          onClick={handleBackClick} 
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white/90 backdrop-blur-sm shadow-sm hover:shadow-md"
+        >
+          <ArrowLeft className="w-5 h-5 text-gray-700" />
+        </button>
+      </div>
       
       <div className="flex-1 flex flex-col items-center justify-center p-4">
         <motion.div className="w-full max-w-md space-y-8" initial="hidden" animate="visible" variants={containerVariants}>
-          <motion.div variants={itemVariants} className="text-center relative register-logo-container">
+          <motion.div variants={itemVariants} className="text-center relative">
             <motion.div className="mb-6 mx-auto" whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
               <WalletLogo useSparrowLogo={true} color="sparrow" className="w-20 h-20 mx-auto drop-shadow-md" />
             </motion.div>

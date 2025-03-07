@@ -37,13 +37,10 @@ const Header = ({
   const { activeWallet } = useWallet();
 
   // Don't show header on specific routes
-  const hideHeaderRoutes = ['/terms', '/passphrase', '/seed-phrase', '/seed-phrase-validation'];
+  const hideHeaderRoutes = ['/terms', '/passphrase', '/seed-phrase', '/seed-phrase-validation', '/register'];
   if (hideHeaderRoutes.includes(location.pathname)) {
     return null;
   }
-  
-  // Special style for register page
-  const isRegisterPage = location.pathname === '/register';
 
   const BackButton = () => (
     <button 
@@ -55,7 +52,7 @@ const Header = ({
   );
 
   return (
-    <div className={`fixed top-0 left-0 right-0 z-[9999] px-4 py-3 ${isRegisterPage ? 'pb-2' : 'pb-6'} flex justify-center`}>
+    <div className="fixed top-0 left-0 right-0 z-[9999] px-4 py-3 pb-6 flex justify-center">
       <header className={`flex items-center justify-between py-2.5 px-4 rounded-2xl bg-white/85 dark:bg-black/70 backdrop-blur-md border border-gray-200/50 dark:border-gray-800/50 shadow-lg w-full max-w-5xl ${className}`}>
         <div className="flex items-center gap-3">
           {showBack && (

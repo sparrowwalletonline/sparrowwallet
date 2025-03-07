@@ -76,7 +76,7 @@ function App() {
           <Router>
             <TutorialProvider>
               <SideMenu />
-              {/* Global Header Component */}
+              {/* Global Header Component - will be hidden on specific routes like register */}
               <Header 
                 title="Sparrow" 
                 showMenuToggle={true}
