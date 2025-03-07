@@ -12,7 +12,7 @@ const MenuContext = createContext<MenuContextType | undefined>(undefined);
 
 export const MenuProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // Hinzufügen eines Refs, um unbefugte Aktionen zu vermeiden
+  // Using a ref to prevent unauthorized actions
   const actionInProgress = useRef(false);
 
   const toggleMenu = useCallback(() => {
