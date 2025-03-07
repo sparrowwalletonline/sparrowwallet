@@ -63,7 +63,7 @@ const Header = ({
           )}
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {showTutorial && (
             <TutorialMenu />
           )}
@@ -80,7 +80,7 @@ const Header = ({
           
           {showProfileButton && <ThemeToggle />}
           {showProfileButton && <ProfileButton />}
-          <WalletLogo useSparrowLogo={true} className="w-8 h-8 ml-1" />
+          <WalletLogo useSparrowLogo={true} className="w-8 h-8 ml-2" />
         </div>
       </header>
     </div>
