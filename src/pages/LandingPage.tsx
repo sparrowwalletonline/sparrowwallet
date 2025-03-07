@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -412,6 +413,9 @@ const LandingPage = () => {
           </div>
         </section>
         
+        {/* Moved SupportedAssetsSection up to follow the hero section */}
+        <SupportedAssetsSection />
+        
         <section className="bg-gray-50 py-12">
           <div className="max-w-screen-xl mx-auto px-6 text-center">
             <h2 className="font-roboto text-4xl font-bold mb-8 text-black">Funktionen</h2>
@@ -446,12 +450,10 @@ const LandingPage = () => {
         </section>
         
         <FeaturesSection />
-        <SupportedAssetsSection />
-
+        
         <Footer />
       </div>
     </div>;
 };
 
 export default LandingPage;
-
