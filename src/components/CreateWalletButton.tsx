@@ -20,16 +20,17 @@ const CreateWalletButton = ({
   const navigate = useNavigate();
   const { session } = useWallet();
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent any default form submission
-    e.stopPropagation(); // Stop event propagation
+  // Completely rewritten click handler
+  const handleCreateWallet = () => {
+    console.log("CreateWalletButton clicked");
     
     if (session) {
       // If user is already logged in, go to wallet creation flow
+      console.log("User is logged in, navigating to wallet creation");
       navigate('/generate-wallet');
     } else {
-      // If not logged in, go to register page first - ensure direct navigation
-      console.log("Navigating to register page from CreateWalletButton");
+      // If not logged in, go to register page first
+      console.log("User is not logged in, navigating to register page");
       navigate('/register');
     }
   };
@@ -39,8 +40,8 @@ const CreateWalletButton = ({
       variant={variant}
       size={size}
       className={className}
-      onClick={handleClick}
-      type="button" // Explicitly set type to button to prevent form submission
+      onClick={handleCreateWallet}
+      type="button"
     >
       {children || "Create Wallet"}
     </Button>
