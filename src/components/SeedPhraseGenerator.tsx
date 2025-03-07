@@ -305,7 +305,7 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
         <Button 
           onClick={handleGenerateWallet} 
           variant="outline" 
-          className="flex-1 h-12 bg-white border-gray-200 text-gray-700 hover:bg-gray-50 shadow-sm"
+          className="flex-1 h-12 bg-white border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-gray-700 shadow-sm"
           disabled={isGenerating || isSaving || isLoading}
         >
           <RefreshCw 
@@ -317,7 +317,7 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
         <Button 
           onClick={handleCopy}
           variant="outline" 
-          className="flex-1 h-12 bg-white border-gray-200 text-gray-700 hover:bg-gray-50 shadow-sm"
+          className="flex-1 h-12 bg-white border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-gray-700 shadow-sm"
           disabled={!localSeedPhrase || localSeedPhrase.length < 12 || isGenerating || isSaving || isLoading}
         >
           <Copy className={`h-4 w-4 mr-2 ${copyAnimation ? 'text-green-500' : ''}`} />
@@ -329,7 +329,7 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
         <Button 
           onClick={handleSaveToSupabase}
           variant="outline" 
-          className="flex-1 h-12 bg-white border-gray-200 text-gray-700 hover:bg-gray-50 shadow-sm"
+          className="flex-1 h-12 bg-white border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-gray-700 shadow-sm"
           disabled={!localSeedPhrase || localSeedPhrase.length < 12 || isGenerating || isSaving || isLoading || !session}
         >
           <CloudUpload className={`h-4 w-4 mr-2 ${isSaving ? 'animate-pulse' : ''}`} />
@@ -339,7 +339,7 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
         <Button 
           onClick={handleLoadFromSupabase}
           variant="outline" 
-          className="flex-1 h-12 bg-white border-gray-200 text-gray-700 hover:bg-gray-50 shadow-sm"
+          className="flex-1 h-12 bg-white border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-gray-700 shadow-sm"
           disabled={isGenerating || isSaving || isLoading || !session}
         >
           <CloudDownload className={`h-4 w-4 mr-2 ${isLoading ? 'animate-pulse' : ''}`} />
