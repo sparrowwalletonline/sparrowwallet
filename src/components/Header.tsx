@@ -13,7 +13,7 @@ import { useTutorial } from '@/contexts/TutorialContext';
 import WalletLogo from './WalletLogo';
 
 const Header = ({ 
-  title = "Sparrow", 
+  title = "", 
   showBack = false, 
   showSettings = false, 
   className = "", 
@@ -63,7 +63,15 @@ const Header = ({
             <BackButton />
           )}
           
-          {shouldShowMenuToggle && (
+          {shouldShowMenuToggle ? (
+            <button 
+              onClick={toggleMenu} 
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white/90 backdrop-blur-sm dark:bg-gray-800/50 dark:hover:bg-gray-800/70 transition-all shadow-sm hover:shadow-md"
+              aria-label="Toggle menu"
+            >
+              <Menu className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+            </button>
+          ) : (
             <button 
               onClick={toggleMenu} 
               className="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white/90 backdrop-blur-sm dark:bg-gray-800/50 dark:hover:bg-gray-800/70 transition-all shadow-sm hover:shadow-md"
@@ -73,7 +81,7 @@ const Header = ({
             </button>
           )}
           
-          {title && (
+          {title && title.length > 0 && (
             <h1 className="text-lg font-medium text-gray-800 dark:text-gray-100">{title}</h1>
           )}
         </div>

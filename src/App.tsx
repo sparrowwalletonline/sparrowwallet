@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { Toaster } from "./components/ui/toaster";
@@ -41,23 +40,17 @@ import Header from "./components/Header";
 
 import "./App.css";
 
-// Authentication guard component - modified to check for hasWallet
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   const { session, requirePinVerification, pinVerified, hasWallet } = useWallet();
 
-  // First check if user has a session (logged in)
   if (!session) {
-    // Redirect to auth page if no session
     return <Navigate to="/auth" replace />;
   }
   
-  // Then check if user has a wallet
   if (!hasWallet) {
-    // Redirect to wallet choice if logged in but no wallet
     return <Navigate to="/wallet-intro" replace />;
   }
 
-  // Finally check if PIN verification is required
   if (requirePinVerification && !pinVerified) {
     return <PinVerification onSuccess={() => {}} />;
   }
@@ -66,7 +59,6 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
-  // Force light theme - never allow it to be changed
   const forceLightTheme = 'light';
   
   return (
@@ -76,9 +68,7 @@ function App() {
           <Router>
             <TutorialProvider>
               <SideMenu />
-              {/* Global Header Component - will be hidden on specific routes like register */}
               <Header 
-                title="Sparrow" 
                 showMenuToggle={true}
                 showProfileButton={true}
               />
