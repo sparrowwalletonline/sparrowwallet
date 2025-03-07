@@ -235,8 +235,8 @@ const LandingPage = () => {
                 </div>
                 
                 <p className="font-sans text-gray-600 dark:text-gray-300 text-lg max-w-lg z-10 relative mx-auto lg:mx-0">
-                  Sparrow is a Bitcoin wallet for those who value financial self sovereignty. 
-                  Now available as a secure, full-featured web application.
+                  Sparrow ist eine Bitcoin-Wallet für alle, die finanziell selbstbestimmt sein wollen. 
+                  Jetzt auch als sichere, vollständige Webanwendung verfügbar.
                 </p>
                 
                 <div className="flex flex-col space-y-3 pt-2 z-10 relative mx-auto lg:mx-0">
@@ -244,19 +244,19 @@ const LandingPage = () => {
                     <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
                       <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
                     </div>
-                    <span className="text-gray-700 dark:text-gray-300">Privacy-focused and open source</span>
+                    <span className="text-gray-700 dark:text-gray-300">Datenschutzorientiert und Open Source</span>
                   </div>
                   <div className="flex items-center gap-2 justify-center lg:justify-start">
                     <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
                       <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
                     </div>
-                    <span className="text-gray-700 dark:text-gray-300">Complete transaction control with coin selection</span>
+                    <span className="text-gray-700 dark:text-gray-300">Vollständige Transaktionskontrolle mit Coin-Auswahl</span>
                   </div>
                   <div className="flex items-center gap-2 justify-center lg:justify-start">
                     <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1">
                       <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
                     </div>
-                    <span className="text-gray-700 dark:text-gray-300">Self-custodial & secure</span>
+                    <span className="text-gray-700 dark:text-gray-300">Selbstverwahrend & sicher</span>
                   </div>
                 </div>
                 
@@ -598,4 +598,3 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
-
