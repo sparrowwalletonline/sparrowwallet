@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -13,25 +12,21 @@ import CreateWalletButton from '@/components/CreateWalletButton';
 import FeaturesSection from '@/components/FeaturesSection';
 import SupportedAssetsSection from '@/components/SupportedAssetsSection';
 import { fetchCryptoPrices, CryptoPrice } from '@/utils/cryptoPriceUtils';
-
 interface Testimonial {
   name: string;
   title: string;
   image: string;
   text: string;
 }
-
 interface FAQItemProps {
   question: string;
   answer: string;
 }
-
 interface SupportedFeatureProps {
   icon: React.ReactNode;
   title: string;
   description: string;
 }
-
 const LandingPage = () => {
   const {
     generateWallet,
@@ -46,7 +41,6 @@ const LandingPage = () => {
   const [cryptoData, setCryptoData] = useState<Record<string, CryptoPrice>>({});
   const [backgroundCryptos, setBackgroundCryptos] = useState<CryptoPrice[]>([]);
   const navigate = useNavigate();
-
   useEffect(() => {
     const loadCryptoData = async () => {
       try {
@@ -59,15 +53,12 @@ const LandingPage = () => {
     };
     loadCryptoData();
   }, []);
-
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
-
   const handleMenuClick = () => {
     toggleMenu();
   };
-
   const handleRegisterClick = async () => {
     setIsLoading(true);
     try {
@@ -96,7 +87,6 @@ const LandingPage = () => {
       setIsLoading(false);
     }
   };
-
   const handleLoginClick = async () => {
     setIsLoading(true);
     try {
@@ -127,11 +117,9 @@ const LandingPage = () => {
       setIsLoading(false);
     }
   };
-
   const handleWalletAccess = () => {
     navigate('/wallet');
   };
-
   const FeatureCard = ({
     icon,
     title,
@@ -147,7 +135,6 @@ const LandingPage = () => {
         <p className="text-gray-600 text-sm dark:text-gray-400">{description}</p>
       </div>;
   };
-
   const SecurityCard = ({
     icon,
     title,
@@ -163,7 +150,6 @@ const LandingPage = () => {
         <p className="text-gray-600 text-sm text-center dark:text-gray-400">{description}</p>
       </div>;
   };
-
   const AssetCard = ({
     image,
     name,
@@ -195,7 +181,6 @@ const LandingPage = () => {
         </div>
       </div>;
   };
-
   const StepCard = ({
     number,
     title,
@@ -215,7 +200,6 @@ const LandingPage = () => {
         </div>
       </div>;
   };
-
   const TestimonialCard = ({
     name,
     title,
@@ -233,7 +217,6 @@ const LandingPage = () => {
         <p className="text-gray-600 dark:text-gray-400">{text}</p>
       </div>;
   };
-
   const FAQItem = ({
     question,
     answer
@@ -253,7 +236,6 @@ const LandingPage = () => {
         </div>
       </div>;
   };
-
   const SupportedFeature = ({
     icon,
     title,
@@ -269,7 +251,6 @@ const LandingPage = () => {
         </div>
       </div>;
   };
-
   const CryptoBackgroundIcon = ({
     image,
     index
@@ -297,15 +278,14 @@ const LandingPage = () => {
         </div>
       </div>;
   };
-
   console.log("Rendering LandingPage component");
   return <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
-      <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm bg-white/70 dark:bg-black/20 sticky top-0 z-40">
+      <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm bg-white/70 dark:bg-black/20 sticky top-0 z-40 py-[10px]">
         <div className="flex items-center gap-2">
           <WalletLogo className="w-7 h-7" useSparrowLogo={true} color="sparrow" animate={true} />
           <div>
-            <span className="font-heading text-lg font-bold">Sparrow Wallet</span>
-            <p className="text-xs text-gray-600 dark:text-gray-400 -mt-1">Bitcoin Wallet for Desktop & Web</p>
+            
+            
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -455,5 +435,4 @@ const LandingPage = () => {
       </div>
     </div>;
 };
-
 export default LandingPage;
