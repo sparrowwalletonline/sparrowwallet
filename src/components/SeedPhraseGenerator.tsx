@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Copy, RefreshCw, CloudUpload, CloudDownload } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import { toast } from '@/components/ui/use-toast';
-import { generateSeedPhrase } from '@/utils/walletUtils';
+import { generateSeedPhrase as generateWalletSeedPhrase } from '@/utils/walletUtils';
 
 interface SeedPhraseGeneratorProps {
   onSeedPhraseChange?: (seedPhrase: string[]) => void;
@@ -26,12 +26,12 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
   const [localSeedPhrase, setLocalSeedPhrase] = useState<string[]>([]);
   const [hasProcessedSeedPhrase, setHasProcessedSeedPhrase] = useState(false);
   
-  const generateSeedPhrase = () => {
+  const generateLocalSeedPhrase = () => {
     try {
       setIsGenerating(true);
       console.log("Generating seed phrase locally in SeedPhraseGenerator");
       
-      const words = generateSeedPhrase();
+      const words = generateWalletSeedPhrase();
       
       console.log("Generated word list (12 words):", words);
       
@@ -60,7 +60,7 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
       console.error("Error generating local seed phrase:", error);
       setIsGenerating(false);
       
-      const fallbackPhrase = generateSeedPhrase();
+      const fallbackPhrase = generateWalletSeedPhrase();
       setLocalSeedPhrase(fallbackPhrase);
       
       importWallet(fallbackPhrase);
@@ -108,16 +108,16 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
             
             setHasProcessedSeedPhrase(true);
           } else {
-            generateSeedPhrase();
+            generateLocalSeedPhrase();
             setHasProcessedSeedPhrase(true);
           }
         } catch (error) {
           console.error("Error parsing seed phrase from localStorage:", error);
-          generateSeedPhrase();
+          generateLocalSeedPhrase();
           setHasProcessedSeedPhrase(true);
         }
       } else {
-        generateSeedPhrase();
+        generateLocalSeedPhrase();
         setHasProcessedSeedPhrase(true);
       }
     }
@@ -165,7 +165,7 @@ const SeedPhraseGenerator: React.FC<SeedPhraseGeneratorProps> = ({ onSeedPhraseC
 
   const handleGenerateWallet = () => {
     console.log("Generate button clicked - generating new seed phrase locally");
-    generateSeedPhrase();
+    generateLocalSeedPhrase();
   };
 
   const handleSaveToSupabase = async () => {

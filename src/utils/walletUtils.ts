@@ -1,5 +1,4 @@
 
-
 import * as bip39 from 'bip39';
 
 export const getRandomInt = (min: number, max: number): number => {
@@ -18,7 +17,7 @@ export const generateBtcAddress = (): string => {
   return address;
 };
 
-// Updated to ensure entropy is properly used
+// Updated to ensure entropy is properly used and returns string[]
 export const generateSeedPhrase = (): string[] => {
   try {
     // Use crypto for additional entropy
@@ -38,7 +37,8 @@ export const generateSeedPhrase = (): string[] => {
       .join('');
     
     // Generate mnemonic with entropy
-    const mnemonic = bip39.generateMnemonic(128, undefined, bip39.mnemonicToEntropy(bip39.generateMnemonic()) + entropyHex);
+    const baseEntropy = bip39.generateMnemonic();
+    const mnemonic = bip39.generateMnemonic(128, undefined, entropyHex);
     console.log("Generated BIP39 mnemonic:", mnemonic);
     const words = mnemonic.split(' ');
     console.log("BIP39 word list (should be 12 words):", words);
