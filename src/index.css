@@ -1,189 +1,257 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
- 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
- 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
- 
+    --background: 210 40% 98%;
+    --foreground: 220 13% 10%;
+    
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
- 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
- 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
- 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
- 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
- 
+    --card-foreground: 215 14% 15%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 14% 15%;
+    
+    --primary: 140 100% 40%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 210 10% 96%;
+    --secondary-foreground: 215 14% 15%;
+    
+    --muted: 210 10% 92%;
+    --muted-foreground: 215 14% 35%;
+    
+    --accent: 140 100% 40%;
+    --accent-foreground: 0 0% 100%;
+    
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
- 
-    --ring: 215 20.2% 65.1%;
- 
-    --radius: 0.5rem;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 220 13% 88%;
+    --input: 220 13% 88%;
+    --ring: 140 100% 40%;
+
+    --radius: 0.75rem;
   }
- 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
- 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
- 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
- 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
- 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
- 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
- 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
- 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
- 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 85.7% 97.3%;
- 
-    --ring: 217.2 32.6% 17.5%;
+
+  html {
+    -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape on iOS */
+    touch-action: manipulation; /* Prevent double-tap to zoom on iOS */
+    height: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 100vh;
+    /* Mobile viewport fix */
+    min-height: -webkit-fill-available;
+    color-scheme: light;  /* Force light color scheme */
+    height: 100%;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    width: 100%;
+    position: relative;
+  }
+  
+  /* Safari mobile viewport height fix */
+  @supports (-webkit-touch-callout: none) {
+    body, .min-h-screen {
+      min-height: -webkit-fill-available;
+    }
+    
+    .safe-area-inset-bottom {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+  }
+
+  /* Improve form elements on mobile */
+  input, select, textarea, button {
+    font-size: 16px; /* Prevents iOS zooming on input focus */
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0; /* Removes iOS default styling */
+  }
+
+  /* Better touch targets for mobile */
+  button, a, [role="button"] {
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+  
+  /* Fix iOS Safari 100vh issue */
+  .min-h-screen {
+    height: 100vh; /* Fallback */
+    height: calc(var(--vh, 1vh) * 100);
   }
 }
- 
-@layer base {
-  * {
-    @apply border-border;
+
+/* Page transition animations */
+.page-enter {
+  animation: page-enter 0.5s ease forwards;
+}
+
+.page-exit {
+  animation: page-exit 0.3s ease forwards;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes page-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+}
+
+/* New page transitions for the PageTransition component */
+.page-transition-fadeIn {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.page-transition-fadeOut {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+/* Light theme-specific styles for components */
+.personal-data-form {
+  @apply bg-white text-gray-800 border-gray-200;
+}
+
+/* Theme-specific styling overrides to ensure light mode */
+.wallet-card {
+  background: #FFFFFF;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.clipboard-animation {
+  animation: clipboard-copy 1.5s ease;
+}
+
+@keyframes clipboard-copy {
+  0% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(-10px); opacity: 0; }
+  51% { transform: translateY(10px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.slide-transition {
+  transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+}
+
+.glass-morph {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(200, 200, 200, 0.4);
+}
+
+@keyframes pulse {
+  0% {
+    filter: drop-shadow(0 0 5px rgba(0, 255, 95, 0.5));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(0, 255, 95, 0.9));
+    transform: scale(1.05);
+  }
+  100% {
+    filter: drop-shadow(0 0 5px rgba(0, 255, 95, 0.5));
+    transform: scale(1);
+  }
+}
+
+/* Make wallet-balance-wrapper transparent in light theme */
+.wallet-balance-wrapper {
+  @apply bg-transparent text-card-foreground;
+}
+
+.crypto-action-button {
+  @apply bg-gray-100 text-gray-700;
+}
+
+/* Dialog content theme-specific styles */
+.dialog-content {
+  @apply bg-white border-gray-200 text-gray-800;
+}
+
+/* Add theme-specific styling for tabs */
+[data-state="active"].tabs-trigger {
+  @apply bg-white text-gray-800;
+}
+
+@media (max-width: 640px) {
+  .wallet-card {
+    padding: 0.75rem;
+    border-radius: 0.75rem;
   }
   
-  html {
-    -webkit-text-size-adjust: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    width: 100%;
+  .glass-morph, .light .glass-morph {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
+
+/* Fix for visibility issues */
+.landing-page-content * {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Additional iOS fixes */
+@media screen and (max-width: 844px) {
+  /* iPhone-specific adjustments */
+  .container {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
   }
   
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-    overscroll-behavior: none;
-    height: 100%;
-    min-height: 100vh;
-    width: 100%;
-    min-height: -webkit-fill-available;
-    min-height: calc(var(--vh, 1vh) * 100);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    position: relative;
-  }
-  
-  #root {
-    height: 100%;
-    min-height: 100vh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    min-height: -webkit-fill-available;
-    min-height: calc(var(--vh, 1vh) * 100);
-  }
-  
-  /* iOS Safari specific height */
-  @supports (-webkit-touch-callout: none) {
-    html, body, #root {
-      height: 100%;
-      min-height: 100vh;
-      min-height: -webkit-fill-available;
-      min-height: calc(var(--vh, 1vh) * 100);
-      width: 100%;
-    }
-    
-    body {
-      /* Prevent pull-to-refresh and overscroll on iOS */
-      overscroll-behavior-y: none;
-      position: fixed;
-      width: 100%;
-      /* Force hardware acceleration */
-      -webkit-transform: translateZ(0);
-      -webkit-backface-visibility: hidden;
-    }
-    
-    #root {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-  }
-  
-  /* Fix for iOS safe area */
-  .safe-area-inset-bottom {
+  .bottom-nav {
     padding-bottom: env(safe-area-inset-bottom);
   }
-}
-
-/* Safari-compatible ticker background */
-.ticker-background {
-  background: linear-gradient(to right, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
-}
-
-@supports (-webkit-touch-callout: none) {
-  .ticker-background {
-    /* Solid fallback for Safari */
-    background-color: rgba(255, 255, 255, 0.95) !important;
-  }
   
-  /* Add this to force visibility in mobile Safari */
-  .page-enter {
-    opacity: 1 !important;
-    transform: none !important;
+  .ios-scroll-fix {
+    -webkit-overflow-scrolling: touch;
   }
-  
-  /* Ensure all content is visible */
-  body * {
-    -webkit-transform: translateZ(0);
-  }
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.ticker-scroll::-webkit-scrollbar {
-  display: none;
-}
-
-/* Smooth scroll behavior for ticker */
-.ticker-scroll {
-  -ms-overflow-style: none;  /* Internet Explorer and Edge */
-  scrollbar-width: none;  /* Firefox */
-  scroll-behavior: smooth;
-}
-
-/* Add subtle shadow to ticker items for depth */
-.ticker-scroll > div {
-  position: relative;
-  transition: transform 0.2s ease;
-}
-
-.ticker-scroll > div:hover {
-  transform: translateY(-1px);
 }

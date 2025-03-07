@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>Sparrow</title>
     <meta name="description" content="Sparrow - Your Secure Digital Wallet" />
     <meta name="author" content="Sparrow" />
@@ -19,32 +19,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Sparrow Wallet">
-    
-    <!-- iOS Safari specific additions -->
-    <meta name="format-detection" content="telephone=no">
-    <meta name="format-detection" content="date=no">
-    <meta name="format-detection" content="address=no">
-    <meta name="format-detection" content="email=no">
-    
-    <!-- Ensure proper rendering and touch zooming -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
-    <!-- Preload critical assets -->
-    <link rel="preload" href="/src/index.css" as="style">
-    
-    <!-- Additional meta tags for iOS -->
-    <meta name="apple-touch-fullscreen" content="yes">
-    
-    <!-- Prevent auto zoom on input fields on iOS -->
-    <style>
-      input, select, textarea {
-        font-size: 16px !important;
-      }
-      /* Initial opacity zero to prevent FOUC */
-      body {
-        opacity: 0.01;
-      }
-    </style>
   </head>
 
   <body>
@@ -52,14 +26,5 @@
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
-    <!-- Force initial render -->
-    <script>
-      // Show content once loaded
-      window.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-          document.body.style.opacity = 1;
-        }, 10);
-      });
-    </script>
   </body>
 </html>
