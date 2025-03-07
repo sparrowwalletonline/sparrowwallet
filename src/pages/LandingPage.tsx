@@ -289,7 +289,7 @@ const LandingPage = () => {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={handleMenuClick} className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" aria-label="Open menu">
+          <button onClick={handleMenuClick} aria-label="Open menu" className="flex items-center justify-center w-10 h-10 rounded-full text-gray-800 dark:text-gray-200 transition-colors bg-slate-900 hover:bg-slate-800">
             <Menu className="w-5 h-5 cursor-pointer" />
           </button>
         </div>
