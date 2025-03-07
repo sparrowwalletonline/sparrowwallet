@@ -268,16 +268,14 @@ const LandingPage = () => {
           
           <div className="max-w-screen-xl mx-auto relative z-10">
             <div className="text-center mb-16">
-              <h2 className="font-roboto text-6xl md:text-8xl font-bold mb-4 text-center">
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <div className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <h2 className="font-roboto text-6xl md:text-8xl font-bold mb-4 text-center">
                   Sicher
-                </span>
-              </h2>
-              <p className="text-3xl md:text-4xl font-roboto font-bold mb-8">
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Einfach.</span> 
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Bitcoin</span> 
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">für jeden.</span>
-              </p>
+                </h2>
+                <p className="text-6xl md:text-6xl font-roboto font-bold mb-8">
+                  Einfach. Bitcoin für jeden.
+                </p>
+              </div>
               <p className="text-gray-600 max-w-2xl mx-auto bg-gradient-to-r from-blue-600/70 to-purple-600/70 bg-clip-text text-transparent font-medium">
                 Sparrow ist eine Bitcoin-Wallet für alle, die finanziell selbstbestimmt sein wollen. 
                 Jetzt auch als sichere, vollständige Webanwendung verfügbar.
