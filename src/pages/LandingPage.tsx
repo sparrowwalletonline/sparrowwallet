@@ -335,61 +335,49 @@ const LandingPage = () => {
           
           <div className="max-w-screen-xl mx-auto relative z-10">
             <div className="text-center mb-16">
-              <div className="relative inline-block">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 blur-3xl -z-10 rounded-full transform translate-y-4"></div>
-                <div className="relative">
-                  <h2 className="font-roboto text-6xl md:text-8xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 drop-shadow-sm">
-                    Sicher.
-                  </h2>
-                  <p className="font-roboto text-6xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600">
-                    Einfach.
-                  </p>
-                  <p className="font-roboto text-6xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
-                    Schnell.
-                  </p>
-                </div>
+              <div className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <h2 className="font-roboto text-6xl md:text-8xl font-bold mb-0 text-center">
+                  Sicher.
+                </h2>
+                <p className="font-roboto text-6xl md:text-6xl font-bold mt-0 mb-0">
+                  Einfach.
+                </p>
+                <p className="font-roboto text-6xl md:text-6xl font-bold mt-0 mb-8">
+                  Schnell.
+                </p>
               </div>
-              <p className="text-black max-w-2xl mx-auto font-medium mt-8">
+              <p className="text-black max-w-2xl mx-auto font-medium">
                 Sparrow ist eine Bitcoin-Wallet für alle, die finanziell selbstbestimmt sein wollen. 
                 Jetzt auch als sichere, vollständige Webanwendung verfügbar.
               </p>
             </div>
             
-            <div className="flex flex-col md:flex-row gap-8 max-w-5xl mx-auto mb-12">
-              <div className="flex items-center gap-4 bg-white/80 p-5 rounded-lg shadow-sm hover:shadow-md transition-all">
-                <div className="shrink-0 w-16 h-16 bg-blue-50 flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-blue-500/20">
+            <div className="grid grid-cols-3 md:grid-cols-3 gap-6 justify-center max-w-4xl mx-auto mb-16">
+              <div className="flex flex-col items-center">
+                <div className="w-16 h-16 bg-blue-50 flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-blue-500/20">
                   <div className="transform -rotate-45 flex items-center justify-center w-full h-full">
                     <Shield className="h-8 w-8 text-blue-600" />
                   </div>
                 </div>
-                <div>
-                  <span className="text-lg font-medium text-black">Sicher</span>
-                  <p className="text-sm text-gray-600 mt-1">Volle Kontrolle über deine privaten Schlüssel</p>
-                </div>
+                <span className="mt-2 text-sm text-black font-medium">Sicher</span>
               </div>
               
-              <div className="flex items-center gap-4 bg-white/80 p-5 rounded-lg shadow-sm hover:shadow-md transition-all">
-                <div className="shrink-0 w-16 h-16 bg-purple-50 flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-purple-500/20">
+              <div className="flex flex-col items-center">
+                <div className="w-16 h-16 bg-purple-50 flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-purple-500/20">
                   <div className="transform -rotate-45 flex items-center justify-center w-full h-full">
                     <Key className="h-8 w-8 text-purple-600" />
                   </div>
                 </div>
-                <div>
-                  <span className="text-lg font-medium text-black">Privat</span>
-                  <p className="text-sm text-gray-600 mt-1">Deine Daten gehören nur dir</p>
-                </div>
+                <span className="mt-2 text-sm text-black font-medium">Privat</span>
               </div>
               
-              <div className="flex items-center gap-4 bg-white/80 p-5 rounded-lg shadow-sm hover:shadow-md transition-all">
-                <div className="shrink-0 w-16 h-16 bg-green-50 flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-green-500/20">
+              <div className="flex flex-col items-center">
+                <div className="w-16 h-16 bg-green-50 flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-green-500/20">
                   <div className="transform -rotate-45 flex items-center justify-center w-full h-full">
                     <Zap className="h-8 w-8 text-green-600" />
                   </div>
                 </div>
-                <div>
-                  <span className="text-lg font-medium text-black">Schnell</span>
-                  <p className="text-sm text-gray-600 mt-1">Blitzschnelle Transaktionen</p>
-                </div>
+                <span className="mt-2 text-sm text-black font-medium">Schnell</span>
               </div>
             </div>
             
