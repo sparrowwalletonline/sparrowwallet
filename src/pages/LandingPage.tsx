@@ -320,7 +320,7 @@ const LandingPage = () => {
       </header>
       
       <div className="flex-1 flex flex-col">
-        <section className="py-24 px-6 relative overflow-hidden bg-white text-black">
+        <section className="py-12 px-6 relative overflow-hidden bg-white text-black">
           <div className="absolute inset-0 bg-gradient-to-b from-white to-blue-50/30"></div>
           
           <div className="absolute inset-0 overflow-hidden z-0">
@@ -356,7 +356,7 @@ const LandingPage = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-3 md:grid-cols-3 gap-6 justify-center max-w-4xl mx-auto mb-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
               <div className="flex flex-col items-center">
                 <div className="w-16 h-16 bg-blue-50 flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-blue-500/20">
                   <div className="transform -rotate-45 flex items-center justify-center w-full h-full">
