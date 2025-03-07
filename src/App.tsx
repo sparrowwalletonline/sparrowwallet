@@ -1,5 +1,4 @@
 
-
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { Toaster } from "./components/ui/toaster";
@@ -90,18 +89,10 @@ function AppContent() {
     '/seed-phrase-validation', 
     '/register',
     '/profile-settings',
-    '/app-settings',
-    '/wallet',
-    '/wallet/crypto/'
+    '/app-settings'
   ];
   
-  // Update the shouldHideHeader logic to work with path patterns
-  const shouldHideHeader = hideHeaderRoutes.some(route => {
-    if (route.endsWith('/')) {
-      return location.pathname.startsWith(route);
-    }
-    return location.pathname === route || location.pathname.startsWith(route + '/');
-  });
+  const shouldHideHeader = hideHeaderRoutes.includes(location.pathname);
   
   return (
     <>
