@@ -542,4 +542,42 @@ button, a {
   backface-visibility: hidden;
 }
 
-/* ... keep existing code (all remaining CSS rules) */
+.wallet-header h1 {
+  display: inline-block;
+  position: relative;
+}
+
+.wallet-header button {
+  transition: all 0.2s ease;
+}
+
+.wallet-header button:hover {
+  transform: translateY(-1px);
+}
+
+/* Updated header styling */
+.wallet-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  will-change: transform;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.wallet-header h1 {
+  display: inline-block;
+  position: relative;
+}
+
+.wallet-header button {
+  transition: all 0.2s ease;
+}
+
+.wallet-header button:hover {
+  transform: translateY(-1px);
+}

@@ -29,23 +29,27 @@ const WalletInfoButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="w-10 h-10 rounded-full bg-gray-50 hover:bg-gray-100 dark:bg-gray-800/50 dark:hover:bg-gray-700/50 transition-all text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+        >
           <CircleDollarSign className="h-5 w-5" />
           <span className="sr-only">Wallet Info</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <div className="px-2 py-1.5">
+      <DropdownMenuContent align="end" className="rounded-xl border border-gray-100 shadow-lg dark:border-gray-800">
+        <div className="px-3 py-2">
           <p className="text-sm font-medium">Wallet Details</p>
           <p className="text-xs text-muted-foreground">{activeWallet?.name}</p>
         </div>
         <DropdownMenuSeparator />
-        <div className="px-2 py-1.5">
+        <div className="px-3 py-2">
           <p className="text-xs text-muted-foreground truncate max-w-[200px]">
             {activeWallet?.walletAddress}
           </p>
         </div>
-        <DropdownMenuItem onClick={handleCopyAddress}>
+        <DropdownMenuItem onClick={handleCopyAddress} className="rounded-md mx-1 my-1 cursor-pointer">
           <Copy className="mr-2 h-4 w-4" />
           <span>Copy Address</span>
         </DropdownMenuItem>
