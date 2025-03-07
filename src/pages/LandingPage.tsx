@@ -1,3 +1,4 @@
+<lov-code>
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -11,6 +12,46 @@ import Footer from '@/components/Footer';
 import CreateWalletButton from '@/components/CreateWalletButton';
 import FeaturesSection from '@/components/FeaturesSection';
 import SupportedAssetsSection from '@/components/SupportedAssetsSection';
+
+interface FeatureCardProps {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}
+
+interface SecurityCardProps {
+  title: string;
+  description: string;
+}
+
+interface AssetCardProps {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  color: string;
+}
+
+interface StepCardProps {
+  number: string;
+  title: string;
+  description: string;
+}
+
+interface TestimonialCardProps {
+  quote: string;
+  author: string;
+  role: string;
+}
+
+interface FAQItemProps {
+  question: string;
+  answer: string;
+}
+
+interface SupportedFeatureProps {
+  label: string;
+  supported: boolean;
+}
 
 const LandingPage = () => {
   const { generateWallet, hasWallet, session } = useWallet();
@@ -261,7 +302,7 @@ const LandingPage = () => {
                   </div>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-4 pt-4 z-10 relative justify-center lg:justify-start">
+                <div className="flex flex-col sm:flex-row gap-4 pt-4 z-10 relative mx-auto lg:mx-0">
                   {session ? (
                     <Button 
                       onClick={handleWalletAccess} 
@@ -354,12 +395,12 @@ const LandingPage = () => {
               <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 dark:from-blue-500/20 dark:to-indigo-500/20 rounded-2xl mb-6 backdrop-blur-sm border border-blue-100/30 dark:border-blue-400/10 transform transition-all duration-300 hover:scale-105">
                 <Shield className="h-10 w-10 text-blue-600 dark:text-blue-400" />
               </div>
-              <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6">
+              <h2 className="font-roboto text-4xl md:text-5xl font-bold mb-6">
                 Sicherheit der du vertrauen kannst, 
                 <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"> Einfachheit </span> 
                 die du lieben wirst
               </h2>
-              <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-lg leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-lg leading-relaxed font-roboto">
                 Sparrow Wallet kombiniert branchenführende Sicherheit mit intuitivem Design und macht es zur perfekten Wallet für Anfänger und fortgeschrittene Bitcoin-Nutzer.
               </p>
             </div>
@@ -477,127 +518,4 @@ const LandingPage = () => {
                 <Button 
                   onClick={handleRegisterClick} 
                   disabled={isLoading} 
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-lg font-medium px-[15px]"
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                      Loading...
-                    </>
-                  ) : (
-                    <>Jetzt registrieren</>
-                  )}
-                </Button>
-              )}
-            </div>
-          </div>
-        </section>
-        
-        <FeaturesSection />
-        
-        <SupportedAssetsSection />
-        
-        <section className="py-20 px-6 my-12">
-          <div className="max-w-screen-xl mx-auto rounded-3xl overflow-hidden bg-gradient-to-r from-indigo-500/5 to-purple-500/5 dark:from-indigo-900/20 dark:to-purple-900/20 backdrop-blur-sm border border-gray-100 dark:border-gray-800 shadow-lg">
-            <div className="py-16 px-6">
-              <div className="max-w-3xl mx-auto">
-                <div className="text-center mb-12">
-                  <h2 className="font-heading text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-wallet-blue to-indigo-600 bg-clip-text text-transparent">Bitcoin Überall</h2>
-                  <p className="text-gray-600 dark:text-gray-300 text-lg">
-                    Übernimm die Kontrolle über deine Bitcoin mit einer leistungsstarken Wallet für Anfänger und Experten.
-                  </p>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  <div className="p-6 rounded-xl bg-white/80 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col items-center text-center transition-all hover:shadow-md hover:-translate-y-1">
-                    <div className="w-12 h-12 mb-4 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-wallet-blue">
-                      <Globe className="w-6 h-6" />
-                    </div>
-                    <h3 className="font-semibold text-lg mb-2">Globaler Zugriff</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
-                      Greife von überall auf deine Bitcoin zu mit unserer sicheren Weboberfläche
-                    </p>
-                  </div>
-                  
-                  <div className="p-6 rounded-xl bg-white/80 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col items-center text-center transition-all hover:shadow-md hover:-translate-y-1">
-                    <div className="w-12 h-12 mb-4 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
-                      <Lock className="w-6 h-6" />
-                    </div>
-                    <h3 className="font-semibold text-lg mb-2">Selbstverwahrung</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
-                      Behalte die Kontrolle mit Schlüsseln, die dein Gerät niemals verlassen
-                    </p>
-                  </div>
-                  
-                  <div className="p-6 rounded-xl bg-white/80 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col items-center text-center transition-all hover:shadow-md hover:-translate-y-1">
-                    <div className="w-12 h-12 mb-4 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
-                      <Zap className="w-6 h-6" />
-                    </div>
-                    <h3 className="font-semibold text-lg mb-2">Volle Kontrolle</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
-                      Verwalte deine UTXOs mit erweiterten Coin-Auswahlfunktionen
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="mt-12 text-center">
-                  {session ? (
-                    <Button 
-                      onClick={handleWalletAccess}
-                      className="bg-wallet-blue hover:bg-wallet-darkBlue text-white py-3 px-8"
-                    >
-                      {hasWallet ? "Auf Wallet Zugreifen" : "Wallet Erstellen"}
-                    </Button>
-                  ) : (
-                    <Button 
-                      onClick={handleRegisterClick} 
-                      disabled={isLoading} 
-                      className="bg-wallet-blue hover:bg-wallet-darkBlue text-white py-3 px-8"
-                    >
-                      {isLoading ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Loading...
-                        </>
-                      ) : (
-                        <>Sparrow Jetzt Nutzen</>
-                      )}
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        <section className="py-20 px-6 bg-white dark:bg-wallet-card my-12 rounded-3xl mx-6">
-          <div className="max-w-screen-xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="font-heading text-3xl font-bold mb-4">Datenschutz & Sicherheit im Fokus</h2>
-              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Sparrow Wallet wurde mit Schwerpunkt auf deinen Datenschutz und deine Sicherheit entwickelt.
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <FeatureCard icon={<Shield className="h-6 w-6" />} title="Selbstverwahrung" description="Sparrow gibt dir die volle Kontrolle über deine Bitcoin. Deine Schlüssel verlassen niemals dein Gerät." />
-              <FeatureCard icon={<Eye className="h-6 w-6" />} title="Datenschutzorientiert" description="Verbinde dich mit deinem eigenen Node für maximalen Datenschutz oder nutze öffentliche Electrum-Server." />
-              <FeatureCard icon={<Globe className="h-6 w-6" />} title="Open Source" description="Der gesamte Code ist Open Source und kann von der Community überprüft werden." />
-              <FeatureCard icon={<Users className="h-6 w-6" />} title="Coin-Kontrolle" description="Erweiterte Coin-Auswahl ermöglicht dir, Privatsphäre mit UTXO-Management zu bewahren." />
-              <FeatureCard icon={<Smartphone className="h-6 w-6" />} title="Hardware-Support" description="Funktioniert mit den wichtigsten Hardware-Wallets für erhöhte Sicherheit." />
-              <FeatureCard icon={<Sparkles className="h-6 w-6" />} title="Online-Zugriff" description="Jetzt online verfügbar mit den gleichen leistungsstarken Funktionen wie die Desktop-App." />
-            </div>
-          </div>
-        </section>
-      </div>
-      
-      <Footer />
-      
-      <div className="hidden">
-        <CreateWalletButton />
-      </div>
-    </div>
-  );
-};
-
-export default LandingPage;
+                  className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-
