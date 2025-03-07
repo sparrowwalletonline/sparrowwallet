@@ -318,6 +318,7 @@ const LandingPage = () => {
                 <Button 
                   onClick={handleWalletAccess} 
                   className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  type="button"
                 >
                   {hasWallet ? "Auf Wallet Zugreifen" : "Wallet Erstellen"} <ArrowRight className="h-4 w-4" />
                 </Button>
@@ -398,6 +399,7 @@ const LandingPage = () => {
                 <Button 
                   onClick={handleWalletAccess} 
                   className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  type="button"
                 >
                   {hasWallet ? "Auf Wallet Zugreifen" : "Wallet Erstellen"} <ArrowRight className="h-4 w-4" />
                 </Button>
