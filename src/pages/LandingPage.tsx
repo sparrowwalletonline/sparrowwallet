@@ -12,34 +12,35 @@ import CreateWalletButton from '@/components/CreateWalletButton';
 import FeaturesSection from '@/components/FeaturesSection';
 import SupportedAssetsSection from '@/components/SupportedAssetsSection';
 import { fetchCryptoPrices, CryptoPrice } from '@/utils/cryptoPriceUtils';
-
 interface Testimonial {
   name: string;
   title: string;
   image: string;
   text: string;
 }
-
 interface FAQItemProps {
   question: string;
   answer: string;
 }
-
 interface SupportedFeatureProps {
   icon: React.ReactNode;
   title: string;
   description: string;
 }
-
 const LandingPage = () => {
-  const { generateWallet, hasWallet, session } = useWallet();
-  const { toggleMenu } = useMenu();
+  const {
+    generateWallet,
+    hasWallet,
+    session
+  } = useWallet();
+  const {
+    toggleMenu
+  } = useMenu();
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [cryptoData, setCryptoData] = useState<Record<string, CryptoPrice>>({});
   const [backgroundCryptos, setBackgroundCryptos] = useState<CryptoPrice[]>([]);
   const navigate = useNavigate();
-  
   useEffect(() => {
     const loadCryptoData = async () => {
       try {
@@ -52,75 +53,73 @@ const LandingPage = () => {
     };
     loadCryptoData();
   }, []);
-  
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
-
   const handleMenuClick = () => {
     toggleMenu();
   };
-
   const handleRegisterClick = async () => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const {
+        data,
+        error
+      } = await supabase.auth.signUp({
         email: `${Math.random().toString(36).substring(2, 15)}@example.com`,
-        password: Math.random().toString(36).substring(2, 15),
+        password: Math.random().toString(36).substring(2, 15)
       });
-
       if (error) {
         console.error("Error signing up:", error);
         toast({
           title: "Fehler",
           description: "Es gab einen Fehler bei der Registrierung. Bitte versuche es später noch einmal.",
-          variant: "destructive",
+          variant: "destructive"
         });
       } else {
         console.log("Sign up successful:", data);
         toast({
           title: "Konto erstellt!",
-          description: "Bitte bestätige deine E-Mail-Adresse, um fortzufahren.",
+          description: "Bitte bestätige deine E-Mail-Adresse, um fortzufahren."
         });
       }
     } finally {
       setIsLoading(false);
     }
   };
-
   const handleLoginClick = async () => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const {
+        data,
+        error
+      } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/wallet`,
+          redirectTo: `${window.location.origin}/wallet`
         }
       });
-
       if (error) {
         console.error("Error signing in with Google:", error);
         toast({
           title: "Fehler",
           description: "Es gab einen Fehler beim Anmelden mit Google. Bitte versuche es später noch einmal.",
-          variant: "destructive",
+          variant: "destructive"
         });
       } else {
         console.log("Sign in with Google initiated:", data);
         toast({
           title: "Anmeldung wird durchgeführt",
-          description: "Du wirst nun zu Google weitergeleitet, um dich anzumelden.",
+          description: "Du wirst nun zu Google weitergeleitet, um dich anzumelden."
         });
       }
     } finally {
       setIsLoading(false);
     }
   };
-
   const handleWalletAccess = () => {
     navigate('/wallet');
   };
-  
   const FeatureCard = ({
     icon,
     title,
@@ -136,7 +135,6 @@ const LandingPage = () => {
         <p className="text-gray-600 text-sm dark:text-gray-400">{description}</p>
       </div>;
   };
-  
   const SecurityCard = ({
     icon,
     title,
@@ -152,7 +150,6 @@ const LandingPage = () => {
         <p className="text-gray-600 text-sm text-center dark:text-gray-400">{description}</p>
       </div>;
   };
-  
   const AssetCard = ({
     image,
     name,
@@ -184,7 +181,6 @@ const LandingPage = () => {
         </div>
       </div>;
   };
-  
   const StepCard = ({
     number,
     title,
@@ -204,7 +200,6 @@ const LandingPage = () => {
         </div>
       </div>;
   };
-  
   const TestimonialCard = ({
     name,
     title,
@@ -222,7 +217,6 @@ const LandingPage = () => {
         <p className="text-gray-600 dark:text-gray-400">{text}</p>
       </div>;
   };
-  
   const FAQItem = ({
     question,
     answer
@@ -242,7 +236,6 @@ const LandingPage = () => {
         </div>
       </div>;
   };
-  
   const SupportedFeature = ({
     icon,
     title,
@@ -258,7 +251,6 @@ const LandingPage = () => {
         </div>
       </div>;
   };
-  
   const CryptoBackgroundIcon = ({
     image,
     index
@@ -271,39 +263,23 @@ const LandingPage = () => {
       left: `${Math.random() * 90}%`,
       opacity: 0.03 + Math.random() * 0.08,
       transform: `rotate(${Math.random() * 360}deg) scale(${0.7 + Math.random() * 0.5})`,
-      animationDelay: `${index * 0.2}s`,
+      animationDelay: `${index * 0.2}s`
     };
-    
-    return (
-      <div 
-        className="absolute"
-        style={{
-          top: randomPosition.top,
-          left: randomPosition.left,
-        }}
-      >
-        <div 
-          className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-400/10 to-purple-400/10 flex items-center justify-center animate-bounce-slow"
-          style={{
-            opacity: randomPosition.opacity,
-            transform: randomPosition.transform,
-            animationDelay: randomPosition.animationDelay,
-          }}
-        >
-          {image ? (
-            <img src={image} alt="crypto" className="h-8 w-8 object-contain" />
-          ) : (
-            <Bitcoin className="h-8 w-8 text-blue-500/20" />
-          )}
+    return <div className="absolute" style={{
+      top: randomPosition.top,
+      left: randomPosition.left
+    }}>
+        <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-400/10 to-purple-400/10 flex items-center justify-center animate-bounce-slow" style={{
+        opacity: randomPosition.opacity,
+        transform: randomPosition.transform,
+        animationDelay: randomPosition.animationDelay
+      }}>
+          {image ? <img src={image} alt="crypto" className="h-8 w-8 object-contain" /> : <Bitcoin className="h-8 w-8 text-blue-500/20" />}
         </div>
-      </div>
-    );
+      </div>;
   };
-  
   console.log("Rendering LandingPage component");
-  
-  return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
+  return <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
       <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm bg-white/70 dark:bg-black/20 sticky top-0 z-40">
         <div className="flex items-center gap-2">
           <WalletLogo className="w-7 h-7" useSparrowLogo={true} color="sparrow" animate={true} />
@@ -324,19 +300,13 @@ const LandingPage = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-white to-blue-50/30"></div>
           
           <div className="absolute inset-0 overflow-hidden z-0">
-            {backgroundCryptos.map((crypto, index) => (
-              <CryptoBackgroundIcon 
-                key={index} 
-                image={crypto?.image || ''} 
-                index={index} 
-              />
-            ))}
+            {backgroundCryptos.map((crypto, index) => <CryptoBackgroundIcon key={index} image={crypto?.image || ''} index={index} />)}
           </div>
           
           <div className="max-w-screen-xl mx-auto relative z-10">
             <div className="text-center mb-16">
               <div className="mb-8">
-                <p className="text-purple-600 font-medium text-xl mb-6">Sparrow Wallet:</p>
+                <p className="text-purple-600 font-medium mb-6 text-base">Sparrow Wallet:</p>
                 <h2 className="font-roboto text-6xl md:text-7xl font-bold mb-0 text-center">
                   Deine
                 </h2>
@@ -346,9 +316,7 @@ const LandingPage = () => {
                 <h2 className="font-roboto text-6xl md:text-7xl font-bold mb-0 text-center">
                   Krypto
                 </h2>
-                <h2 className="font-roboto text-6xl md:text-7xl font-bold mb-0 text-center">
-                  Festung
-                </h2>
+                <h2 className="font-roboto text-6xl md:text-7xl font-bold mb-0 text-center">Festung.</h2>
               </div>
               <p className="text-black max-w-2xl mx-auto font-medium">
                 Sparrow ist eine Bitcoin-Wallet für alle, die finanziell selbstbestimmt sein wollen. 
@@ -386,41 +354,22 @@ const LandingPage = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 pt-4 z-10 relative justify-center">
-              {session ? (
-                <Button 
-                  onClick={handleWalletAccess} 
-                  className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                >
+              {session ? <Button onClick={handleWalletAccess} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                   {hasWallet ? "Auf Wallet Zugreifen" : "Wallet Erstellen"} <ArrowRight className="h-4 w-4" />
-                </Button>
-              ) : (
-                <>
-                  <Button 
-                    onClick={handleRegisterClick} 
-                    disabled={isLoading} 
-                    className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                  >
-                    {isLoading ? (
-                      <>
+                </Button> : <>
+                  <Button onClick={handleRegisterClick} disabled={isLoading} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                    {isLoading ? <>
                         <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                         Loading...
-                      </>
-                    ) : (
-                      <>
+                      </> : <>
                         Registrieren <ArrowRight className="h-4 w-4" />
-                      </>
-                    )}
+                      </>}
                   </Button>
                   
-                  <Button 
-                    variant="outline" 
-                    className="w-full sm:w-auto py-6 text-base bg-gray-50 hover:bg-gray-100 border-gray-200"
-                    onClick={handleLoginClick}
-                  >
+                  <Button variant="outline" className="w-full sm:w-auto py-6 text-base bg-gray-50 hover:bg-gray-100 border-gray-200" onClick={handleLoginClick}>
                     Anmelden
                   </Button>
-                </>
-              )}
+                </>}
               
               <Button variant="outline" className="w-full sm:w-auto py-6 text-base bg-gray-50 hover:bg-gray-100 border-gray-200" onClick={() => window.open('https://sparrowwallet.com/download/', '_blank')}>
                 <ExternalLink className="mr-2 h-4 w-4" />
@@ -473,8 +422,6 @@ const LandingPage = () => {
 
         <Footer />
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default LandingPage;
