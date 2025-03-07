@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -6,7 +5,6 @@ import { ArrowLeft, Shield, CheckCircle } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import { useToast } from '@/components/ui/use-toast';
 import { Input } from '@/components/ui/input';
-import Header from '@/components/Header';
 
 const SeedPhraseValidation: React.FC = () => {
   const { seedPhrase, importWallet } = useWallet();
@@ -18,14 +16,12 @@ const SeedPhraseValidation: React.FC = () => {
   const [validationStatus, setValidationStatus] = useState<'idle' | 'validating' | 'creating' | 'valid'>('idle');
   const [activeSeedPhrase, setActiveSeedPhrase] = useState<string[]>([]);
   
-  // Find and setup the seed phrase for validation
   useEffect(() => {
     console.log("SeedPhraseValidation component mounted");
     console.log("Current seedPhrase in context:", seedPhrase);
     
     let phraseToUse = seedPhrase;
     
-    // If no valid seed phrase in context, try localStorage
     if (!phraseToUse || phraseToUse.length < 12) {
       console.log("No valid seed phrase in context, checking localStorage");
       const savedSeedPhrase = localStorage.getItem('walletSeedPhrase');
@@ -37,7 +33,6 @@ const SeedPhraseValidation: React.FC = () => {
             console.log("Found valid seed phrase in localStorage, length:", parsedPhrase.length);
             phraseToUse = parsedPhrase;
             
-            // Update the context with the seed phrase from localStorage
             importWallet(parsedPhrase);
           }
         } catch (error) {
@@ -46,7 +41,6 @@ const SeedPhraseValidation: React.FC = () => {
       }
     }
     
-    // If we still don't have a valid phrase, redirect
     if (!phraseToUse || phraseToUse.length < 12) {
       console.error("No valid seed phrase found anywhere, redirecting");
       toast({
@@ -58,16 +52,12 @@ const SeedPhraseValidation: React.FC = () => {
       return;
     }
     
-    // Store the active seed phrase in component state
     setActiveSeedPhrase(phraseToUse);
     
-    // Select random words for validation
     selectRandomWords(phraseToUse);
   }, [seedPhrase, navigate, toast, importWallet]);
   
-  // Helper function to select random words
   const selectRandomWords = (phrase: string[]) => {
-    // Select 3 random words from the seed phrase
     const getRandomWordIndices = () => {
       const indices: number[] = [];
       while (indices.length < 3) {
@@ -76,7 +66,7 @@ const SeedPhraseValidation: React.FC = () => {
           indices.push(randomIndex);
         }
       }
-      return indices.sort((a, b) => a - b); // Sort to maintain original order
+      return indices.sort((a, b) => a - b);
     };
     
     const indices = getRandomWordIndices();
@@ -102,7 +92,6 @@ const SeedPhraseValidation: React.FC = () => {
     console.log("Validating inputs:", userInputs);
     console.log("Against selected words:", selectedWords);
     
-    // Check if the user's inputs match the selected words
     const areAllValid = selectedWords.every((item, index) => 
       userInputs[index].toLowerCase().trim() === item.word.toLowerCase().trim()
     );
@@ -110,11 +99,9 @@ const SeedPhraseValidation: React.FC = () => {
     console.log("Validation result:", areAllValid);
     
     if (areAllValid) {
-      // First delay - validating
       setTimeout(() => {
         setValidationStatus('creating');
         
-        // Second delay - creating wallet
         setTimeout(() => {
           setValidationStatus('valid');
           toast({
@@ -122,7 +109,6 @@ const SeedPhraseValidation: React.FC = () => {
             description: "Deine Wallet wurde erfolgreich erstellt",
           });
           
-          // Final delay before navigating
           setTimeout(() => {
             navigate('/congrats');
           }, 1000);
@@ -142,7 +128,6 @@ const SeedPhraseValidation: React.FC = () => {
     navigate('/seed-phrase');
   };
   
-  // Helper function to get button text based on validation status
   const getButtonText = () => {
     switch (validationStatus) {
       case 'validating':
@@ -156,7 +141,6 @@ const SeedPhraseValidation: React.FC = () => {
     }
   };
   
-  // Helper function to get button icon based on validation status
   const getButtonIcon = () => {
     switch (validationStatus) {
       case 'validating':
@@ -171,15 +155,15 @@ const SeedPhraseValidation: React.FC = () => {
   
   return (
     <div className="min-h-screen flex flex-col bg-white text-gray-800 p-4 sm:p-6 animate-fade-in page-enter safe-area-inset-bottom">
-      <div className="w-full relative">
-        <Header title="Wallet erstellen" />
+      <div className="w-full relative flex items-center justify-center mb-4">
         <button 
           onClick={handleBackClick}
-          className="absolute left-2 sm:left-4 top-0 bottom-0 my-auto text-gray-600 hover:text-gray-800 transition-colors h-10 w-10 flex items-center justify-center touch-manipulation"
+          className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800 transition-colors h-10 w-10 flex items-center justify-center touch-manipulation"
           aria-label="Back"
         >
           <ArrowLeft size={24} />
         </button>
+        <h1 className="text-lg font-medium">Wallet erstellen</h1>
       </div>
       
       <div className="flex-1 flex flex-col items-center justify-center py-4 sm:py-6">
