@@ -173,7 +173,11 @@ const Register: React.FC = () => {
   };
 
   const handleBackClick = () => {
-    navigate(-1);
+    if (!email && !password && !confirmPassword) {
+      navigate('/');
+    } else {
+      navigate(-1);
+    }
   };
 
   const containerVariants = {
@@ -209,7 +213,7 @@ const Register: React.FC = () => {
           variants={containerVariants}
         >
           <motion.div 
-            className="text-center relative"
+            className="text-center relative pt-4"
             variants={itemVariants}
           >
             <motion.button
@@ -428,4 +432,3 @@ const Register: React.FC = () => {
 };
 
 export default Register;
-
