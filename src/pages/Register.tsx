@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -46,14 +47,14 @@ const Register: React.FC = () => {
     }
   }, [loading]);
 
-  const handleRegister = async (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent, formData: { acceptTerms: boolean }) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-    const confirmPassword = formData.get('confirmPassword') as string;
-    const acceptTerms = formData.get('terms') === 'on';
+    const formDataObj = new FormData(form);
+    const email = formDataObj.get('email') as string;
+    const password = formDataObj.get('password') as string;
+    const confirmPassword = formDataObj.get('confirmPassword') as string;
+    const acceptTerms = formData.acceptTerms;
 
     if (password !== confirmPassword) {
       toast({

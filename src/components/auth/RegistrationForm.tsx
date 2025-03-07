@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import PasswordStrengthIndicator, { checkPasswordStrength } from './PasswordStrengthIndicator';
 
 interface RegistrationFormProps {
-  onSubmit: (e: React.FormEvent) => void;
+  onSubmit: (e: React.FormEvent, formData: { acceptTerms: boolean }) => void;
   loading: boolean;
   progress: number;
   countdownSeconds: number;
@@ -37,8 +37,13 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     setPasswordFeedback(feedback);
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(e, { acceptTerms });
+  };
+
   return (
-    <form onSubmit={onSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <motion.div className="space-y-2" variants={itemVariants}>
         <label htmlFor="email" className="text-sm font-medium text-gray-700 block">
           E-Mail
@@ -47,6 +52,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5 group-hover:text-blue-500 transition-colors duration-200" />
           <Input
             id="email"
+            name="email"
             type="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
@@ -65,6 +71,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5 group-hover:text-blue-500 transition-colors duration-200" />
           <Input
             id="password"
+            name="password"
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={e => handlePasswordChange(e.target.value)}
@@ -96,6 +103,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5 group-hover:text-blue-500 transition-colors duration-200" />
           <Input
             id="confirmPassword"
+            name="confirmPassword"
             type={showConfirmPassword ? "text" : "password"}
             value={confirmPassword}
             onChange={e => setConfirmPassword(e.target.value)}
@@ -125,6 +133,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         <div className="mt-1">
           <Checkbox
             id="terms"
+            name="terms"
             checked={acceptTerms}
             onCheckedChange={(checked) => setAcceptTerms(checked === true)}
             className="h-5 w-5 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600 border-2"
