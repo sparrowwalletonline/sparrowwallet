@@ -404,17 +404,6 @@ const LandingPage = () => {
         
         <FeaturesSection />
         
-        <section className="bg-gray-50 py-12">
-          <div className="max-w-screen-xl mx-auto px-6 text-center">
-            <h2 className="font-roboto text-4xl font-bold mb-8 text-black">Funktionen</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <FeatureCard icon={<Shield className="w-6 h-6" />} title="Sicherheit" description="Schützen Sie Ihre Bitcoin mit modernster Verschlüsselung und Sicherheitsfunktionen." />
-              <FeatureCard icon={<Key className="w-6 h-6" />} title="Privatsphäre" description="Behalten Sie die Kontrolle über Ihre Daten und Transaktionen." />
-              <FeatureCard icon={<Users className="w-6 h-6" />} title="Multi-Plattform" description="Verwenden Sie Sparrow auf Ihrem Desktop, im Web oder auf Ihrem Mobilgerät." />
-            </div>
-          </div>
-        </section>
-        
         <section className="px-6 py-12 bg-white dark:bg-wallet-card/40 backdrop-blur-md relative">
           <div className="max-w-screen-xl mx-auto text-center">
             <h2 className="font-roboto text-4xl font-bold mb-8">Sicherheit</h2>
