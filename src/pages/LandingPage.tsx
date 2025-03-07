@@ -306,9 +306,9 @@ const LandingPage = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
       <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm bg-white/70 dark:bg-black/20 sticky top-0 z-40">
         <div className="flex items-center gap-2">
-          <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" animate={true} />
+          <WalletLogo className="w-7 h-7" useSparrowLogo={true} color="sparrow" animate={true} />
           <div>
-            <span className="font-heading text-xl font-bold">Sparrow Wallet</span>
+            <span className="font-heading text-lg font-bold">Sparrow Wallet</span>
             <p className="text-xs text-gray-600 dark:text-gray-400 -mt-1">Bitcoin Wallet for Desktop & Web</p>
           </div>
         </div>
