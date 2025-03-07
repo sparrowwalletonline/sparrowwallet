@@ -172,6 +172,10 @@ const Register: React.FC = () => {
     navigate('/auth');
   };
 
+  const handleBackClick = () => {
+    navigate(-1);
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { 
@@ -208,6 +212,14 @@ const Register: React.FC = () => {
             className="text-center relative"
             variants={itemVariants}
           >
+            <motion.button
+              onClick={handleBackClick}
+              className="absolute left-0 top-0 w-9 h-9 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-md hover:bg-white/90 transition-all duration-200"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ArrowLeft className="h-5 w-5 text-gray-700" />
+            </motion.button>
             <motion.h1 
               className="text-3xl font-bold font-heading bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-1"
               variants={itemVariants}
@@ -416,3 +428,4 @@ const Register: React.FC = () => {
 };
 
 export default Register;
+
