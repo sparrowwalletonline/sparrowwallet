@@ -42,6 +42,10 @@ const Header = ({
     return null;
   }
 
+  // Hide menu toggle on wallet page
+  const isWalletPage = location.pathname === '/wallet' || location.pathname.startsWith('/wallet/');
+  const shouldShowMenuToggle = showMenuToggle && !isWalletPage;
+
   const BackButton = () => (
     <button 
       onClick={() => navigate(-1)} 
@@ -59,7 +63,7 @@ const Header = ({
             <BackButton />
           )}
           
-          {showMenuToggle && (
+          {shouldShowMenuToggle && (
             <button 
               onClick={toggleMenu} 
               className="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white/90 backdrop-blur-sm dark:bg-gray-800/50 dark:hover:bg-gray-800/70 transition-all shadow-sm hover:shadow-md"
