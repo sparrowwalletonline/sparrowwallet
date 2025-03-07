@@ -28,7 +28,7 @@ const Footer = () => {
               <span className="font-heading text-xl font-bold text-white">Sparrow Wallet</span>
             </div>
             <p className="text-sm mb-4">
-              A modern, comprehensive Bitcoin wallet with an advanced interface for privacy-focused users
+              Eine moderne, umfassende Bitcoin-Wallet mit einer fortschrittlichen Benutzeroberfläche für datenschutzbewusste Benutzer
             </p>
             <div className="flex space-x-4">
               <a href="https://twitter.com/SparrowWallet" className="text-gray-400 hover:text-blue-400" aria-label="Twitter">
@@ -42,18 +42,18 @@ const Footer = () => {
 
           {/* Links column 1 */}
           <div className="px-4">
-            <h3 className="font-medium text-white mb-4">Resources</h3>
+            <h3 className="font-medium text-white mb-4">Ressourcen</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/features" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
                   <Sparkles size={16} />
-                  <span>Features</span>
+                  <span>Funktionen</span>
                 </Link>
               </li>
               <li>
                 <Link to="/documentation" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
                   <FileText size={16} />
-                  <span>Documentation</span>
+                  <span>Dokumentation</span>
                 </Link>
               </li>
               <li>
@@ -65,7 +65,7 @@ const Footer = () => {
               <li>
                 <a href="https://sparrowwallet.com/download/" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
                   <Download size={16} />
-                  <span>Download</span>
+                  <span>Herunterladen</span>
                 </a>
               </li>
             </ul>
@@ -73,30 +73,30 @@ const Footer = () => {
 
           {/* Links column 2 */}
           <div className="px-4">
-            <h3 className="font-medium text-white mb-4">About</h3>
+            <h3 className="font-medium text-white mb-4">Über uns</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/about" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
                   <Info size={16} />
-                  <span>About</span>
+                  <span>Über uns</span>
                 </Link>
               </li>
               <li>
                 <Link to="/donate" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
                   <Heart size={16} />
-                  <span>Donate</span>
+                  <span>Spenden</span>
                 </Link>
               </li>
               <li>
                 <Link to="/terms" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
                   <FileText size={16} />
-                  <span>Terms</span>
+                  <span>Nutzungsbedingungen</span>
                 </Link>
               </li>
               <li>
                 <a href="https://sparrowwallet.com/releases/" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
                   <ExternalLink size={16} />
-                  <span>Releases</span>
+                  <span>Versionen</span>
                 </a>
               </li>
             </ul>
@@ -104,24 +104,24 @@ const Footer = () => {
 
           {/* Online version message */}
           <div className="px-4">
-            <h3 className="font-medium text-white mb-4">Online Version</h3>
-            <p className="text-sm mb-4">This is the online version of Sparrow Wallet. For the most secure experience, consider downloading the desktop version.</p>
+            <h3 className="font-medium text-white mb-4">Online-Version</h3>
+            <p className="text-sm mb-4">Dies ist die Online-Version von Sparrow Wallet. Für ein sichereres Erlebnis empfehlen wir den Download der Desktop-Version.</p>
             <a 
               href="https://sparrowwallet.com/download/" 
               className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors"
             >
               <Download size={16} />
-              <span>Download Desktop App</span>
+              <span>Desktop-App herunterladen</span>
             </a>
           </div>
         </div>
 
         <div className="pt-6 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center px-4">
-          <p className="text-sm">© {new Date().getFullYear()} Sparrow Wallet. MIT Licensed. Open Source Software.</p>
+          <p className="text-sm">© {new Date().getFullYear()} Sparrow Wallet. MIT-Lizenziert. Open-Source-Software.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="https://sparrowwallet.com/" className="text-sm hover:text-blue-400 transition-colors flex items-center gap-1">
               <Globe size={14} />
-              <span>Official Site</span>
+              <span>Offizielle Seite</span>
             </a>
             <a href="https://github.com/sparrowwallet/sparrow" className="text-sm hover:text-blue-400 transition-colors flex items-center gap-1">
               <Github size={14} />

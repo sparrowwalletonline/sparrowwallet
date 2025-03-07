@@ -45,67 +45,67 @@ const FeaturesSection = () => {
         <div className="text-center mb-16">
           <h2 className="font-heading text-4xl font-bold mb-4">
             <span className="bg-gradient-to-r from-wallet-blue to-indigo-600 bg-clip-text text-transparent">
-              Powerful Features
+              Leistungsstarke Funktionen
             </span>
           </h2>
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg">
-            Advanced tools designed for both beginners and power users with a focus on security, privacy, and control
+            Fortschrittliche Tools für Anfänger und Experten mit Fokus auf Sicherheit, Privatsphäre und Kontrolle
           </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           <FeatureCard 
             icon={<Shield className="h-6 w-6" />} 
-            title="Self-Custody" 
-            description="Your keys never leave your device. Maintain complete sovereignty over your bitcoin with no intermediaries."
+            title="Selbstverwahrung" 
+            description="Ihre Schlüssel verlassen niemals Ihr Gerät. Behalten Sie die vollständige Kontrolle über Ihr Bitcoin ohne Zwischenhändler."
           />
           
           <FeatureCard 
             icon={<Lock className="h-6 w-6" />} 
-            title="Enhanced Security" 
-            description="Support for hardware wallets with multisignature capabilities for institutional-grade security."
+            title="Verbesserte Sicherheit" 
+            description="Unterstützung für Hardware-Wallets mit Multisignatur-Funktionen für institutionelle Sicherheit."
           />
           
           <FeatureCard 
             icon={<Key className="h-6 w-6" />} 
             title="BIP39 Passphrase" 
-            description="Add an extra layer of security with optional BIP39 passphrase support for your wallet."
+            description="Fügen Sie eine zusätzliche Sicherheitsebene mit optionaler BIP39-Passphrase-Unterstützung für Ihre Wallet hinzu."
           />
           
           <FeatureCard 
             icon={<Wallet className="h-6 w-6" />} 
-            title="UTXO Management" 
-            description="Full control over your unspent transaction outputs with advanced coin selection features."
+            title="UTXO-Verwaltung" 
+            description="Volle Kontrolle über Ihre unverbrauchten Transaktionsausgaben mit fortschrittlichen Coin-Auswahlfunktionen."
           />
           
           <FeatureCard 
             icon={<Eye className="h-6 w-6" />} 
-            title="Privacy Focus" 
-            description="Connect to your own node or use public electrum servers with safeguards for maximum privacy."
+            title="Fokus auf Privatsphäre" 
+            description="Verbinden Sie sich mit Ihrem eigenen Node oder nutzen Sie öffentliche Electrum-Server mit Schutzmaßnahmen für maximale Privatsphäre."
           />
           
           <FeatureCard 
             icon={<Zap className="h-6 w-6" />} 
-            title="Transaction Acceleration" 
-            description="Replace-by-fee support lets you speed up pending transactions when needed."
+            title="Transaktionsbeschleunigung" 
+            description="Replace-by-Fee-Unterstützung ermöglicht es Ihnen, ausstehende Transaktionen bei Bedarf zu beschleunigen."
           />
           
           <FeatureCard 
             icon={<Users className="h-6 w-6" />} 
-            title="Multisignature Support" 
-            description="Create powerful multisig wallets requiring multiple signatures for enhanced security."
+            title="Multisignatur-Unterstützung" 
+            description="Erstellen Sie leistungsstarke Multisig-Wallets, die mehrere Signaturen für erhöhte Sicherheit erfordern."
           />
           
           <FeatureCard 
             icon={<Globe className="h-6 w-6" />} 
-            title="Cross-Platform" 
-            description="Use Sparrow on desktop (Windows, Mac, Linux) or via this secure web version."
+            title="Plattformübergreifend" 
+            description="Nutzen Sie Sparrow auf dem Desktop (Windows, Mac, Linux) oder über diese sichere Web-Version."
           />
           
           <FeatureCard 
             icon={<Sparkles className="h-6 w-6" />} 
-            title="Advanced Features" 
-            description="PSBT coordination, custom scripts, time-locked transactions and more for power users."
+            title="Erweiterte Funktionen" 
+            description="PSBT-Koordination, benutzerdefinierte Skripte, zeitverschlossene Transaktionen und mehr für fortgeschrittene Benutzer."
           />
         </div>
       </div>
