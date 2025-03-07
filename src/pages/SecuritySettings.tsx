@@ -221,7 +221,7 @@ const SecuritySettings = () => {
   };
 
   return (
-    <div className="container max-w-md mx-auto px-6 py-6 pt-16">
+    <div className="container max-w-md mx-auto px-4 py-6 pt-16">
       <Header title="Sicherheitseinstellungen" showBack={true} />
       
       <Tabs defaultValue="seed" className="mt-8">
