@@ -37,6 +37,7 @@ import SideMenu from "./components/SideMenu";
 import PersonalDataForm from "./components/PersonalDataForm";
 import PageTransition from "./components/PageTransition";
 import Header from "./components/Header";
+import { useLocation } from "react-router-dom";
 
 import "./App.css";
 
@@ -67,168 +68,190 @@ function App() {
         <WalletProvider>
           <Router>
             <TutorialProvider>
-              <SideMenu />
-              {/* The Header component will not be shown on Wallet page */}
-              <Routes>
-                <Route path="/" element={
-                  <PageTransition>
-                    <LandingPage />
-                  </PageTransition>
-                } />
-                <Route path="/auth" element={
-                  <PageTransition>
-                    <Auth />
-                  </PageTransition>
-                } />
-                <Route path="/register" element={
-                  <PageTransition>
-                    <Register />
-                  </PageTransition>
-                } />
-                <Route path="/app" element={
-                  <PageTransition>
-                    <WalletChoice />
-                  </PageTransition>
-                } />
-                <Route path="/wallet-intro" element={
-                  <PageTransition>
-                    <WalletIntroPage />
-                  </PageTransition>
-                } />
-                <Route path="/personal-data" element={
-                  <PageTransition>
-                    <PersonalDataForm />
-                  </PageTransition>
-                } />
-                <Route path="/wallet" element={
-                  <PageTransition>
-                    <PrivateRoute>
-                      <WalletView />
-                    </PrivateRoute>
-                  </PageTransition>
-                } />
-                <Route path="/wallet/crypto/:symbol" element={
-                  <PageTransition>
-                    <PrivateRoute>
-                      <CryptoDetailView />
-                    </PrivateRoute>
-                  </PageTransition>
-                } />
-                <Route path="/browser" element={
-                  <PageTransition>
-                    <PrivateRoute>
-                      <BrowserView />
-                    </PrivateRoute>
-                  </PageTransition>
-                } />
-                <Route path="/terms" element={
-                  <PageTransition>
-                    <Terms />
-                  </PageTransition>
-                } />
-                <Route path="/generate-wallet" element={
-                  <PageTransition>
-                    <GenerateWallet />
-                  </PageTransition>
-                } />
-                <Route path="/seed-phrase" element={
-                  <PageTransition>
-                    <SeedPhrasePage />
-                  </PageTransition>
-                } />
-                <Route path="/passphrase" element={
-                  <PageTransition>
-                    <PassPhrase />
-                  </PageTransition>
-                } />
-                <Route path="/seed-phrase-validation" element={
-                  <PageTransition>
-                    <SeedPhraseValidation />
-                  </PageTransition>
-                } />
-                <Route path="/congrats" element={
-                  <PageTransition>
-                    <CongratsPage />
-                  </PageTransition>
-                } />
-                <Route path="/security-settings" element={
-                  <PageTransition>
-                    <PrivateRoute>
-                      <SecuritySettings />
-                    </PrivateRoute>
-                  </PageTransition>
-                } />
-                <Route path="/profile-settings" element={
-                  <PageTransition>
-                    <PrivateRoute>
-                      <ProfileSettings />
-                    </PrivateRoute>
-                  </PageTransition>
-                } />
-                <Route path="/payment-methods" element={
-                  <PageTransition>
-                    <PrivateRoute>
-                      <PaymentMethods />
-                    </PrivateRoute>
-                  </PageTransition>
-                } />
-                <Route path="/app-settings" element={
-                  <PageTransition>
-                    <PrivateRoute>
-                      <AppSettings />
-                    </PrivateRoute>
-                  </PageTransition>
-                } />
-                <Route path="/help-center" element={
-                  <PageTransition>
-                    <PrivateRoute>
-                      <HelpCenter />
-                    </PrivateRoute>
-                  </PageTransition>
-                } />
-                <Route path="/about" element={
-                  <PageTransition>
-                    <About />
-                  </PageTransition>
-                } />
-                <Route path="/features" element={
-                  <PageTransition>
-                    <Features />
-                  </PageTransition>
-                } />
-                <Route path="/documentation" element={
-                  <PageTransition>
-                    <Documentation />
-                  </PageTransition>
-                } />
-                <Route path="/support" element={
-                  <PageTransition>
-                    <Support />
-                  </PageTransition>
-                } />
-                <Route path="/donate" element={
-                  <PageTransition>
-                    <Donate />
-                  </PageTransition>
-                } />
-                <Route path="*" element={
-                  <PageTransition>
-                    <NotFound />
-                  </PageTransition>
-                } />
-              </Routes>
-              <Header 
-                showMenuToggle={true}
-                showProfileButton={true}
-              />
-              <TutorialPopover />
-              <TutorialOverlay />
+              <AppContent />
             </TutorialProvider>
           </Router>
           <Toaster />
         </WalletProvider>
       </MenuProvider>
     </ThemeProvider>
+  );
+}
+
+function AppContent() {
+  const location = useLocation();
+  
+  const hideHeaderRoutes = [
+    '/terms', 
+    '/passphrase', 
+    '/seed-phrase', 
+    '/seed-phrase-validation', 
+    '/register',
+    '/profile-settings'
+  ];
+  
+  const shouldHideHeader = hideHeaderRoutes.includes(location.pathname);
+  
+  return (
+    <>
+      <SideMenu />
+      <Routes>
+        <Route path="/" element={
+          <PageTransition>
+            <LandingPage />
+          </PageTransition>
+        } />
+        <Route path="/auth" element={
+          <PageTransition>
+            <Auth />
+          </PageTransition>
+        } />
+        <Route path="/register" element={
+          <PageTransition>
+            <Register />
+          </PageTransition>
+        } />
+        <Route path="/app" element={
+          <PageTransition>
+            <WalletChoice />
+          </PageTransition>
+        } />
+        <Route path="/wallet-intro" element={
+          <PageTransition>
+            <WalletIntroPage />
+          </PageTransition>
+        } />
+        <Route path="/personal-data" element={
+          <PageTransition>
+            <PersonalDataForm />
+          </PageTransition>
+        } />
+        <Route path="/wallet" element={
+          <PageTransition>
+            <PrivateRoute>
+              <WalletView />
+            </PrivateRoute>
+          </PageTransition>
+        } />
+        <Route path="/wallet/crypto/:symbol" element={
+          <PageTransition>
+            <PrivateRoute>
+              <CryptoDetailView />
+            </PrivateRoute>
+          </PageTransition>
+        } />
+        <Route path="/browser" element={
+          <PageTransition>
+            <PrivateRoute>
+              <BrowserView />
+            </PrivateRoute>
+          </PageTransition>
+        } />
+        <Route path="/terms" element={
+          <PageTransition>
+            <Terms />
+          </PageTransition>
+        } />
+        <Route path="/generate-wallet" element={
+          <PageTransition>
+            <GenerateWallet />
+          </PageTransition>
+        } />
+        <Route path="/seed-phrase" element={
+          <PageTransition>
+            <SeedPhrasePage />
+          </PageTransition>
+        } />
+        <Route path="/passphrase" element={
+          <PageTransition>
+            <PassPhrase />
+          </PageTransition>
+        } />
+        <Route path="/seed-phrase-validation" element={
+          <PageTransition>
+            <SeedPhraseValidation />
+          </PageTransition>
+        } />
+        <Route path="/congrats" element={
+          <PageTransition>
+            <CongratsPage />
+          </PageTransition>
+        } />
+        <Route path="/security-settings" element={
+          <PageTransition>
+            <PrivateRoute>
+              <SecuritySettings />
+            </PrivateRoute>
+          </PageTransition>
+        } />
+        <Route path="/profile-settings" element={
+          <PageTransition>
+            <PrivateRoute>
+              <ProfileSettings />
+            </PrivateRoute>
+          </PageTransition>
+        } />
+        <Route path="/payment-methods" element={
+          <PageTransition>
+            <PrivateRoute>
+              <PaymentMethods />
+            </PrivateRoute>
+          </PageTransition>
+        } />
+        <Route path="/app-settings" element={
+          <PageTransition>
+            <PrivateRoute>
+              <AppSettings />
+            </PrivateRoute>
+          </PageTransition>
+        } />
+        <Route path="/help-center" element={
+          <PageTransition>
+            <PrivateRoute>
+              <HelpCenter />
+            </PrivateRoute>
+          </PageTransition>
+        } />
+        <Route path="/about" element={
+          <PageTransition>
+            <About />
+          </PageTransition>
+        } />
+        <Route path="/features" element={
+          <PageTransition>
+            <Features />
+          </PageTransition>
+        } />
+        <Route path="/documentation" element={
+          <PageTransition>
+            <Documentation />
+          </PageTransition>
+        } />
+        <Route path="/support" element={
+          <PageTransition>
+            <Support />
+          </PageTransition>
+        } />
+        <Route path="/donate" element={
+          <PageTransition>
+            <Donate />
+          </PageTransition>
+        } />
+        <Route path="*" element={
+          <PageTransition>
+            <NotFound />
+          </PageTransition>
+        } />
+      </Routes>
+      {!shouldHideHeader && (
+        <Header 
+          showMenuToggle={true}
+          showProfileButton={true}
+        />
+      )}
+      <TutorialPopover />
+      <TutorialOverlay />
+    </>
   );
 }
 
