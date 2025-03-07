@@ -180,12 +180,12 @@ const SideMenu: React.FC = () => {
             animate="open"
             exit="closed"
             variants={overlayVariants}
-            className="fixed inset-0 z-50 overlay-bg bg-black bg-opacity-50 backdrop-blur-sm menu-overlay"
+            className="fixed inset-0 z-[10000] overlay-bg bg-black bg-opacity-50 backdrop-blur-sm menu-overlay"
             onClick={closeMenu}
           />
           
           <motion.div 
-            className="fixed top-0 right-0 z-[51] w-[300px] h-full bg-white dark:bg-wallet-darkBg rounded-l-xl shadow-xl menu-content"
+            className="fixed top-0 right-0 z-[10001] w-[300px] h-full bg-white dark:bg-wallet-darkBg rounded-l-xl shadow-xl menu-content"
             variants={menuVariants}
             initial="closed"
             animate="open"
