@@ -193,7 +193,7 @@ const Register: React.FC = () => {
       
       <div className="flex-1 flex flex-col items-center justify-center p-4">
         <motion.div className="w-full max-w-md space-y-8" initial="hidden" animate="visible" variants={containerVariants}>
-          <motion.div variants={itemVariants} className="text-center relative pt-[83px]">
+          <motion.div variants={itemVariants} className="text-center relative pt-[83px] ">
             <motion.div className="mb-6 mx-auto" whileHover={{
             scale: 1.05
           }} transition={{
