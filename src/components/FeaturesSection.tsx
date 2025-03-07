@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Shield, 
@@ -29,7 +28,6 @@ interface FeatureCardProps {
 }
 
 const FeatureCard = ({ icon, title, description, className = "", index }: FeatureCardProps) => {
-  // Different background colors for different cards
   const bgColors = [
     'from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/10',
     'from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/10',
@@ -42,7 +40,6 @@ const FeatureCard = ({ icon, title, description, className = "", index }: Featur
     'from-teal-50 to-teal-100 dark:from-teal-900/20 dark:to-teal-800/10',
   ];
 
-  // Icon backgrounds with gradients
   const iconBgColors = [
     'bg-gradient-to-r from-blue-500 to-blue-600',
     'bg-gradient-to-r from-purple-500 to-purple-600',
@@ -55,7 +52,6 @@ const FeatureCard = ({ icon, title, description, className = "", index }: Featur
     'bg-gradient-to-r from-teal-500 to-teal-600',
   ];
 
-  // Animation variants for the card
   const cardVariants = {
     hidden: { 
       opacity: 0, 
@@ -107,7 +103,6 @@ const FeatureCard = ({ icon, title, description, className = "", index }: Featur
 };
 
 const FeaturesSection = () => {
-  // Animation variants for the heading
   const headingVariants = {
     hidden: { opacity: 0, y: -20 },
     visible: { 
@@ -120,7 +115,6 @@ const FeaturesSection = () => {
     }
   };
 
-  // Icons for feature cards with different styling
   const featureData = [
     {
       icon: <Shield className="h-6 w-6" />,
@@ -171,7 +165,6 @@ const FeaturesSection = () => {
 
   return (
     <section className="py-24 px-6 relative overflow-hidden" id="features">
-      {/* Background elements for visual interest */}
       <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white dark:from-[#151823]/50 dark:to-wallet-darkBg/80 pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10">
           <div className="absolute -top-40 -left-40 w-80 h-80 bg-blue-500 rounded-full blur-3xl"></div>
@@ -193,10 +186,8 @@ const FeaturesSection = () => {
             <span>Für Anfänger bis Profis</span>
           </div>
           
-          <h2 className="font-roboto text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-wallet-blue via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              Fortschrittliche Funktionen
-            </span>
+          <h2 className="font-roboto text-5xl font-bold mb-4 text-black dark:text-white">
+            Fortschrittliche Funktionen
           </h2>
           
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg font-roboto relative">
