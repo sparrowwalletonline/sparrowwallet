@@ -263,7 +263,6 @@ const LandingPage = () => {
       </header>
       
       <div className="flex-1 flex flex-col">
-        {/* Updated Hero Section - with white background */}
         <section className="py-24 px-6 relative overflow-hidden bg-white text-gray-800">
           <div className="absolute inset-0 bg-gradient-to-b from-white to-blue-50/30"></div>
           
@@ -274,10 +273,12 @@ const LandingPage = () => {
                   Sicher
                 </span>
               </h2>
-              <p className="text-3xl md:text-4xl font-roboto font-bold text-gray-800 mb-8">
-                Einfach. <span className="text-wallet-blue">Bitcoin</span> für jeden.
+              <p className="text-3xl md:text-4xl font-roboto font-bold mb-8">
+                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Einfach.</span> 
+                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Bitcoin</span> 
+                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">für jeden.</span>
               </p>
-              <p className="text-gray-600 max-w-2xl mx-auto">
+              <p className="text-gray-600 max-w-2xl mx-auto bg-gradient-to-r from-blue-600/70 to-purple-600/70 bg-clip-text text-transparent font-medium">
                 Sparrow ist eine Bitcoin-Wallet für alle, die finanziell selbstbestimmt sein wollen. 
                 Jetzt auch als sichere, vollständige Webanwendung verfügbar.
               </p>
@@ -316,7 +317,7 @@ const LandingPage = () => {
               {session ? (
                 <Button 
                   onClick={handleWalletAccess} 
-                  className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
+                  className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                 >
                   {hasWallet ? "Auf Wallet Zugreifen" : "Wallet Erstellen"} <ArrowRight className="h-4 w-4" />
                 </Button>
@@ -325,7 +326,7 @@ const LandingPage = () => {
                   <Button 
                     onClick={handleRegisterClick} 
                     disabled={isLoading} 
-                    className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-wallet-blue"
+                    className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                   >
                     {isLoading ? (
                       <>
@@ -395,7 +396,6 @@ const LandingPage = () => {
           </div>
         </section>
         
-        {/* Include additional sections if they exist in the original file */}
         <FeaturesSection />
         <SupportedAssetsSection />
 
