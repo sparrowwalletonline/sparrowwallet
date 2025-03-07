@@ -37,7 +37,7 @@ const Header = ({
   const { activeWallet } = useWallet();
 
   // Don't show header on specific routes
-  const hideHeaderRoutes = ['/terms', '/passphrase', '/seed-phrase', '/seed-phrase-validation', '/register', '/wallet-intro', '/app'];
+  const hideHeaderRoutes = ['/terms', '/passphrase', '/seed-phrase', '/seed-phrase-validation'];
   if (hideHeaderRoutes.includes(location.pathname)) {
     return null;
   }

@@ -1,7 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Shield, Key, LockKeyhole, CheckCircle } from 'lucide-react';
+import WalletLogo from '@/components/WalletLogo';
 import { useWallet } from '@/contexts/WalletContext';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from '@/components/ui/use-toast';
@@ -98,6 +100,10 @@ const WalletIntroPage: React.FC = () => {
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center py-8 max-w-md mx-auto">
+        <div className="h-24 sm:h-28 w-24 sm:w-28 relative mb-6">
+          <WalletLogo className="w-full h-full" useSparrowLogo={true} />
+        </div>
+        
         <h1 className="text-2xl sm:text-3xl font-bold text-center mb-6">
           Ihr Weg zur sicheren Wallet
         </h1>
