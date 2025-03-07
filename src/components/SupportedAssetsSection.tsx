@@ -2,17 +2,20 @@
 import React from 'react';
 import { 
   Bitcoin, 
-  Wallet, 
   Coins,
-  Database,
-  Tag,
-  Shield,
+  DollarSign,
+  Droplet,
+  Star,
+  Wallet,
+  Gem,
   Zap,
   Globe,
-  Star,
-  Key,
   Network,
-  Gem
+  Shield,
+  Tag,
+  Key,
+  CreditCard,
+  Link
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
