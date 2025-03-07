@@ -12,21 +12,25 @@ import CreateWalletButton from '@/components/CreateWalletButton';
 import FeaturesSection from '@/components/FeaturesSection';
 import SupportedAssetsSection from '@/components/SupportedAssetsSection';
 import { fetchCryptoPrices, CryptoPrice } from '@/utils/cryptoPriceUtils';
+
 interface Testimonial {
   name: string;
   title: string;
   image: string;
   text: string;
 }
+
 interface FAQItemProps {
   question: string;
   answer: string;
 }
+
 interface SupportedFeatureProps {
   icon: React.ReactNode;
   title: string;
   description: string;
 }
+
 const LandingPage = () => {
   const {
     generateWallet,
@@ -41,6 +45,7 @@ const LandingPage = () => {
   const [cryptoData, setCryptoData] = useState<Record<string, CryptoPrice>>({});
   const [backgroundCryptos, setBackgroundCryptos] = useState<CryptoPrice[]>([]);
   const navigate = useNavigate();
+
   useEffect(() => {
     const loadCryptoData = async () => {
       try {
@@ -53,12 +58,15 @@ const LandingPage = () => {
     };
     loadCryptoData();
   }, []);
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
+
   const handleMenuClick = () => {
     toggleMenu();
   };
+
   const handleRegisterClick = async () => {
     setIsLoading(true);
     try {
@@ -87,6 +95,7 @@ const LandingPage = () => {
       setIsLoading(false);
     }
   };
+
   const handleLoginClick = async () => {
     setIsLoading(true);
     try {
@@ -117,9 +126,11 @@ const LandingPage = () => {
       setIsLoading(false);
     }
   };
+
   const handleWalletAccess = () => {
     navigate('/wallet');
   };
+
   const FeatureCard = ({
     icon,
     title,
@@ -135,6 +146,7 @@ const LandingPage = () => {
         <p className="text-gray-600 text-sm dark:text-gray-400">{description}</p>
       </div>;
   };
+
   const SecurityCard = ({
     icon,
     title,
@@ -150,6 +162,7 @@ const LandingPage = () => {
         <p className="text-gray-600 text-sm text-center dark:text-gray-400">{description}</p>
       </div>;
   };
+
   const AssetCard = ({
     image,
     name,
@@ -181,6 +194,7 @@ const LandingPage = () => {
         </div>
       </div>;
   };
+
   const StepCard = ({
     number,
     title,
@@ -200,6 +214,7 @@ const LandingPage = () => {
         </div>
       </div>;
   };
+
   const TestimonialCard = ({
     name,
     title,
@@ -217,6 +232,7 @@ const LandingPage = () => {
         <p className="text-gray-600 dark:text-gray-400">{text}</p>
       </div>;
   };
+
   const FAQItem = ({
     question,
     answer
@@ -236,6 +252,7 @@ const LandingPage = () => {
         </div>
       </div>;
   };
+
   const SupportedFeature = ({
     icon,
     title,
@@ -251,6 +268,7 @@ const LandingPage = () => {
         </div>
       </div>;
   };
+
   const CryptoBackgroundIcon = ({
     image,
     index
@@ -278,9 +296,10 @@ const LandingPage = () => {
         </div>
       </div>;
   };
+
   console.log("Rendering LandingPage component");
   return <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
-      <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm sticky top-0 z-40 py-[10px] bg-slate-900">
+      <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm fixed top-0 z-40 py-[10px] bg-slate-900/95">
         <div className="flex items-center gap-2">
           <WalletLogo className="w-7 h-7" useSparrowLogo={true} color="sparrow" animate={true} />
           <div>
@@ -295,7 +314,7 @@ const LandingPage = () => {
         </div>
       </header>
       
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col pt-[72px]">
         <section className="py-8 px-6 relative overflow-hidden bg-white text-black">
           <div className="absolute inset-0 bg-gradient-to-b from-white to-blue-50/30"></div>
           
@@ -393,7 +412,6 @@ const LandingPage = () => {
           </div>
         </section>
         
-        {/* Moved SupportedAssetsSection up to follow the hero section */}
         <SupportedAssetsSection />
         
         <section className="bg-gray-50 py-12">
@@ -435,4 +453,5 @@ const LandingPage = () => {
       </div>
     </div>;
 };
+
 export default LandingPage;
