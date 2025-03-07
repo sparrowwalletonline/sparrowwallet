@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -299,22 +300,22 @@ const LandingPage = () => {
 
   console.log("Rendering LandingPage component");
   return <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
-      <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm fixed top-0 z-40 py-[10px] bg-slate-900/95">
+      <header className="w-full p-6 flex justify-between items-center backdrop-blur-sm bg-white/70 dark:bg-black/20 sticky top-0 z-40">
         <div className="flex items-center gap-2">
           <WalletLogo className="w-7 h-7" useSparrowLogo={true} color="sparrow" animate={true} />
           <div>
-            
-            
+            <span className="font-heading text-lg font-bold">Sparrow Wallet</span>
+            <p className="text-xs text-gray-600 dark:text-gray-400 -mt-1">Bitcoin Wallet for Desktop & Web</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={handleMenuClick} aria-label="Open menu" className="flex items-center justify-center w-10 h-10 rounded-full text-gray-800 dark:text-gray-200 transition-colors bg-slate-900 hover:bg-slate-800">
+          <button onClick={handleMenuClick} className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" aria-label="Open menu">
             <Menu className="w-5 h-5 cursor-pointer" />
           </button>
         </div>
       </header>
       
-      <div className="flex-1 flex flex-col pt-[72px]">
+      <div className="flex-1 flex flex-col">
         <section className="py-8 px-6 relative overflow-hidden bg-white text-black">
           <div className="absolute inset-0 bg-gradient-to-b from-white to-blue-50/30"></div>
           
@@ -412,6 +413,7 @@ const LandingPage = () => {
           </div>
         </section>
         
+        {/* Moved SupportedAssetsSection up to follow the hero section */}
         <SupportedAssetsSection />
         
         <section className="bg-gray-50 py-12">

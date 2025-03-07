@@ -423,19 +423,23 @@ const WalletViewContent: React.FC = () => {
         <div className="grid grid-cols-4 py-3">
           <NavItem 
             icon={<Home className="h-5 w-5" />} 
+            label="Home" 
             active 
             onClick={() => handleNavItemClick('/wallet')}
           />
           <NavItem 
             icon={<RefreshCcw className="h-5 w-5" />} 
+            label="Swap" 
             onClick={() => handleNavItemClick('/wallet')}
           />
           <NavItem 
             icon={<Compass className="h-5 w-5" />} 
+            label="Discover" 
             onClick={() => handleNavItemClick('https://www.coindesk.com/')}
           />
           <NavItem 
             icon={<PlusSquare className="h-5 w-5" />} 
+            label="Add to Home" 
             onClick={handleAddToHomeScreen}
           />
         </div>
@@ -565,21 +569,23 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, formatDa
 
 const NavItem = ({ 
   icon, 
+  label, 
   active = false, 
   onClick 
 }: { 
   icon: React.ReactNode, 
-  label?: string, 
+  label: string, 
   active?: boolean,
   onClick?: () => void 
 }) => (
   <button 
-    className="flex flex-col items-center justify-center" 
+    className="flex flex-col items-center justify-center gap-1" 
     onClick={onClick}
   >
     <div className={`${active ? 'text-wallet-green' : 'text-gray-500'}`}>
       {icon}
     </div>
+    <span className={`text-xs ${active ? 'text-white' : 'text-gray-500'}`}>{label}</span>
   </button>
 );
 
