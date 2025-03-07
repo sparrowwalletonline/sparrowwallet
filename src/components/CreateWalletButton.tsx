@@ -51,7 +51,7 @@ const CreateWalletButton = () => {
             clearInterval(interval);
             return 100;
           }
-          return prevProgress + (100 / 5) / 10; // Divide by 10 for smoother animation (10 updates per second)
+          return prevProgress + (100 / 5) / 10;
         });
       }, 100);
       
@@ -113,7 +113,6 @@ const CreateWalletButton = () => {
         navigate('/generate-wallet');
       }
     } else {
-      // Direct to Register page
       navigate('/register');
     }
   };
@@ -164,34 +163,10 @@ const CreateWalletButton = () => {
       return;
     }
     
-    setIsLoading(true);
-    
-    setTimeout(async () => {
-      try {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-        
-        if (error) throw error;
-        
-        setIsRegisterOpen(false);
-        setIsSuccessOpen(true);
-        
-      } catch (error) {
-        console.error("Registration error:", error);
-        toast({
-          title: "Registrierung fehlgeschlagen",
-          description: error instanceof Error ? error.message : "Bitte versuche es mit einer anderen E-Mail-Adresse",
-          variant: "destructive"
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    }, 5000); // 5 second delay
+    setIsRegisterOpen(false);
+    navigate('/register');
   };
 
-  // Remove any automatic account creation that happens when closing the modal
   const handleSuccessModalClose = () => {
     setIsSuccessOpen(false);
     navigate('/wallet-intro');
@@ -232,7 +207,6 @@ const CreateWalletButton = () => {
         </Button>
       </div>
 
-      {/* Keep the Dialog components but they're not actively used for registration now */}
       <Dialog open={isRegisterOpen} onOpenChange={setIsRegisterOpen}>
         <DialogContent className="bg-white border-gray-200 text-gray-800 dark:bg-wallet-card dark:border-gray-800 dark:text-white max-w-md p-0 overflow-hidden">
           <div className="flex flex-col">

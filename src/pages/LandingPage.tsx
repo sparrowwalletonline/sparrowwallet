@@ -312,13 +312,8 @@ const LandingPage = () => {
               {session ? <Button onClick={handleWalletAccess} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                   {hasWallet ? "Auf Wallet Zugreifen" : "Wallet Erstellen"} <ArrowRight className="h-4 w-4" />
                 </Button> : <>
-                  <Button onClick={handleRegisterClick} disabled={isLoading} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                    {isLoading ? <>
-                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        Loading...
-                      </> : <>
-                        Registrieren <ArrowRight className="h-4 w-4" />
-                      </>}
+                  <Button onClick={handleRegisterClick} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                    Registrieren <ArrowRight className="h-4 w-4" />
                   </Button>
                   
                   <Button variant="outline" className="w-full sm:w-auto py-6 text-base bg-gray-50 hover:bg-gray-100 border-gray-200" onClick={handleLoginClick}>
@@ -376,13 +371,8 @@ const LandingPage = () => {
               {session ? <Button onClick={handleWalletAccess} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                   {hasWallet ? "Auf Wallet Zugreifen" : "Wallet Erstellen"} <ArrowRight className="h-4 w-4" />
                 </Button> : <>
-                  <Button onClick={handleRegisterClick} disabled={isLoading} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                    {isLoading ? <>
-                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        Loading...
-                      </> : <>
-                        Registrieren <ArrowRight className="h-4 w-4" />
-                      </>}
+                  <Button onClick={handleRegisterClick} className="w-full sm:w-auto py-6 text-base flex items-center justify-center gap-2 text-white font-medium transition-all rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                    Registrieren <ArrowRight className="h-4 w-4" />
                   </Button>
                   
                   <Button variant="outline" className="w-full sm:w-auto py-6 text-base bg-gray-50 hover:bg-gray-100 border-gray-200" onClick={handleLoginClick}>
