@@ -31,6 +31,20 @@
     
     <!-- Preload critical assets -->
     <link rel="preload" href="/src/index.css" as="style">
+    
+    <!-- Additional meta tags for iOS -->
+    <meta name="apple-touch-fullscreen" content="yes">
+    
+    <!-- Prevent auto zoom on input fields on iOS -->
+    <style>
+      input, select, textarea {
+        font-size: 16px !important;
+      }
+      /* Initial opacity zero to prevent FOUC */
+      body {
+        opacity: 0.01;
+      }
+    </style>
   </head>
 
   <body>
@@ -38,6 +52,14 @@
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
+    <!-- Force initial render -->
+    <script>
+      // Show content once loaded
+      window.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          document.body.style.opacity = 1;
+        }, 10);
+      });
+    </script>
   </body>
 </html>
-

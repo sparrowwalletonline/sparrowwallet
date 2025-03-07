@@ -34,7 +34,7 @@ const LiveTicker = () => {
     const animateScroll = () => {
       if (ticker && ticker.scrollWidth > ticker.clientWidth) {
         setScrollPosition(prev => {
-          const newPos = prev + (isMobileSafari ? 0.5 : 1); // Slower scroll for Safari
+          const newPos = prev + (isMobileSafari ? 0.3 : 0.8); // Even slower scroll for Safari
           if (newPos >= ticker.scrollWidth / 2) {
             return 0;
           }
@@ -48,7 +48,7 @@ const LiveTicker = () => {
       ticker.scrollLeft = scrollPosition;
     }
     
-    const animation = setInterval(animateScroll, isMobileSafari ? 40 : 30);
+    const animation = setInterval(animateScroll, isMobileSafari ? 60 : 40);
     
     return () => clearInterval(animation);
   }, [isLoading, scrollPosition]);
@@ -86,7 +86,7 @@ const LiveTicker = () => {
   // If still loading, show a placeholder
   if (isLoading) {
     return (
-      <div className="bg-white/90 dark:bg-gray-900/90 text-[#1A1F2C] dark:text-gray-200 py-2 overflow-hidden border-b border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm">
+      <div className="bg-white text-[#1A1F2C] dark:bg-gray-900 dark:text-gray-200 py-2 overflow-hidden border-b border-gray-200/50 dark:border-gray-700/50">
         <div className="flex items-center justify-center">
           <span className="text-xs animate-pulse">Loading crypto prices...</span>
         </div>
@@ -95,7 +95,7 @@ const LiveTicker = () => {
   }
   
   return (
-    <div className="bg-white/90 dark:bg-gray-900/90 text-[#1A1F2C] dark:text-gray-200 py-2 overflow-hidden border-b border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm z-50 sticky top-0">
+    <div className="bg-white text-[#1A1F2C] dark:bg-gray-900 dark:text-gray-200 py-2 overflow-hidden border-b border-gray-200/50 dark:border-gray-700/50 z-50 sticky top-0">
       <div 
         ref={tickerRef} 
         className="flex overflow-x-auto whitespace-nowrap ticker-scroll"
@@ -119,6 +119,7 @@ const LiveTicker = () => {
                   src={crypto.image} 
                   alt={crypto.name || symbol} 
                   className="w-5 h-5 mr-2 rounded-full"
+                  loading="eager"
                 />
               )}
               <span 

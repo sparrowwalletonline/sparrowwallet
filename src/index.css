@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -72,46 +73,73 @@
   * {
     @apply border-border;
   }
+  
+  html {
+    -webkit-text-size-adjust: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    width: 100%;
+  }
+  
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
     overscroll-behavior: none;
-  }
-  
-  /* iOS Safari height fix */
-  html, body, #root {
     height: 100%;
     min-height: 100vh;
-    /* iOS Safari specific height */
+    width: 100%;
     min-height: -webkit-fill-available;
     min-height: calc(var(--vh, 1vh) * 100);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+  }
+  
+  #root {
+    height: 100%;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-height: -webkit-fill-available;
+    min-height: calc(var(--vh, 1vh) * 100);
+  }
+  
+  /* iOS Safari specific height */
+  @supports (-webkit-touch-callout: none) {
+    html, body, #root {
+      height: 100%;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      min-height: calc(var(--vh, 1vh) * 100);
+      width: 100%;
+    }
+    
+    body {
+      /* Prevent pull-to-refresh and overscroll on iOS */
+      overscroll-behavior-y: none;
+      position: fixed;
+      width: 100%;
+      /* Force hardware acceleration */
+      -webkit-transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+    }
+    
+    #root {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
   }
   
   /* Fix for iOS safe area */
   .safe-area-inset-bottom {
     padding-bottom: env(safe-area-inset-bottom);
-  }
-  
-  /* Additional iOS Safari specific fixes */
-  @supports (-webkit-touch-callout: none) {
-    .min-h-screen {
-      min-height: -webkit-fill-available;
-      min-height: calc(var(--vh, 1vh) * 100);
-    }
-    
-    /* Force hardware acceleration for smoother animations */
-    body, #root {
-      -webkit-transform: translateZ(0);
-      -webkit-backface-visibility: hidden;
-    }
-  }
-}
-
-/* Ensure content is visible in Safari */
-@supports (-webkit-touch-callout: none) {
-  .page-enter {
-    opacity: 1 !important;
-    transform: none !important;
   }
 }
 
@@ -123,7 +151,18 @@
 @supports (-webkit-touch-callout: none) {
   .ticker-background {
     /* Solid fallback for Safari */
-    background-color: rgba(245, 246, 255, 0.95);
+    background-color: rgba(255, 255, 255, 0.95) !important;
+  }
+  
+  /* Add this to force visibility in mobile Safari */
+  .page-enter {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  
+  /* Ensure all content is visible */
+  body * {
+    -webkit-transform: translateZ(0);
   }
 }
 
