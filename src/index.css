@@ -116,3 +116,22 @@
   }
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.ticker-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ticker animations */
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.ticker-scroll {
+  -ms-overflow-style: none;  /* Internet Explorer and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
