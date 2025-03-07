@@ -21,7 +21,7 @@ const ProfileSettings = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-4xl">
+    <div className="container mx-auto px-4 py-6 max-w-4xl pt-24">
       <Header title="Profil Einstellungen" showBack={true} />
       
       <div className="grid gap-6 mt-8">
