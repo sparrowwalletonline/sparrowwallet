@@ -77,12 +77,12 @@ const SupportedAssetsSection = () => {
       
       <div className="max-w-screen-xl mx-auto relative z-10">
         <div className="text-center mb-16">
-          <h2 className="font-playfair text-6xl md:text-8xl font-bold mb-4 text-center">
+          <h2 className="font-roboto text-6xl md:text-8xl font-bold mb-4 text-center">
             <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               200+
             </span>
           </h2>
-          <p className="text-3xl md:text-4xl font-playfair text-white/90 mb-8">
+          <p className="text-3xl md:text-4xl font-roboto font-bold text-white/90 mb-8">
             Assets und Tokens unterstützt
           </p>
           <p className="text-gray-400 max-w-2xl mx-auto">
@@ -131,7 +131,7 @@ const SupportedAssetsSection = () => {
         </div>
         
         <div className="text-center mt-12">
-          <p className="font-medium text-xl mb-8 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent max-w-2xl mx-auto">
+          <p className="font-medium text-xl mb-8 font-roboto bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent max-w-2xl mx-auto">
             Jeden Monat kommen weitere Kryptowährungen und Token hinzu
           </p>
           
