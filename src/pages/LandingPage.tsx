@@ -355,32 +355,41 @@ const LandingPage = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <div className="flex flex-col items-center">
-                <div className="w-16 h-16 bg-blue-50 flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-blue-500/20">
+            <div className="flex flex-col md:flex-row gap-8 max-w-5xl mx-auto mb-12">
+              <div className="flex items-center gap-4 bg-white/80 p-5 rounded-lg shadow-sm hover:shadow-md transition-all">
+                <div className="shrink-0 w-16 h-16 bg-blue-50 flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-blue-500/20">
                   <div className="transform -rotate-45 flex items-center justify-center w-full h-full">
                     <Shield className="h-8 w-8 text-blue-600" />
                   </div>
                 </div>
-                <span className="mt-2 text-sm text-black font-medium">Sicher</span>
+                <div>
+                  <span className="text-lg font-medium text-black">Sicher</span>
+                  <p className="text-sm text-gray-600 mt-1">Volle Kontrolle über deine privaten Schlüssel</p>
+                </div>
               </div>
               
-              <div className="flex flex-col items-center">
-                <div className="w-16 h-16 bg-purple-50 flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-purple-500/20">
+              <div className="flex items-center gap-4 bg-white/80 p-5 rounded-lg shadow-sm hover:shadow-md transition-all">
+                <div className="shrink-0 w-16 h-16 bg-purple-50 flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-purple-500/20">
                   <div className="transform -rotate-45 flex items-center justify-center w-full h-full">
                     <Key className="h-8 w-8 text-purple-600" />
                   </div>
                 </div>
-                <span className="mt-2 text-sm text-black font-medium">Privat</span>
+                <div>
+                  <span className="text-lg font-medium text-black">Privat</span>
+                  <p className="text-sm text-gray-600 mt-1">Deine Daten gehören nur dir</p>
+                </div>
               </div>
               
-              <div className="flex flex-col items-center">
-                <div className="w-16 h-16 bg-green-50 flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-green-500/20">
+              <div className="flex items-center gap-4 bg-white/80 p-5 rounded-lg shadow-sm hover:shadow-md transition-all">
+                <div className="shrink-0 w-16 h-16 bg-green-50 flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-green-500/20">
                   <div className="transform -rotate-45 flex items-center justify-center w-full h-full">
                     <Zap className="h-8 w-8 text-green-600" />
                   </div>
                 </div>
-                <span className="mt-2 text-sm text-black font-medium">Schnell</span>
+                <div>
+                  <span className="text-lg font-medium text-black">Schnell</span>
+                  <p className="text-sm text-gray-600 mt-1">Blitzschnelle Transaktionen</p>
+                </div>
               </div>
             </div>
             
