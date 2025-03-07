@@ -15,7 +15,8 @@ import {
   Tag,
   Key,
   CreditCard,
-  Link
+  Link,
+  HardDrive
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -64,7 +65,7 @@ const SupportedAssetsSection = () => {
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-6 justify-center max-w-4xl mx-auto mb-16">
           <AssetIcon icon={<Bitcoin className="h-8 w-8 text-[#F7931A]" />} color="bg-[#1c1c28]" />
           <AssetIcon icon={<Coins className="h-8 w-8 text-[#627EEA]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Database className="h-8 w-8 text-[#345D9D]" />} color="bg-[#1c1c28]" />
+          <AssetIcon icon={<HardDrive className="h-8 w-8 text-[#345D9D]" />} color="bg-[#1c1c28]" />
           <AssetIcon icon={<Shield className="h-8 w-8 text-[#FF6600]" />} color="bg-[#1c1c28]" />
           <AssetIcon icon={<Tag className="h-8 w-8 text-[#C2A633]" />} color="bg-[#1c1c28]" />
           <AssetIcon icon={<Zap className="h-8 w-8 text-[#00AEFF]" />} color="bg-[#1c1c28]" />
@@ -76,7 +77,7 @@ const SupportedAssetsSection = () => {
           {/* Second row */}
           <AssetIcon icon={<Gem className="h-8 w-8 text-[#26A17B]" />} color="bg-[#1c1c28]" />
           <AssetIcon icon={<Shield className="h-8 w-8 text-[#6F41D8]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Database className="h-8 w-8 text-[#1FE5C1]" />} color="bg-[#1c1c28]" />
+          <AssetIcon icon={<HardDrive className="h-8 w-8 text-[#1FE5C1]" />} color="bg-[#1c1c28]" />
           <AssetIcon icon={<Star className="h-8 w-8 text-[#FF9900]" />} color="bg-[#1c1c28]" />
           <AssetIcon icon={<Globe className="h-8 w-8 text-[#FFD301]" />} color="bg-[#1c1c28]" />
           <AssetIcon icon={<Wallet className="h-8 w-8 text-[#F1B32B]" />} color="bg-[#1c1c28]" />
