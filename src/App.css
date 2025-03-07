@@ -6,6 +6,16 @@
   text-align: left;
 }
 
+/* Registration page specific styles */
+.register-page-container {
+  padding-top: 2rem;
+}
+
+.register-logo-container {
+  margin-top: 6rem;
+  padding-top: 3rem;
+}
+
 /* Trust Wallet specific styling */
 .trust-button {
   background: linear-gradient(90deg, #0500ff 0%, #0500ff 100%);
@@ -469,6 +479,15 @@ button:hover {
     padding-bottom: 0.5rem !important;
     min-height: 38px !important;
   }
+  
+  /* Improved floating header on mobile */
+  .wallet-header {
+    padding: 0 0.5rem;
+  }
+  
+  .wallet-header h1 {
+    font-size: 1.25rem;
+  }
 }
 
 /* Fix for iOS safari viewport height issues */
@@ -535,7 +554,7 @@ button, a {
   left: 0;
   right: 0;
   z-index: 9999 !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   will-change: transform;
   transition: transform 0.3s ease, background-color 0.3s ease;
   transform: translateZ(0);
