@@ -54,7 +54,7 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   // Then check if user has a wallet
   if (!hasWallet) {
     // Redirect to wallet choice if logged in but no wallet
-    return <Navigate to="/app" replace />;
+    return <Navigate to="/wallet-intro" replace />;
   }
 
   // Finally check if PIN verification is required
