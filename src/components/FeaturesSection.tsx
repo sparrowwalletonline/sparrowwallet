@@ -86,7 +86,7 @@ const FeaturesSection = () => {
           
           <FeatureCard 
             icon={<Zap className="h-6 w-6" />} 
-            title="Transaktionsbeschleunigung" 
+            title="Schnelligkeit" 
             description="Replace-by-Fee-Unterstützung ermöglicht es Ihnen, ausstehende Transaktionen bei Bedarf zu beschleunigen."
           />
           
