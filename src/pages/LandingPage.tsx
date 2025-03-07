@@ -1,4 +1,4 @@
-<lov-code>
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
@@ -269,7 +269,7 @@ const LandingPage = () => {
                   <div className="w-32 h-32 mb-4 bg-white/5 rounded-lg p-2 flex items-center justify-center">
                     <WalletLogo className="w-full h-full" useSparrowLogo={true} color="sparrow" animate={true} />
                   </div>
-                  <h1 className="font-heading tracking-tight text-gray-900 dark:text-white leading-[1.1] font-bold text-4xl md:text-5xl lg:text-6xl max-w-xl z-10 relative">
+                  <h1 className="font-roboto tracking-tight text-gray-900 dark:text-white leading-[1.1] font-bold text-4xl md:text-5xl lg:text-6xl max-w-xl z-10 relative">
                     Sicher. Einfach.
                     <span className="text-wallet-blue"> Bitcoin </span>
                     für jeden.
@@ -412,7 +412,7 @@ const LandingPage = () => {
                   <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-green-400/20 to-emerald-400/20 dark:from-green-500/20 dark:to-emerald-500/20 rounded-xl mb-5 group-hover:scale-110 transition-all duration-300">
                     <Shield className="h-7 w-7 text-green-600 dark:text-green-400" />
                   </div>
-                  <h3 className="font-heading text-xl font-bold mb-3 text-gray-800 dark:text-white">Kompromisslose Sicherheit</h3>
+                  <h3 className="font-roboto text-xl font-bold mb-3 text-gray-800 dark:text-white">Kompromisslose Sicherheit</h3>
                   <p className="text-gray-600 dark:text-gray-300">
                     Deine Schlüssel verlassen niemals dein Gerät. Volle Selbstverwahrung bedeutet, dass du immer die Kontrolle über deine Bitcoin hast, ohne Risiko durch Dritte.
                   </p>
@@ -445,7 +445,7 @@ const LandingPage = () => {
                   <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-blue-400/20 to-indigo-400/20 dark:from-blue-500/20 dark:to-indigo-500/20 rounded-xl mb-5 group-hover:scale-110 transition-all duration-300">
                     <UserPlus className="h-7 w-7 text-blue-600 dark:text-blue-400" />
                   </div>
-                  <h3 className="font-heading text-xl font-bold mb-3 text-gray-800 dark:text-white">Anfängerfreundlich</h3>
+                  <h3 className="font-roboto text-xl font-bold mb-3 text-gray-800 dark:text-white">Anfängerfreundlich</h3>
                   <p className="text-gray-600 dark:text-gray-300">
                     Eine intuitive Benutzeroberfläche mit hilfreichen Anleitungen und Tooltips macht Bitcoin für jeden zugänglich, unabhängig von technischem Fachwissen.
                   </p>
@@ -478,7 +478,7 @@ const LandingPage = () => {
                   <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-purple-400/20 to-violet-400/20 dark:from-purple-500/20 dark:to-violet-500/20 rounded-xl mb-5 group-hover:scale-110 transition-all duration-300">
                     <Key className="h-7 w-7 text-purple-600 dark:text-purple-400" />
                   </div>
-                  <h3 className="font-heading text-xl font-bold mb-3 text-gray-800 dark:text-white">Vollständige Kontrolle</h3>
+                  <h3 className="font-roboto text-xl font-bold mb-3 text-gray-800 dark:text-white">Vollständige Kontrolle</h3>
                   <p className="text-gray-600 dark:text-gray-300">
                     Erweiterte Funktionen, wenn du sie brauchst, mit detaillierten Transaktionskontrollen, die mit deiner Erfahrung wachsen.
                   </p>
@@ -518,4 +518,23 @@ const LandingPage = () => {
                 <Button 
                   onClick={handleRegisterClick} 
                   disabled={isLoading} 
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-
+                  className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-lg font-medium px-[15px]"
+                >
+                  Registrieren
+                </Button>
+              )}
+            </div>
+          </div>
+        </section>
+        
+        {/* Include additional sections if they exist in the original file */}
+        <FeaturesSection />
+        <SupportedAssetsSection />
+
+        <Footer />
+      </div>
+    </div>
+  );
+};
+
+export default LandingPage;
