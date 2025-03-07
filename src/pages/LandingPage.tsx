@@ -340,7 +340,7 @@ const LandingPage = () => {
                 <h2 className="font-roboto text-6xl md:text-7xl font-bold mb-0 text-center">
                   Deine sichere Festung
                 </h2>
-                <p className="font-roboto text-5xl md:text-6xl font-bold mt-2">
+                <p className="font-roboto text-6xl md:text-7xl font-bold mt-2">
                   für Kryptowährungen
                 </p>
               </div>
