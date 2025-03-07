@@ -1,47 +1,75 @@
 
-import React from 'react';
-import { 
-  Bitcoin, 
-  Coins,
-  DollarSign,
-  Droplet,
-  Star,
-  Wallet,
-  Gem,
-  Zap,
-  Globe,
-  Network,
-  Shield,
-  Tag,
-  Key,
-  CreditCard,
-  Link,
-  HardDrive
-} from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { fetchCryptoPrices, CryptoPrice } from '@/utils/cryptoPriceUtils';
 
 interface AssetIconProps {
-  icon: React.ReactNode;
-  color: string;
+  image?: string;
+  name?: string;
+  symbol?: string;
+  fallbackIcon?: React.ReactNode;
 }
 
-const AssetIcon = ({ icon, color }: AssetIconProps) => {
+const AssetIcon = ({ image, name, symbol, fallbackIcon }: AssetIconProps) => {
   return (
-    <div className={`w-16 h-16 ${color} flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-${color}/20`}>
-      <div className="transform -rotate-45">
-        {icon}
+    <div className="flex flex-col items-center">
+      <div className="w-16 h-16 bg-[#1c1c28] flex items-center justify-center rounded-xl transform rotate-45 overflow-hidden transition-all hover:scale-110 hover:shadow-lg hover:shadow-blue-500/20">
+        <div className="transform -rotate-45 flex items-center justify-center w-full h-full">
+          {image ? (
+            <img 
+              src={image} 
+              alt={name || symbol} 
+              className="h-8 w-8 object-contain"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent && fallbackIcon) {
+                  const fallbackDiv = document.createElement('div');
+                  parent.appendChild(fallbackDiv);
+                }
+              }}
+            />
+          ) : (
+            fallbackIcon || <div className="h-8 w-8 bg-gray-500 rounded-full"></div>
+          )}
+        </div>
       </div>
+      {symbol && (
+        <span className="mt-2 text-sm text-gray-300 font-medium">{symbol}</span>
+      )}
     </div>
   );
 };
 
 const SupportedAssetsSection = () => {
   const navigate = useNavigate();
+  const [cryptoData, setCryptoData] = useState<Record<string, CryptoPrice>>({});
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    const loadCryptoData = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchCryptoPrices();
+        setCryptoData(data);
+      } catch (error) {
+        console.error('Failed to load crypto data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadCryptoData();
+  }, []);
   
   const handleWalletAccess = () => {
     navigate('/wallet');
   };
+  
+  // Get top 20 cryptos by market cap (assuming they're already sorted)
+  const topCryptos = Object.values(cryptoData).slice(0, 20);
   
   return (
     <section className="py-24 px-6 relative overflow-hidden bg-[#1A1F2C] text-white">
@@ -62,38 +90,40 @@ const SupportedAssetsSection = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-6 justify-center max-w-4xl mx-auto mb-16">
-          <AssetIcon icon={<Bitcoin className="h-8 w-8 text-[#F7931A]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Coins className="h-8 w-8 text-[#627EEA]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<HardDrive className="h-8 w-8 text-[#345D9D]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Shield className="h-8 w-8 text-[#FF6600]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Tag className="h-8 w-8 text-[#C2A633]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Zap className="h-8 w-8 text-[#00AEFF]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Globe className="h-8 w-8 text-[#2775CA]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Star className="h-8 w-8 text-[#17181A]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Key className="h-8 w-8 text-[#E84142]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Network className="h-8 w-8 text-[#25292E]" />} color="bg-[#1c1c28]" />
-          
-          {/* Second row */}
-          <AssetIcon icon={<Gem className="h-8 w-8 text-[#26A17B]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Shield className="h-8 w-8 text-[#6F41D8]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<HardDrive className="h-8 w-8 text-[#1FE5C1]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Star className="h-8 w-8 text-[#FF9900]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Globe className="h-8 w-8 text-[#FFD301]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Wallet className="h-8 w-8 text-[#F1B32B]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Zap className="h-8 w-8 text-[#1BA27A]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Tag className="h-8 w-8 text-[#2B31C3]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Coins className="h-8 w-8 text-[#474DFF]" />} color="bg-[#1c1c28]" />
-          <AssetIcon icon={<Bitcoin className="h-8 w-8 text-[#16D1AA]" />} color="bg-[#1c1c28]" />
-        </div>
+        {loading ? (
+          <div className="grid grid-cols-5 sm:grid-cols-5 md:grid-cols-10 gap-6 justify-center max-w-4xl mx-auto mb-16">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <div key={i} className="w-16 h-16 bg-[#1c1c28]/50 animate-pulse rounded-xl"></div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-10 gap-6 justify-center max-w-4xl mx-auto mb-16">
+            {topCryptos.map((crypto, index) => (
+              <AssetIcon 
+                key={index}
+                image={crypto.image}
+                name={crypto.name}
+                symbol={crypto.symbol}
+              />
+            ))}
+          </div>
+        )}
         
         <div className="relative mx-auto mt-8 max-w-5xl">
           <div className="absolute inset-0 bg-gradient-to-t from-[#1A1F2C] to-transparent pointer-events-none z-10"></div>
           <div className="grid grid-cols-8 sm:grid-cols-10 md:grid-cols-12 gap-4 opacity-40 max-h-60 overflow-hidden">
-            {Array.from({ length: 48 }).map((_, i) => (
-              <div key={i} className="w-12 h-12 bg-[#1c1c28] rounded-xl flex items-center justify-center transform rotate-45">
+            {Object.values(cryptoData).slice(20, 80).map((crypto, index) => (
+              <div key={index} className="w-12 h-12 bg-[#1c1c28] rounded-xl flex items-center justify-center transform rotate-45">
                 <div className="transform -rotate-45">
-                  <Wallet className="h-5 w-5 text-gray-500" />
+                  {crypto.image ? (
+                    <img 
+                      src={crypto.image} 
+                      alt={crypto.name || crypto.symbol} 
+                      className="h-5 w-5 object-contain"
+                    />
+                  ) : (
+                    <div className="h-5 w-5 bg-gray-500 rounded-full"></div>
+                  )}
                 </div>
               </div>
             ))}
