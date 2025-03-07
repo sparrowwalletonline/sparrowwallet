@@ -88,8 +88,8 @@ const Register: React.FC = () => {
 
         toast({
           title: "Registrierung erfolgreich",
-          description: "Bitte überprüfe deine E-Mail, um die Registrierung abzuschließen",
-          duration: 3000
+          description: "Lies dir die folgenden Schritte bitte genau durch. Ein nicht einhalten kann zum Verlust von Währungen führen.",
+          duration: 5000
         });
         
         navigate('/wallet-intro');
