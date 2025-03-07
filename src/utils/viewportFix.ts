@@ -32,7 +32,11 @@ export const applyViewportFix = (): void => {
   });
   
   // Safari on iOS sometimes needs a forced redraw to render correctly
-  if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+  // Use a more TypeScript-friendly way to detect iOS Safari
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && 
+                !(window as any).MSStream; // Type assertion for compatibility
+  
+  if (isIOS) {
     // Apply a minimal transform to force a repaint
     document.body.style.transform = 'translateZ(0)';
     // Ensure the root div has a height
@@ -45,4 +49,3 @@ export const applyViewportFix = (): void => {
     }
   }
 };
-
