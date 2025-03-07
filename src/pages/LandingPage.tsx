@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import WalletLogo from '@/components/WalletLogo';
-import { ArrowRight, Check, Menu, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift, Coins, Wallet, Search, X, Loader2, Star, ExternalLink, Lock, Zap, Key, UserPlus } from 'lucide-react';
+import { ArrowRight, Check, Menu, Shield, Users, Smartphone, Sparkles, Eye, Globe, Gift, Coins, Wallet, Search, X, Loader2, Star, ExternalLink, Lock, Zap, Key, UserPlus, Bitcoin } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import { useMenu } from '@/contexts/MenuContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -12,6 +11,7 @@ import Footer from '@/components/Footer';
 import CreateWalletButton from '@/components/CreateWalletButton';
 import FeaturesSection from '@/components/FeaturesSection';
 import SupportedAssetsSection from '@/components/SupportedAssetsSection';
+import { fetchCryptoPrices, CryptoPrice } from '@/utils/cryptoPriceUtils';
 
 interface Testimonial {
   name: string;
@@ -36,7 +36,22 @@ const LandingPage = () => {
   const { toggleMenu } = useMenu();
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [cryptoData, setCryptoData] = useState<Record<string, CryptoPrice>>({});
+  const [backgroundCryptos, setBackgroundCryptos] = useState<CryptoPrice[]>([]);
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    const loadCryptoData = async () => {
+      try {
+        const data = await fetchCryptoPrices();
+        setCryptoData(data);
+        setBackgroundCryptos(Object.values(data).slice(0, 40));
+      } catch (error) {
+        console.error('Failed to load crypto data:', error);
+      }
+    };
+    loadCryptoData();
+  }, []);
   
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -244,6 +259,47 @@ const LandingPage = () => {
       </div>;
   };
   
+  const CryptoBackgroundIcon = ({
+    image,
+    index
+  }: {
+    image: string;
+    index: number;
+  }) => {
+    const randomPosition = {
+      top: `${10 + Math.random() * 80}%`,
+      left: `${Math.random() * 90}%`,
+      opacity: 0.03 + Math.random() * 0.08,
+      transform: `rotate(${Math.random() * 360}deg) scale(${0.7 + Math.random() * 0.5})`,
+      animationDelay: `${index * 0.2}s`,
+    };
+    
+    return (
+      <div 
+        className="absolute"
+        style={{
+          top: randomPosition.top,
+          left: randomPosition.left,
+        }}
+      >
+        <div 
+          className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-400/10 to-purple-400/10 flex items-center justify-center animate-bounce-slow"
+          style={{
+            opacity: randomPosition.opacity,
+            transform: randomPosition.transform,
+            animationDelay: randomPosition.animationDelay,
+          }}
+        >
+          {image ? (
+            <img src={image} alt="crypto" className="h-8 w-8 object-contain" />
+          ) : (
+            <Bitcoin className="h-8 w-8 text-blue-500/20" />
+          )}
+        </div>
+      </div>
+    );
+  };
+  
   console.log("Rendering LandingPage component");
   
   return (
@@ -266,6 +322,16 @@ const LandingPage = () => {
       <div className="flex-1 flex flex-col">
         <section className="py-24 px-6 relative overflow-hidden bg-white text-black">
           <div className="absolute inset-0 bg-gradient-to-b from-white to-blue-50/30"></div>
+          
+          <div className="absolute inset-0 overflow-hidden z-0">
+            {backgroundCryptos.map((crypto, index) => (
+              <CryptoBackgroundIcon 
+                key={index} 
+                image={crypto?.image || ''} 
+                index={index} 
+              />
+            ))}
+          </div>
           
           <div className="max-w-screen-xl mx-auto relative z-10">
             <div className="text-center mb-16">
