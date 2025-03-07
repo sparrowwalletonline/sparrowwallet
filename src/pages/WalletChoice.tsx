@@ -68,7 +68,7 @@ const WalletChoice: React.FC = () => {
           <ArrowLeft size={24} />
         </button>
         <div className="text-center">
-          <h1 className="text-xl font-medium ml-10 text-gray-800">Wallet auswählen</h1>
+          <h1 className="text-xl font-medium text-gray-800">Wallet auswählen</h1>
         </div>
       </div>
       
