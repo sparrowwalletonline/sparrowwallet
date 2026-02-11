@@ -21,6 +21,21 @@ const ProfileButton = () => {
     navigate('/');
   };
 
+  // Don't show profile menu when not logged in
+  if (!session) {
+    return (
+      <Button 
+        variant="ghost" 
+        size="icon" 
+        className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 h-10 w-10 touch-manipulation"
+        onClick={() => navigate('/auth')}
+      >
+        <UserRound className="h-5 w-5" />
+        <span className="sr-only">Anmelden</span>
+      </Button>
+    );
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
