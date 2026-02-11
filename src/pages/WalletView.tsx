@@ -361,17 +361,17 @@ const WalletViewContent: React.FC = () => {
         
         <div className="mt-6">
           <Tabs defaultValue="crypto" className="w-full">
-            <div className="flex justify-between items-center border-b border-border">
+            <div className="flex justify-between items-center border-b border-white/10">
               <TabsList className="flex bg-transparent">
                 <TabsTrigger 
                   value="crypto" 
-                  className="tabs-trigger data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-md bg-transparent text-muted-foreground mx-1 px-3"
+                  className="data-[state=active]:border-b-2 data-[state=active]:border-blue-400 data-[state=active]:text-white rounded-none bg-transparent text-gray-400 mx-1 px-3"
                 >
                   Crypto
                 </TabsTrigger>
                 <TabsTrigger 
                   value="transactions" 
-                  className="tabs-trigger data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-md bg-transparent text-muted-foreground mx-1 px-3"
+                  className="data-[state=active]:border-b-2 data-[state=active]:border-blue-400 data-[state=active]:text-white rounded-none bg-transparent text-gray-400 mx-1 px-3"
                 >
                   Transaktionen
                 </TabsTrigger>
@@ -380,7 +380,7 @@ const WalletViewContent: React.FC = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-muted-foreground hover:text-foreground"
+                className="text-gray-400 hover:text-white hover:bg-white/10"
                 onClick={refreshPrices}
                 disabled={isRefreshingPrices}
               >
@@ -392,7 +392,7 @@ const WalletViewContent: React.FC = () => {
             </div>
             
             <TabsContent value="crypto" className="pt-4">
-              <div className="space-y-4">
+              <div className="space-y-2">
                 {cryptoData.map((crypto, index) => (
                   <CryptoItem 
                     key={index}
@@ -411,7 +411,7 @@ const WalletViewContent: React.FC = () => {
                 <div className="pt-4 text-center">
                   <Button 
                     variant="ghost" 
-                    className="text-primary hover:text-primary hover:bg-secondary"
+                    className="text-blue-400 hover:text-blue-300 hover:bg-white/5"
                     onClick={() => setIsManageCryptoOpen(true)}
                   >
                     Kryptos verwalten
@@ -422,10 +422,10 @@ const WalletViewContent: React.FC = () => {
             <TabsContent value="transactions" className="pt-4">
               <div className="space-y-4">
                 {transactions.length === 0 && (
-                  <div className="text-center py-12 text-muted-foreground flex flex-col items-center gap-2">
-                    <Clock className="h-10 w-10 text-muted-foreground/50" />
+                  <div className="text-center py-12 text-gray-400 flex flex-col items-center gap-2">
+                    <Clock className="h-10 w-10 text-gray-600" />
                     <p className="text-lg">Keine Transaktionen gefunden</p>
-                    <p className="text-sm max-w-xs">Deine Transaktionshistorie wird hier angezeigt, sobald du Krypto sendest oder empfängst.</p>
+                    <p className="text-sm max-w-xs text-gray-500">Deine Transaktionshistorie wird hier angezeigt, sobald du Krypto sendest oder empfängst.</p>
                   </div>
                 )}
                 {transactions.map((transaction) => (
