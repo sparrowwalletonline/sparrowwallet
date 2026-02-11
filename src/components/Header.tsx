@@ -60,9 +60,16 @@ const Header = ({
     </button>
   );
 
+  const isLandingPage = location.pathname === '/';
+  const isDarkPage = isLandingPage || location.pathname === '/auth';
+
   return (
     <div className="fixed top-0 left-0 right-0 z-[9999] px-4 py-3 pb-6 flex justify-center">
-      <header className={`flex items-center justify-between py-2.5 px-4 rounded-2xl bg-white/85 dark:bg-black/70 backdrop-blur-md border border-gray-200/50 dark:border-gray-800/50 shadow-lg w-full max-w-5xl ${className}`}>
+      <header className={`flex items-center justify-between py-2.5 px-4 rounded-2xl ${
+        isDarkPage 
+          ? 'bg-white/[0.03] backdrop-blur-2xl border border-white/[0.06]' 
+          : 'bg-white/85 dark:bg-black/70 backdrop-blur-md border border-gray-200/50 dark:border-gray-800/50 shadow-lg'
+      } w-full max-w-5xl ${className}`}>
         <div className="flex items-center gap-3">
           {showBack && (
             <BackButton />
@@ -70,14 +77,18 @@ const Header = ({
           
           <button 
             onClick={handleMenuToggle} 
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white/90 backdrop-blur-sm dark:bg-gray-800/50 dark:hover:bg-gray-800/70 transition-all shadow-sm hover:shadow-md"
+            className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
+              isDarkPage
+                ? 'bg-white/[0.06] hover:bg-white/[0.12]'
+                : 'bg-white/70 hover:bg-white/90 backdrop-blur-sm dark:bg-gray-800/50 dark:hover:bg-gray-800/70 shadow-sm hover:shadow-md'
+            }`}
             aria-label="Toggle menu"
           >
-            <Menu className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+            <Menu className={`w-5 h-5 ${isDarkPage ? 'text-gray-400' : 'text-gray-700 dark:text-gray-200'}`} />
           </button>
           
           {title && title.length > 0 && (
-            <h1 className="text-lg font-medium text-gray-800 dark:text-gray-100">{title}</h1>
+            <h1 className={`text-lg font-medium ${isDarkPage ? 'text-gray-200' : 'text-gray-800 dark:text-gray-100'}`}>{title}</h1>
           )}
         </div>
         
@@ -96,7 +107,7 @@ const Header = ({
             <ManageAssetsButton />
           )}
           
-          {showProfileButton && <ThemeToggle />}
+          {!isDarkPage && showProfileButton && <ThemeToggle />}
           {showProfileButton && <ProfileButton />}
           <div className="w-8 h-8 ml-2 rounded-full bg-gradient-to-br from-blue-600 to-purple-600" />
         </div>
