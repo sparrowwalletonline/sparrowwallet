@@ -267,7 +267,7 @@ const LandingPage = () => {
           <div className="max-w-screen-xl mx-auto relative z-10">
             <div className="text-center mb-16">
               <div className="mb-8">
-                <p className="text-purple-600 font-medium mb-6 text-base">Sparrow Wallet:</p>
+                <p className="text-purple-600 font-medium mb-6 text-base">Sparrw Wallet:</p>
                 <h2 className="font-roboto text-6xl md:text-7xl font-bold mb-0 text-center">
                   Deine
                 </h2>
