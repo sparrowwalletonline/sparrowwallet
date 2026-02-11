@@ -117,7 +117,7 @@ const Footer = () => {
         </div>
 
         <div className="pt-6 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center px-4">
-          <p className="text-sm">© {new Date().getFullYear()} Sparrow Wallet. MIT-Lizenziert. Open-Source-Software.</p>
+          <p className="text-sm">© {new Date().getFullYear()} Sparrw Wallet. MIT-Lizenziert. Open-Source-Software.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="https://sparrowwallet.com/" className="text-sm hover:text-blue-400 transition-colors flex items-center gap-1">
               <Globe size={14} />
