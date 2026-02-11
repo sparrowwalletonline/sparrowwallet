@@ -604,10 +604,10 @@ const NavItem = ({
     className="flex flex-col items-center justify-center gap-1" 
     onClick={onClick}
   >
-    <div className={`${active ? 'text-wallet-green' : 'text-gray-500'}`}>
+    <div className={`${active ? 'text-blue-400' : 'text-gray-500'}`}>
       {icon}
     </div>
-    <span className={`text-xs ${active ? 'text-white' : 'text-gray-500'}`}>{label}</span>
+    <span className={`text-xs ${active ? 'text-blue-400' : 'text-gray-500'}`}>{label}</span>
   </button>
 );
 
