@@ -71,7 +71,7 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0a0e1a] text-white">
-      <Header title="Sparrw Wallet" showMenuToggle={true} showProfileButton={false} />
+      <Header title="" showMenuToggle={true} showProfileButton={false} />
 
       <div className="flex-1 flex flex-col">
         {/* Hero Section */}
