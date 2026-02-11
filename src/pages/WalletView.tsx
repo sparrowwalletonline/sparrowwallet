@@ -365,13 +365,13 @@ const WalletViewContent: React.FC = () => {
               <TabsList className="flex bg-transparent">
                 <TabsTrigger 
                   value="crypto" 
-                  className="data-[state=active]:border-b-2 data-[state=active]:border-blue-400 data-[state=active]:text-white rounded-none bg-transparent text-gray-400 mx-1 px-3"
+                  className="data-[state=active]:border-b-2 data-[state=active]:border-blue-400 data-[state=active]:text-white data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none bg-transparent text-gray-400 mx-1 px-3"
                 >
                   Crypto
                 </TabsTrigger>
                 <TabsTrigger 
                   value="transactions" 
-                  className="data-[state=active]:border-b-2 data-[state=active]:border-blue-400 data-[state=active]:text-white rounded-none bg-transparent text-gray-400 mx-1 px-3"
+                  className="data-[state=active]:border-b-2 data-[state=active]:border-blue-400 data-[state=active]:text-white data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none bg-transparent text-gray-400 mx-1 px-3"
                 >
                   Transaktionen
                 </TabsTrigger>
