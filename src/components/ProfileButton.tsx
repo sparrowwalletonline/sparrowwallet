@@ -28,7 +28,7 @@ const ProfileButton = () => {
         variant="ghost" 
         size="icon" 
         className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 h-10 w-10 touch-manipulation"
-        onClick={() => navigate('/auth')}
+        onClick={() => navigate('/')}
       >
         <UserRound className="h-5 w-5" />
         <span className="sr-only">Anmelden</span>
