@@ -645,7 +645,7 @@ const CryptoItem = ({
   
   return (
     <div 
-      className="flex items-center justify-between p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg cursor-pointer transition-colors"
+      className="flex items-center justify-between p-3 hover:bg-white/5 rounded-xl cursor-pointer transition-colors border border-transparent hover:border-white/10"
       onClick={onClick}
     >
       <div className="flex items-center">
@@ -660,18 +660,18 @@ const CryptoItem = ({
         </div>
         <div>
           <div className="flex items-center">
-            <span className="font-medium mr-2">{symbol}</span>
-            <span className="text-xs py-0.5 px-2 bg-gray-100 dark:bg-[#2C3140] text-gray-500 dark:text-gray-400 rounded">{name}</span>
+            <span className="font-medium mr-2 text-white">{symbol}</span>
+            <span className="text-xs py-0.5 px-2 bg-white/10 text-gray-400 rounded">{name}</span>
           </div>
           <div className="flex items-center mt-1">
-            <span className="text-xs text-gray-400">{formattedPrice}</span>
+            <span className="text-xs text-gray-500">{formattedPrice}</span>
             <span className={`text-xs ${changeColor} ml-2`}>{change}</span>
           </div>
         </div>
       </div>
       <div className="text-right">
-        <div>{amount}</div>
-        <div className="text-xs text-gray-400 mt-1">
+        <div className="text-white">{amount}</div>
+        <div className="text-xs text-gray-500 mt-1">
           ${value.toFixed(2)}
         </div>
       </div>
