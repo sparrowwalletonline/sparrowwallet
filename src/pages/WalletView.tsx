@@ -251,22 +251,19 @@ const WalletViewContent: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0a0e1a] text-white">
-      <div className="fixed top-0 left-0 right-0 z-[9999] px-4 py-3 pb-6 flex justify-center">
-        <div className="flex items-center justify-between py-2.5 px-4 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg shadow-black/20 w-full max-w-5xl">
-          <div className="flex items-center gap-3">
-            <button 
-              onClick={() => toggleMenu()} 
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all"
-              aria-label="Toggle menu"
-            >
-              <Menu className="w-5 h-5 text-gray-300" />
-            </button>
-          </div>
+      <div className="fixed top-0 left-0 right-0 z-[9999] px-4 pt-3 pb-4 flex justify-center">
+        <div className="flex items-center justify-between py-2 px-4 rounded-2xl bg-white/[0.03] backdrop-blur-2xl border border-white/[0.06] w-full max-w-5xl">
+          <button 
+            onClick={() => toggleMenu()} 
+            className="w-9 h-9 flex items-center justify-center rounded-full bg-white/[0.06] hover:bg-white/[0.12] transition-all"
+            aria-label="Toggle menu"
+          >
+            <Menu className="w-4 h-4 text-gray-400" />
+          </button>
           
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
+          <div className="flex items-center gap-2.5">
             <ProfileButton />
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 ml-2" />
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg shadow-blue-500/20" />
           </div>
         </div>
       </div>
