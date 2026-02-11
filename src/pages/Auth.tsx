@@ -5,9 +5,10 @@ import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import { Mail, Lock, Eye, EyeOff, ArrowLeft, CheckCircle } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowLeft, CheckCircle, KeyRound } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import Header from '@/components/Header';
+import SeedPhraseRecovery from '@/components/auth/SeedPhraseRecovery';
 
 const Auth: React.FC = () => {
   const [email, setEmail] = useState('');
