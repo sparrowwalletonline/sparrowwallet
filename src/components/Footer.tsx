@@ -25,7 +25,7 @@ const Footer = () => {
           <div className="col-span-1 px-4">
             <div className="flex items-center gap-2 mb-4">
               <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" />
-              <span className="font-playfair text-xl font-bold text-white">Sparrow Wallet</span>
+              <span className="font-playfair text-xl font-bold text-white">Sparrw Wallet</span>
             </div>
             <p className="text-sm mb-4">
               Eine moderne, umfassende Bitcoin-Wallet mit einer fortschrittlichen Benutzeroberfläche für datenschutzbewusste Benutzer
@@ -105,7 +105,7 @@ const Footer = () => {
           {/* Online version message */}
           <div className="px-4">
             <h3 className="font-playfair font-medium text-white mb-4">Online-Version</h3>
-            <p className="text-sm mb-4">Dies ist die Online-Version von Sparrow Wallet. Für ein sichereres Erlebnis empfehlen wir den Download der Desktop-Version.</p>
+            <p className="text-sm mb-4">Dies ist die Online-Version von Sparrw Wallet. Für ein sichereres Erlebnis empfehlen wir den Download der Desktop-Version.</p>
             <a 
               href="https://sparrowwallet.com/download/" 
               className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors"
@@ -117,7 +117,7 @@ const Footer = () => {
         </div>
 
         <div className="pt-6 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center px-4">
-          <p className="text-sm">© {new Date().getFullYear()} Sparrow Wallet. MIT-Lizenziert. Open-Source-Software.</p>
+          <p className="text-sm">© {new Date().getFullYear()} Sparrw Wallet. MIT-Lizenziert. Open-Source-Software.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="https://sparrowwallet.com/" className="text-sm hover:text-blue-400 transition-colors flex items-center gap-1">
               <Globe size={14} />
