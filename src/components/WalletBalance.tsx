@@ -717,15 +717,15 @@ const CryptoAction: React.FC<CryptoActionProps> = ({ icon, label, onClick, varia
   const getVariantStyles = () => {
     switch (variant) {
       case 'primary':
-        return "from-[#0500ff] to-[#6366f1] text-white";
+        return "from-[#0500ff]/40 to-[#6366f1]/40 text-white border-[#0500ff]/30";
       case 'secondary':
-        return "from-[#8b5cf6] to-[#d946ef] text-white";
+        return "from-[#8b5cf6]/40 to-[#d946ef]/40 text-white border-[#8b5cf6]/30";
       case 'tertiary':
-        return "from-[#f97316] to-[#fb923c] text-white";
+        return "from-[#f97316]/40 to-[#fb923c]/40 text-white border-[#f97316]/30";
       case 'quaternary':
-        return "from-[#0ea5e9] to-[#38bdf8] text-white";
+        return "from-[#0ea5e9]/40 to-[#38bdf8]/40 text-white border-[#0ea5e9]/30";
       default:
-        return "from-[#0500ff] to-[#6366f1] text-white";
+        return "from-[#0500ff]/40 to-[#6366f1]/40 text-white border-[#0500ff]/30";
     }
   };
 
@@ -746,7 +746,7 @@ const CryptoAction: React.FC<CryptoActionProps> = ({ icon, label, onClick, varia
 
   return (
     <button 
-      className={`flex flex-col items-center justify-center gap-2 bg-gradient-to-br ${getVariantStyles()} rounded-xl p-3 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 overflow-hidden btn-modern border border-white/10`}
+      className={`flex flex-col items-center justify-center gap-2 bg-gradient-to-br ${getVariantStyles()} rounded-xl p-3 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden backdrop-blur-md border`}
       onClick={onClick}
     >
       <div className="w-8 h-8 flex items-center justify-center bg-white/20 rounded-full p-1.5">
