@@ -94,7 +94,7 @@ function AppContent() {
     '/'
   ];
   
-  const shouldHideHeader = hideHeaderRoutes.includes(location.pathname);
+  const shouldHideHeader = hideHeaderRoutes.includes(location.pathname) || location.pathname.startsWith('/wallet/');
   
   return (
     <>
