@@ -250,23 +250,23 @@ const WalletViewContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground">
+    <div className="min-h-screen flex flex-col bg-[#0a0e1a] text-white">
       <div className="fixed top-0 left-0 right-0 z-[9999] px-4 py-3 pb-6 flex justify-center">
-        <div className="flex items-center justify-between py-2.5 px-4 rounded-2xl bg-white/85 dark:bg-black/70 backdrop-blur-md border border-gray-200/50 dark:border-gray-800/50 shadow-lg w-full max-w-5xl">
+        <div className="flex items-center justify-between py-2.5 px-4 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg shadow-black/20 w-full max-w-5xl">
           <div className="flex items-center gap-3">
             <button 
               onClick={() => toggleMenu()} 
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white/90 backdrop-blur-sm dark:bg-gray-800/50 dark:hover:bg-gray-800/70 transition-all shadow-sm hover:shadow-md"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all"
               aria-label="Toggle menu"
             >
-              <Menu className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+              <Menu className="w-5 h-5 text-gray-300" />
             </button>
           </div>
           
           <div className="flex items-center gap-3">
             <ThemeToggle />
             <ProfileButton />
-            <WalletLogo useSparrowLogo={true} className="w-8 h-8 ml-2" />
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 ml-2" />
           </div>
         </div>
       </div>
