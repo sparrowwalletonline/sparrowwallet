@@ -441,7 +441,7 @@ const WalletViewContent: React.FC = () => {
         </div>
       </div>
       
-      <div className="mt-auto border-t border-border">
+      <div className="mt-auto border-t border-white/10 bg-[#0d1120]">
         <div className="grid grid-cols-4 py-3">
           <NavItem 
             icon={<Home className="h-5 w-5" />} 
