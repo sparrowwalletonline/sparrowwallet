@@ -280,7 +280,7 @@ const LandingPage = () => {
                 <h2 className="font-roboto text-6xl md:text-7xl font-bold mb-0 text-center">Festung.</h2>
               </div>
               <p className="text-black max-w-2xl mx-auto font-medium">
-                Sparrow ist eine Bitcoin-Wallet für alle, die finanziell selbstbestimmt sein wollen. 
+                Sparrw ist eine Bitcoin-Wallet für alle, die finanziell selbstbestimmt sein wollen. 
                 Jetzt auch als sichere, vollständige Webanwendung verfügbar.
               </p>
             </div>
