@@ -25,7 +25,7 @@ const Footer = () => {
           <div className="col-span-1 px-4">
             <div className="flex items-center gap-2 mb-4">
               <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" />
-              <span className="font-playfair text-xl font-bold text-white">Sparrow Wallet</span>
+              <span className="font-playfair text-xl font-bold text-white">Sparrw Wallet</span>
             </div>
             <p className="text-sm mb-4">
               Eine moderne, umfassende Bitcoin-Wallet mit einer fortschrittlichen Benutzeroberfläche für datenschutzbewusste Benutzer
