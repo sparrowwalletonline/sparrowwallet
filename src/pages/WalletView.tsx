@@ -681,8 +681,8 @@ const CryptoItem = ({
 
 const WalletView: React.FC = () => {
   return (
-    <div className="min-h-screen bg-background flex justify-center w-full">
-      <div className="w-full max-w-md mx-auto min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0a0e1a] flex justify-center w-full">
+      <div className="w-full max-w-md mx-auto min-h-screen bg-[#0a0e1a]">
         <MenuProvider>
           <WalletProvider>
             <WalletViewContent />
