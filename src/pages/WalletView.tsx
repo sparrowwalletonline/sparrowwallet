@@ -275,40 +275,40 @@ const WalletViewContent: React.FC = () => {
         <div className="flex items-center justify-between pl-4 pr-4">
           <DropdownMenu open={isDropdownOpen} onOpenChange={handleDropdownOpenChange}>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-2 bg-transparent hover:bg-secondary rounded-lg px-2 py-1 transition-colors">
-                <Shield className="h-4 w-4 text-primary" />
-                <span className="text-xs text-muted-foreground">{activeWallet?.name || "Main wallet"}</span>
-                <ChevronDown className="h-3 w-3 text-muted-foreground" />
+              <button className="flex items-center gap-2 bg-white/5 hover:bg-white/10 rounded-lg px-3 py-1.5 transition-colors border border-white/10">
+                <Shield className="h-4 w-4 text-blue-400" />
+                <span className="text-xs text-gray-300">{activeWallet?.name || "Main wallet"}</span>
+                <ChevronDown className="h-3 w-3 text-gray-400" />
               </button>
             </DropdownMenuTrigger>
             
-            <DropdownMenuContent className="bg-popover border border-border text-popover-foreground z-50 min-w-[200px]">
+            <DropdownMenuContent className="bg-[#151a2e]/95 backdrop-blur-xl border border-white/10 text-white z-50 min-w-[200px]">
               {wallets.map((wallet) => (
                 <DropdownMenuItem 
                   key={wallet.id} 
-                  className="flex items-center justify-between cursor-pointer hover:bg-secondary text-sm py-2"
+                  className="flex items-center justify-between cursor-pointer hover:bg-white/10 text-sm py-2 text-gray-200"
                   onClick={() => {
                     setActiveWallet(wallet.id);
                     setIsDropdownOpen(false);
                   }}
                 >
                   <div className="flex items-center gap-2">
-                    <Shield className="h-4 w-4 text-primary" />
+                    <Shield className="h-4 w-4 text-blue-400" />
                     <span>{wallet.name}</span>
                   </div>
-                  {wallet.isActive && <Check className="h-4 w-4 text-primary" />}
+                  {wallet.isActive && <Check className="h-4 w-4 text-blue-400" />}
                 </DropdownMenuItem>
               ))}
-              <DropdownMenuSeparator className="bg-border" />
+              <DropdownMenuSeparator className="bg-white/10" />
               <div className="p-2 gap-2 flex flex-col">
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button variant="outline" size="sm" className="w-full bg-secondary hover:bg-secondary/80 border-border flex gap-2 text-foreground">
+                    <Button variant="outline" size="sm" className="w-full bg-white/5 hover:bg-white/10 border-white/10 flex gap-2 text-gray-200">
                       <Plus className="h-4 w-4" />
                       <span className="text-sm">Neue Wallet hinzufügen</span>
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="bg-popover border border-border text-popover-foreground">
+                  <DialogContent className="bg-[#151a2e] border border-white/10 text-white">
                     <DialogHeader>
                       <DialogTitle>Neue Wallet hinzufügen</DialogTitle>
                     </DialogHeader>
@@ -316,7 +316,7 @@ const WalletViewContent: React.FC = () => {
                       placeholder="Wallet Name"
                       value={newWalletName}
                       onChange={(e) => setNewWalletName(e.target.value)}
-                      className="bg-input border-input text-foreground"
+                      className="bg-white/5 border-white/10 text-white"
                     />
                     <DialogFooter>
                       <Button variant="wallet" onClick={handleAddWallet}>
@@ -328,7 +328,7 @@ const WalletViewContent: React.FC = () => {
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="w-full bg-secondary hover:bg-secondary/80 border-border flex gap-2 text-foreground"
+                  className="w-full bg-white/5 hover:bg-white/10 border-white/10 flex gap-2 text-gray-200"
                   onClick={() => {
                     setIsManageWalletsOpen(true);
                     setIsDropdownOpen(false);
@@ -344,7 +344,7 @@ const WalletViewContent: React.FC = () => {
           <Button
             variant="ghost"
             size="sm"
-            className="text-muted-foreground hover:text-foreground"
+            className="text-gray-400 hover:text-white hover:bg-white/10"
             onClick={handleRefreshBalance}
             disabled={isRefreshingBalance}
           >
