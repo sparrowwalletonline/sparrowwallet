@@ -89,7 +89,7 @@ const LandingPage = () => {
           >
             <motion.div className="text-center mb-12" variants={fadeInUp}>
               <p className="text-blue-400 font-medium mb-4 text-sm tracking-widest uppercase">Sparrw Wallet</p>
-              <h1 className="font-roboto text-5xl md:text-7xl font-bold leading-tight mb-6">
+              <h1 className="font-roboto text-5xl md:text-7xl font-bold leading-[0.9] tracking-tight mb-6">
                 Deine sichere
                 <br />
                 <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
