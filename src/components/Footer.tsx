@@ -24,7 +24,7 @@ const Footer = () => {
           {/* Logo and company info */}
           <div className="col-span-1 px-4">
             <div className="flex items-center gap-2 mb-4">
-              <WalletLogo className="w-8 h-8" useSparrowLogo={true} color="sparrow" />
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600" />
               <span className="font-playfair text-xl font-bold text-white">Sparrw Wallet</span>
             </div>
             <p className="text-sm mb-4">
