@@ -215,6 +215,7 @@ const Auth: React.FC = () => {
             </Button>
           </form>
           
+          {failedAttempts >= 3 && (
           <div className="mt-4">
             <button
               type="button"
@@ -225,6 +226,7 @@ const Auth: React.FC = () => {
               Mit Seed Phrase wiederherstellen
             </button>
           </div>
+          )}
 
           <div className="mt-4 text-center">
             <p className="text-gray-600">
