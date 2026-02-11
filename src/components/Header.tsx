@@ -98,7 +98,7 @@ const Header = ({
           
           {showProfileButton && <ThemeToggle />}
           {showProfileButton && <ProfileButton />}
-          <WalletLogo useSparrowLogo={true} className="w-8 h-8 ml-2" />
+          <div className="w-8 h-8 ml-2 rounded-full bg-gradient-to-br from-blue-600 to-purple-600" />
         </div>
       </header>
     </div>
