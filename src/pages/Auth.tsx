@@ -76,6 +76,7 @@ const Auth: React.FC = () => {
       
       await checkUserWallet();
     } catch (error) {
+      setFailedAttempts(prev => prev + 1);
       if (error instanceof Error) {
         toast({
           title: "Fehler",
