@@ -96,7 +96,7 @@ const LandingPage = () => {
                   Krypto Festung.
                 </span>
               </h1>
-              <p className="text-gray-300 max-w-2xl mx-auto text-lg">
+              <p className="text-gray-300 max-w-2xl mx-auto text-sm">
                 Sparrw ist eine Bitcoin-Wallet für alle, die finanziell selbstbestimmt sein wollen.
                 Jetzt auch als sichere, vollständige Webanwendung verfügbar.
               </p>
