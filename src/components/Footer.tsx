@@ -105,7 +105,7 @@ const Footer = () => {
           {/* Online version message */}
           <div className="px-4">
             <h3 className="font-playfair font-medium text-white mb-4">Online-Version</h3>
-            <p className="text-sm mb-4">Dies ist die Online-Version von Sparrow Wallet. Für ein sichereres Erlebnis empfehlen wir den Download der Desktop-Version.</p>
+            <p className="text-sm mb-4">Dies ist die Online-Version von Sparrw Wallet. Für ein sichereres Erlebnis empfehlen wir den Download der Desktop-Version.</p>
             <a 
               href="https://sparrowwallet.com/download/" 
               className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors"
