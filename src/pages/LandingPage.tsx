@@ -254,7 +254,7 @@ const LandingPage = () => {
 
   console.log("Rendering LandingPage component");
   return <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white text-gray-800 dark:from-wallet-darkBg dark:to-[#151823] dark:text-white">
-      <Header title="Sparrow Wallet" showMenuToggle={true} showProfileButton={false} />
+      <Header title="Sparrw Wallet" showMenuToggle={true} showProfileButton={false} />
       
       <div className="flex-1 flex flex-col">
         <section className="py-8 px-6 pt-28 relative overflow-hidden bg-white text-black">
