@@ -362,7 +362,7 @@ const LandingPage = () => {
             
             <div className="max-w-3xl mx-auto mt-10 px-6 py-8 text-sm leading-relaxed text-gray-700 text-center">
               <p className="mb-4">
-                Sparrow ist einzigartig, da es einen vollwertigen Transaktionseditor enthält, der auch als Blockchain-Explorer fungiert. Diese Funktion ermöglicht nicht nur die Bearbeitung aller Felder einer Transaktion, sondern auch eine einfache Überprüfung der Transaktionsbytes vor der Übertragung. Sparrow enthält viele weitere Funktionen, die auf der Funktionsseite ausführlich beschrieben.
+                Sparrw ist einzigartig, da es einen vollwertigen Transaktionseditor enthält, der auch als Blockchain-Explorer fungiert. Diese Funktion ermöglicht nicht nur die Bearbeitung aller Felder einer Transaktion, sondern auch eine einfache Überprüfung der Transaktionsbytes vor der Übertragung. Sparrw enthält viele weitere Funktionen, die auf der Funktionsseite ausführlich beschrieben.
               </p>
               <p>
                 Obwohl Sparrow eine Wallet für fortgeschrittene Benutzer ist, ist sie nicht schwer zu bedienen.
