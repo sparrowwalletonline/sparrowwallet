@@ -321,9 +321,9 @@ const WalletBalance: React.FC = () => {
   };
 
   return (
-    <div className="animate-fade-in w-full wallet-balance-wrapper">
+    <div className="animate-fade-in w-full">
       <div className="mb-1 px-1">
-        <h2 className="text-3xl font-bold">{formatUSD(animatedBalance)}</h2>
+        <h2 className="text-3xl font-bold text-white">{formatUSD(animatedBalance)}</h2>
       </div>
       
       <AnalyticsChart tokens={tokens} />
