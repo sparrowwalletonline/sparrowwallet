@@ -5,15 +5,17 @@ import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import { Mail, Lock, Eye, EyeOff, ArrowLeft, CheckCircle } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowLeft, CheckCircle, KeyRound } from 'lucide-react';
 import { useWallet } from '@/contexts/WalletContext';
 import Header from '@/components/Header';
+import SeedPhraseRecovery from '@/components/auth/SeedPhraseRecovery';
 
 const Auth: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showSeedRecovery, setShowSeedRecovery] = useState(false);
   const navigate = useNavigate();
   const { hasWallet, loadFromSupabase, session, loadWalletFromUserAccount } = useWallet();
   
@@ -131,6 +133,12 @@ const Auth: React.FC = () => {
       <Header title="Sparrow" showBack={true} className="bg-white border-b" />
       
       <div className="flex-1 flex flex-col items-center justify-center p-4">
+        {showSeedRecovery ? (
+          <SeedPhraseRecovery 
+            onBack={() => setShowSeedRecovery(false)} 
+            onSuccess={() => checkUserWallet()} 
+          />
+        ) : (
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <img 
@@ -205,7 +213,18 @@ const Auth: React.FC = () => {
             </Button>
           </form>
           
-          <div className="mt-8 text-center">
+          <div className="mt-4">
+            <button
+              type="button"
+              onClick={() => setShowSeedRecovery(true)}
+              className="w-full flex items-center justify-center gap-2 text-sm text-wallet-blue hover:underline font-medium py-2"
+            >
+              <KeyRound className="h-4 w-4" />
+              Mit Seed Phrase wiederherstellen
+            </button>
+          </div>
+
+          <div className="mt-4 text-center">
             <p className="text-gray-600">
               Noch kein Konto? 
               <button
@@ -218,6 +237,7 @@ const Auth: React.FC = () => {
             </p>
           </div>
         </div>
+        )}
       </div>
     </div>
   );
