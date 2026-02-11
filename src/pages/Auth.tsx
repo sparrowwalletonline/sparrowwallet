@@ -15,6 +15,7 @@ const Auth: React.FC = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showSeedRecovery, setShowSeedRecovery] = useState(false);
   const navigate = useNavigate();
   const { hasWallet, loadFromSupabase, session, loadWalletFromUserAccount } = useWallet();
   
