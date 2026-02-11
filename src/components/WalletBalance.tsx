@@ -746,7 +746,7 @@ const CryptoAction: React.FC<CryptoActionProps> = ({ icon, label, onClick, varia
 
   return (
     <button 
-      className={`flex flex-col items-center justify-center gap-2 bg-gradient-to-br ${getVariantStyles()} rounded-xl p-3 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 overflow-hidden btn-modern border border-white/10`}
+      className={`flex flex-col items-center justify-center gap-2 bg-gradient-to-br ${getVariantStyles()} rounded-xl p-3 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden backdrop-blur-md border`}
       onClick={onClick}
     >
       <div className="w-8 h-8 flex items-center justify-center bg-white/20 rounded-full p-1.5">
