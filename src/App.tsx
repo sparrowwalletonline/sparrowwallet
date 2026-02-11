@@ -89,7 +89,9 @@ function AppContent() {
     '/seed-phrase-validation', 
     '/register',
     '/profile-settings',
-    '/app-settings'
+    '/app-settings',
+    '/wallet',
+    '/'
   ];
   
   const shouldHideHeader = hideHeaderRoutes.includes(location.pathname);
